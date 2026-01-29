@@ -1,0 +1,169 @@
+{
+  "file_name": "Vendor Creation Sample BUD(1).docx",
+  "metadata": {
+    "title": "Process Name Company Name",
+    "author": "Prepared By Manch Technology",
+    "process_name": "",
+    "created": "2025-05-17 06:09:00+00:00",
+    "modified": "2026-01-10 11:09:00+00:00"
+  },
+  "statistics": {
+    "sections": 6,
+    "all_fields": 162,
+    "initiator_fields": 17,
+    "spoc_fields": 116,
+    "approver_fields": 40,
+    "workflows": {
+      "spoc": 3,
+      "initiator": 11,
+      "approver": 35
+    },
+    "approval_rules": 0,
+    "version_history": 1,
+    "terminology_entries": 3,
+    "reference_tables": 0,
+    "integration_fields": 0,
+    "document_requirements": 7,
+    "dropdown_mappings": 41,
+    "raw_tables": 9
+  },
+  "completeness_checks": {
+    "has_metadata": true,
+    "has_fields": true,
+    "has_workflows": true,
+    "has_version_history": true,
+    "has_categorized_fields": true
+  },
+  "field_types_distribution": {
+    "PANEL": 11,
+    "TEXT": 95,
+    "DATE": 2,
+    "DROPDOWN": 15,
+    "MOBILE": 1,
+    "EXTERNAL_DROPDOWN": 11,
+    "UNKNOWN": 3,
+    "LABEL": 3,
+    "FILE": 15,
+    "STATIC_CHECKBOX": 1,
+    "MULTI_DROPDOWN": 1,
+    "CHECKBOX": 3,
+    "EMAIL": 1
+  },
+  "mandatory_field_counts": {
+    "mandatory": 23,
+    "optional": 139
+  },
+  "sample_fields": [
+    {
+      "name": "Basic Details",
+      "type": "PANEL",
+      "type_raw": "PANEL",
+      "mandatory": false,
+      "logic": "",
+      "rules": "",
+      "section": "",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "Search term / Reference Number(Transaction ID)",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "System-generated transaction ID from Manch (Non-Editable)\n\u2022 Disable",
+      "rules": "",
+      "section": "Basic Details",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "Created on",
+      "type": "DATE",
+      "type_raw": "DATE",
+      "mandatory": false,
+      "logic": "The request creation date will be auto-derived (Non-editable)\n\u2022 Disable",
+      "rules": "",
+      "section": "Basic Details",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "Created By",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "Requester's email address will be auto-derived (Non-editable)\n\u2022 Disable",
+      "rules": "",
+      "section": "Basic Details",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "Name/ First Name of the Organization",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": true,
+      "logic": "Maximum 35-character length\n\u2022 Copy from Name/ First Name of the Organization field of basic detail p",
+      "rules": "",
+      "section": "Basic Details",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    }
+  ],
+  "sample_workflows": {
+    "spoc": [
+      {
+        "step": 1,
+        "description": "The process will be initiated by the initiator by logging into the system and clicking on the create",
+        "action_type": "create"
+      },
+      {
+        "step": 2,
+        "description": "This process can be initiated by any user in the system. The user should be active in the Pidilite H",
+        "action_type": ""
+      },
+      {
+        "step": 1,
+        "description": "Once the Vendor enters the details and clicks on submit. The system will perform the validation and ",
+        "action_type": "validate"
+      }
+    ],
+    "initiator": [
+      {
+        "step": 1,
+        "description": "Login: The Pidilite team logs in to the Manch application using the provided credentials. The follow",
+        "action_type": "login"
+      },
+      {
+        "step": 2,
+        "description": "Transaction ID",
+        "action_type": ""
+      },
+      {
+        "step": 3,
+        "description": "Company Name \u2013 Title (Copy the company name FFD Data into Title)",
+        "action_type": ""
+      }
+    ],
+    "approver": [
+      {
+        "step": 1,
+        "description": "For India, the workflow will consist of six sequential approval levels:",
+        "action_type": "approve"
+      },
+      {
+        "step": 2,
+        "description": "Pending with Requestor \u2013 Initial review and confirmation by the requestor.",
+        "action_type": ""
+      },
+      {
+        "step": 3,
+        "description": "Pending with Vertical Head \u2013 Review and approval by the relevant business/vertical head.",
+        "action_type": "approve"
+      }
+    ]
+  },
+  "issues": [
+    "Found 3 fields with UNKNOWN type. Raw types: {'ARRAY_END', 'ARRAY_HDR', 'String'}"
+  ]
+}

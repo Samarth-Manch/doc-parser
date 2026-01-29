@@ -1,0 +1,1757 @@
+{
+  "source_document": "Vendor Creation Sample BUD.docx",
+  "extraction_date": "2026-01-27T12:05:43.144052",
+  "total_fields": 350,
+  "fields": [
+    {
+      "fieldName": "Basic Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Search term / Reference Number(Transaction ID)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Created on",
+      "fieldType": "DATE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Created By",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ First Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Select the process type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Process Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Account Group/Vendor Type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Group key/Corporate Group",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Vendor Domestic or Import",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Country",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Country Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Country Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Company Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Mobile Number",
+      "fieldType": "MOBILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Do you wish to add additional mobile numbers (India)?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Do you wish to add additional mobile numbers (Non-India)?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 2 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 3 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 4 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 5 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 2 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 3 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 4 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 5 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Vendor Contact Email",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Vendor Contact Name",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Do you wish to add additional email addresses?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Email 2",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Concerned email addresses?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Email ID",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN and GST Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN DETAILS",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Aadhaar PAN List Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GST Details",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please select GST option",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GSTIN IMAGE",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GSTIN",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Trade Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Legal Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Reg Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Building Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "City",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pin Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Declaration",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GST Vendor Classification",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "ID Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Service Tax Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Language Key",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Vendor Basic Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ First Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ Middle Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ Last Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name 4/Alternate Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Title",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Business Registration Number Available?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Business Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Address Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please Choose Address Proof",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Electricity bill copy",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Aadhaar Front copy",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Aadhaar Back Image",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street 1",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street 2",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street 3",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Postal Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "City",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please choose the option",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Cancelled Cheque Image",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Passbook/Bank Letter",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please enter IFSC and Account Number manually",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "IFSC Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Account Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Address",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Country",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "CIN and TDS Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "CIN Certificate",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "CIN",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "FDA Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "TDS Applicable?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "TDS Certificate",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Is SSI / MSME Applicable?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Image",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Address",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Category",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Enterprise",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Major Activity",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Date of Commencement",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Dice Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Applied State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Modified Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Expiry Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Address Line1",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Building",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Area",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "City",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pin",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Classification Year",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Classification Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Declaration",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Vendor Duplicity Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Exception Duplicate Vendor creation",
+      "fieldType": "STATIC_CHECKBOX",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Vendor Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Vendor Description",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Block status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate GST Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate PAN Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Email Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Mobile Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Bank Account Number Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Justification for Duplicate Vendor Creation",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Comments",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Purchase Organization Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Company Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Order currency",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Purchase Organization",
+      "fieldType": "MULTI_DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Terms of Payment",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Incoterms",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Incoterms (Part 2)",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GR-Based Inv. Verif.",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Schema Grp, Supplier",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Automatic PO",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Service-Based Invoice Verification",
+      "fieldType": "CHECKBOX",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Payment Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Payment Methods",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "House Bank",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Minority Indicator",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "VENDOR INVOICE",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Reconciliation acct",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Currency",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Is Vendor Your Customer?",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Customer Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Service Tax File",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Share with",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Additional File",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Withholding Tax Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Withholding Tax Type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Subject to w/tax",
+      "fieldType": "CHECKBOX",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Recipient Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Withholding Tax Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "All financial & bank details are verified",
+      "fieldType": "CHECKBOX",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Basic Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Search term / Reference Number(Transaction ID)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Created on",
+      "fieldType": "DATE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Created By",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ First Name of the Organisation",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Select the process type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Process Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Account Group/Vendor Type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Group key/Corporate Group",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Vendor Domestic or Import",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Country",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Country Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Country Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Company Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Mobile Number",
+      "fieldType": "MOBILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Email",
+      "fieldType": "EMAIL",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Vendor Contact Name",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Basic Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Search term / Reference Number(Transaction ID)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Created on",
+      "fieldType": "DATE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Created By",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ First Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Select the process type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Process Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Account Group/Vendor Type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Group key/Corporate Group",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Vendor Domestic or Import",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Country",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Country Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Country Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Company Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Mobile Number",
+      "fieldType": "MOBILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Do you wish to add additional mobile numbers (India)?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Do you wish to add additional mobile numbers (Non-India)?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 2 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 3 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 4 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 5 (Domestic)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 2 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 3 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 4 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Mobile Number 5 (Import)",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Vendor Contact Email",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Vendor Contact Name",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Do you wish to add additional email addresses?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Email 2",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Concerned email addresses?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Email ID",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN and GST Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN DETAILS",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Aadhaar PAN List Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GST Details",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please select GST option",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GSTIN IMAGE",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GSTIN",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Trade Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Legal Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Reg Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Building Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "City",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pin Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Declaration",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GST Vendor Classification",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "ID Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Service Tax Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Language Key",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Vendor Basic Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ First Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ Middle Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name/ Last Name of the Organization",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name 4/Alternate Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Title",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Business Registration Number Available?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Business Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Address Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please Choose Address Proof",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Electricity bill copy",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Aadhaar Front copy",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Aadhaar Back Image",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street 1",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street 2",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street 3",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Postal Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "City",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please choose the option",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Cancelled Cheque Image",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Passbook/Bank Letter",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Please enter IFSC and Account Number manually",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "IFSC Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Account Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Address",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Country",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "CIN and TDS Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "CIN Certificate",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "CIN",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "FDA Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "TDS Applicable?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "TDS Certificate",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Is SSI / MSME Applicable?",
+      "fieldType": "EXTERNAL_DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Image",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Registration Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Address",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Category",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Enterprise",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Major Activity",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Date of Commencement",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Dic Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Applied State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Modified Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Expiry Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Address Line1",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Building",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Street",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Area",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "City",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pin",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Classification Year",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Classification Date",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "MSME Declaration",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Exception Duplicate Vendor creation",
+      "fieldType": "STATIC_CHECKBOX",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Vendor Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Vendor Description",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Block status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate GST Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate PAN Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Email Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Mobile Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Duplicate Bank Account Number Result",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Justification for Duplicate Vendor Creation",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Comments",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Purchase Organization Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Company Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Order currency",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Purchase Organization",
+      "fieldType": "MULTI_DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Terms of Payment",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Incoterms",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Incoterms (Part 2)",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GR-Based Inv. Verify.",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Schema Grp, Supplier",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Automatic PO",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Service-Based Invoice Verification",
+      "fieldType": "CHECKBOX",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Payment Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Payment Methods",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "House Bank",
+      "fieldType": "DROPDOWN",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Minority Indicator",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "VENDOR INVOICE",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Reconciliation acct",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Currency",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Is Vendor Your Customer?",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Customer Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Service Tax File",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Share with",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Additional File",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Withholding Tax Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Company Code",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Withholding Tax Type",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Subject to w/tax",
+      "fieldType": "CHECKBOX",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Recipient Type",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Withholding Tax Code",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "All financial & bank details are verified",
+      "fieldType": "CHECKBOX",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Field B",
+      "fieldType": "DATE",
+      "mandatory": false
+    }
+  ]
+}

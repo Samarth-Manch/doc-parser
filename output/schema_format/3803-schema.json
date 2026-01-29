@@ -1,0 +1,1276 @@
+{
+  "template": {
+    "id": 3803,
+    "templateName": "Complaint KYC",
+    "key": "TMPTS03803",
+    "companyCode": "ubgroup",
+    "documentTypes": [
+      {
+        "id": 38030,
+        "documentType": "Complaint KYC Process",
+        "formFillMetadatas": [
+          {
+            "id": 38030001,
+            "mandatory": true,
+            "formTag": {
+              "id": 380301,
+              "name": "Region",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030002,
+            "mandatory": true,
+            "formTag": {
+              "id": 380302,
+              "name": "State",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030003,
+            "mandatory": false,
+            "formTag": {
+              "id": 380303,
+              "name": "Depot/District",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030004,
+            "mandatory": true,
+            "formTag": {
+              "id": 380304,
+              "name": "Outlet Code",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030005,
+            "mandatory": true,
+            "formTag": {
+              "id": 380305,
+              "name": "Outlet Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030006,
+            "mandatory": true,
+            "formTag": {
+              "id": 380306,
+              "name": "Licensee Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030007,
+            "mandatory": true,
+            "formTag": {
+              "id": 380307,
+              "name": "Individual",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030008,
+            "mandatory": false,
+            "formTag": {
+              "id": 380308,
+              "name": "Outlet Operator Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030009,
+            "mandatory": true,
+            "formTag": {
+              "id": 380309,
+              "name": "Name of SPOC (Single Point of Contact)",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030010,
+            "mandatory": true,
+            "formTag": {
+              "id": 380310,
+              "name": "Mobile Number of SPOC",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030011,
+            "mandatory": true,
+            "formTag": {
+              "id": 380311,
+              "name": "License Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030012,
+            "mandatory": true,
+            "formTag": {
+              "id": 380312,
+              "name": "License Expiry Date",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030013,
+            "mandatory": false,
+            "formTag": {
+              "id": 380313,
+              "name": "TSE Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030014,
+            "mandatory": false,
+            "formTag": {
+              "id": 380314,
+              "name": "TSE Mobile Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030015,
+            "mandatory": false,
+            "formTag": {
+              "id": 380315,
+              "name": "TSE Email ID",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030016,
+            "mandatory": false,
+            "formTag": {
+              "id": 380316,
+              "name": "Basic Details",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030017,
+            "mandatory": true,
+            "formTag": {
+              "id": 380317,
+              "name": "Is the license under an Individual or an Establishment?",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 38030018,
+            "mandatory": true,
+            "formTag": {
+              "id": 380318,
+              "name": "Are you the licensee?",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 38030019,
+            "mandatory": true,
+            "formTag": {
+              "id": 380319,
+              "name": "Who is the beneficiary?",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 38030020,
+            "mandatory": false,
+            "formTag": {
+              "id": 380320,
+              "name": "PAN Details Of Licensee",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030021,
+            "mandatory": true,
+            "formTag": {
+              "id": 380321,
+              "name": "Upload PAN of Licensee",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030022,
+            "mandatory": true,
+            "formTag": {
+              "id": 380322,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030023,
+            "mandatory": false,
+            "formTag": {
+              "id": 380323,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030024,
+            "mandatory": false,
+            "formTag": {
+              "id": 380324,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030025,
+            "mandatory": false,
+            "formTag": {
+              "id": 380325,
+              "name": "Pan Match score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030026,
+            "mandatory": false,
+            "formTag": {
+              "id": 380326,
+              "name": "Bank details of Licensee",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030027,
+            "mandatory": true,
+            "formTag": {
+              "id": 380327,
+              "name": "Upload Cancelled Cheque",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030028,
+            "mandatory": true,
+            "formTag": {
+              "id": 380328,
+              "name": "IFSC Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030029,
+            "mandatory": true,
+            "formTag": {
+              "id": 380329,
+              "name": "Account Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030030,
+            "mandatory": false,
+            "formTag": {
+              "id": 380330,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030031,
+            "mandatory": false,
+            "formTag": {
+              "id": 380331,
+              "name": "Bank Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030032,
+            "mandatory": false,
+            "formTag": {
+              "id": 380332,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030033,
+            "mandatory": false,
+            "formTag": {
+              "id": 380333,
+              "name": "Bank Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030034,
+            "mandatory": false,
+            "formTag": {
+              "id": 380334,
+              "name": "Name Match Score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030035,
+            "mandatory": false,
+            "formTag": {
+              "id": 380335,
+              "name": "PAN Details Of Licensee",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030036,
+            "mandatory": true,
+            "formTag": {
+              "id": 380336,
+              "name": "Upload PAN of Licensee",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030037,
+            "mandatory": true,
+            "formTag": {
+              "id": 380337,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030038,
+            "mandatory": false,
+            "formTag": {
+              "id": 380338,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030039,
+            "mandatory": false,
+            "formTag": {
+              "id": 380339,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030040,
+            "mandatory": false,
+            "formTag": {
+              "id": 380340,
+              "name": "Pan Match score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030041,
+            "mandatory": false,
+            "formTag": {
+              "id": 380341,
+              "name": "Bank details of Other Beneficiary",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030042,
+            "mandatory": true,
+            "formTag": {
+              "id": 380342,
+              "name": "Upload PAN of Beneficiary",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030043,
+            "mandatory": true,
+            "formTag": {
+              "id": 380343,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030044,
+            "mandatory": false,
+            "formTag": {
+              "id": 380344,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030045,
+            "mandatory": false,
+            "formTag": {
+              "id": 380345,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030046,
+            "mandatory": false,
+            "formTag": {
+              "id": 380346,
+              "name": "Bank details of Other Beneficiary",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030047,
+            "mandatory": true,
+            "formTag": {
+              "id": 380347,
+              "name": "Upload Cancelled Cheque of Beneficiary",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030048,
+            "mandatory": true,
+            "formTag": {
+              "id": 380348,
+              "name": "IFSC Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030049,
+            "mandatory": true,
+            "formTag": {
+              "id": 380349,
+              "name": "Account Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030050,
+            "mandatory": false,
+            "formTag": {
+              "id": 380350,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030051,
+            "mandatory": false,
+            "formTag": {
+              "id": 380351,
+              "name": "Bank Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030052,
+            "mandatory": false,
+            "formTag": {
+              "id": 380352,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030053,
+            "mandatory": false,
+            "formTag": {
+              "id": 380353,
+              "name": "Bank Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030054,
+            "mandatory": false,
+            "formTag": {
+              "id": 380354,
+              "name": "Name Match Score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030055,
+            "mandatory": false,
+            "formTag": {
+              "id": 380355,
+              "name": "Other Documents",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030056,
+            "mandatory": true,
+            "formTag": {
+              "id": 380356,
+              "name": "Beneficiary Authorization form",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030057,
+            "mandatory": false,
+            "formTag": {
+              "id": 380357,
+              "name": "PAN Details Of Licensee",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030058,
+            "mandatory": true,
+            "formTag": {
+              "id": 380358,
+              "name": "Upload PAN of Licensee",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030059,
+            "mandatory": true,
+            "formTag": {
+              "id": 380359,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030060,
+            "mandatory": false,
+            "formTag": {
+              "id": 380360,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030061,
+            "mandatory": false,
+            "formTag": {
+              "id": 380361,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030062,
+            "mandatory": false,
+            "formTag": {
+              "id": 380362,
+              "name": "Pan Match score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030063,
+            "mandatory": false,
+            "formTag": {
+              "id": 380363,
+              "name": "PAN Details Of Other Beneficiary",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030064,
+            "mandatory": true,
+            "formTag": {
+              "id": 380364,
+              "name": "Upload PAN of Other Beneficiary",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030065,
+            "mandatory": true,
+            "formTag": {
+              "id": 380365,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030066,
+            "mandatory": false,
+            "formTag": {
+              "id": 380366,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030067,
+            "mandatory": false,
+            "formTag": {
+              "id": 380367,
+              "name": "Bank details of Other Beneficiary",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030068,
+            "mandatory": true,
+            "formTag": {
+              "id": 380368,
+              "name": "Upload Cancelled Cheque",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030069,
+            "mandatory": true,
+            "formTag": {
+              "id": 380369,
+              "name": "IFSC Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030070,
+            "mandatory": true,
+            "formTag": {
+              "id": 380370,
+              "name": "Account Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030071,
+            "mandatory": false,
+            "formTag": {
+              "id": 380371,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030072,
+            "mandatory": false,
+            "formTag": {
+              "id": 380372,
+              "name": "Bank Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030073,
+            "mandatory": false,
+            "formTag": {
+              "id": 380373,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030074,
+            "mandatory": false,
+            "formTag": {
+              "id": 380374,
+              "name": "Bank Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030075,
+            "mandatory": false,
+            "formTag": {
+              "id": 380375,
+              "name": "Name Match Score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030076,
+            "mandatory": false,
+            "formTag": {
+              "id": 380376,
+              "name": "Other Documents",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030077,
+            "mandatory": true,
+            "formTag": {
+              "id": 380377,
+              "name": "Operator Authorization form",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030078,
+            "mandatory": false,
+            "formTag": {
+              "id": 380378,
+              "name": "PAN of either Establishment or Proprietor",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030079,
+            "mandatory": true,
+            "formTag": {
+              "id": 380379,
+              "name": "Upload PAN of Establishment",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030080,
+            "mandatory": true,
+            "formTag": {
+              "id": 380380,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030081,
+            "mandatory": false,
+            "formTag": {
+              "id": 380381,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030082,
+            "mandatory": false,
+            "formTag": {
+              "id": 380382,
+              "name": "Bank details of Establishment",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030083,
+            "mandatory": true,
+            "formTag": {
+              "id": 380383,
+              "name": "Upload Cancelled Cheque of Establishment",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030084,
+            "mandatory": true,
+            "formTag": {
+              "id": 380384,
+              "name": "IFSC Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030085,
+            "mandatory": true,
+            "formTag": {
+              "id": 380385,
+              "name": "Account Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030086,
+            "mandatory": false,
+            "formTag": {
+              "id": 380386,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030087,
+            "mandatory": false,
+            "formTag": {
+              "id": 380387,
+              "name": "Bank Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030088,
+            "mandatory": false,
+            "formTag": {
+              "id": 380388,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030089,
+            "mandatory": false,
+            "formTag": {
+              "id": 380389,
+              "name": "Bank Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030090,
+            "mandatory": false,
+            "formTag": {
+              "id": 380390,
+              "name": "Other Document",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030091,
+            "mandatory": true,
+            "formTag": {
+              "id": 380391,
+              "name": "Link from establishment to proprietor",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 38030092,
+            "mandatory": false,
+            "formTag": {
+              "id": 380392,
+              "name": "Upload the document to auto-fill the details. Kindly verify before proceeding to the next step.",
+              "type": "LABEL"
+            }
+          },
+          {
+            "id": 38030093,
+            "mandatory": false,
+            "formTag": {
+              "id": 380393,
+              "name": "Upload GST Registration Certificate",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030094,
+            "mandatory": false,
+            "formTag": {
+              "id": 380394,
+              "name": "GSTIN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030095,
+            "mandatory": false,
+            "formTag": {
+              "id": 380395,
+              "name": "Trade Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030096,
+            "mandatory": false,
+            "formTag": {
+              "id": 380396,
+              "name": "Legal Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030097,
+            "mandatory": false,
+            "formTag": {
+              "id": 380397,
+              "name": "AOP",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030098,
+            "mandatory": false,
+            "formTag": {
+              "id": 380398,
+              "name": "Excise license",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030099,
+            "mandatory": false,
+            "formTag": {
+              "id": 380399,
+              "name": "PAN of either Establishment or Proprietor",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030100,
+            "mandatory": true,
+            "formTag": {
+              "id": 380400,
+              "name": "Upload PAN of Establishment",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030101,
+            "mandatory": true,
+            "formTag": {
+              "id": 380401,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030102,
+            "mandatory": false,
+            "formTag": {
+              "id": 380402,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030103,
+            "mandatory": false,
+            "formTag": {
+              "id": 380403,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030104,
+            "mandatory": false,
+            "formTag": {
+              "id": 380404,
+              "name": "Bank details of Proprietor",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030105,
+            "mandatory": true,
+            "formTag": {
+              "id": 380405,
+              "name": "Upload Cancelled Cheque of Proprietor",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030106,
+            "mandatory": true,
+            "formTag": {
+              "id": 380406,
+              "name": "IFSC Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030107,
+            "mandatory": true,
+            "formTag": {
+              "id": 380407,
+              "name": "Account Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030108,
+            "mandatory": false,
+            "formTag": {
+              "id": 380408,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030109,
+            "mandatory": false,
+            "formTag": {
+              "id": 380409,
+              "name": "Bank Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030110,
+            "mandatory": false,
+            "formTag": {
+              "id": 380410,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030111,
+            "mandatory": false,
+            "formTag": {
+              "id": 380411,
+              "name": "Bank Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030112,
+            "mandatory": false,
+            "formTag": {
+              "id": 380412,
+              "name": "Name Match Score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030113,
+            "mandatory": true,
+            "formTag": {
+              "id": 380413,
+              "name": "Link from establishment to proprietor",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 38030114,
+            "mandatory": false,
+            "formTag": {
+              "id": 380414,
+              "name": "Upload the document to auto-fill the details. Kindly verify before proceeding to the next step.",
+              "type": "LABEL"
+            }
+          },
+          {
+            "id": 38030115,
+            "mandatory": false,
+            "formTag": {
+              "id": 380415,
+              "name": "Upload GST Registration Certificate",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030116,
+            "mandatory": false,
+            "formTag": {
+              "id": 380416,
+              "name": "GSTIN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030117,
+            "mandatory": false,
+            "formTag": {
+              "id": 380417,
+              "name": "Trade Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030118,
+            "mandatory": false,
+            "formTag": {
+              "id": 380418,
+              "name": "Legal Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030119,
+            "mandatory": false,
+            "formTag": {
+              "id": 380419,
+              "name": "Name Match Score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030120,
+            "mandatory": false,
+            "formTag": {
+              "id": 380420,
+              "name": "AOP",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030121,
+            "mandatory": false,
+            "formTag": {
+              "id": 380421,
+              "name": "Excise license",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030122,
+            "mandatory": false,
+            "formTag": {
+              "id": 380422,
+              "name": "PAN of either Establishment or Proprietor",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030123,
+            "mandatory": true,
+            "formTag": {
+              "id": 380423,
+              "name": "Upload PAN of Establishment or Proprietor",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030124,
+            "mandatory": true,
+            "formTag": {
+              "id": 380424,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030125,
+            "mandatory": false,
+            "formTag": {
+              "id": 380425,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030126,
+            "mandatory": false,
+            "formTag": {
+              "id": 380426,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030127,
+            "mandatory": false,
+            "formTag": {
+              "id": 380427,
+              "name": "PAN details of Other Beneficiary",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030128,
+            "mandatory": true,
+            "formTag": {
+              "id": 380428,
+              "name": "Upload PAN of Other Beneficiary",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030129,
+            "mandatory": true,
+            "formTag": {
+              "id": 380429,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030130,
+            "mandatory": false,
+            "formTag": {
+              "id": 380430,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030131,
+            "mandatory": false,
+            "formTag": {
+              "id": 380431,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030132,
+            "mandatory": false,
+            "formTag": {
+              "id": 380432,
+              "name": "Bank details of Beneficiary",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 38030133,
+            "mandatory": true,
+            "formTag": {
+              "id": 380433,
+              "name": "Upload Cancelled Cheque of Proprietor",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 38030134,
+            "mandatory": true,
+            "formTag": {
+              "id": 380434,
+              "name": "IFSC Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030135,
+            "mandatory": true,
+            "formTag": {
+              "id": 380435,
+              "name": "Account Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030136,
+            "mandatory": false,
+            "formTag": {
+              "id": 380436,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030137,
+            "mandatory": false,
+            "formTag": {
+              "id": 380437,
+              "name": "Bank Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030138,
+            "mandatory": false,
+            "formTag": {
+              "id": 380438,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030139,
+            "mandatory": false,
+            "formTag": {
+              "id": 380439,
+              "name": "Bank Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 38030140,
+            "mandatory": false,
+            "formTag": {
+              "id": 380440,
+              "name": "Name Match Score",
+              "type": "TEXT"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

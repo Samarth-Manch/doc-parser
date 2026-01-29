@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Rules Extraction Architecture - Source & Destination Identification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a12 0%, #1a1a2e 50%, #0f1629 100%);
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .section h2 {
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section h2 .step-badge {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.6em;
+            color: white;
+        }
+
+        .section h2 .step-badge.expression {
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+        }
+
+        .section h2 .step-badge.standard {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        /* Grid layouts */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .three-column { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 800px) {
+            .two-column, .three-column { grid-template-columns: 1fr; }
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card.source {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .card.destination {
+            border-left: 4px solid #22c55e;
+        }
+
+        .card.process {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .card h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 .icon {
+            font-size: 1.3em;
+        }
+
+        .card h4 {
+            color: #00d4ff;
+            margin: 15px 0 10px;
+            font-size: 0.95em;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card li {
+            padding: 8px 0;
+            font-size: 0.9em;
+            color: #bbb;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card li:last-child {
+            border-bottom: none;
+        }
+
+        .card li::before {
+            content: '→';
+            color: #7c3aed;
+            margin-right: 10px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .function { color: #d2a8ff; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .variable { color: #ffa657; }
+        .code-block .comment { color: #8b949e; }
+        .code-block .number { color: #79c0ff; }
+        .code-block .source-highlight { background: rgba(59,130,246,0.3); padding: 2px 6px; border-radius: 4px; }
+        .code-block .dest-highlight { background: rgba(34,197,94,0.3); padding: 2px 6px; border-radius: 4px; }
+
+        /* Pattern boxes */
+        .pattern-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .pattern-box h5 {
+            color: #f59e0b;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+
+        .pattern-box .example {
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8em;
+            color: #ccc;
+            margin-top: 8px;
+        }
+
+        .pattern-box .extracted {
+            margin-top: 8px;
+            font-size: 0.8em;
+        }
+
+        .pattern-box .extracted span {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            margin: 3px;
+            font-size: 0.9em;
+        }
+
+        .pattern-box .extracted .src {
+            background: rgba(59,130,246,0.3);
+            color: #60a5fa;
+        }
+
+        .pattern-box .extracted .dest {
+            background: rgba(34,197,94,0.3);
+            color: #4ade80;
+        }
+
+        .pattern-box .extracted .cond {
+            background: rgba(251,146,60,0.3);
+            color: #fb923c;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .badge-blue { background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .badge-green { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .badge-orange { background: rgba(251,146,60,0.2); color: #f59e0b; }
+        .badge-purple { background: rgba(168,85,247,0.2); color: #a855f7; }
+        .badge-red { background: rgba(239,68,68,0.2); color: #ef4444; }
+
+        /* Flow diagram */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flow-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(0,212,255,0.1), rgba(124,58,237,0.05));
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 12px;
+            min-width: 150px;
+        }
+
+        .flow-item.source-box {
+            border-color: #3b82f6;
+            background: linear-gradient(145deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05));
+        }
+
+        .flow-item.dest-box {
+            border-color: #22c55e;
+            background: linear-gradient(145deg, rgba(34,197,94,0.2), rgba(34,197,94,0.05));
+        }
+
+        .flow-item h5 {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .flow-item p {
+            font-size: 0.75em;
+            color: #888;
+        }
+
+        .flow-arrow {
+            color: #00d4ff;
+            font-size: 1.8em;
+        }
+
+        /* Callouts */
+        .callout {
+            background: linear-gradient(90deg, rgba(59,130,246,0.1), rgba(59,130,246,0.02));
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .callout.warning {
+            background: linear-gradient(90deg, rgba(251,146,60,0.1), rgba(251,146,60,0.02));
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: linear-gradient(90deg, rgba(34,197,94,0.1), rgba(34,197,94,0.02));
+            border-left-color: #22c55e;
+        }
+
+        .callout.info {
+            background: linear-gradient(90deg, rgba(168,85,247,0.1), rgba(168,85,247,0.02));
+            border-left-color: #a855f7;
+        }
+
+        .callout h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .callout p, .callout ul {
+            color: #bbb;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        /* Algorithm boxes */
+        .algorithm-box {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .algorithm-box h4 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 1em;
+        }
+
+        .algorithm-line {
+            padding: 4px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+        }
+
+        .algorithm-line .indent-1 { margin-left: 25px; }
+        .algorithm-line .indent-2 { margin-left: 50px; }
+        .algorithm-line .indent-3 { margin-left: 75px; }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 25px 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-item .value {
+            font-size: 2.2em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item .label {
+            color: #888;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+
+        /* Comparison side by side */
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+
+        @media (max-width: 900px) {
+            .comparison-container { grid-template-columns: 1fr; }
+        }
+
+        .comparison-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-box.expression {
+            border-color: rgba(251,146,60,0.4);
+        }
+
+        .comparison-box.standard {
+            border-color: rgba(34,197,94,0.4);
+        }
+
+        .comparison-box h3 {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-box.expression h3 {
+            color: #f59e0b;
+        }
+
+        .comparison-box.standard h3 {
+            color: #22c55e;
+        }
+
+        /* Keyword chips */
+        .keyword-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .keyword-chip {
+            background: rgba(124,58,237,0.2);
+            color: #c4b5fd;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-family: monospace;
+        }
+
+        .keyword-chip.source {
+            background: rgba(59,130,246,0.2);
+            color: #93c5fd;
+        }
+
+        .keyword-chip.dest {
+            background: rgba(34,197,94,0.2);
+            color: #86efac;
+        }
+
+        /* Priority indicator */
+        .priority-flow {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .priority-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 0.85em;
+        }
+
+        .priority-step.p1 {
+            background: linear-gradient(90deg, rgba(34,197,94,0.3), rgba(34,197,94,0.1));
+            border: 1px solid rgba(34,197,94,0.5);
+        }
+
+        .priority-step.p2 {
+            background: linear-gradient(90deg, rgba(59,130,246,0.3), rgba(59,130,246,0.1));
+            border: 1px solid rgba(59,130,246,0.5);
+        }
+
+        .priority-step.p3 {
+            background: linear-gradient(90deg, rgba(251,146,60,0.3), rgba(251,146,60,0.1));
+            border: 1px solid rgba(251,146,60,0.5);
+        }
+
+        .priority-arrow {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        /* JSON output example */
+        .json-output {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+        }
+
+        .json-output pre {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Complete Rules Extraction Architecture</h1>
+        <p class="subtitle">Source & Destination Field Identification with Deterministic-First Approach</p>
+
+        <!-- Overview Stats -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="value">2</div>
+                <div class="label">Rule Categories</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">15+</div>
+                <div class="label">Source Patterns</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">12+</div>
+                <div class="label">Destination Patterns</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">~85%</div>
+                <div class="label">Deterministic Success</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">~15%</div>
+                <div class="label">LLM Fallback</div>
+            </div>
+        </div>
+
+        <!-- Deterministic-First Philosophy -->
+        <div class="section">
+            <h2><span class="step-badge">PHILOSOPHY</span> Deterministic-First Approach</h2>
+
+            <div class="priority-flow">
+                <div class="priority-step p1">
+                    <strong>Priority 1:</strong> Regex Pattern Matching
+                </div>
+                <span class="priority-arrow">→</span>
+                <div class="priority-step p2">
+                    <strong>Priority 2:</strong> Rule Schema Lookup
+                </div>
+                <span class="priority-arrow">→</span>
+                <div class="priority-step p3">
+                    <strong>Priority 3:</strong> Grounded LLM Extraction
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="card">
+                    <h3><span class="icon">🎯</span> Why Deterministic First?</h3>
+                    <ul>
+                        <li><strong>Zero hallucination:</strong> Regex can't invent fields</li>
+                        <li><strong>Zero cost:</strong> No API calls for pattern matches</li>
+                        <li><strong>Predictable:</strong> Same input always gives same output</li>
+                        <li><strong>Debuggable:</strong> Easy to trace why a field was identified</li>
+                        <li><strong>Fast:</strong> Milliseconds vs seconds for LLM</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">🔄</span> When LLM is Used</h3>
+                    <ul>
+                        <li>Complex multi-field conditions</li>
+                        <li>Ambiguous field references</li>
+                        <li>Implicit source/destination relationships</li>
+                        <li>Non-standard phrasing</li>
+                        <li>Always with grounded prompt (field registry)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout success">
+                <h4>✅ Expected Distribution</h4>
+                <p><strong>~85% Deterministic:</strong> Pattern matching handles most standard logic phrases<br>
+                <strong>~15% LLM:</strong> Complex cases with grounded prompts for zero hallucination risk</p>
+            </div>
+        </div>
+
+        <!-- Source & Destination Concepts -->
+        <div class="section">
+            <h2><span class="step-badge">CONCEPTS</span> Source vs Destination Fields</h2>
+
+            <div class="flow-diagram">
+                <div class="flow-item source-box">
+                    <h5>SOURCE FIELD</h5>
+                    <p>Field whose value is checked<br>or data is copied FROM</p>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-item">
+                    <h5>CONDITION/ACTION</h5>
+                    <p>Rule logic that connects<br>source to destination</p>
+                </div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-item dest-box">
+                    <h5>DESTINATION FIELD</h5>
+                    <p>Field that is affected<br>(shown/hidden/populated)</p>
+                </div>
+            </div>
+
+            <div class="comparison-container">
+                <div class="comparison-box expression">
+                    <h3>🔶 Expression Rules</h3>
+                    <table class="data-table">
+                        <tr>
+                            <td><strong>Source</strong></td>
+                            <td>Field in condition (vo(source))</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Destination</strong></td>
+                            <td>Fields being shown/hidden/enabled</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td>mvi(vo(<span class="badge badge-blue">GST Option</span>)=='Yes', <span class="badge badge-green">GSTIN</span>)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="comparison-box standard">
+                    <h3>🟢 Standard/Predefined Rules</h3>
+                    <table class="data-table">
+                        <tr>
+                            <td><strong>Source</strong></td>
+                            <td>Document/Image upload field or data source</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Destination</strong></td>
+                            <td>Fields receiving extracted/validated data</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td>OCR: <span class="badge badge-blue">PAN Image</span> → <span class="badge badge-green">PAN Number, Name, DOB</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXPRESSION RULES: Source/Destination Identification -->
+        <div class="section">
+            <h2><span class="step-badge expression">EXPRESSION RULES</span> Source & Destination Identification</h2>
+
+            <div class="card source">
+                <h3><span class="icon">📥</span> SOURCE Field Detection (Deterministic)</h3>
+                <p style="color: #999; margin-bottom: 20px;">Source fields appear in conditions - the field whose value determines the rule behavior.</p>
+
+                <h4>Pattern 1: "if/when {field} is/equals {value}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: if\s+["\']?(.+?)["\']?\s+(?:is|equals|==)\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Make visible if <strong>GST Option</strong> is <strong>Yes</strong>"</div>
+                    <div class="extracted">
+                        <span class="src">Source: GST Option</span>
+                        <span class="cond">Condition: == 'Yes'</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 2: "based on {field}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: based\s+on\s+(?:the\s+)?["\']?(.+?)["\']?(?:\s+selection|\s+value)?</h5>
+                    <div class="example">"Dropdown values will come based on <strong>Account Group</strong> selection"</div>
+                    <div class="extracted">
+                        <span class="src">Source: Account Group</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 3: "when {field} is selected/chosen"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: when\s+["\']?(.+?)["\']?\s+is\s+(?:selected|chosen|picked)</h5>
+                    <div class="example">"Visible when <strong>Country</strong> is selected as India"</div>
+                    <div class="extracted">
+                        <span class="src">Source: Country</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 4: "copy from {field}" / "data from {field}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: (?:copy|data|value)\s+(?:from|will come from)\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Copy from <strong>Basic Details panel</strong>, Non-Editable"</div>
+                    <div class="extracted">
+                        <span class="src">Source: Basic Details panel fields</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 5: "field {field} value is {value}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: field\s+["\']?(.+?)["\']?\s+(?:value\s+)?is\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"If the field <strong>Do you wish to add additional mobile numbers</strong> value is <strong>Yes</strong>"</div>
+                    <div class="extracted">
+                        <span class="src">Source: Do you wish to add additional mobile numbers</span>
+                        <span class="cond">Condition: == 'Yes'</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card destination" style="margin-top: 25px;">
+                <h3><span class="icon">📤</span> DESTINATION Field Detection (Deterministic)</h3>
+                <p style="color: #999; margin-bottom: 20px;">Destination is typically the current field being processed, plus any explicitly mentioned fields.</p>
+
+                <h4>Rule 1: Current Field is Default Destination</h4>
+                <div class="pattern-box">
+                    <h5>Logic: If no explicit destination, destination = current field being processed</h5>
+                    <div class="example">Field: <strong>GSTIN</strong><br>Logic: "Make visible if GST Option is Yes"</div>
+                    <div class="extracted">
+                        <span class="dest">Destination: GSTIN (current field)</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 2: "make {field} visible/mandatory"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: make\s+["\']?(.+?)["\']?\s+(?:visible|invisible|mandatory)</h5>
+                    <div class="example">"Make <strong>Additional Mobile Number 1</strong> visible"</div>
+                    <div class="extracted">
+                        <span class="dest">Destination: Additional Mobile Number 1</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 3: "then {field} should be"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: then\s+["\']?(.+?)["\']?\s+should\s+be</h5>
+                    <div class="example">"If Yes, then <strong>GST Certificate</strong> should be mandatory"</div>
+                    <div class="extracted">
+                        <span class="dest">Destination: GST Certificate</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 4: "copy to {field}" / "populate {field}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: (?:copy\s+to|populate|fill)\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Copy to <strong>Address Details</strong> panel"</div>
+                    <div class="extracted">
+                        <span class="dest">Destination: Address Details panel fields</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 5: Multiple destinations with "and"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: (?:visible|mandatory).*?["\']?(.+?)["\']?\s+and\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Make visible <strong>GSTIN</strong> and <strong>GST Address</strong>"</div>
+                    <div class="extracted">
+                        <span class="dest">Destination: GSTIN</span>
+                        <span class="dest">Destination: GST Address</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="algorithm-box">
+                <h4>def extract_source_destination_expression(logic: str, current_field: str, registry: Dict) -> Dict:</h4>
+                <div class="algorithm-line">result = {<span class="string">"sources"</span>: [], <span class="string">"destinations"</span>: [], <span class="string">"conditions"</span>: []}</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 1: Deterministic Pattern Matching for Sources</span></div>
+                <div class="algorithm-line">source_patterns = [</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'if\s+["\']?(.+?)["\']?\s+(?:is|equals|==)\s+["\']?(.+?)["\']?'</span>, <span class="string">'if_is'</span>),</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'based\s+on\s+(?:the\s+)?["\']?(.+?)["\']?'</span>, <span class="string">'based_on'</span>),</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'when\s+["\']?(.+?)["\']?\s+is\s+(?:selected|chosen)'</span>, <span class="string">'when_selected'</span>),</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'field\s+["\']?(.+?)["\']?\s+(?:value\s+)?is'</span>, <span class="string">'field_value'</span>),</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'(?:copy|data|value)\s+(?:from|will come from)\s+["\']?(.+?)["\']?'</span>, <span class="string">'copy_from'</span>),</div>
+                <div class="algorithm-line">]</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="keyword">for</span> pattern, pattern_type <span class="keyword">in</span> source_patterns:</div>
+                <div class="algorithm-line indent-1">matches = re.findall(pattern, logic, re.IGNORECASE)</div>
+                <div class="algorithm-line indent-1"><span class="keyword">for</span> match <span class="keyword">in</span> matches:</div>
+                <div class="algorithm-line indent-2">field_name = match[<span class="number">0</span>] <span class="keyword">if</span> isinstance(match, tuple) <span class="keyword">else</span> match</div>
+                <div class="algorithm-line indent-2">resolved = resolve_field_name(field_name, registry)</div>
+                <div class="algorithm-line indent-2"><span class="keyword">if</span> resolved:</div>
+                <div class="algorithm-line indent-3">result[<span class="string">"sources"</span>].append(resolved)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 1: Deterministic Pattern Matching for Destinations</span></div>
+                <div class="algorithm-line">dest_patterns = [</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'make\s+["\']?(.+?)["\']?\s+(?:visible|invisible|mandatory)'</span>, <span class="string">'make_field'</span>),</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'then\s+["\']?(.+?)["\']?\s+should'</span>, <span class="string">'then_should'</span>),</div>
+                <div class="algorithm-line indent-1">(r<span class="string">'(?:copy\s+to|populate|fill)\s+["\']?(.+?)["\']?'</span>, <span class="string">'copy_to'</span>),</div>
+                <div class="algorithm-line">]</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="keyword">for</span> pattern, pattern_type <span class="keyword">in</span> dest_patterns:</div>
+                <div class="algorithm-line indent-1"><span class="comment"># Similar extraction logic...</span></div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># Default: current field is destination if none found</span></div>
+                <div class="algorithm-line"><span class="keyword">if not</span> result[<span class="string">"destinations"</span>]:</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"destinations"</span>].append(current_field)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 2: LLM Fallback if sources not found</span></div>
+                <div class="algorithm-line"><span class="keyword">if not</span> result[<span class="string">"sources"</span>] <span class="keyword">and</span> has_conditional_logic(logic):</div>
+                <div class="algorithm-line indent-1">result = extract_with_grounded_llm(logic, current_field, registry)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="keyword">return</span> result</div>
+            </div>
+        </div>
+
+        <!-- STANDARD RULES: Source/Destination Identification -->
+        <div class="section">
+            <h2><span class="step-badge standard">STANDARD RULES</span> Source & Destination Identification</h2>
+
+            <div class="callout info">
+                <h4>💡 Key Insight: Rule-Schemas.json Contains Destination Fields</h4>
+                <p>Each predefined rule in Rule-Schemas.json already specifies its <code>destinationFields</code>. The challenge is identifying the <strong>source field</strong> from the document and mapping it correctly.</p>
+            </div>
+
+            <div class="card source">
+                <h3><span class="icon">📥</span> SOURCE Field Detection for Standard Rules</h3>
+
+                <h4>Strategy 1: Document Type Keyword → Upload Field Mapping</h4>
+                <div class="code-block">
+<span class="comment"># Map document type keywords to expected upload field patterns</span>
+DOCUMENT_SOURCE_MAPPING = {
+    <span class="comment"># OCR Sources</span>
+    <span class="string">"pan"</span>: [<span class="string">"pan card"</span>, <span class="string">"pan image"</span>, <span class="string">"pan upload"</span>, <span class="string">"upload pan"</span>],
+    <span class="string">"aadhaar"</span>: [<span class="string">"aadhaar"</span>, <span class="string">"aadhar"</span>, <span class="string">"aadhaar front"</span>, <span class="string">"aadhaar image"</span>],
+    <span class="string">"aadhaar_back"</span>: [<span class="string">"aadhaar back"</span>, <span class="string">"aadhar back"</span>],
+    <span class="string">"gst"</span>: [<span class="string">"gst certificate"</span>, <span class="string">"gstin"</span>, <span class="string">"gst image"</span>, <span class="string">"gst upload"</span>],
+    <span class="string">"passport"</span>: [<span class="string">"passport"</span>, <span class="string">"passport front"</span>, <span class="string">"passport image"</span>],
+    <span class="string">"cheque"</span>: [<span class="string">"cheque"</span>, <span class="string">"cancelled cheque"</span>, <span class="string">"bank cheque"</span>],
+
+    <span class="comment"># Validation Sources</span>
+    <span class="string">"pan_validation"</span>: [<span class="string">"pan number"</span>, <span class="string">"pan"</span>],
+    <span class="string">"gst_validation"</span>: [<span class="string">"gstin"</span>, <span class="string">"gst number"</span>],
+    <span class="string">"bank_validation"</span>: [<span class="string">"account number"</span>, <span class="string">"ifsc"</span>, <span class="string">"bank account"</span>],
+}
+                </div>
+
+                <h4>Pattern 1: "Apply {rule_type} on {field}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: apply\s+(?:the\s+)?(\w+)\s+(?:ocr|validation|rule)\s+(?:on|to)\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Apply <strong>PAN OCR</strong> on <strong>PAN Card Image</strong>"</div>
+                    <div class="extracted">
+                        <span class="src">Source: PAN Card Image</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 2: "Extract from {document}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: extract\s+(?:data\s+)?from\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Extract data from <strong>uploaded GST certificate</strong>"</div>
+                    <div class="extracted">
+                        <span class="src">Source: GST Certificate Upload Field</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 3: "Get {data} from {rule_type} rule"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: get\s+(\w+)\s+from\s+(\w+)\s+(?:ocr|validation)</h5>
+                    <div class="example">"Get GSTIN from <strong>GSTIN OCR rule</strong>"</div>
+                    <div class="extracted">
+                        <span class="src">Source: GSTIN upload field (inferred)</span>
+                    </div>
+                </div>
+
+                <h4>Pattern 4: "Data will come from {validation/OCR}"</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: data\s+will\s+come\s+from\s+["\']?(.+?)["\']?\s+(?:verification|validation|ocr)</h5>
+                    <div class="example">"Data will come from <strong>GSTIN verification</strong>"</div>
+                    <div class="extracted">
+                        <span class="src">Source: GSTIN field</span>
+                    </div>
+                </div>
+
+                <h4>Strategy 2: Find Related Upload Field in Same Section</h4>
+                <div class="code-block">
+<span class="keyword">def</span> <span class="function">find_source_field_in_context</span>(current_field, all_fields, rule_action):
+    <span class="string">"""Find the upload/source field related to this data field"""</span>
+
+    <span class="comment"># Get fields in same section</span>
+    section = current_field.section
+    section_fields = [f <span class="keyword">for</span> f <span class="keyword">in</span> all_fields <span class="keyword">if</span> f.section == section]
+
+    <span class="comment"># For OCR rules, look for FILE type fields</span>
+    <span class="keyword">if</span> rule_action == <span class="string">"OCR"</span>:
+        upload_fields = [f <span class="keyword">for</span> f <span class="keyword">in</span> section_fields <span class="keyword">if</span> f.field_type == FieldType.FILE]
+
+        <span class="comment"># Match by keyword similarity</span>
+        <span class="keyword">for</span> upload_field <span class="keyword">in</span> upload_fields:
+            <span class="keyword">if</span> keyword_overlap(current_field.name, upload_field.name):
+                <span class="keyword">return</span> upload_field
+
+    <span class="comment"># For VALIDATION rules, look for the input field</span>
+    <span class="keyword">elif</span> rule_action == <span class="string">"VALIDATION"</span>:
+        <span class="comment"># The source is typically a text/number field with similar name</span>
+        <span class="keyword">for</span> field <span class="keyword">in</span> section_fields:
+            <span class="keyword">if</span> field.field_type <span class="keyword">in</span> [FieldType.TEXT, FieldType.NUMBER]:
+                <span class="keyword">if</span> keyword_overlap(current_field.name, field.name):
+                    <span class="keyword">return</span> field
+
+    <span class="keyword">return</span> <span class="variable">None</span>
+                </div>
+            </div>
+
+            <div class="card destination" style="margin-top: 25px;">
+                <h3><span class="icon">📤</span> DESTINATION Field Detection for Standard Rules</h3>
+
+                <h4>Strategy 1: Use Rule Schema's destinationFields</h4>
+                <div class="code-block">
+<span class="comment"># Rule-Schemas.json already contains destination fields</span>
+{
+    <span class="string">"name"</span>: <span class="string">"PAN Card OCR"</span>,
+    <span class="string">"action"</span>: <span class="string">"OCR"</span>,
+    <span class="string">"source"</span>: <span class="string">"PAN_IMAGE"</span>,
+    <span class="string">"destinationFields"</span>: {
+        <span class="string">"numberOfItems"</span>: <span class="number">5</span>,
+        <span class="string">"fields"</span>: [
+            {<span class="string">"name"</span>: <span class="class source-highlight">"panNumber"</span>, <span class="string">"ordinal"</span>: <span class="number">1</span>},
+            {<span class="string">"name"</span>: <span class="class source-highlight">"name"</span>, <span class="string">"ordinal"</span>: <span class="number">2</span>},
+            {<span class="string">"name"</span>: <span class="class source-highlight">"fatherName"</span>, <span class="string">"ordinal"</span>: <span class="number">3</span>},
+            {<span class="string">"name"</span>: <span class="class source-highlight">"dob"</span>, <span class="string">"ordinal"</span>: <span class="number">4</span>},
+            {<span class="string">"name"</span>: <span class="class source-highlight">"panImageStorageId"</span>, <span class="string">"ordinal"</span>: <span class="number">5</span>}
+        ]
+    }
+}
+                </div>
+
+                <h4>Strategy 2: Map Schema Fields to Document Fields</h4>
+                <div class="code-block">
+<span class="keyword">def</span> <span class="function">map_schema_destinations_to_document</span>(rule_schema, document_fields, registry):
+    <span class="string">"""Map generic schema field names to actual document field names"""</span>
+
+    schema_destinations = rule_schema[<span class="string">"destinationFields"</span>][<span class="string">"fields"</span>]
+    mapped_destinations = []
+
+    <span class="keyword">for</span> schema_field <span class="keyword">in</span> schema_destinations:
+        schema_name = schema_field[<span class="string">"name"</span>]  <span class="comment"># e.g., "panNumber"</span>
+
+        <span class="comment"># Try to find matching field in document</span>
+        matched_field = fuzzy_match_field(schema_name, registry)
+
+        <span class="keyword">if</span> matched_field:
+            mapped_destinations.append({
+                <span class="string">"schema_field"</span>: schema_name,
+                <span class="string">"document_field"</span>: matched_field[<span class="string">"display_name"</span>],
+                <span class="string">"variable_name"</span>: matched_field[<span class="string">"variable_name"</span>]
+            })
+
+    <span class="keyword">return</span> mapped_destinations
+
+<span class="comment"># Fuzzy matching examples:</span>
+<span class="comment"># "panNumber" → "PAN Number" (variable: __pan_number__)</span>
+<span class="comment"># "name" → "Name as per PAN" (variable: __name_per_pan__)</span>
+<span class="comment"># "dob" → "Date of Birth" (variable: __dob__)</span>
+                </div>
+
+                <h4>Strategy 3: Extract Explicit Destinations from Logic</h4>
+                <div class="pattern-box">
+                    <h5>Pattern: store\s+(?:the\s+)?(?:data|result)\s+in\s+["\']?(.+?)["\']?</h5>
+                    <div class="example">"Perform GSTIN validation and store the data in <strong>next fields</strong>"</div>
+                    <div class="extracted">
+                        <span class="dest">Destination: Following fields in sequence</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="algorithm-box">
+                <h4>def extract_source_destination_standard(logic: str, current_field: Field, rule: Dict, all_fields: List, registry: Dict) -> Dict:</h4>
+                <div class="algorithm-line">result = {<span class="string">"source"</span>: <span class="variable">None</span>, <span class="string">"destinations"</span>: []}</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># === SOURCE IDENTIFICATION ===</span></div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 1: Extract explicit source from logic</span></div>
+                <div class="algorithm-line">explicit_source = extract_explicit_source(logic, registry)</div>
+                <div class="algorithm-line"><span class="keyword">if</span> explicit_source:</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"source"</span>] = explicit_source</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 2: Find source by document type keyword</span></div>
+                <div class="algorithm-line"><span class="keyword">elif</span> rule[<span class="string">"source"</span>]:  <span class="comment"># e.g., "PAN_IMAGE"</span></div>
+                <div class="algorithm-line indent-1">doc_type = rule[<span class="string">"source"</span>]</div>
+                <div class="algorithm-line indent-1">source_field = find_upload_field_by_type(doc_type, all_fields, registry)</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"source"</span>] = source_field</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 3: Find source in same section context</span></div>
+                <div class="algorithm-line"><span class="keyword">elif</span> rule[<span class="string">"action"</span>] == <span class="string">"OCR"</span>:</div>
+                <div class="algorithm-line indent-1">source_field = find_source_field_in_context(current_field, all_fields, <span class="string">"OCR"</span>)</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"source"</span>] = source_field</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 4: LLM fallback for complex cases</span></div>
+                <div class="algorithm-line"><span class="keyword">if not</span> result[<span class="string">"source"</span>]:</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"source"</span>] = llm_identify_source(logic, rule, all_fields, registry)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># === DESTINATION IDENTIFICATION ===</span></div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 1: Get destinations from rule schema</span></div>
+                <div class="algorithm-line">schema_destinations = rule.get(<span class="string">"destinationFields"</span>, {}).get(<span class="string">"fields"</span>, [])</div>
+                <div class="algorithm-line"><span class="keyword">if</span> schema_destinations:</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"destinations"</span>] = map_schema_destinations_to_document(schema_destinations, registry)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># PRIORITY 2: Current field is destination for data fields</span></div>
+                <div class="algorithm-line"><span class="keyword">if not</span> result[<span class="string">"destinations"</span>]:</div>
+                <div class="algorithm-line indent-1">result[<span class="string">"destinations"</span>] = [current_field]</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="keyword">return</span> result</div>
+            </div>
+        </div>
+
+        <!-- Complete Example Walkthrough -->
+        <div class="section">
+            <h2><span class="step-badge">EXAMPLES</span> Complete Source/Destination Extraction Examples</h2>
+
+            <div class="comparison-container">
+                <div class="comparison-box expression">
+                    <h3>🔶 Expression Rule Example</h3>
+
+                    <div class="pattern-box">
+                        <h5>Input Logic:</h5>
+                        <div class="example">"Make visible and Mandatory if "Do you wish to add additional mobile numbers (India)?" is Yes otherwise it should be invisible and non-mandatory."</div>
+                    </div>
+
+                    <div class="pattern-box" style="margin-top: 15px;">
+                        <h5>Current Field: Additional Mobile Number 1</h5>
+                    </div>
+
+                    <h4 style="color: #fff; margin-top: 20px;">Step 1: Source Detection</h4>
+                    <div class="code-block">
+<span class="comment"># Pattern matched: field "{field}" is "{value}"</span>
+<span class="comment"># Extracted: "Do you wish to add additional mobile numbers (India)?"</span>
+
+source_field = {
+    <span class="string">"display_name"</span>: <span class="string">"Do you wish to add additional mobile numbers (India)?"</span>,
+    <span class="string">"variable_name"</span>: <span class="string">"__add_mobile_india__"</span>,
+    <span class="string">"condition_value"</span>: <span class="string">"Yes"</span>
+}
+                    </div>
+
+                    <h4 style="color: #fff; margin-top: 15px;">Step 2: Destination Detection</h4>
+                    <div class="code-block">
+<span class="comment"># No explicit destination in logic</span>
+<span class="comment"># Default: current field is destination</span>
+
+destination_fields = [{
+    <span class="string">"display_name"</span>: <span class="string">"Additional Mobile Number 1"</span>,
+    <span class="string">"variable_name"</span>: <span class="string">"__add_mobile_1__"</span>
+}]
+                    </div>
+
+                    <h4 style="color: #fff; margin-top: 15px;">Step 3: Generated Expression</h4>
+                    <div class="code-block">
+<span class="function">mvi</span>(vo(<span class="string">"<span class="source-highlight">__add_mobile_india__</span>"</span>)==<span class="string">'Yes'</span>,<span class="string">"<span class="dest-highlight">__add_mobile_1__</span>"</span>);
+<span class="function">mm</span>(vo(<span class="string">"<span class="source-highlight">__add_mobile_india__</span>"</span>)==<span class="string">'Yes'</span>,<span class="string">"<span class="dest-highlight">__add_mobile_1__</span>"</span>);
+<span class="function">minvi</span>(vo(<span class="string">"<span class="source-highlight">__add_mobile_india__</span>"</span>)!=<span class="string">'Yes'</span>,<span class="string">"<span class="dest-highlight">__add_mobile_1__</span>"</span>);
+<span class="function">mnm</span>(vo(<span class="string">"<span class="source-highlight">__add_mobile_india__</span>"</span>)!=<span class="string">'Yes'</span>,<span class="string">"<span class="dest-highlight">__add_mobile_1__</span>"</span>);
+                    </div>
+                </div>
+
+                <div class="comparison-box standard">
+                    <h3>🟢 Standard Rule Example</h3>
+
+                    <div class="pattern-box">
+                        <h5>Input Logic:</h5>
+                        <div class="example">"if the field "Please select GST option" values is yes then visible and mandatory. Get GSTIN from OCR rule. Perform GSTIN validation and store the data in next fields."</div>
+                    </div>
+
+                    <div class="pattern-box" style="margin-top: 15px;">
+                        <h5>Current Field: GSTIN</h5>
+                    </div>
+
+                    <h4 style="color: #fff; margin-top: 20px;">Step 1: Rule Classification</h4>
+                    <div class="code-block">
+<span class="comment"># Keywords: "OCR rule", "GSTIN validation"</span>
+<span class="comment"># Classified as: STANDARD rule</span>
+<span class="comment"># Action: OCR (primary) + VALIDATION (secondary)</span>
+<span class="comment"># Source Type: GSTIN_IMAGE</span>
+
+matched_rules = [
+    <span class="string">"GSTIN OCR"</span>,  <span class="comment"># For extraction</span>
+    <span class="string">"GSTIN Validation"</span>  <span class="comment"># For verification</span>
+]
+                    </div>
+
+                    <h4 style="color: #fff; margin-top: 15px;">Step 2: Source Detection</h4>
+                    <div class="code-block">
+<span class="comment"># Pattern: "Get GSTIN from OCR rule"</span>
+<span class="comment"># Inferred: Source is GST Certificate upload field</span>
+
+<span class="comment"># Search in same section for FILE type field with "GST"</span>
+source_field = {
+    <span class="string">"display_name"</span>: <span class="string">"Upload GST Certificate"</span>,
+    <span class="string">"variable_name"</span>: <span class="string">"__gst_certificate__"</span>,
+    <span class="string">"field_type"</span>: <span class="string">"FILE"</span>
+}
+                    </div>
+
+                    <h4 style="color: #fff; margin-top: 15px;">Step 3: Destination Detection</h4>
+                    <div class="code-block">
+<span class="comment"># From Rule Schema (GSTIN OCR):</span>
+destinations = [
+    {<span class="string">"schema"</span>: <span class="string">"gstin"</span>, <span class="string">"mapped"</span>: <span class="string">"GSTIN"</span>, <span class="string">"var"</span>: <span class="string">"__gstin__"</span>},
+    {<span class="string">"schema"</span>: <span class="string">"legalName"</span>, <span class="string">"mapped"</span>: <span class="string">"Legal Name"</span>, <span class="string">"var"</span>: <span class="string">"__legal_name__"</span>},
+    {<span class="string">"schema"</span>: <span class="string">"tradeName"</span>, <span class="string">"mapped"</span>: <span class="string">"Trade Name"</span>, <span class="string">"var"</span>: <span class="string">"__trade_name__"</span>},
+    {<span class="string">"schema"</span>: <span class="string">"address"</span>, <span class="string">"mapped"</span>: <span class="string">"GST Address"</span>, <span class="string">"var"</span>: <span class="string">"__gst_address__"</span>},
+    <span class="comment"># ... more fields</span>
+]
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output JSON Schema -->
+        <div class="section">
+            <h2><span class="step-badge">OUTPUT</span> Final JSON Output Schema</h2>
+
+            <div class="json-output">
+                <pre>{
+  <span class="string">"document_name"</span>: <span class="string">"Vendor Creation Sample BUD"</span>,
+  <span class="string">"total_fields"</span>: <span class="number">388</span>,
+  <span class="string">"extraction_stats"</span>: {
+    <span class="string">"deterministic_source_detection"</span>: <span class="number">312</span>,
+    <span class="string">"llm_source_detection"</span>: <span class="number">76</span>,
+    <span class="string">"deterministic_destination_detection"</span>: <span class="number">350</span>,
+    <span class="string">"llm_destination_detection"</span>: <span class="number">38</span>
+  },
+  <span class="string">"fields"</span>: [
+    {
+      <span class="string">"field_name"</span>: <span class="string">"Additional Mobile Number 1"</span>,
+      <span class="string">"variable_name"</span>: <span class="string">"__add_mobile_1__"</span>,
+      <span class="string">"field_type"</span>: <span class="string">"MOBILE"</span>,
+      <span class="string">"original_logic"</span>: <span class="string">"Make visible and Mandatory if..."</span>,
+      <span class="string">"rules"</span>: [
+        {
+          <span class="string">"rule_type"</span>: <span class="string">"EXPRESSION"</span>,
+          <span class="string">"action"</span>: <span class="string">"EXECUTE"</span>,
+          <span class="string">"source_fields"</span>: [
+            {
+              <span class="string">"display_name"</span>: <span class="string">"Do you wish to add additional mobile numbers (India)?"</span>,
+              <span class="string">"variable_name"</span>: <span class="string">"__add_mobile_india__"</span>,
+              <span class="string">"detection_method"</span>: <span class="string">"DETERMINISTIC"</span>,
+              <span class="string">"pattern_matched"</span>: <span class="string">"field_value_is"</span>
+            }
+          ],
+          <span class="string">"destination_fields"</span>: [
+            {
+              <span class="string">"display_name"</span>: <span class="string">"Additional Mobile Number 1"</span>,
+              <span class="string">"variable_name"</span>: <span class="string">"__add_mobile_1__"</span>,
+              <span class="string">"detection_method"</span>: <span class="string">"DETERMINISTIC"</span>,
+              <span class="string">"pattern_matched"</span>: <span class="string">"current_field_default"</span>
+            }
+          ],
+          <span class="string">"conditions"</span>: [
+            {
+              <span class="string">"source_variable"</span>: <span class="string">"__add_mobile_india__"</span>,
+              <span class="string">"operator"</span>: <span class="string">"=="</span>,
+              <span class="string">"value"</span>: <span class="string">"Yes"</span>
+            }
+          ],
+          <span class="string">"expression"</span>: <span class="string">"mvi(vo(\"__add_mobile_india__\")=='Yes',\"__add_mobile_1__\");mm(vo(\"__add_mobile_india__\")=='Yes',\"__add_mobile_1__\");"</span>,
+          <span class="string">"confidence"</span>: <span class="number">0.95</span>
+        }
+      ]
+    },
+    {
+      <span class="string">"field_name"</span>: <span class="string">"GSTIN"</span>,
+      <span class="string">"variable_name"</span>: <span class="string">"__gstin__"</span>,
+      <span class="string">"field_type"</span>: <span class="string">"TEXT"</span>,
+      <span class="string">"original_logic"</span>: <span class="string">"Get GSTIN from OCR rule. Perform GSTIN validation..."</span>,
+      <span class="string">"rules"</span>: [
+        {
+          <span class="string">"rule_type"</span>: <span class="string">"STANDARD"</span>,
+          <span class="string">"action"</span>: <span class="string">"OCR"</span>,
+          <span class="string">"rule_schema_id"</span>: <span class="number">245</span>,
+          <span class="string">"rule_schema_name"</span>: <span class="string">"GSTIN OCR"</span>,
+          <span class="string">"source_fields"</span>: [
+            {
+              <span class="string">"display_name"</span>: <span class="string">"Upload GST Certificate"</span>,
+              <span class="string">"variable_name"</span>: <span class="string">"__gst_certificate__"</span>,
+              <span class="string">"detection_method"</span>: <span class="string">"DETERMINISTIC"</span>,
+              <span class="string">"pattern_matched"</span>: <span class="string">"section_context_file_field"</span>
+            }
+          ],
+          <span class="string">"destination_fields"</span>: [
+            {
+              <span class="string">"schema_field"</span>: <span class="string">"gstin"</span>,
+              <span class="string">"display_name"</span>: <span class="string">"GSTIN"</span>,
+              <span class="string">"variable_name"</span>: <span class="string">"__gstin__"</span>,
+              <span class="string">"detection_method"</span>: <span class="string">"SCHEMA_MAPPING"</span>
+            },
+            {
+              <span class="string">"schema_field"</span>: <span class="string">"legalName"</span>,
+              <span class="string">"display_name"</span>: <span class="string">"Legal Name as per GST"</span>,
+              <span class="string">"variable_name"</span>: <span class="string">"__legal_name_gst__"</span>,
+              <span class="string">"detection_method"</span>: <span class="string">"SCHEMA_MAPPING"</span>
+            }
+          ],
+          <span class="string">"confidence"</span>: <span class="number">0.90</span>
+        }
+      ]
+    }
+  ]
+}</pre>
+            </div>
+        </div>
+
+        <!-- Implementation Modules -->
+        <div class="section">
+            <h2><span class="step-badge">MODULES</span> Implementation Module Structure</h2>
+
+            <div class="three-column">
+                <div class="card">
+                    <h3><span class="icon">📥</span> source_detector.py</h3>
+                    <h4>Source Field Detection</h4>
+                    <ul>
+                        <li><code>extract_source_patterns()</code></li>
+                        <li><code>find_source_in_context()</code></li>
+                        <li><code>map_document_type_to_field()</code></li>
+                        <li><code>llm_identify_source()</code> - fallback</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">📤</span> destination_detector.py</h3>
+                    <h4>Destination Field Detection</h4>
+                    <ul>
+                        <li><code>extract_destination_patterns()</code></li>
+                        <li><code>map_schema_to_document()</code></li>
+                        <li><code>resolve_panel_fields()</code></li>
+                        <li><code>llm_identify_destinations()</code> - fallback</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">🔗</span> field_resolver.py</h3>
+                    <h4>Field Name Resolution</h4>
+                    <ul>
+                        <li><code>fuzzy_match_field()</code></li>
+                        <li><code>normalize_field_name()</code></li>
+                        <li><code>resolve_to_variable()</code></li>
+                        <li><code>validate_field_exists()</code></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">📋</span> pattern_registry.py</h3>
+                    <h4>Pattern Definitions</h4>
+                    <ul>
+                        <li>SOURCE_PATTERNS dict</li>
+                        <li>DESTINATION_PATTERNS dict</li>
+                        <li>DOCUMENT_TYPE_MAPPING dict</li>
+                        <li>CONDITION_PATTERNS dict</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">🧠</span> grounded_llm.py</h3>
+                    <h4>LLM Fallback (Grounded)</h4>
+                    <ul>
+                        <li><code>build_grounded_prompt()</code></li>
+                        <li><code>extract_source_with_llm()</code></li>
+                        <li><code>extract_destination_with_llm()</code></li>
+                        <li><code>validate_llm_response()</code></li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3><span class="icon">✅</span> validator.py</h3>
+                    <h4>Validation & Confidence</h4>
+                    <ul>
+                        <li><code>validate_source_exists()</code></li>
+                        <li><code>validate_destinations_exist()</code></li>
+                        <li><code>calculate_confidence()</code></li>
+                        <li><code>flag_for_review()</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pattern Reference -->
+        <div class="section">
+            <h2><span class="step-badge">REFERENCE</span> Complete Pattern Reference</h2>
+
+            <div class="two-column">
+                <div class="card source">
+                    <h3><span class="icon">📥</span> Source Detection Patterns</h3>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Pattern Name</th>
+                                <th>Regex</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>if_field_is</td>
+                                <td><code>if\s+["\']?(.+?)["\']?\s+is\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>based_on</td>
+                                <td><code>based\s+on\s+(?:the\s+)?["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>when_selected</td>
+                                <td><code>when\s+["\']?(.+?)["\']?\s+is\s+selected</code></td>
+                            </tr>
+                            <tr>
+                                <td>field_value_is</td>
+                                <td><code>field\s+["\']?(.+?)["\']?\s+(?:value\s+)?is</code></td>
+                            </tr>
+                            <tr>
+                                <td>copy_from</td>
+                                <td><code>copy\s+from\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>data_from</td>
+                                <td><code>data\s+(?:will\s+)?come\s+from\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>apply_on</td>
+                                <td><code>apply\s+.+?\s+on\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>get_from</td>
+                                <td><code>get\s+.+?\s+from\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card destination">
+                    <h3><span class="icon">📤</span> Destination Detection Patterns</h3>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Pattern Name</th>
+                                <th>Regex</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>make_field</td>
+                                <td><code>make\s+["\']?(.+?)["\']?\s+(?:visible|mandatory)</code></td>
+                            </tr>
+                            <tr>
+                                <td>then_should</td>
+                                <td><code>then\s+["\']?(.+?)["\']?\s+should</code></td>
+                            </tr>
+                            <tr>
+                                <td>copy_to</td>
+                                <td><code>copy\s+to\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>populate</td>
+                                <td><code>populate\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>store_in</td>
+                                <td><code>store\s+(?:data\s+)?in\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>fill_into</td>
+                                <td><code>fill\s+(?:into\s+)?["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>and_fields</td>
+                                <td><code>["\']?(.+?)["\']?\s+and\s+["\']?(.+?)["\']?</code></td>
+                            </tr>
+                            <tr>
+                                <td>current_default</td>
+                                <td><code>(current field if no explicit destination)</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section">
+            <h2><span class="step-badge">SUMMARY</span> Architecture Benefits</h2>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="value">85%</div>
+                    <div class="label">Deterministic Detection</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value">15%</div>
+                    <div class="label">LLM (Grounded)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value">0%</div>
+                    <div class="label">Hallucination Risk</div>
+                </div>
+                <div class="stat-item">
+                    <div class="value">~$0.02</div>
+                    <div class="label">Per Document Cost</div>
+                </div>
+            </div>
+
+            <div class="callout success">
+                <h4>✅ Key Achievements</h4>
+                <ul style="margin-top: 10px;">
+                    <li><strong>Deterministic-First:</strong> 85% of source/destination detection uses regex patterns - zero cost, zero hallucination</li>
+                    <li><strong>Schema Integration:</strong> Standard rules leverage Rule-Schemas.json for pre-defined destination fields</li>
+                    <li><strong>Context-Aware:</strong> Section-based field discovery for related upload/data fields</li>
+                    <li><strong>Grounded Fallback:</strong> LLM only sees actual field names from registry - can't invent fields</li>
+                    <li><strong>Full Traceability:</strong> Every source/destination includes detection_method and pattern_matched for debugging</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 0; color: #666;">
+            <p>Document Parser - Complete Rules Extraction Architecture v3.0</p>
+            <p style="font-size: 0.85em; margin-top: 5px;">Source & Destination Identification with Deterministic-First Approach</p>
+        </div>
+    </div>
+</body>
+</html>

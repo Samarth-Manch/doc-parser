@@ -1,0 +1,310 @@
+{
+  "document_name": "KYC Master - UB 3625, 3626, 3630",
+  "total_sections": 21,
+  "field_rules_extracted": 24,
+  "unstructured_field_rules": [
+    {
+      "section_name": "GROUP MEMBER MOVING FROM ONE GROUP TO ANOTHER",
+      "section_level": 2,
+      "parent_path": "PREREQUISITES",
+      "section_index": 1,
+      "rule_type": "field_validation",
+      "text": "Manch will forward this information to the ASM for confirmation.",
+      "affected_fields": [
+        "Manch",
+        "ASM"
+      ]
+    },
+    {
+      "section_name": "GROUP MEMBER CONVERTING TO AN INDIVIDUAL",
+      "section_level": 2,
+      "parent_path": "PREREQUISITES",
+      "section_index": 2,
+      "rule_type": "field_validation",
+      "text": "Manch will forward this information to the ASM for confirmation.",
+      "affected_fields": [
+        "Manch",
+        "ASM"
+      ]
+    },
+    {
+      "section_name": "Login: The Central Team Member team logs in to the Manch application using the provided credentials.",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER OUTBOUND PROCESS",
+      "section_index": 10,
+      "rule_type": "field_validation",
+      "text": "Based on this group owner outlet code, the system will auto derive the below mentioned details in a non-editable format",
+      "affected_fields": [
+        "Based"
+      ]
+    },
+    {
+      "section_name": "Login: The Central Team Member team logs in to the Manch application using the provided credentials.",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER OUTBOUND PROCESS",
+      "section_index": 10,
+      "rule_type": "field_dependency",
+      "text": "UB team will select the Group member outlet code from the dropdown. If there are multiple group member leaving from the group, they have an option + by clicking on this option they can add n, number of group members details.",
+      "affected_fields": [
+        "dropdown",
+        "Group"
+      ]
+    },
+    {
+      "section_name": "ASM BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER OUTBOUND PROCESS",
+      "section_index": 11,
+      "rule_type": "dropdown_dependency",
+      "text": "Dropdown Values : Yes / No",
+      "affected_fields": [
+        "dropdown",
+        "Dropdown Values",
+        "value",
+        "Yes"
+      ]
+    },
+    {
+      "section_name": "ASM BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER OUTBOUND PROCESS",
+      "section_index": 11,
+      "rule_type": "field_dependency",
+      "text": "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the central team for necessary modifications.",
+      "affected_fields": [
+        "dropdown",
+        "If ASM",
+        "Reject",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "REPORT",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER OUTBOUND PROCESS",
+      "section_index": 12,
+      "rule_type": "field_validation",
+      "text": "Manch will generate one report for this process. UB team to share the report format.",
+      "affected_fields": [
+        "Manch"
+      ]
+    },
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 16,
+      "rule_type": "field_validation",
+      "text": "Bulk format will have below mentioned columns",
+      "affected_fields": [
+        "Bulk"
+      ]
+    },
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 16,
+      "rule_type": "field_validation",
+      "text": "Based on the group owner outlet code in the bulk file the system will auto derive the below mentioned details in a non-editable format",
+      "affected_fields": [
+        "Based"
+      ]
+    },
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 16,
+      "rule_type": "field_validation",
+      "text": "Once all the validations are completed then system will submit the request and it will be assigned to SPOC.",
+      "affected_fields": [
+        "Once",
+        "SPOC"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 17,
+      "rule_type": "field_validation",
+      "text": "Group Owner Outlet Code Entry:  The SPOC enters the Group owner Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+      "affected_fields": [
+        "Outlet Code",
+        "Manch",
+        "Group Owner Outlet Code Entry",
+        "The SPOC",
+        "Group"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 17,
+      "rule_type": "general_field_rule",
+      "text": "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions (same Terms as outlet KYC process).",
+      "affected_fields": [
+        "Upon",
+        "KYC",
+        "Terms",
+        "SPOC"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 17,
+      "rule_type": "field_validation",
+      "text": "System will show the Group owner details along with The Group Member  Details that includes all newly added outlets to the group in below mentioned format.",
+      "affected_fields": [
+        "The Group Member  Details",
+        "System",
+        "Group"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 17,
+      "rule_type": "field_validation",
+      "text": "If there are more than 1 Group member then system will show all the group member in the same format.",
+      "affected_fields": [
+        "Group"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 17,
+      "rule_type": "dropdown_dependency",
+      "text": "Dropdown Values: Yes / No",
+      "affected_fields": [
+        "dropdown",
+        "Dropdown Values",
+        "value",
+        "Yes"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 17,
+      "rule_type": "field_dependency",
+      "text": "Once SPOC selects the dropdown value as Yes, then new PANEL will open as Group Member Documents.",
+      "affected_fields": [
+        "Group Member Documents",
+        "value",
+        "PAN",
+        "Once SPOC",
+        "dropdown",
+        "Yes",
+        "panel",
+        "PANEL"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 18,
+      "rule_type": "field_validation",
+      "text": "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+      "affected_fields": [
+        "Approver",
+        "Once",
+        "field",
+        "Assignment"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 18,
+      "rule_type": "field_validation",
+      "text": "The approver clicks the link to access all request details and can either approve or reject the request based on the information provided.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 18,
+      "rule_type": "field_dependency",
+      "text": "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request is returned to the SPOC for necessary modifications",
+      "affected_fields": [
+        "If ASM",
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 18,
+      "rule_type": "field_dependency",
+      "text": "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+      "affected_fields": [
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "If UB",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "REPORT",
+      "section_level": 2,
+      "parent_path": "GROUP MEMBER INBOUND PROCESS",
+      "section_index": 19,
+      "rule_type": "field_validation",
+      "text": "One report will be created for this process. UB team needs to share the format.",
+      "affected_fields": [
+        "One"
+      ]
+    },
+    {
+      "section_name": "DEPENDENCY",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 20,
+      "rule_type": "field_validation",
+      "text": "UB team needs to provide the SMS format for Group member inbound process.",
+      "affected_fields": [
+        "SMS",
+        "Group"
+      ]
+    },
+    {
+      "section_name": "DEPENDENCY",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 20,
+      "rule_type": "field_validation",
+      "text": "UB team needs to provide the Reminder service SMS format for Group member inbound process.",
+      "affected_fields": [
+        "Reminder",
+        "SMS",
+        "Group"
+      ]
+    },
+    {
+      "section_name": "DEPENDENCY",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 20,
+      "rule_type": "field_validation",
+      "text": "UB team needs to provide the both processes report formats.",
+      "affected_fields": []
+    }
+  ]
+}

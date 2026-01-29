@@ -1,0 +1,1276 @@
+{
+  "file_path": "documents/Change Beneficiary - UB 3526.docx",
+  "metadata": {
+    "title": "Change Beneficiary United Breweries",
+    "author": "Prepared By Manch Technology",
+    "subject": "HCCB",
+    "created": "2025-02-07 11:43:00+00:00",
+    "modified": "2025-02-07 11:43:00+00:00",
+    "last_modified_by": "Varun Poojary",
+    "company": "",
+    "process_name": ""
+  },
+  "version_history": [],
+  "sections": [
+    {
+      "heading": "Change Beneficiary PROCESS",
+      "level": 1,
+      "content": [
+        "The following steps outline the detailed flow of the process, from initiation to approval. Each step has been structured to ensure clarity, precision, and a smooth user experience."
+      ],
+      "subsections": [
+        {
+          "heading": "INITIATOR PROCESS",
+          "level": 2,
+          "content": [
+            "Login: The ASM team logs in to the Manch application using the provided credentials.",
+            "Single Transaction:",
+            "The ASM team can start a new transaction by clicking Create > Onboarding request > select the template and enter all the details( refer below mentioned table) and submit",
+            "Note: We have to create a master data (EDV) for getting below information based on the outlet code. Master data (EDV) format needs to be shared by UB team."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "SPOC BEHAVIOR",
+          "level": 2,
+          "content": [
+            "SMS Notification: An SMS containing a link is sent to the SPOC\u2019s mobile number.",
+            "OTP Authentication:",
+            "The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.",
+            "The SPOC enters the OTP, and after successful verification, the Manch platform opens the link.",
+            "Outlet Code Entry:  The SPOC enters the Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+            "Add a new question \u201cDo you want to change your current beneficiary?\u201d",
+            "Values : Yes and No",
+            "Agreement to Policies:",
+            "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions (Change beneficiary -same TOC (outlet kyc).",
+            "Form Opening: Manch will open the form and SPOC needs to enter the required details as mentioned below",
+            "Note: Details will change based on the answer given by SPOC and validated by MANCH with the system data."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "APPROVER PROCESS",
+          "level": 2,
+          "content": [
+            "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+            "Individual Approval (Without Group concept) :",
+            "The approval flow for individuals will only be routed to the TSE approvers in two specific cases, followed by the UB team as mentioned below.",
+            "In all other scenarios, it directly goes to the UB team.",
+            "Establishment Approval (Without Group concept): All requests will it directly goes to the UB team.",
+            "Group approval: All requests will first go to the ASM and then proceed to the UB team.",
+            "Note \u2013 The assignment is based on outlet code mapping to ensure the request reaches the correct approver for review UB team needs to provide the TSE, ASM and State mapping based on outlet code.",
+            "Approver access: Approvers have two methods to access the transaction, review and act on requests as mentioned below -",
+            "Email and SMS Notification:",
+            "The Manch system sends an email and SMS notification to the approver with a link to review the request.",
+            "The approver clicks the link to access all request details and can either approve or reject the request based on the provided information.",
+            "Manch System Login:",
+            "The approver can log in to the Manch system, navigate to the \"Pending Requests\" section, and review the details.",
+            "After reviewing, the approver can either approve or reject the request.",
+            "TSE View and Action",
+            "Log into the Manch system: TSE logs into the Manch system and views all pending requests.",
+            "Open the transaction: TSE opens a transaction to see the details mentioned below:",
+            "Outlet code",
+            "Outlet name",
+            "Licensee name",
+            "Beneficiary name",
+            "Authorization-letter",
+            "Respond to mandatory question: TSE answers the mandatory question: \"Are you approving this request?\" by selecting either \"Yes\" or \"No\" from the dropdown menu.",
+            "Approve or Reject the request:",
+            "If TSE clicks \"Approve,\" It will submit. The request then moves to the next level of approver.",
+            "If TSE clicks \"Reject,\" they select a rejection reason from a dropdown and submit it. The request returns to the SPOC for necessary modifications.",
+            "Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to TSE, who can then repeat the approval or rejection process as outlined above.",
+            "ASM View and Action",
+            "Log into the Manch system: ASM logs into the Manch system and views all pending requests.",
+            "Open the transaction: ASM opens a transaction to see the details uploaded in the bulk file, details entered by the SPOC, along with the relevant documents.",
+            "Approve or reject the request:",
+            "If ASM clicks \"Approve,\" It will submit. The request then moves to the next level of approver.",
+            "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications",
+            "Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.",
+            "UB approver View and Action",
+            "Log into the Manch system: UB approver logs into the Manch system and views all pending requests.",
+            "Open the transaction:",
+            "Individual Use case :",
+            "UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.",
+            "Group Use case :",
+            "UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.",
+            "UB approver sees group member details along with uploaded documents and match score.",
+            "Approve or reject the request:",
+            "If UB approver clicks \"Approve,\" It will submit. The request then moves to Accepted status.",
+            "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+            "Resubmit by SPOC :",
+            "Once the SPOC submits the required details, the request assigns back to TSE(In case of individual use cases) or ASM (In case of group use cases) who can then repeat the approval or rejection process as outlined above",
+            "If UB team rejects it will assign back to SPOC and enter the details",
+            "Once SPOC resubmits, it will be reassigned to ASM / TSE, and ASM /TSE needs to take the actions mentioned in the ASM / TSE section.",
+            "Once ASM resubmits, it will be reassigned to UB Team, and UB Team needs to take the actions mentioned in the UB Team section.",
+            "Once UB team submit the transaction, it will be in Accepted status.",
+            "If any of the approvals again rejects the re-submitted outlets information then it will go through the same flow as mentioned above."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        }
+      ],
+      "tables": [],
+      "fields": [],
+      "workflow_steps": []
+    }
+  ],
+  "all_fields": [
+    {
+      "name": "Region",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": true,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "State",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Depot/District",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "What is your role?",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "DROPDOWN",
+      "is_mandatory": false,
+      "logic": "Values ASM TSE",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": [
+        "ASM TSE"
+      ]
+    },
+    {
+      "name": "Outlet Code",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "DROPDOWN",
+      "is_mandatory": true,
+      "logic": "Show outlet code assigned to logged in person",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Licensee Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Individual/Group",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Name of SPOC (Single Point of Contact)",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Mobile Number of SPOC",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "License Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Owner Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Mobile Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Email ID",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "TSE Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "TSE Mobile Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "TSE Email ID",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    }
+  ],
+  "initiator_fields": [
+    {
+      "name": "Region",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": true,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "State",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Depot/District",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "What is your role?",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "DROPDOWN",
+      "is_mandatory": false,
+      "logic": "Values ASM TSE",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": [
+        "ASM TSE"
+      ]
+    },
+    {
+      "name": "Outlet Code",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "DROPDOWN",
+      "is_mandatory": true,
+      "logic": "Show outlet code assigned to logged in person",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Licensee Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Individual/Group",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Name of SPOC (Single Point of Contact)",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Mobile Number of SPOC",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "License Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Owner Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Mobile Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Email ID",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "TSE Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and non-editable",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "TSE Mobile Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "TSE Email ID",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto derived from the outlet code and Invisible",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    }
+  ],
+  "spoc_fields": [],
+  "approver_fields": [],
+  "workflows": {
+    "initiator": [
+      {
+        "step_number": 1,
+        "description": "Login: The ASM team logs in to the Manch application using the provided credentials.",
+        "actor": "initiator",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "Single Transaction:",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "The ASM team can start a new transaction by clicking Create > Onboarding request > select the template and enter all the details( refer below mentioned table) and submit",
+        "actor": "initiator",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      }
+    ],
+    "spoc": [
+      {
+        "step_number": 1,
+        "description": "SMS Notification: An SMS containing a link is sent to the SPOC\u2019s mobile number.",
+        "actor": "spoc",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "OTP Authentication:",
+        "actor": "spoc",
+        "action_type": "verify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.",
+        "actor": "spoc",
+        "action_type": "verify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "The SPOC enters the OTP, and after successful verification, the Manch platform opens the link.",
+        "actor": "spoc",
+        "action_type": "verify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "Outlet Code Entry:  The SPOC enters the Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+        "actor": "spoc",
+        "action_type": "validate",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "Add a new question \u201cDo you want to change your current beneficiary?\u201d",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "Values : Yes and No",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 8,
+        "description": "Agreement to Policies:",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 9,
+        "description": "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions (Change beneficiary -same TOC (outlet kyc).",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 10,
+        "description": "Form Opening: Manch will open the form and SPOC needs to enter the required details as mentioned below",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      }
+    ],
+    "approver": [
+      {
+        "step_number": 1,
+        "description": "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+        "actor": "approver",
+        "action_type": "validate",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "Individual Approval (Without Group concept) :",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "The approval flow for individuals will only be routed to the TSE approvers in two specific cases, followed by the UB team as mentioned below.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "In all other scenarios, it directly goes to the UB team.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "Establishment Approval (Without Group concept): All requests will it directly goes to the UB team.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "Group approval: All requests will first go to the ASM and then proceed to the UB team.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "Approver access: Approvers have two methods to access the transaction, review and act on requests as mentioned below -",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 8,
+        "description": "Email and SMS Notification:",
+        "actor": "approver",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 9,
+        "description": "The Manch system sends an email and SMS notification to the approver with a link to review the request.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 10,
+        "description": "The approver clicks the link to access all request details and can either approve or reject the request based on the provided information.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 11,
+        "description": "Manch System Login:",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 12,
+        "description": "The approver can log in to the Manch system, navigate to the \"Pending Requests\" section, and review the details.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 13,
+        "description": "After reviewing, the approver can either approve or reject the request.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 14,
+        "description": "TSE View and Action",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 15,
+        "description": "Log into the Manch system: TSE logs into the Manch system and views all pending requests.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 16,
+        "description": "Open the transaction: TSE opens a transaction to see the details mentioned below:",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 17,
+        "description": "Outlet code",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 18,
+        "description": "Outlet name",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 19,
+        "description": "Licensee name",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 20,
+        "description": "Beneficiary name",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 21,
+        "description": "Authorization-letter",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 22,
+        "description": "Respond to mandatory question: TSE answers the mandatory question: \"Are you approving this request?\" by selecting either \"Yes\" or \"No\" from the dropdown menu.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 23,
+        "description": "Approve or Reject the request:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 24,
+        "description": "If TSE clicks \"Approve,\" It will submit. The request then moves to the next level of approver.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 25,
+        "description": "If TSE clicks \"Reject,\" they select a rejection reason from a dropdown and submit it. The request returns to the SPOC for necessary modifications.",
+        "actor": "approver",
+        "action_type": "reject",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 26,
+        "description": "Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to TSE, who can then repeat the approval or rejection process as outlined above.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 27,
+        "description": "ASM View and Action",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 28,
+        "description": "Log into the Manch system: ASM logs into the Manch system and views all pending requests.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 29,
+        "description": "Open the transaction: ASM opens a transaction to see the details uploaded in the bulk file, details entered by the SPOC, along with the relevant documents.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 30,
+        "description": "Approve or reject the request:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 31,
+        "description": "If ASM clicks \"Approve,\" It will submit. The request then moves to the next level of approver.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 32,
+        "description": "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications",
+        "actor": "approver",
+        "action_type": "reject",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 33,
+        "description": "Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 34,
+        "description": "UB approver View and Action",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 35,
+        "description": "Log into the Manch system: UB approver logs into the Manch system and views all pending requests.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 36,
+        "description": "Open the transaction:",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 37,
+        "description": "Individual Use case :",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 38,
+        "description": "UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 39,
+        "description": "Group Use case :",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 40,
+        "description": "UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 41,
+        "description": "UB approver sees group member details along with uploaded documents and match score.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 42,
+        "description": "Approve or reject the request:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 43,
+        "description": "If UB approver clicks \"Approve,\" It will submit. The request then moves to Accepted status.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 44,
+        "description": "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 45,
+        "description": "Resubmit by SPOC :",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 46,
+        "description": "Once the SPOC submits the required details, the request assigns back to TSE(In case of individual use cases) or ASM (In case of group use cases) who can then repeat the approval or rejection process as outlined above",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 47,
+        "description": "If UB team rejects it will assign back to SPOC and enter the details",
+        "actor": "approver",
+        "action_type": "reject",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 48,
+        "description": "Once SPOC resubmits, it will be reassigned to ASM / TSE, and ASM /TSE needs to take the actions mentioned in the ASM / TSE section.",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 49,
+        "description": "Once ASM resubmits, it will be reassigned to UB Team, and UB Team needs to take the actions mentioned in the UB Team section.",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 50,
+        "description": "Once UB team submit the transaction, it will be in Accepted status.",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 51,
+        "description": "If any of the approvals again rejects the re-submitted outlets information then it will go through the same flow as mentioned above.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      }
+    ]
+  },
+  "approval_rules": [],
+  "reference_tables": [
+    {
+      "headers": [
+        "Licensee is an individual / Establishment",
+        "Licensee is an individual / Establishment",
+        "Licensee is an individual / Establishment",
+        "Licensee is an individual / Establishment",
+        "Licensee is an individual / Establishment"
+      ],
+      "rows": [
+        [
+          "Are you the licensee?",
+          "Yes",
+          "TSE",
+          "Are you the licensee?",
+          "No"
+        ],
+        [
+          "Who is the new beneficiary?",
+          "Other Beneficiary",
+          "TSE",
+          "Who is the new beneficiary?",
+          "Other Beneficiary"
+        ]
+      ],
+      "table_type": "reference",
+      "context": "APPROVER PROCESS",
+      "row_count": 2,
+      "column_count": 5
+    }
+  ],
+  "terminology": {},
+  "dropdown_mappings": {
+    "What is your role?": [
+      "ASM TSE"
+    ],
+    "The SPOC can view the following details along with a dropdown menu.": [
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Licensee is an individual Is the license under an Individual or an Establishment? - Individual Are you a group owner? \u2013 No Who is the new beneficiary? - Licensee [ The SPOC will be able to view the previous PAN, account number, and IFSC number in a non-editable format, along with fields to upload new PAN, bank details, and other relevant information]",
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Licensee is an individual Is the license under an Individual or an Establishment? - Individual Are you a group owner? \u2013 No Who is the new beneficiary? - Other Beneficiary [ The SPOC will be able to view the previous PAN, account number, and IFSC number in a non-editable format, along with fields to upload new PAN, bank details, and other relevant information]",
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Licensee is an individual Is the license under an Individual or an Establishment? - Individual Are you a group owner? \u2013 No Who is the new beneficiary? - Other Beneficiary [ The SPOC will be able to view the previous PAN, account number, and IFSC number in a non-editable format, along with fields to upload new PAN, bank details, and other relevant information]",
+      "Mandatory/NonMandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Licensee is an establishment Is the license under an Individual or an Establishment? Establishment Are you a group owner? \u2013 No Who is the new beneficiary? - Establishment [ The SPOC will be able to view the previous PAN, account number, and IFSC number in a non-editable format, along with fields to upload new PAN, bank details, and other relevant information]",
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Licensee is an establishment Is the license under an Individual or an Establishment? Establishment Are you a group owner? \u2013 No Who is the new beneficiary? - Proprietor [ The SPOC will be able to view the previous PAN, account number, and IFSC number in a non-editable format, along with fields to upload new PAN, bank details, and other relevant information]",
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Licensee is an establishment Is the license under an Individual or an Establishment? Establishment Are you a group owner? \u2013 No Who is the new beneficiary? \u2013 Other Beneficiary",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Group owner is individual licensee Is the license under an Individual or an Establishment? - Individual Are you a group owner? \u2013 Yes Who is the new beneficiary? - Group owner",
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Group owner is individual licensee Is the license under an Individual or an Establishment? - Individual Are you a group owner? \u2013 Yes Who is the new beneficiary? - Other Beneficiary",
+      "Mandatory/Non Mandatory?",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Group owner is an establishment Is the license under an Individual or an Establishment? \u2013 Establishment Are you a group owner? \u2013 Yes Who is the new beneficiary? \u2013 Group owner",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Group owner is an establishment Is the license under an Individual or an Establishment? - Establishment Are you a group owner?\u2013 Yes Who is the new beneficiary? -Proprietor",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Group owner is an establishment Is the license under an Individual or an Establishment? - Establishment Are you a group owner?\u2013 Yes Who is the new beneficiary? - Other Beneficiary",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory",
+      "Mandatory"
+    ]
+  },
+  "scope_in": [],
+  "scope_out": [],
+  "objectives": [],
+  "assumptions": [],
+  "dependencies": [],
+  "integration_fields": [],
+  "document_requirements": [],
+  "communication_channels": []
+}

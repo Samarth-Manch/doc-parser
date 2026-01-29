@@ -1,0 +1,136 @@
+
+====================================================================================================
+DETAILED FIELD REPORT
+====================================================================================================
+
+ALL FIELDS (15 fields)
+----------------------------------------------------------------------------------------------------
+
+Field: Region
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: State
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+  Logic: Based on the outlet code state name should be derived
+
+Field: Depot/District
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: Outlet Code
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Outlet Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Licensee Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Individual
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+  Logic: Default Value as Individual
+  Dropdown Values: ['as Individual']
+
+Field: Outlet Operator Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: Name of SPOC (Single Point of Contact)
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Mobile Number of SPOC
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: License Number
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: License Expiry Date
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: TSE Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: TSE Mobile Number
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: TSE Email ID
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+INITIATOR FIELDS (15 fields)
+----------------------------------------------------------------------------------------------------
+
+Field: Region
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: State
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+  Logic: Based on the outlet code state name should be derived
+
+Field: Depot/District
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: Outlet Code
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Outlet Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Licensee Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Individual
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+  Logic: Default Value as Individual
+  Dropdown Values: ['as Individual']
+
+Field: Outlet Operator Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: Name of SPOC (Single Point of Contact)
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: Mobile Number of SPOC
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: License Number
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: License Expiry Date
+  Type: TEXT (raw: TEXT)
+  Mandatory: True
+
+Field: TSE Name
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: TSE Mobile Number
+  Type: TEXT (raw: TEXT)
+  Mandatory: False
+
+Field: TSE Email ID
+  Type: TEXT (raw: TEXT)
+  Mandatory: False

@@ -1,0 +1,707 @@
+{
+  "source_document": "Complaint KYC - UB - 3803.docx",
+  "extraction_date": "2026-01-27T12:05:34.302864",
+  "total_fields": 140,
+  "fields": [
+    {
+      "fieldName": "Region",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "State",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Depot/District",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Outlet Code",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Outlet Name",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Licensee Name",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Individual",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Outlet Operator Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name of SPOC (Single Point of Contact)",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Mobile Number of SPOC",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "License Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "License Expiry Date",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "TSE Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "TSE Mobile Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "TSE Email ID",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Basic Details",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Is the license under an Individual or an Establishment?",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Are you the licensee?",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Who is the beneficiary?",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Details Of Licensee",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Licensee",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Match score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Licensee",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Cancelled Cheque",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "IFSC Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Account Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name Match Score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN Details Of Licensee",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Licensee",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Match score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Other Beneficiary",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Beneficiary",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Other Beneficiary",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Cancelled Cheque of Beneficiary",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "IFSC Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Account Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name Match Score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Other Documents",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Beneficiary Authorization form",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Details Of Licensee",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Licensee",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Match score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN Details Of Other Beneficiary",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Other Beneficiary",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Other Beneficiary",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Cancelled Cheque",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "IFSC Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Account Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name Match Score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Other Documents",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Operator Authorization form",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN of either Establishment or Proprietor",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Establishment",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Establishment",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Cancelled Cheque of Establishment",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "IFSC Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Account Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Other Document",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Link from establishment to proprietor",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Upload the document to auto-fill the details. Kindly verify before proceeding to the next step.",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload GST Registration Certificate",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GSTIN Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Trade Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Legal Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "AOP",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Excise license",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN of either Establishment or Proprietor",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Establishment",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Proprietor",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Cancelled Cheque of Proprietor",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "IFSC Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Account Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name Match Score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Link from establishment to proprietor",
+      "fieldType": "DROPDOWN",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Upload the document to auto-fill the details. Kindly verify before proceeding to the next step.",
+      "fieldType": "LABEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload GST Registration Certificate",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "GSTIN Number",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Trade Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Legal Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name Match Score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "AOP",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Excise license",
+      "fieldType": "FILE",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN of either Establishment or Proprietor",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Establishment or Proprietor",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "PAN details of Other Beneficiary",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload PAN of Other Beneficiary",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "PAN Holder Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Pan Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank details of Beneficiary",
+      "fieldType": "PANEL",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Upload Cancelled Cheque of Proprietor",
+      "fieldType": "FILE",
+      "mandatory": true
+    },
+    {
+      "fieldName": "IFSC Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Account Number",
+      "fieldType": "TEXT",
+      "mandatory": true
+    },
+    {
+      "fieldName": "Name of Account Holder",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Name",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Branch",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Bank Status",
+      "fieldType": "TEXT",
+      "mandatory": false
+    },
+    {
+      "fieldName": "Name Match Score",
+      "fieldType": "TEXT",
+      "mandatory": false
+    }
+  ]
+}

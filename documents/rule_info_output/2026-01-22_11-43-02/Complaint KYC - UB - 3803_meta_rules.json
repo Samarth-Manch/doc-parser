@@ -1,0 +1,182 @@
+{
+  "document_name": "Complaint KYC - UB - 3803",
+  "total_sections": 6,
+  "field_rules_extracted": 14,
+  "unstructured_field_rules": [
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 1,
+      "rule_type": "field_validation",
+      "text": "The UBL team uploads a bulk file containing all necessary details such as outlet codes, contact information, and any other required data.",
+      "affected_fields": [
+        "The UBL"
+      ]
+    },
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 1,
+      "rule_type": "field_validation",
+      "text": "The system validates the uploaded file for completeness.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 1,
+      "rule_type": "field_validation",
+      "text": "Below are the data point mentioned for the file upload format -",
+      "affected_fields": [
+        "Below"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 2,
+      "rule_type": "field_validation",
+      "text": "Outlet Code Entry:  The SPOC enters the Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+      "affected_fields": [
+        "Manch",
+        "Outlet Code",
+        "The SPOC",
+        "Outlet Code Entry"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 2,
+      "rule_type": "general_field_rule",
+      "text": "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions.",
+      "affected_fields": [
+        "Upon",
+        "SPOC"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 2,
+      "rule_type": "field_validation",
+      "text": "Note: Details will change based on the answer given by SPOC and validated by MANCH with the system data.",
+      "affected_fields": [
+        "SPOC",
+        "MANCH",
+        "Details"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 2,
+      "rule_type": "dropdown_dependency",
+      "text": "Below table represent the dropdown values of questionnaires asked in SPOC screen.",
+      "affected_fields": [
+        "dropdown",
+        "value",
+        "Below",
+        "SPOC"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 3,
+      "rule_type": "field_validation",
+      "text": "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+      "affected_fields": [
+        "Approver",
+        "Once",
+        "field",
+        "Assignment"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 3,
+      "rule_type": "field_validation",
+      "text": "The approver clicks the link to access all request details and can either approve or reject the request based on the provided information.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 3,
+      "rule_type": "field_dependency",
+      "text": "If TSE clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+      "affected_fields": [
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "If TSE",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 3,
+      "rule_type": "mandatory_rule",
+      "text": "Respond to mandatory question:",
+      "affected_fields": [
+        "Respond"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 3,
+      "rule_type": "mandatory_rule",
+      "text": "UB approver answers the mandatory question: \"Are you approving this request?\" by selecting either \"Yes\" or \"No\" from the dropdown menu.",
+      "affected_fields": [
+        "Are you approving this request?",
+        "Are",
+        "dropdown",
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "UB COMPLAINT KYC PROCESS",
+      "section_index": 3,
+      "rule_type": "field_dependency",
+      "text": "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+      "affected_fields": [
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "If UB",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "DEPENDENCY",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 5,
+      "rule_type": "field_validation",
+      "text": "SMS / Email Template if there are any changes to the existing format",
+      "affected_fields": [
+        "Email Template",
+        "SMS"
+      ]
+    }
+  ]
+}

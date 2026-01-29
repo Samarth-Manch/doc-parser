@@ -1,0 +1,525 @@
+{
+  "description": "Manch Platform Rules Classification - Document-type based buckets combining OCR + Validation",
+  "total_rules": 182,
+  "rule_types": ["standard_predefined", "expression_rules"],
+  "buckets": {
+    "aadhaar": {
+      "name": "Aadhaar Rules (OCR + Validation)",
+      "description": "Extract and verify Aadhaar card data",
+      "keywords": ["aadhaar", "aadhar", "uid", "uidai", "identity", "ekyc"],
+      "use_when": "Working with Aadhaar cards - extract data from uploaded images and verify against UIDAI",
+      "rules": [
+        {"id": 359, "name": "Aadhaar Front OCR", "type": "OCR", "desc": "Extract name, gender, dob, aadhaar number, age"},
+        {"id": 348, "name": "Aadhaar Back OCR", "type": "OCR", "desc": "Extract address, pin, city, state, father name"},
+        {"id": 303, "name": "Offline Aadhaar EKYC", "type": "VALIDATION", "desc": "Verify Aadhaar via offline XML"},
+        {"id": 187, "name": "Copy Aadhaar Signer Details", "type": "COPY", "desc": "Copy Aadhaar signer info to fields"}
+      ]
+    },
+    "pan": {
+      "name": "PAN Rules (OCR + Validation)",
+      "description": "Extract and verify PAN card data",
+      "keywords": ["pan", "pan card", "income tax", "permanent account number"],
+      "use_when": "Working with PAN cards - extract data and verify against Income Tax database",
+      "rules": [
+        {"id": 344, "name": "PAN OCR", "type": "OCR", "desc": "Extract PAN number, name, father name, dob"},
+        {"id": 360, "name": "Validate PAN", "type": "VALIDATION", "desc": "Verify PAN with name, type, Aadhaar seeding status"},
+        {"id": 213, "name": "Validate PAN (Client)", "type": "VALIDATION", "desc": "Client-side PAN validation"},
+        {"id": 236, "name": "Validate PAN V2", "type": "VALIDATION", "desc": "Enhanced PAN validation"},
+        {"id": 289, "name": "PAN to CIN Validation", "type": "VALIDATION", "desc": "Map company PAN to CIN"}
+      ]
+    },
+    "gstin": {
+      "name": "GSTIN Rules (OCR + Validation)",
+      "description": "Extract and verify GST registration data",
+      "keywords": ["gstin", "gst", "goods and services tax", "gstr"],
+      "use_when": "Working with GST certificates - extract and verify registration status",
+      "rules": [
+        {"id": 347, "name": "GSTIN OCR", "type": "OCR", "desc": "Extract GSTIN, legal name, trade name, address"},
+        {"id": 253, "name": "GSTIN OCR (Client)", "type": "OCR", "desc": "Client-side GSTIN extraction"},
+        {"id": 355, "name": "Validate GSTIN", "type": "VALIDATION", "desc": "Verify GST registration, jurisdiction"},
+        {"id": 296, "name": "Validate GSTIN With PAN", "type": "VALIDATION", "desc": "Cross-validate GSTIN with PAN"},
+        {"id": 274, "name": "Validate GSTN Filing", "type": "VALIDATION", "desc": "Check GST return filing status"}
+      ]
+    },
+    "driving_license": {
+      "name": "Driving License Rules (OCR + Validation)",
+      "description": "Extract and verify driving license data",
+      "keywords": ["driving license", "dl", "licence", "rto"],
+      "use_when": "Working with driving licenses - extract and verify against RTO database",
+      "rules": [
+        {"id": 250, "name": "Driving License (India) OCR", "type": "OCR", "desc": "Extract DL number, name, dob, validity, address"},
+        {"id": 261, "name": "Validate Driving Licence", "type": "VALIDATION", "desc": "Verify DL validity, vehicle classes, address"}
+      ]
+    },
+    "passport": {
+      "name": "Passport Rules (OCR)",
+      "description": "Extract passport data",
+      "keywords": ["passport", "travel document"],
+      "use_when": "Working with passports - extract data from uploaded images",
+      "rules": [
+        {"id": 204, "name": "Passport Front (India) OCR", "type": "OCR", "desc": "Extract passport no, name, nationality, dob, expiry"},
+        {"id": 318, "name": "Passport Back (India) OCR", "type": "OCR", "desc": "Extract father name, mother name, address"}
+      ]
+    },
+    "voter_id": {
+      "name": "Voter ID Rules (OCR + Validation)",
+      "description": "Extract and verify voter ID data",
+      "keywords": ["voter id", "epic", "election card", "electoral"],
+      "use_when": "Working with voter ID cards - extract and verify against electoral database",
+      "rules": [
+        {"id": 312, "name": "Voter Id OCR", "type": "OCR", "desc": "Extract voter ID, name, father name, dob, gender"},
+        {"id": 182, "name": "Validate Voter Id", "type": "VALIDATION", "desc": "Verify against electoral roll with district, state"}
+      ]
+    },
+    "vehicle_rc": {
+      "name": "Vehicle Registration Rules (Validation)",
+      "description": "Verify vehicle registration data",
+      "keywords": ["rc", "vehicle registration", "rto", "car", "bike"],
+      "use_when": "Working with vehicle documents - verify RC against RTO database",
+      "rules": [
+        {"id": 279, "name": "Validate RC", "type": "VALIDATION", "desc": "Verify vehicle registration, owner, insurance, fitness"}
+      ]
+    },
+    "company_cin": {
+      "name": "Company/CIN Rules (OCR + Validation)",
+      "description": "Extract and verify company registration data",
+      "keywords": ["cin", "company", "mca", "corporate", "director"],
+      "use_when": "Working with company documents - extract and verify against MCA database",
+      "rules": [
+        {"id": 357, "name": "CIN OCR", "type": "OCR", "desc": "Extract CIN number, company name, PAN, address"},
+        {"id": 349, "name": "Validate CIN", "type": "VALIDATION", "desc": "Verify company registration, directors, MCA status"}
+      ]
+    },
+    "msme": {
+      "name": "MSME/Udyam Rules (OCR + Validation)",
+      "description": "Extract and verify MSME registration data",
+      "keywords": ["msme", "udyam", "udyog", "small business", "micro enterprise"],
+      "use_when": "Working with MSME certificates - extract and verify Udyam registration",
+      "rules": [
+        {"id": 214, "name": "MSME OCR", "type": "OCR", "desc": "Extract Udyam number, name, category, address"},
+        {"id": 337, "name": "Validate MSME", "type": "VALIDATION", "desc": "Verify MSME/Udyam registration, enterprise type"}
+      ]
+    },
+    "fssai": {
+      "name": "FSSAI Rules (OCR + Validation)",
+      "description": "Extract and verify food license data",
+      "keywords": ["fssai", "food license", "food safety"],
+      "use_when": "Working with food business licenses - extract and verify FSSAI registration",
+      "rules": [
+        {"id": 327, "name": "FSSAI OCR", "type": "OCR", "desc": "Extract registration no, name, validity, business type"},
+        {"id": 356, "name": "Validate FSSAI", "type": "VALIDATION", "desc": "Verify food license validity, category"},
+        {"id": 271, "name": "Validate FSSAI Application Number", "type": "VALIDATION", "desc": "Verify FSSAI application status"}
+      ]
+    },
+    "tan_tds": {
+      "name": "TAN/TDS Rules (OCR + Validation)",
+      "description": "Extract and verify TAN and TDS data",
+      "keywords": ["tan", "tds", "tax deduction", "deductor"],
+      "use_when": "Working with TDS certificates - extract and verify TAN",
+      "rules": [
+        {"id": 305, "name": "TDS OCR", "type": "OCR", "desc": "Extract deductor name, TAN, certificate no, year"},
+        {"id": 322, "name": "Validate TAN", "type": "VALIDATION", "desc": "Verify Tax deduction account number"},
+        {"id": 311, "name": "Validate TAN (Client)", "type": "VALIDATION", "desc": "Client-side TAN validation"}
+      ]
+    },
+    "bank_account": {
+      "name": "Bank Account Rules (OCR + Validation)",
+      "description": "Extract and verify bank account data",
+      "keywords": ["bank", "account", "ifsc", "cheque", "penny drop"],
+      "use_when": "Verifying bank account ownership - penny drop verification or cheque OCR",
+      "rules": [
+        {"id": 269, "name": "Cheque OCR", "type": "OCR", "desc": "Extract bank name, IFSC, account number from cancelled cheque"},
+        {"id": 361, "name": "Validate Bank Account", "type": "VALIDATION", "desc": "Verify bank account with beneficiary name"}
+      ]
+    },
+    "other_documents": {
+      "name": "Other Document OCR Rules",
+      "description": "Extract data from other document types",
+      "keywords": ["business card", "cowin", "itr", "income tax return", "overseas"],
+      "use_when": "Extract data from business cards, vaccination certificates, ITR documents",
+      "rules": [
+        {"id": 216, "name": "Business Card OCR", "type": "OCR", "desc": "Extract name, company, emails, phones, address"},
+        {"id": 306, "name": "Cowin OCR", "type": "OCR", "desc": "Extract vaccination details"},
+        {"id": 194, "name": "IncomeTax Return OCR", "type": "OCR", "desc": "Extract ITR details, income, tax"},
+        {"id": 208, "name": "IncomeTax Return Summary OCR", "type": "OCR", "desc": "Extract income tax summary"},
+        {"id": 189, "name": "Oversea Document OCR", "type": "OCR", "desc": "Generic OCR for overseas documents"}
+      ]
+    },
+    "other_validations": {
+      "name": "Other Validation Rules",
+      "description": "Verify other business registrations and compliance",
+      "keywords": ["drug license", "shop establishment", "206ab", "einvoice"],
+      "use_when": "Verify drug licenses, shop registrations, tax compliance",
+      "rules": [
+        {"id": 290, "name": "Validate Drug Licence", "type": "VALIDATION", "desc": "Verify drug license"},
+        {"id": 335, "name": "Validate Shops and Est", "type": "VALIDATION", "desc": "Verify shop & establishment registration"},
+        {"id": 319, "name": "Section206ABVerification", "type": "VALIDATION", "desc": "Section 206AB compliance for TDS"},
+        {"id": 244, "name": "Validate eInvoice Status", "type": "VALIDATION", "desc": "E-invoice generation status"}
+      ]
+    },
+    "edv": {
+      "name": "EDV (External Data Value) Rules",
+      "description": "Work with external lookup tables for dropdown population, data retrieval, and validation",
+      "keywords": ["edv", "external", "lookup", "master data", "ifsc", "reference data", "external dropdown"],
+      "use_when": "Populate dropdowns from external tables, validate against master data, or lookup reference data (like IFSC to bank name)",
+      "rules": [
+        {"id": 295, "name": "EDV Dropdown (Client)", "action": "EXT_VALUE", "desc": "Populate dropdown from EDV table"},
+        {"id": 196, "name": "Validate External Data Value (Client)", "action": "VERIFY", "desc": "Client-side EDV validation"},
+        {"id": 346, "name": "Validate EDV (Server)", "action": "VALIDATION", "desc": "Server-side EDV validation"},
+        {"id": 285, "name": "Get Data From EDV", "action": "VERIFY", "desc": "Retrieve data from EDV (e.g., IFSC lookup)"},
+        {"id": 266, "name": "Count EDV Records", "action": "COUNT", "desc": "Count matching EDV records"},
+        {"id": 281, "name": "Create Master Record", "action": "INSERT_INTO_TABLE", "desc": "Insert new record into EDV table"},
+        {"id": 320, "name": "Generate Table From EDV", "action": "GENERATE_ARRAY_FORM_GROUPS", "desc": "Create dynamic table from EDV data"},
+        {"id": 353, "name": "Fetch Related Txns External Data Value (Client)", "action": "FETCH_RELATED_TRANSACTIONS", "desc": "Fetch related transactions via EDV"},
+        {"id": 207, "name": "Set Date EDV (Client)", "action": "SET_DATE", "desc": "Set date from EDV lookup"}
+      ],
+      "common_use_cases": [
+        "IFSC code lookup to get bank name and branch",
+        "State/City cascading dropdowns",
+        "Product catalog lookups",
+        "Custom validation against master data tables"
+      ]
+    },
+    "form_control": {
+      "name": "Form Control Rules (Visibility, Mandatory, Dropdown)",
+      "description": "Control field visibility, mandatory status, enabled state, and dropdown population",
+      "keywords": ["visible", "invisible", "show", "hide", "mandatory", "required", "optional", "enable", "disable", "dropdown", "ffd", "cascading"],
+      "use_when": "Control form field visibility, mandatory status, enable/disable, or populate template-specific dropdowns",
+      "rules": {
+        "visibility": [
+          {"id": 343, "name": "Make Visible (Client)", "action": "MAKE_VISIBLE"},
+          {"id": 336, "name": "Make Invisible (Client)", "action": "MAKE_INVISIBLE"},
+          {"id": 191, "name": "Make Visible - Session Based (Client)", "action": "SESSION_BASED_MAKE_VISIBLE"},
+          {"id": 217, "name": "Make Invisible - Session Based (Client)", "action": "SESSION_BASED_MAKE_INVISIBLE"}
+        ],
+        "mandatory": [
+          {"id": 325, "name": "Make Mandatory (Client)", "action": "MAKE_MANDATORY"},
+          {"id": 288, "name": "Make Non Mandatory (Client)", "action": "MAKE_NON_MANDATORY"},
+          {"id": 252, "name": "Make Mandatory - Session Based (Client)", "action": "SESSION_BASED_MAKE_MANDATORY"},
+          {"id": 197, "name": "Make NonMandatory - Session Based (Client)", "action": "SESSION_BASED_MAKE_NON_MANDATORY"}
+        ],
+        "enable_disable": [
+          {"id": 185, "name": "Enable Field (Client)", "action": "MAKE_ENABLED"},
+          {"id": 314, "name": "Disable Field (Client)", "action": "MAKE_DISABLED"},
+          {"id": 272, "name": "Enable Field - Session Based (Client)", "action": "SESSION_BASED_MAKE_ENABLED"},
+          {"id": 193, "name": "Make Disable - Session Based (Client)", "action": "SESSION_BASED_MAKE_DISABLED"}
+        ],
+        "ffd_dropdown": [
+          {"id": 192, "name": "FFD Dropdown (Client)", "action": "EXT_DROP_DOWN", "desc": "Populate dropdown from FFD table"},
+          {"id": 226, "name": "Create FFDD Record", "action": "INSERT_INTO_TABLE", "desc": "Insert new dropdown record"},
+          {"id": 219, "name": "Invalidate FFDD Record", "action": "DUPLICATE_VALUE_CHECK", "desc": "Mark FFD record as invalid"},
+          {"id": 330, "name": "Get value from FFDD", "action": "VALIDATION", "desc": "Retrieve value from FFD"},
+          {"id": 222, "name": "Generate Table Form DropDown", "action": "GENERATE_ARRAY_FORM_GROUPS", "desc": "Create table from FFD"},
+          {"id": 331, "name": "AppUser List FormFillDropDown (Client)", "action": "APP_USER_LIST", "desc": "Populate dropdown with app users"}
+        ],
+        "document_control": [
+          {"id": 229, "name": "Hide Document", "action": "DELETE_DOCUMENT", "desc": "Hide a document type"},
+          {"id": 238, "name": "Unhide Document", "action": "UNDELETE_DOCUMENT", "desc": "Show hidden document"},
+          {"id": 262, "name": "Unhide Document (Client)", "action": "UNDELETE_DOCUMENT", "desc": "Client-side unhide"},
+          {"id": 283, "name": "Delete Document", "action": "DELETE_FILE", "desc": "Permanently delete document"},
+          {"id": 200, "name": "Make Document Sign Mandatory", "action": "MAKE_DOCUMENT_SIGN_MANDATORY", "desc": "Require document signature"},
+          {"id": 230, "name": "Make Upload Mandatory", "action": "MAKE_DOCUMENT_UPLOAD_MANDATORY", "desc": "Require document upload"}
+        ]
+      }
+    },
+    "aiml": {
+      "name": "AI/ML Rules",
+      "description": "Intelligent document processing, face recognition, and natural language features",
+      "keywords": ["ai", "ml", "classify", "detect", "face", "speech", "sentiment", "intelligent", "recognition"],
+      "use_when": "Need intelligent document processing, biometric verification, speech-to-text, or sentiment analysis",
+      "rules": [
+        {"id": 186, "name": "ClassifyImage", "action": "CLASSIFY_DOCUMENT", "desc": "Classify document type using AI"},
+        {"id": 278, "name": "Detect Document Type", "action": "DETECT_MENU", "desc": "Detect if document is a menu/form"},
+        {"id": 273, "name": "Compare Face", "action": "FACE_COMPARE", "desc": "Compare faces in two images for verification"},
+        {"id": 362, "name": "Speech To Text", "action": "SPEECH_TO_TEXT", "desc": "Convert audio to text transcription"},
+        {"id": 365, "name": "Customer Feedback Sentiment", "action": "CUSTOMER_FEEDBACK_SENTIMENT", "desc": "Analyze customer feedback sentiment"},
+        {"id": 333, "name": "GigIndiaNameMatch", "action": "GIG_INDIA_NAME_MATCH", "desc": "AI-based name matching for identity verification"}
+      ]
+    },
+    "data_copy_transform": {
+      "name": "Data Copy & Transform Rules",
+      "description": "Copy values between fields and transform data",
+      "keywords": ["copy", "transfer", "duplicate", "fill", "propagate", "auto-fill", "concat", "uppercase", "lowercase", "transform"],
+      "use_when": "Copy data from one field to another, auto-fill fields, or transform data format",
+      "rules": {
+        "field_copy": [
+          {"id": 270, "name": "Copy Value", "action": "COPY_TO"},
+          {"id": 210, "name": "Copy To FormField Client (Client)", "action": "COPY_TO"},
+          {"id": 228, "name": "Conditional Copy (Client)", "action": "CONDITIONAL_COPY"},
+          {"id": 221, "name": "Clear FormField (Client)", "action": "CLEAR_FIELD"}
+        ],
+        "transaction_attributes": [
+          {"id": 260, "name": "Copy To Attr1", "dest": "Transaction Attr1"},
+          {"id": 190, "name": "Copy To Attr2", "dest": "Transaction Attr2"},
+          {"id": 324, "name": "Copy To Attr3", "dest": "Transaction Attr3"},
+          {"id": 184, "name": "Copy To Attr4", "dest": "Transaction Attr4"},
+          {"id": 188, "name": "Copy To Attr5", "dest": "Transaction Attr5"},
+          {"id": 225, "name": "Copy To Attr6", "dest": "Transaction Attr6"},
+          {"id": 341, "name": "Copy To Attr7", "dest": "Transaction Attr7"},
+          {"id": 280, "name": "Copy To Attr8", "dest": "Transaction Attr8"},
+          {"id": 302, "name": "Copy To Internal Attr1", "dest": "Internal Attr1"},
+          {"id": 263, "name": "Copy To Internal Attr2", "dest": "Internal Attr2"},
+          {"id": 317, "name": "Copy To Internal Attr3", "dest": "Internal Attr3"},
+          {"id": 334, "name": "Copy To Internal Attr4", "dest": "Internal Attr4"}
+        ],
+        "party_details": [
+          {"id": 277, "name": "Copy FirstParty Name", "copies": "First party name"},
+          {"id": 227, "name": "Copy FirstParty Email", "copies": "First party email"},
+          {"id": 233, "name": "Copy FirstParty Mobile Number", "copies": "First party mobile"},
+          {"id": 310, "name": "Copy FirstParty Company Name", "copies": "First party company"},
+          {"id": 241, "name": "Copy To SecondParty Name", "copies": "Second party name"},
+          {"id": 256, "name": "Copy To SecondParty Email", "copies": "Second party email"},
+          {"id": 212, "name": "Copy To SecondParty Mobile Number", "copies": "Second party mobile"},
+          {"id": 203, "name": "Copy To SecondParty Company Name", "copies": "Second party company"},
+          {"id": 240, "name": "Copy To GenericParty Name", "copies": "Generic party name"},
+          {"id": 249, "name": "Copy To GenericParty Email", "copies": "Generic party email"},
+          {"id": 358, "name": "Copy To GenericParty Mobile Number", "copies": "Generic party mobile"},
+          {"id": 215, "name": "Copy To GenericParty Company Name", "copies": "Generic party company"},
+          {"id": 258, "name": "Copy CreatedBy Details", "copies": "Creator details"},
+          {"id": 287, "name": "Copy CreatedFor Details", "copies": "Created-for details"}
+        ],
+        "transform": [
+          {"id": 294, "name": "Concatenate", "action": "CONCAT", "desc": "Join multiple field values"},
+          {"id": 298, "name": "Convert To Lower Case (Client)", "action": "CONVERT_TO", "desc": "Convert to lowercase"},
+          {"id": 345, "name": "Convert to UPPER (Client)", "action": "CONVERT_TO", "desc": "Convert to uppercase"},
+          {"id": 183, "name": "Convert To Words (Client)", "action": "CONVERT_TO_WORDS", "desc": "Convert number to words"}
+        ],
+        "other_copy": [
+          {"id": 264, "name": "Copy To Transaction Title", "desc": "Set transaction title"},
+          {"id": 300, "name": "Copy To Transaction Message", "desc": "Set transaction message"},
+          {"id": 342, "name": "Copy to Title", "desc": "Set workflow data title"},
+          {"id": 257, "name": "Copy To WorkFlowData Message", "desc": "Set workflow message"},
+          {"id": 246, "name": "Copy to Supporting Document", "desc": "Link supporting document"},
+          {"id": 254, "name": "Copy Offer Transaction Details", "desc": "Chain transaction copy"},
+          {"id": 297, "name": "Copy To Option Name", "desc": "Copy dropdown option name"},
+          {"id": 284, "name": "Reset PreFill Value", "desc": "Reset prefilled data"}
+        ]
+      }
+    },
+    "comparison": {
+      "name": "Comparison & Value Validation Rules",
+      "description": "Compare values between fields and validate content",
+      "keywords": ["compare", "same", "different", "match", "contains", "duplicate", "validate"],
+      "use_when": "Validate that values match, check for duplicates, or compare field content",
+      "rules": [
+        {"id": 232, "name": "Compare Text", "action": "CONTAINS_TEXT", "desc": "Check if text contains substring"},
+        {"id": 326, "name": "Does Not Contain", "action": "DOES_NOT_CONTAIN_TEXT", "desc": "Check text doesn't contain"},
+        {"id": 243, "name": "Compare If Same", "action": "VALIDATION", "desc": "Validate two fields match"},
+        {"id": 352, "name": "Compare If Not Same", "action": "VALIDATION", "desc": "Validate two fields differ"},
+        {"id": 354, "name": "Compare Name", "action": "COMPARE", "desc": "Name comparison with fuzzy matching"},
+        {"id": 237, "name": "Validation Same As FormField (Client)", "action": "VALIDATION", "desc": "Client-side same value check"},
+        {"id": 267, "name": "SameAsFormFllMetadataValidationV2", "action": "VALIDATION", "desc": "Enhanced same value validation"},
+        {"id": 350, "name": "Validate Same FromFillMetadata", "action": "VALIDATION", "desc": "Validate and compare form data"},
+        {"id": 242, "name": "De-duplication check", "action": "VALIDATION", "desc": "Check for duplicate records"},
+        {"id": 195, "name": "Check Duplicate", "action": "CHECK_DUPLICATE", "desc": "Find duplicate transactions"}
+      ]
+    },
+    "date_time": {
+      "name": "Date & Time Rules",
+      "description": "Date manipulation, comparison, and calculations",
+      "keywords": ["date", "age", "time", "year", "month", "quarter", "financial year", "dob"],
+      "use_when": "Calculate age from DOB, validate date ranges, or derive periods",
+      "rules": [
+        {"id": 259, "name": "Set Age From Date", "desc": "Calculate age from DOB (server)"},
+        {"id": 276, "name": "Set Age From Date (Client)", "desc": "Calculate age from DOB (client)"},
+        {"id": 202, "name": "Check Data Range", "desc": "Validate date within range"},
+        {"id": 286, "name": "Compare Date With Offset", "desc": "Compare date with offset"},
+        {"id": 301, "name": "Compare Time", "desc": "Compare time values"},
+        {"id": 315, "name": "Compare time with start time", "desc": "Compare with start time"},
+        {"id": 234, "name": "Split Date", "desc": "Split date into day/month/year"},
+        {"id": 206, "name": "Set Date From Month Or Year (Client)", "desc": "Construct date from parts"},
+        {"id": 209, "name": "Set Date From Previous Date Or Compare Two Date (Client)", "desc": "Date operations"},
+        {"id": 239, "name": "SetNextOrPreviousWeekdayFromDate", "desc": "Get weekday from date"},
+        {"id": 201, "name": "Set Date Firstparty Mobile No (Client)", "desc": "Set date from party info"},
+        {"id": 309, "name": "Get FY", "desc": "Get financial year from date"},
+        {"id": 332, "name": "Derive QTR", "desc": "Get quarter from date"}
+      ]
+    },
+    "geolocation": {
+      "name": "Geolocation Rules",
+      "description": "Location-based validation and calculations",
+      "keywords": ["location", "gps", "coordinates", "distance", "address", "geocode", "polygon", "map"],
+      "use_when": "Location validation, distance calculation, or geo-fencing",
+      "rules": [
+        {"id": 265, "name": "Calculate Distance", "desc": "Calculate distance between coordinates"},
+        {"id": 329, "name": "Check Location Serviceability", "desc": "Check if location is serviceable"},
+        {"id": 211, "name": "Get Lat/Long From Address", "desc": "Geocode address to coordinates"},
+        {"id": 351, "name": "Get Lat/Long From Image", "desc": "Extract GPS from image EXIF"},
+        {"id": 220, "name": "Get Location Generic Map (Client)", "desc": "Get location from map"},
+        {"id": 308, "name": "Get Distance Generic Map (Client)", "desc": "Calculate distance on map"},
+        {"id": 199, "name": "Out Of Polygon Check (Client)", "desc": "Check if point is within polygon"}
+      ]
+    },
+    "calculation": {
+      "name": "TDS Calculation Rules",
+      "description": "Calculate TDS amounts",
+      "keywords": ["calculate", "tds", "tax", "deduction"],
+      "use_when": "Calculate TDS amount based on income tax rules",
+      "rules": [
+        {"id": 307, "name": "Calculate TDS", "desc": "Calculate TDS amount based on rules"}
+      ]
+    },
+    "bulk_batch": {
+      "name": "Bulk Batch Processing Rules",
+      "description": "Process and validate bulk data batches",
+      "keywords": ["bulk", "batch", "liability", "mass processing"],
+      "use_when": "Processing bulk data uploads or batch operations",
+      "rules": [
+        {"id": 205, "name": "Calculate BulkBatch Liability", "desc": "Calculate bulk batch liability"},
+        {"id": 282, "name": "Validate BulkBatch", "desc": "Validate bulk batch data"},
+        {"id": 291, "name": "Get Count", "desc": "Count values in fields"}
+      ]
+    },
+    "table_generation": {
+      "name": "Table Generation Rules",
+      "description": "Create dynamic tables from data sources",
+      "keywords": ["table", "array", "repeating", "dynamic", "generate", "multiple rows"],
+      "use_when": "Create dynamic repeating sections or tables from data",
+      "rules": [
+        {"id": 320, "name": "Generate Table From EDV", "source": "External Data Value"},
+        {"id": 222, "name": "Generate Table Form DropDown", "source": "Form Fill Dropdown"},
+        {"id": 321, "name": "Generate Table Form Staging", "source": "Staging Data"},
+        {"id": 323, "name": "Generate Table From Transaction", "source": "Transaction"}
+      ]
+    },
+    "otp_verification": {
+      "name": "OTP & Verification Rules",
+      "description": "Send and validate one-time passwords",
+      "keywords": ["otp", "verification", "email verify", "mobile verify", "sms", "code"],
+      "use_when": "OTP-based verification for email or mobile",
+      "rules": [
+        {"id": 339, "name": "Send Email OTP (Client)", "desc": "Send OTP via email"},
+        {"id": 338, "name": "Send Mobile OTP (Client)", "desc": "Send OTP via SMS"},
+        {"id": 340, "name": "Validate Otp (Client)", "desc": "Validate entered OTP"},
+        {"id": 255, "name": "Validate Email", "desc": "Email verification link"},
+        {"id": 275, "name": "Validate Liveliness Otp (Client)", "desc": "Liveliness check OTP"}
+      ]
+    },
+    "kyc_esign": {
+      "name": "KYC & eSign Rules",
+      "description": "Digital signature and KYC verification",
+      "keywords": ["kyc", "ekyc", "digilocker", "video kyc", "esign", "signature", "estamp"],
+      "use_when": "Digital KYC verification or eSignature",
+      "rules": [
+        {"id": 223, "name": "DigiLocker E-Kyc (Client)", "desc": "Fetch documents from DigiLocker"},
+        {"id": 299, "name": "Video Kyc (Client)", "desc": "Video-based KYC"},
+        {"id": 292, "name": "Set eSign Auth Mode", "desc": "Configure eSign authentication"},
+        {"id": 313, "name": "Generate eStamp", "desc": "Generate eStamp certificate"}
+      ]
+    },
+    "expression": {
+      "name": "Expression Rules (Custom Logic)",
+      "description": "Execute custom JavaScript-like expressions for complex conditional logic",
+      "keywords": ["expression", "custom", "logic", "condition", "if else", "complex", "formula"],
+      "use_when": "Pre-defined rules don't cover your logic needs - complex multi-condition scenarios",
+      "rules": [
+        {"id": 328, "name": "Expression (Client)", "processing": "CLIENT"}
+      ],
+      "functions": [
+        {"name": "vo(id)", "alias": "valOf", "desc": "Get field value by ID"},
+        {"name": "mvi(cond, ids)", "alias": "makeVisible", "desc": "Make visible if condition true"},
+        {"name": "minvi(cond, ids)", "alias": "makeInvisible", "desc": "Make invisible if condition true"},
+        {"name": "mm(cond, ids)", "alias": "makeMandatory", "desc": "Make mandatory if condition true"},
+        {"name": "mnm(cond, ids)", "alias": "makeNonMandatory", "desc": "Make non-mandatory if condition true"},
+        {"name": "en(cond, ids)", "alias": "enable", "desc": "Enable if condition true"},
+        {"name": "dis(cond, ids)", "alias": "disable", "desc": "Disable if condition true"},
+        {"name": "ctfd(cond, src, ids)", "alias": "copyToFillData", "desc": "Copy value if condition true"},
+        {"name": "cf(cond, ids)", "alias": "clearField", "desc": "Clear field if condition true"},
+        {"name": "adderr(cond, msg, ids)", "desc": "Add error message"},
+        {"name": "remerr(cond, ids)", "desc": "Remove error message"},
+        {"name": "concat(vals)", "desc": "Concatenate values"},
+        {"name": "cwd(delim, vals)", "desc": "Concatenate with delimiter"},
+        {"name": "tolc(val)", "desc": "To lowercase"},
+        {"name": "touc(val)", "desc": "To uppercase"},
+        {"name": "cntns(seq, val)", "desc": "String contains check"},
+        {"name": "vso(id)", "desc": "Get validation status"},
+        {"name": "pt()", "desc": "Get party type (FP/SP)"},
+        {"name": "mt()", "desc": "Get member type"},
+        {"name": "rplrng(str,s,e,sub)", "desc": "Replace range in string"},
+        {"name": "rgxtst(val, regex)", "desc": "Test regex pattern"},
+        {"name": "setAgeFromDate(src,dest)", "desc": "Calculate age from date"}
+      ]
+    },
+    "user_assignment": {
+      "name": "User & Assignment Rules",
+      "description": "User lookup and assignment operations",
+      "keywords": ["user", "assign", "lookup", "reassign", "created for", "approver"],
+      "use_when": "Look up or assign users dynamically",
+      "rules": [
+        {"id": 251, "name": "Fetch user details", "desc": "Get user details by ID/email/mobile"},
+        {"id": 231, "name": "Copy User As CreatedFor", "desc": "Assign user as created-for"},
+        {"id": 248, "name": "Reassign Create For", "desc": "Reassign transaction to different user"}
+      ]
+    },
+    "payment_pos": {
+      "name": "Payment & POS Rules",
+      "description": "Payment processing and POS integration",
+      "keywords": ["payment", "pos", "card", "reload", "gift card", "qwik"],
+      "use_when": "Integrating with payment systems or POS terminals",
+      "rules": [
+        {"id": 218, "name": "Check Payment Status (Client)", "desc": "Check payment status"},
+        {"id": 198, "name": "Qc Bosch Quick POS", "desc": "Bosch POS verification"},
+        {"id": 304, "name": "Qc Qwik POS Create Code", "desc": "Create POS code"},
+        {"id": 316, "name": "Qc Reload Amount", "desc": "Reload amount to card"}
+      ]
+    },
+    "utility": {
+      "name": "Utility Rules",
+      "description": "Various utility functions",
+      "keywords": ["unique code", "reminder", "export", "import", "staging", "utility"],
+      "use_when": "Unique ID generation, reminders, or data import/export",
+      "rules": [
+        {"id": 245, "name": "Generate Unique Code", "desc": "Generate unique identifiers"},
+        {"id": 268, "name": "Reminder Service", "desc": "Configure reminders"},
+        {"id": 224, "name": "Export Import FormField (Client)", "desc": "Export/import form data"},
+        {"id": 293, "name": "Make Action Based On FormFill Txn Info (Client)", "desc": "Action based on transaction"},
+        {"id": 247, "name": "Upload File Size Limit First Party Email (Client)", "desc": "Limit file upload size"},
+        {"id": 364, "name": "Lookup Staging Data", "desc": "Query staging data"}
+      ]
+    }
+  },
+  "bucket_selection_guide": {
+    "extract_verify_aadhaar": "aadhaar",
+    "extract_verify_pan": "pan",
+    "extract_verify_gstin": "gstin",
+    "extract_verify_driving_license": "driving_license",
+    "extract_verify_passport": "passport",
+    "extract_verify_voter_id": "voter_id",
+    "verify_vehicle_rc": "vehicle_rc",
+    "extract_verify_cin_company": "company_cin",
+    "extract_verify_msme_udyam": "msme",
+    "extract_verify_fssai": "fssai",
+    "extract_verify_tan_tds": "tan_tds",
+    "verify_bank_account": "bank_account",
+    "extract_business_card_itr_cowin": "other_documents",
+    "verify_drug_license_shop_establishment": "other_validations",
+    "populate_dropdown_from_external_table": "edv",
+    "validate_against_master_data": "edv",
+    "show_hide_fields": ["form_control", "expression"],
+    "make_fields_mandatory": ["form_control", "expression"],
+    "enable_disable_fields": ["form_control", "expression"],
+    "template_specific_dropdowns": "form_control",
+    "document_visibility_control": "form_control",
+    "ai_document_classification": "aiml",
+    "face_matching": "aiml",
+    "speech_to_text": "aiml",
+    "copy_data_between_fields": ["data_copy_transform", "expression"],
+    "transform_data_concat_case": "data_copy_transform",
+    "compare_field_values": ["comparison", "expression"],
+    "check_duplicates": "comparison",
+    "calculate_age": "date_time",
+    "date_validation": "date_time",
+    "financial_year_quarter": "date_time",
+    "location_validation": "geolocation",
+    "distance_calculation": "geolocation",
+    "calculate_tds": "calculation",
+    "bulk_batch_processing": "bulk_batch",
+    "create_dynamic_tables": "table_generation",
+    "otp_verification": "otp_verification",
+    "digital_kyc_esign": "kyc_esign",
+    "complex_conditional_logic": "expression",
+    "user_lookup_assignment": "user_assignment",
+    "payment_integration": "payment_pos",
+    "generate_unique_ids": "utility"
+  }
+}

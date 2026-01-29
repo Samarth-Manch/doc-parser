@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailed Rules Extraction Architecture - Document Parser</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            color: #00d4ff;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section h2 .step-badge {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.6em;
+            color: white;
+        }
+
+        /* Hierarchical Classification Tree */
+        .tree-container {
+            padding: 30px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            overflow-x: auto;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .tree-node {
+            background: linear-gradient(145deg, rgba(0,212,255,0.15), rgba(124,58,237,0.1));
+            border: 2px solid rgba(0,212,255,0.4);
+            border-radius: 12px;
+            padding: 15px 25px;
+            text-align: center;
+            min-width: 180px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tree-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(0,212,255,0.3);
+        }
+
+        .tree-node.root {
+            background: linear-gradient(145deg, rgba(34,197,94,0.3), rgba(34,197,94,0.1));
+            border-color: rgba(34,197,94,0.6);
+        }
+
+        .tree-node.expression {
+            background: linear-gradient(145deg, rgba(251,146,60,0.3), rgba(251,146,60,0.1));
+            border-color: rgba(251,146,60,0.6);
+        }
+
+        .tree-node.standard {
+            background: linear-gradient(145deg, rgba(59,130,246,0.3), rgba(59,130,246,0.1));
+            border-color: rgba(59,130,246,0.6);
+        }
+
+        .tree-node.action {
+            background: linear-gradient(145deg, rgba(168,85,247,0.3), rgba(168,85,247,0.1));
+            border-color: rgba(168,85,247,0.6);
+        }
+
+        .tree-node.source {
+            background: linear-gradient(145deg, rgba(236,72,153,0.3), rgba(236,72,153,0.1));
+            border-color: rgba(236,72,153,0.6);
+        }
+
+        .tree-node.final {
+            background: linear-gradient(145deg, rgba(34,197,94,0.3), rgba(34,197,94,0.1));
+            border-color: rgba(34,197,94,0.6);
+        }
+
+        .tree-node h4 {
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .tree-node p {
+            font-size: 0.75em;
+            color: #999;
+        }
+
+        .tree-node .count {
+            background: rgba(0,0,0,0.4);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .tree-branches {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .branch-connector {
+            text-align: center;
+            color: #00d4ff;
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .level-label {
+            position: absolute;
+            left: 0;
+            background: linear-gradient(90deg, #7c3aed, transparent);
+            padding: 5px 20px;
+            border-radius: 0 20px 20px 0;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* Step Details */
+        .step-detail {
+            background: rgba(0,0,0,0.4);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 25px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .step-detail.step-1 { border-left-color: #22c55e; }
+        .step-detail.step-2 { border-left-color: #3b82f6; }
+        .step-detail.step-3 { border-left-color: #f59e0b; }
+        .step-detail.step-4 { border-left-color: #a855f7; }
+        .step-detail.step-5 { border-left-color: #ec4899; }
+        .step-detail.step-6 { border-left-color: #ef4444; }
+
+        .step-detail h3 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .step-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .step-box {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .step-box h4 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+            font-size: 1em;
+        }
+
+        .step-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-box li {
+            padding: 8px 0;
+            font-size: 0.9em;
+            color: #bbb;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .step-box li:last-child {
+            border-bottom: none;
+        }
+
+        .step-box li::before {
+            content: '▸';
+            color: #7c3aed;
+            margin-right: 10px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: #0d1117;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .code-block .keyword { color: #ff7b72; }
+        .code-block .function { color: #d2a8ff; }
+        .code-block .string { color: #a5d6ff; }
+        .code-block .variable { color: #ffa657; }
+        .code-block .comment { color: #8b949e; }
+        .code-block .number { color: #79c0ff; }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .badge-green { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .badge-orange { background: rgba(251,146,60,0.2); color: #f59e0b; }
+        .badge-blue { background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .badge-purple { background: rgba(168,85,247,0.2); color: #a855f7; }
+        .badge-red { background: rgba(239,68,68,0.2); color: #ef4444; }
+
+        /* Flow diagram */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flow-item {
+            text-align: center;
+            padding: 15px 20px;
+            background: linear-gradient(145deg, rgba(0,212,255,0.1), rgba(124,58,237,0.05));
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 10px;
+            min-width: 120px;
+        }
+
+        .flow-item.highlight {
+            border-color: #22c55e;
+            background: linear-gradient(145deg, rgba(34,197,94,0.2), rgba(34,197,94,0.05));
+        }
+
+        .flow-item h5 {
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+
+        .flow-item p {
+            font-size: 0.7em;
+            color: #888;
+        }
+
+        .flow-arrow {
+            color: #00d4ff;
+            font-size: 1.5em;
+        }
+
+        /* Keyword patterns */
+        .keyword-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .keyword-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 3px solid #7c3aed;
+        }
+
+        .keyword-card h5 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .keyword-card .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .keyword-tag {
+            background: rgba(124,58,237,0.2);
+            color: #c4b5fd;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-family: monospace;
+        }
+
+        /* Search Space Visualization */
+        .search-space {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 140px;
+        }
+
+        .search-box.full {
+            background: linear-gradient(145deg, rgba(239,68,68,0.3), rgba(239,68,68,0.1));
+            border: 2px solid rgba(239,68,68,0.5);
+        }
+
+        .search-box.reduced {
+            background: linear-gradient(145deg, rgba(251,146,60,0.3), rgba(251,146,60,0.1));
+            border: 2px solid rgba(251,146,60,0.5);
+        }
+
+        .search-box.narrow {
+            background: linear-gradient(145deg, rgba(34,197,94,0.3), rgba(34,197,94,0.1));
+            border: 2px solid rgba(34,197,94,0.5);
+        }
+
+        .search-box .number {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+
+        .search-box.full .number { color: #ef4444; }
+        .search-box.reduced .number { color: #f59e0b; }
+        .search-box.narrow .number { color: #22c55e; }
+
+        .search-box .label {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .reduction-arrow {
+            font-size: 2em;
+            color: #00d4ff;
+        }
+
+        /* Algorithm Box */
+        .algorithm-box {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .algorithm-box h4 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-family: monospace;
+        }
+
+        .algorithm-line {
+            padding: 5px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+        }
+
+        .algorithm-line .indent-1 { margin-left: 20px; }
+        .algorithm-line .indent-2 { margin-left: 40px; }
+        .algorithm-line .indent-3 { margin-left: 60px; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 25px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-item .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(90deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item .label {
+            color: #888;
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(90deg, rgba(0,212,255,0.2), rgba(124,58,237,0.2));
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid rgba(0,212,255,0.3);
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Info callout */
+        .callout {
+            background: linear-gradient(90deg, rgba(59,130,246,0.1), rgba(59,130,246,0.05));
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .callout.warning {
+            background: linear-gradient(90deg, rgba(251,146,60,0.1), rgba(251,146,60,0.05));
+            border-left-color: #f59e0b;
+        }
+
+        .callout.success {
+            background: linear-gradient(90deg, rgba(34,197,94,0.1), rgba(34,197,94,0.05));
+            border-left-color: #22c55e;
+        }
+
+        .callout h4 {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .callout p {
+            color: #bbb;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detailed Rules Extraction Architecture</h1>
+        <p class="subtitle">Hierarchical Classification with Reduced Search Space for Minimal Hallucination</p>
+
+        <!-- Overview Stats -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="value">182</div>
+                <div class="label">Total Predefined Rules</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">17</div>
+                <div class="label">Rule Clusters</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">6</div>
+                <div class="label">Processing Steps</div>
+            </div>
+            <div class="stat-item">
+                <div class="value">~95%</div>
+                <div class="label">Search Space Reduction</div>
+            </div>
+        </div>
+
+        <!-- Hierarchical Classification Tree -->
+        <div class="section">
+            <h2><span class="step-badge">OVERVIEW</span> Hierarchical Classification Tree</h2>
+
+            <div class="tree-container">
+                <!-- Level 0: Input -->
+                <div class="tree-level">
+                    <span class="level-label">INPUT</span>
+                    <div class="tree-node root">
+                        <h4>Natural Language Logic</h4>
+                        <p>Field rules/logic text</p>
+                    </div>
+                </div>
+
+                <div class="branch-connector">↓</div>
+
+                <!-- Level 1: Expression vs Standard -->
+                <div class="tree-level">
+                    <span class="level-label">LEVEL 1</span>
+                    <div class="tree-branches">
+                        <div class="tree-node expression">
+                            <h4>Expression Rules</h4>
+                            <p>Dynamic field behavior</p>
+                            <span class="count">~70% of rules</span>
+                        </div>
+                        <div class="tree-node standard">
+                            <h4>Standard Rules</h4>
+                            <p>Predefined schemas</p>
+                            <span class="count">182 rules total</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="branch-connector">↓ (Standard Rules Path)</div>
+
+                <!-- Level 2: Action Type Clusters -->
+                <div class="tree-level">
+                    <span class="level-label">LEVEL 2</span>
+                    <div class="tree-branches">
+                        <div class="tree-node action">
+                            <h4>VERIFY</h4>
+                            <p>API Verification</p>
+                            <span class="count">23 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>COPY_TO</h4>
+                            <p>Copy operations</p>
+                            <span class="count">20 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>OCR</h4>
+                            <p>Text extraction</p>
+                            <span class="count">19 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>COPY_TO_ATTR</h4>
+                            <p>Transaction attrs</p>
+                            <span class="count">16 rules</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-branches">
+                        <div class="tree-node action">
+                            <h4>FIELD_STATE</h4>
+                            <p>Visibility/Enable</p>
+                            <span class="count">12 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>VALIDATION</h4>
+                            <p>Data validation</p>
+                            <span class="count">11 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>DATE_TIME</h4>
+                            <p>Date operations</p>
+                            <span class="count">10 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>DOCUMENT</h4>
+                            <p>Doc management</p>
+                            <span class="count">9 rules</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-branches">
+                        <div class="tree-node action">
+                            <h4>COMPARISON</h4>
+                            <p>Field comparison</p>
+                            <span class="count">8 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>GEOLOCATION</h4>
+                            <p>GPS/Location</p>
+                            <span class="count">7 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>DATA_TRANSFORM</h4>
+                            <p>Transformations</p>
+                            <span class="count">6 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>EXTERNAL_DATA</h4>
+                            <p>Lookup/Fetch</p>
+                            <span class="count">6 rules</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-level">
+                    <div class="tree-branches">
+                        <div class="tree-node action">
+                            <h4>OTP_AUTH</h4>
+                            <p>OTP/Auth</p>
+                            <span class="count">5 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>TXN_MGMT</h4>
+                            <p>Transaction mgmt</p>
+                            <span class="count">5 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>IDENTITY</h4>
+                            <p>Biometric/KYC</p>
+                            <span class="count">4 rules</span>
+                        </div>
+                        <div class="tree-node action">
+                            <h4>FORM_GEN</h4>
+                            <p>Form generation</p>
+                            <span class="count">4 rules</span>
+                        </div>
+                        <div class="tree-node action" style="opacity: 0.8;">
+                            <h4>SPECIALIZED</h4>
+                            <p>Domain-specific</p>
+                            <span class="count">12 rules</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="branch-connector">↓ (OCR Path Example)</div>
+
+                <!-- Level 3: Source Type -->
+                <div class="tree-level">
+                    <span class="level-label">LEVEL 3</span>
+                    <div class="tree-branches">
+                        <div class="tree-node source">
+                            <h4>PAN_IMAGE</h4>
+                            <p>PAN Card OCR</p>
+                            <span class="count">1 rule</span>
+                        </div>
+                        <div class="tree-node source">
+                            <h4>AADHAR_IMAGE</h4>
+                            <p>Aadhaar Front OCR</p>
+                            <span class="count">1 rule</span>
+                        </div>
+                        <div class="tree-node source">
+                            <h4>GSTIN_IMAGE</h4>
+                            <p>GST Certificate OCR</p>
+                            <span class="count">2 rules</span>
+                        </div>
+                        <div class="tree-node source">
+                            <h4>PASSPORT_*</h4>
+                            <p>Passport OCR</p>
+                            <span class="count">2 rules</span>
+                        </div>
+                        <div class="tree-node source" style="opacity: 0.6;">
+                            <h4>Others...</h4>
+                            <p>12+ source types</p>
+                            <span class="count">13 rules</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="branch-connector">↓</div>
+
+                <!-- Level 4: Final Match -->
+                <div class="tree-level">
+                    <span class="level-label">LEVEL 4</span>
+                    <div class="tree-node final">
+                        <h4>Matched Rule</h4>
+                        <p>Exact rule from schema</p>
+                        <span class="count">1 rule</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Space Reduction -->
+            <h3 style="color: #fff; margin: 30px 0 15px;">Search Space Reduction Visualization</h3>
+            <div class="search-space">
+                <div class="search-box full">
+                    <div class="number">182</div>
+                    <div class="label">All Rules</div>
+                </div>
+                <span class="reduction-arrow">→</span>
+                <div class="search-box reduced">
+                    <div class="number">19</div>
+                    <div class="label">OCR Action</div>
+                </div>
+                <span class="reduction-arrow">→</span>
+                <div class="search-box narrow">
+                    <div class="number">1-2</div>
+                    <div class="label">Source Type</div>
+                </div>
+                <span class="reduction-arrow">→</span>
+                <div class="search-box narrow">
+                    <div class="number">1</div>
+                    <div class="label">Final Match</div>
+                </div>
+            </div>
+
+            <div class="callout success">
+                <h4>✅ 95% Search Space Reduction</h4>
+                <p>By using hierarchical classification, we reduce the search space from 182 rules to just 1-2 candidates before any LLM call. This dramatically reduces hallucination risk and API costs.</p>
+            </div>
+        </div>
+
+        <!-- Complete Cluster Breakdown -->
+        <div class="section">
+            <h2><span class="step-badge">CLUSTERS</span> Complete 17-Cluster Breakdown</h2>
+
+            <p style="color: #bbb; margin-bottom: 25px;">All 182 predefined rules organized into 17 logical clusters for efficient search space reduction.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <!-- VERIFY Cluster -->
+                <div class="step-box" style="border-left: 4px solid #a855f7;">
+                    <h4 style="color: #a855f7;">VERIFY (23 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">External API verification for identity documents</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>PAN, PAN V2, PAN to CIN validation</li>
+                        <li>GSTIN, GSTIN with PAN verification</li>
+                        <li>Bank Account, TAN, CIN validation</li>
+                        <li>Driving Licence, FSSAI, MSME, RC</li>
+                        <li>Section 206AB, eInvoice status</li>
+                    </ul>
+                </div>
+
+                <!-- COPY_TO Cluster -->
+                <div class="step-box" style="border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6;">COPY_TO (20 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Copy data between fields and party entities</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>FirstParty: Name, Email, Mobile, Company</li>
+                        <li>SecondParty: Name, Email, Mobile, Company</li>
+                        <li>CreatedBy/CreatedFor details</li>
+                        <li>Transaction Title, Message, WorkflowData</li>
+                        <li>Aadhaar Signer details</li>
+                    </ul>
+                </div>
+
+                <!-- OCR Cluster -->
+                <div class="step-box" style="border-left: 4px solid #22c55e;">
+                    <h4 style="color: #22c55e;">OCR (19 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Text extraction from document images</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>PAN, Aadhaar Front/Back OCR</li>
+                        <li>GSTIN, Passport Front/Back OCR</li>
+                        <li>Driving License, Cheque OCR</li>
+                        <li>CIN, FSSAI, MSME, TDS OCR</li>
+                        <li>Business Card, Voter ID, Cowin OCR</li>
+                    </ul>
+                </div>
+
+                <!-- COPY_TO_ATTRIBUTES Cluster -->
+                <div class="step-box" style="border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6;">COPY_TO_ATTR (16 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Copy to transaction and party attributes</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Transaction Attr 1-8 (8 rules)</li>
+                        <li>Internal Attr 1-4 (4 rules)</li>
+                        <li>Generic Party: Name, Email, Mobile, Company</li>
+                    </ul>
+                </div>
+
+                <!-- FIELD_STATE Cluster -->
+                <div class="step-box" style="border-left: 4px solid #a855f7;">
+                    <h4 style="color: #a855f7;">FIELD_STATE (12 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Control visibility, mandatory, enable/disable</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Make Visible/Invisible (2 rules)</li>
+                        <li>Make Mandatory/Non-Mandatory (2 rules)</li>
+                        <li>Enable/Disable Field (2 rules)</li>
+                        <li>Session-Based variants (6 rules)</li>
+                    </ul>
+                </div>
+
+                <!-- VALIDATION Cluster -->
+                <div class="step-box" style="border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #f59e0b;">VALIDATION (11 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Data validation and comparison rules</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Compare If Same/Not Same</li>
+                        <li>De-duplication check</li>
+                        <li>Validate BulkBatch, EDV</li>
+                        <li>Offline Aadhaar EKYC</li>
+                        <li>Calculate BulkBatch Liability</li>
+                    </ul>
+                </div>
+
+                <!-- DATE_TIME Cluster -->
+                <div class="step-box" style="border-left: 4px solid #22c55e;">
+                    <h4 style="color: #22c55e;">DATE_TIME (10 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Date/time operations and calculations</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Set Date (2 rules)</li>
+                        <li>Set Age From Date (2 rules)</li>
+                        <li>Set Date From Month/Year (2 rules)</li>
+                        <li>Derive Financial Year, Quarter</li>
+                        <li>Date range validation, Weekday calc</li>
+                    </ul>
+                </div>
+
+                <!-- DOCUMENT_MGMT Cluster -->
+                <div class="step-box" style="border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6;">DOCUMENT_MGMT (9 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Document upload, delete, and management</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Delete/Unhide Document (3 rules)</li>
+                        <li>Delete File</li>
+                        <li>DigiLocker E-KYC, Classify Image</li>
+                        <li>Upload Size Limit</li>
+                        <li>Make Upload/Sign Mandatory</li>
+                    </ul>
+                </div>
+
+                <!-- COMPARISON Cluster -->
+                <div class="step-box" style="border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #f59e0b;">COMPARISON (8 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Field comparison and duplicate checking</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Compare Name, Date with Offset</li>
+                        <li>Compare Source/Destination Time</li>
+                        <li>Check/Invalidate Duplicate</li>
+                        <li>Contains/Does Not Contain Text</li>
+                    </ul>
+                </div>
+
+                <!-- GEOLOCATION Cluster -->
+                <div class="step-box" style="border-left: 4px solid #22c55e;">
+                    <h4 style="color: #22c55e;">GEOLOCATION (7 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">GPS, distance, and location services</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Get Geolocation (3 rules)</li>
+                        <li>Get Location/Distance from Map</li>
+                        <li>Extract GPS from Image</li>
+                        <li>Out of Polygon Check</li>
+                    </ul>
+                </div>
+
+                <!-- DATA_TRANSFORM Cluster -->
+                <div class="step-box" style="border-left: 4px solid #a855f7;">
+                    <h4 style="color: #a855f7;">DATA_TRANSFORM (6 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Data transformation and calculations</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Convert To Upper/Lower Case</li>
+                        <li>Convert To Words</li>
+                        <li>Concatenate, Clear Field</li>
+                        <li>Calculate TDS</li>
+                    </ul>
+                </div>
+
+                <!-- EXTERNAL_DATA Cluster -->
+                <div class="step-box" style="border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6;">EXTERNAL_DATA (6 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">External data lookup and fetch</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Lookup User/Staging Data</li>
+                        <li>EDV/FFD Dropdown</li>
+                        <li>Export/Import FormField</li>
+                        <li>Fetch Related Transactions</li>
+                    </ul>
+                </div>
+
+                <!-- OTP_AUTH Cluster -->
+                <div class="step-box" style="border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #f59e0b;">OTP_AUTH (5 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">OTP and authentication verification</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Send Mobile/Email OTP</li>
+                        <li>Validate OTP</li>
+                        <li>Verify Liveness OTP</li>
+                        <li>Send Email for Verification</li>
+                    </ul>
+                </div>
+
+                <!-- TXN_MGMT Cluster -->
+                <div class="step-box" style="border-left: 4px solid #a855f7;">
+                    <h4 style="color: #a855f7;">TXN_MGMT (5 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Transaction workflow management</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Insert Into Table (2 rules)</li>
+                        <li>Reassign Created For</li>
+                        <li>Copy User As CreatedFor</li>
+                        <li>AppUser List Dropdown</li>
+                    </ul>
+                </div>
+
+                <!-- IDENTITY Cluster -->
+                <div class="step-box" style="border-left: 4px solid #22c55e;">
+                    <h4 style="color: #22c55e;">IDENTITY (4 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Biometric and identity verification</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Compare Face</li>
+                        <li>Video KYC</li>
+                        <li>GigIndia Name Match</li>
+                        <li>Set eSign Auth Mode</li>
+                    </ul>
+                </div>
+
+                <!-- FORM_GEN Cluster -->
+                <div class="step-box" style="border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6;">FORM_GEN (4 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Dynamic form and table generation</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Generate Table From Dropdown</li>
+                        <li>Generate Table From Staging</li>
+                        <li>Generate Table From EDV</li>
+                        <li>Generate Table From Transaction</li>
+                    </ul>
+                </div>
+
+                <!-- SPECIALIZED Cluster -->
+                <div class="step-box" style="border-left: 4px solid #ef4444;">
+                    <h4 style="color: #ef4444;">SPECIALIZED (12 rules)</h4>
+                    <p style="color: #888; font-size: 0.85em;">Domain-specific and miscellaneous</p>
+                    <ul style="font-size: 0.8em;">
+                        <li>Execute Expression, Count</li>
+                        <li>Customer Feedback Sentiment</li>
+                        <li>Speech To Text, Detect Menu</li>
+                        <li>Generate eStamp, Employee Code</li>
+                        <li>Payment Status, QC rules</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 1: Document Parsing -->
+        <div class="section">
+            <h2><span class="step-badge">STEP 1</span> Document Parsing & Field Registry</h2>
+
+            <div class="step-detail step-1">
+                <h3><span class="step-number">1</span> Parse Document & Build Field Registry</h3>
+
+                <div class="step-content">
+                    <div class="step-box">
+                        <h4>Inputs</h4>
+                        <ul>
+                            <li>Word Document (.docx) with BUD template</li>
+                            <li>Field tables containing name, type, logic columns</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Outputs</h4>
+                        <ul>
+                            <li>ParsedDocument object with all fields</li>
+                            <li>Field Registry: displayName → variableName mapping</li>
+                            <li>Normalized field name index for fuzzy matching</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="comment"># Field Registry Structure</span>
+field_registry = {
+    <span class="string">"company name"</span>: <span class="string">"__company_name__"</span>,
+    <span class="string">"gstin"</span>: <span class="string">"__gstin__"</span>,
+    <span class="string">"pan number"</span>: <span class="string">"__pan_number__"</span>,
+    <span class="string">"please select gst option"</span>: <span class="string">"__gst_option__"</span>,
+    <span class="string">"do you wish to add additional mobile numbers (india)?"</span>: <span class="string">"__add_mobile_india__"</span>,
+    <span class="comment"># ... 388 fields total</span>
+}
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="flow-item">
+                        <h5>Word Document</h5>
+                        <p>.docx file</p>
+                    </div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">
+                        <h5>DocumentParser</h5>
+                        <p>OOXML parsing</p>
+                    </div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item">
+                        <h5>ParsedDocument</h5>
+                        <p>Fields extracted</p>
+                    </div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-item highlight">
+                        <h5>Field Registry</h5>
+                        <p>Name → Variable</p>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <h4>💡 Why Field Registry?</h4>
+                    <p>The field registry serves as the single source of truth for field names. LLM will only see these exact names, preventing invention of non-existent fields. All name resolution happens post-LLM using this registry.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: Level 1 Classification -->
+        <div class="section">
+            <h2><span class="step-badge">STEP 2</span> Level 1: Expression vs Standard Classification</h2>
+
+            <div class="step-detail step-2">
+                <h3><span class="step-number">2</span> Classify Rule Type (No LLM)</h3>
+
+                <div class="step-content">
+                    <div class="step-box">
+                        <h4>Expression Rule Indicators</h4>
+                        <ul>
+                            <li>Contains visibility keywords: visible, invisible, hide, show</li>
+                            <li>Contains mandatory keywords: mandatory, required, optional</li>
+                            <li>Contains enable/disable keywords: enable, disable, editable</li>
+                            <li>Contains conditional logic: if, when, based on, otherwise</li>
+                            <li>Contains copy patterns: copy, populate, auto-fill</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Standard Rule Indicators</h4>
+                        <ul>
+                            <li>Contains OCR keywords: OCR, extract, scan from image</li>
+                            <li>Contains validation keywords: validate, verify, check against</li>
+                            <li>References specific document types: PAN, Aadhaar, GST, Passport</li>
+                            <li>Mentions API/external verification</li>
+                            <li>References Rule-Schemas rule names</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="keyword-grid">
+                    <div class="keyword-card">
+                        <h5>Visibility Keywords</h5>
+                        <div class="keywords">
+                            <span class="keyword-tag">visible</span>
+                            <span class="keyword-tag">invisible</span>
+                            <span class="keyword-tag">hide</span>
+                            <span class="keyword-tag">show</span>
+                            <span class="keyword-tag">display</span>
+                        </div>
+                    </div>
+                    <div class="keyword-card">
+                        <h5>Mandatory Keywords</h5>
+                        <div class="keywords">
+                            <span class="keyword-tag">mandatory</span>
+                            <span class="keyword-tag">required</span>
+                            <span class="keyword-tag">optional</span>
+                            <span class="keyword-tag">non-mandatory</span>
+                        </div>
+                    </div>
+                    <div class="keyword-card">
+                        <h5>OCR Keywords</h5>
+                        <div class="keywords">
+                            <span class="keyword-tag">OCR</span>
+                            <span class="keyword-tag">extract</span>
+                            <span class="keyword-tag">scan</span>
+                            <span class="keyword-tag">from image</span>
+                        </div>
+                    </div>
+                    <div class="keyword-card">
+                        <h5>Validation Keywords</h5>
+                        <div class="keywords">
+                            <span class="keyword-tag">validate</span>
+                            <span class="keyword-tag">verify</span>
+                            <span class="keyword-tag">verification</span>
+                            <span class="keyword-tag">check</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="algorithm-box">
+                    <h4>def classify_rule_type(logic: str) -> str:</h4>
+                    <div class="algorithm-line"><span class="comment"># Check for Expression Rule indicators first (higher priority)</span></div>
+                    <div class="algorithm-line"><span class="keyword">if</span> has_visibility_keywords(logic) <span class="keyword">or</span> has_mandatory_keywords(logic):</div>
+                    <div class="algorithm-line indent-1"><span class="keyword">return</span> <span class="string">"EXPRESSION"</span></div>
+                    <div class="algorithm-line"><span class="keyword">if</span> has_conditional_logic(logic):  <span class="comment"># if/when/based on</span></div>
+                    <div class="algorithm-line indent-1"><span class="keyword">return</span> <span class="string">"EXPRESSION"</span></div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="comment"># Check for Standard Rule indicators</span></div>
+                    <div class="algorithm-line"><span class="keyword">if</span> has_ocr_keywords(logic) <span class="keyword">or</span> has_validation_keywords(logic):</div>
+                    <div class="algorithm-line indent-1"><span class="keyword">return</span> <span class="string">"STANDARD"</span></div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="comment"># Default to EXPRESSION (safer, handles most cases)</span></div>
+                    <div class="algorithm-line"><span class="keyword">return</span> <span class="string">"EXPRESSION"</span></div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Logic Example</th>
+                            <th>Detected Keywords</th>
+                            <th>Classification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>"Make visible if GST option is Yes"</td>
+                            <td><span class="badge badge-orange">visible</span> <span class="badge badge-blue">if</span></td>
+                            <td><span class="badge badge-orange">EXPRESSION</span></td>
+                        </tr>
+                        <tr>
+                            <td>"Apply PAN OCR validation"</td>
+                            <td><span class="badge badge-green">OCR</span> <span class="badge badge-green">validation</span></td>
+                            <td><span class="badge badge-green">STANDARD</span></td>
+                        </tr>
+                        <tr>
+                            <td>"Data will come from GSTIN verification"</td>
+                            <td><span class="badge badge-green">verification</span></td>
+                            <td><span class="badge badge-green">STANDARD</span></td>
+                        </tr>
+                        <tr>
+                            <td>"Non-editable, disable field"</td>
+                            <td><span class="badge badge-orange">disable</span></td>
+                            <td><span class="badge badge-orange">EXPRESSION</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- STEP 3: Level 2 Classification (Action Type Clusters) -->
+        <div class="section">
+            <h2><span class="step-badge">STEP 3</span> Level 2: Action Type Cluster Classification</h2>
+
+            <div class="step-detail step-3">
+                <h3><span class="step-number">3</span> Classify into 17 Action Clusters (No LLM)</h3>
+
+                <p style="color: #bbb; margin-bottom: 20px;">For Standard Rules, classify into one of 17 clusters to reduce search space from 182 → 4-23 rules per cluster.</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Cluster</th>
+                            <th>Rules</th>
+                            <th>Detection Keywords</th>
+                            <th>Example Logic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-purple">VERIFY</span></td>
+                            <td>23</td>
+                            <td>verify, verification, check against, validate PAN/GST</td>
+                            <td>"Verify PAN against Income Tax database"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-blue">COPY_TO</span></td>
+                            <td>20</td>
+                            <td>copy to party, copy to title, copy from created</td>
+                            <td>"Copy FirstParty details to form"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-green">OCR</span></td>
+                            <td>19</td>
+                            <td>OCR, extract from image, scan document</td>
+                            <td>"Extract details from PAN card image"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-blue">COPY_TO_ATTR</span></td>
+                            <td>16</td>
+                            <td>copy to attr, transaction attribute, internal attr</td>
+                            <td>"Copy to Transaction Attribute 1"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-purple">FIELD_STATE</span></td>
+                            <td>12</td>
+                            <td>make visible, make mandatory, enable, disable, session</td>
+                            <td>"Make field visible based on session"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-orange">VALIDATION</span></td>
+                            <td>11</td>
+                            <td>validate same, compare if, de-duplication</td>
+                            <td>"Validate same as another field"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-green">DATE_TIME</span></td>
+                            <td>10</td>
+                            <td>set date, age from date, financial year, quarter</td>
+                            <td>"Calculate age from date of birth"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-blue">DOCUMENT_MGMT</span></td>
+                            <td>9</td>
+                            <td>delete document, upload, classify, sign mandatory</td>
+                            <td>"Make document upload mandatory"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-orange">COMPARISON</span></td>
+                            <td>8</td>
+                            <td>compare, contains text, duplicate check, time compare</td>
+                            <td>"Compare date with offset"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-green">GEOLOCATION</span></td>
+                            <td>7</td>
+                            <td>geolocation, lat/long, distance, GPS, polygon</td>
+                            <td>"Get lat/long from address"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-purple">DATA_TRANSFORM</span></td>
+                            <td>6</td>
+                            <td>convert to, concatenate, clear field, calculate TDS</td>
+                            <td>"Convert number to words"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-blue">EXTERNAL_DATA</span></td>
+                            <td>6</td>
+                            <td>lookup, fetch, external data, dropdown, staging</td>
+                            <td>"Lookup user details"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-orange">OTP_AUTH</span></td>
+                            <td>5</td>
+                            <td>send OTP, validate OTP, email verification, liveness</td>
+                            <td>"Send mobile OTP for verification"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-purple">TXN_MGMT</span></td>
+                            <td>5</td>
+                            <td>insert into table, reassign, created for, app user</td>
+                            <td>"Reassign transaction to user"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-green">IDENTITY</span></td>
+                            <td>4</td>
+                            <td>face compare, video KYC, name match, eSign</td>
+                            <td>"Compare face in two images"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-blue">FORM_GEN</span></td>
+                            <td>4</td>
+                            <td>generate table, array form groups</td>
+                            <td>"Generate table from external data"</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-red">SPECIALIZED</span></td>
+                            <td>12</td>
+                            <td>execute, count, sentiment, speech, estamp, payment</td>
+                            <td>"Generate eStamp certificate"</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="algorithm-box">
+                    <h4>def classify_action_cluster(logic: str) -> str:</h4>
+                    <div class="algorithm-line"><span class="comment"># Priority-ordered cluster detection (17 clusters)</span></div>
+                    <div class="algorithm-line">cluster_patterns = {</div>
+                    <div class="algorithm-line indent-1"><span class="comment"># Major categories (highest priority)</span></div>
+                    <div class="algorithm-line indent-1"><span class="string">"OCR"</span>: [<span class="string">"ocr"</span>, <span class="string">"extract from image"</span>, <span class="string">"scan document"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"VERIFY"</span>: [<span class="string">"verify"</span>, <span class="string">"verification"</span>, <span class="string">"validate pan"</span>, <span class="string">"validate gst"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"COPY_TO"</span>: [<span class="string">"copy to party"</span>, <span class="string">"copy firstparty"</span>, <span class="string">"copy secondparty"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"COPY_TO_ATTR"</span>: [<span class="string">"copy to attr"</span>, <span class="string">"transaction attr"</span>, <span class="string">"internal attr"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="comment"># Medium categories</span></div>
+                    <div class="algorithm-line indent-1"><span class="string">"FIELD_STATE"</span>: [<span class="string">"make visible"</span>, <span class="string">"make mandatory"</span>, <span class="string">"enable field"</span>, <span class="string">"session based"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"DATE_TIME"</span>: [<span class="string">"set date"</span>, <span class="string">"age from date"</span>, <span class="string">"financial year"</span>, <span class="string">"quarter"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"DOCUMENT_MGMT"</span>: [<span class="string">"delete document"</span>, <span class="string">"upload mandatory"</span>, <span class="string">"classify"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"GEOLOCATION"</span>: [<span class="string">"geolocation"</span>, <span class="string">"lat/long"</span>, <span class="string">"distance"</span>, <span class="string">"gps"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"COMPARISON"</span>: [<span class="string">"compare"</span>, <span class="string">"contains text"</span>, <span class="string">"duplicate"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="comment"># Smaller categories</span></div>
+                    <div class="algorithm-line indent-1"><span class="string">"OTP_AUTH"</span>: [<span class="string">"send otp"</span>, <span class="string">"validate otp"</span>, <span class="string">"liveness"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"DATA_TRANSFORM"</span>: [<span class="string">"convert to"</span>, <span class="string">"concatenate"</span>, <span class="string">"clear field"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"EXTERNAL_DATA"</span>: [<span class="string">"lookup"</span>, <span class="string">"fetch"</span>, <span class="string">"external data"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"IDENTITY"</span>: [<span class="string">"face compare"</span>, <span class="string">"video kyc"</span>, <span class="string">"name match"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"FORM_GEN"</span>: [<span class="string">"generate table"</span>, <span class="string">"array form"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"TXN_MGMT"</span>: [<span class="string">"insert into"</span>, <span class="string">"reassign"</span>, <span class="string">"created for"</span>],</div>
+                    <div class="algorithm-line indent-1"><span class="string">"VALIDATION"</span>: [<span class="string">"validate same"</span>, <span class="string">"de-duplication"</span>],</div>
+                    <div class="algorithm-line">}</div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="keyword">for</span> cluster, keywords <span class="keyword">in</span> cluster_patterns.items():</div>
+                    <div class="algorithm-line indent-1"><span class="keyword">if</span> any(kw <span class="keyword">in</span> logic.lower() <span class="keyword">for</span> kw <span class="keyword">in</span> keywords):</div>
+                    <div class="algorithm-line indent-2"><span class="keyword">return</span> cluster</div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="keyword">return</span> <span class="string">"SPECIALIZED"</span>  <span class="comment"># Fallback to specialized cluster</span></div>
+                </div>
+
+                <div class="callout warning">
+                    <h4>⚠️ Handling Unknown Actions</h4>
+                    <p>If cluster cannot be determined by keywords, default to SPECIALIZED cluster (12 rules). For ambiguous cases, use lightweight LLM call with cluster options as choices.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: Level 3 Classification (Source Type) -->
+        <div class="section">
+            <h2><span class="step-badge">STEP 4</span> Level 3: Source Type Classification</h2>
+
+            <div class="step-detail step-4">
+                <h3><span class="step-number">4</span> Identify Source Type (No LLM)</h3>
+
+                <p style="color: #bbb; margin-bottom: 20px;">Within each action type, identify the source document/field type to narrow down to 1-5 rules.</p>
+
+                <div class="step-content">
+                    <div class="step-box">
+                        <h4>OCR Source Types (19 rules)</h4>
+                        <ul>
+                            <li>PAN_IMAGE → PAN Card OCR</li>
+                            <li>AADHAR_IMAGE → Aadhaar Front OCR</li>
+                            <li>AADHAR_BACK_IMAGE → Aadhaar Back OCR</li>
+                            <li>GSTIN_IMAGE → GST Certificate OCR (2 rules)</li>
+                            <li>PASSPORT_IMAGE → Passport Front OCR</li>
+                            <li>PASSPORT_BACK_IMAGE → Passport Back OCR</li>
+                            <li>DRIVING_LICENCE_IMAGE → Driving License OCR</li>
+                            <li>CHEQUEE → Cheque OCR</li>
+                            <li>BUSINESS_CARD → Business Card OCR</li>
+                            <li>+ 8 more source types...</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Source Detection Keywords</h4>
+                        <ul>
+                            <li>"PAN" → PAN_IMAGE</li>
+                            <li>"Aadhaar", "Aadhar" → AADHAR_IMAGE</li>
+                            <li>"Aadhaar back" → AADHAR_BACK_IMAGE</li>
+                            <li>"GST", "GSTIN" → GSTIN_IMAGE</li>
+                            <li>"Passport" → PASSPORT_IMAGE</li>
+                            <li>"Cheque", "Check" → CHEQUEE</li>
+                            <li>"Driving license", "DL" → DRIVING_LICENCE_IMAGE</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block">
+<span class="comment"># Source type mapping for OCR rules</span>
+OCR_SOURCE_PATTERNS = {
+    <span class="string">"PAN_IMAGE"</span>: [<span class="string">"pan"</span>, <span class="string">"pan card"</span>, <span class="string">"pan number"</span>],
+    <span class="string">"AADHAR_IMAGE"</span>: [<span class="string">"aadhaar"</span>, <span class="string">"aadhar"</span>, <span class="string">"aadhaar front"</span>],
+    <span class="string">"AADHAR_BACK_IMAGE"</span>: [<span class="string">"aadhaar back"</span>, <span class="string">"aadhar back"</span>],
+    <span class="string">"GSTIN_IMAGE"</span>: [<span class="string">"gst"</span>, <span class="string">"gstin"</span>, <span class="string">"gst certificate"</span>],
+    <span class="string">"PASSPORT_IMAGE"</span>: [<span class="string">"passport"</span>, <span class="string">"passport front"</span>],
+    <span class="string">"PASSPORT_BACK_IMAGE"</span>: [<span class="string">"passport back"</span>],
+    <span class="string">"DRIVING_LICENCE_IMAGE"</span>: [<span class="string">"driving"</span>, <span class="string">"licence"</span>, <span class="string">"dl"</span>],
+    <span class="string">"CHEQUEE"</span>: [<span class="string">"cheque"</span>, <span class="string">"check"</span>, <span class="string">"bank cheque"</span>],
+}
+
+<span class="keyword">def</span> <span class="function">detect_source_type</span>(logic: <span class="variable">str</span>, action: <span class="variable">str</span>) -> <span class="variable">str</span>:
+    <span class="keyword">if</span> action == <span class="string">"OCR"</span>:
+        patterns = OCR_SOURCE_PATTERNS
+    <span class="keyword">elif</span> action == <span class="string">"VALIDATION"</span>:
+        patterns = VALIDATION_SOURCE_PATTERNS
+    <span class="comment"># ... other action types</span>
+
+    <span class="keyword">for</span> source, keywords <span class="keyword">in</span> patterns.items():
+        <span class="keyword">if</span> any(kw <span class="keyword">in</span> logic.lower() <span class="keyword">for</span> kw <span class="keyword">in</span> keywords):
+            <span class="keyword">return</span> source
+
+    <span class="keyword">return</span> <span class="variable">None</span>  <span class="comment"># Use LLM fallback</span>
+                </div>
+
+                <h4 style="color: #fff; margin: 25px 0 15px;">Search Space After Each Level</h4>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>Classification</th>
+                            <th>Rules Remaining</th>
+                            <th>Reduction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Level 0</td>
+                            <td>All Rules</td>
+                            <td>182</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Level 1</td>
+                            <td>Standard Rules</td>
+                            <td>182</td>
+                            <td>0% (Expression handled separately)</td>
+                        </tr>
+                        <tr>
+                            <td>Level 2</td>
+                            <td>OCR Action</td>
+                            <td>19</td>
+                            <td><span class="badge badge-green">90% reduction</span></td>
+                        </tr>
+                        <tr>
+                            <td>Level 3</td>
+                            <td>PAN_IMAGE Source</td>
+                            <td>1</td>
+                            <td><span class="badge badge-green">95% reduction</span></td>
+                        </tr>
+                        <tr>
+                            <td>Level 4</td>
+                            <td>Final Match</td>
+                            <td>1</td>
+                            <td><span class="badge badge-green">100% accuracy</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- STEP 5: Final Rule Matching -->
+        <div class="section">
+            <h2><span class="step-badge">STEP 5</span> Level 4: Final Rule Matching</h2>
+
+            <div class="step-detail step-5">
+                <h3><span class="step-number">5</span> Match to Specific Rule</h3>
+
+                <p style="color: #bbb; margin-bottom: 20px;">With narrowed search space (1-5 rules), perform final matching using keyword similarity or lightweight LLM.</p>
+
+                <div class="step-content">
+                    <div class="step-box">
+                        <h4>Matching Strategies</h4>
+                        <ul>
+                            <li><strong>Exact Match:</strong> If only 1 rule in search space, use it directly</li>
+                            <li><strong>Keyword Similarity:</strong> Score rules by keyword overlap with logic text</li>
+                            <li><strong>Name Matching:</strong> Match rule name patterns (e.g., "PAN Card OCR")</li>
+                            <li><strong>LLM Fallback:</strong> Present 2-5 options for LLM to choose from</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Confidence Scoring</h4>
+                        <ul>
+                            <li><strong>1.0:</strong> Single rule match (no ambiguity)</li>
+                            <li><strong>0.9:</strong> Clear keyword match with high overlap</li>
+                            <li><strong>0.8:</strong> Multiple rules, one clearly better</li>
+                            <li><strong>0.7:</strong> LLM-selected from 2-3 options</li>
+                            <li><strong>&lt;0.7:</strong> Flag for human review</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="algorithm-box">
+                    <h4>def match_final_rule(logic: str, action: str, source: str) -> Rule:</h4>
+                    <div class="algorithm-line"><span class="comment"># Get candidate rules from narrowed search space</span></div>
+                    <div class="algorithm-line">candidates = get_rules_by_action_and_source(action, source)</div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="comment"># If single candidate, return directly (confidence: 1.0)</span></div>
+                    <div class="algorithm-line"><span class="keyword">if</span> len(candidates) == <span class="number">1</span>:</div>
+                    <div class="algorithm-line indent-1"><span class="keyword">return</span> candidates[<span class="number">0</span>], confidence=<span class="number">1.0</span></div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="comment"># Score candidates by keyword similarity</span></div>
+                    <div class="algorithm-line">scored = [(rule, keyword_similarity(logic, rule)) <span class="keyword">for</span> rule <span class="keyword">in</span> candidates]</div>
+                    <div class="algorithm-line">scored.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="keyword">True</span>)</div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="comment"># If clear winner (score gap > 0.2), return it</span></div>
+                    <div class="algorithm-line"><span class="keyword">if</span> scored[<span class="number">0</span>][<span class="number">1</span>] - scored[<span class="number">1</span>][<span class="number">1</span>] > <span class="number">0.2</span>:</div>
+                    <div class="algorithm-line indent-1"><span class="keyword">return</span> scored[<span class="number">0</span>][<span class="number">0</span>], confidence=<span class="number">0.9</span></div>
+                    <div class="algorithm-line"></div>
+                    <div class="algorithm-line"><span class="comment"># Use lightweight LLM to choose from top 3 candidates</span></div>
+                    <div class="algorithm-line"><span class="keyword">return</span> llm_select_rule(logic, scored[:<span class="number">3</span>]), confidence=<span class="number">0.7</span></div>
+                </div>
+
+                <div class="callout">
+                    <h4>💡 LLM Selection Prompt (Constrained)</h4>
+                    <p>When LLM is needed for final selection, present ONLY the candidate rules as numbered options. This is a simple multiple-choice question, not open-ended generation. Example:</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment"># Constrained LLM prompt for rule selection</span>
+prompt = <span class="string">"""
+Given this logic: "Apply PAN OCR and extract name, number"
+
+Select the most appropriate rule (respond with number only):
+1. PAN Card OCR - Extracts name, PAN number, DOB from PAN image
+2. PAN Verification - Validates PAN against Income Tax database
+
+Answer: """</span>
+
+<span class="comment"># LLM responds: "1"</span>
+<span class="comment"># No hallucination possible - constrained to valid options</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6: Expression Rules Processing -->
+        <div class="section">
+            <h2><span class="step-badge">STEP 6</span> Expression Rules Processing</h2>
+
+            <div class="step-detail step-6">
+                <h3><span class="step-number">6</span> Process Expression Rules (Grounded LLM)</h3>
+
+                <p style="color: #bbb; margin-bottom: 20px;">For Expression Rules, use pattern caching first, then grounded LLM extraction for complex cases.</p>
+
+                <div class="step-content">
+                    <div class="step-box">
+                        <h4>Pattern Cache (No LLM)</h4>
+                        <ul>
+                            <li>Store common patterns with templates</li>
+                            <li>"visible if X is Yes" → mvi template</li>
+                            <li>"mandatory if X is Yes" → mm template</li>
+                            <li>"invisible and non-mandatory otherwise" → minvi + mnm</li>
+                            <li>Extract field names, fill template</li>
+                        </ul>
+                    </div>
+
+                    <div class="step-box">
+                        <h4>Grounded LLM (Complex Cases)</h4>
+                        <ul>
+                            <li>System prompt includes ONLY valid fields</li>
+                            <li>Function whitelist enforced</li>
+                            <li>Extract intent as display names</li>
+                            <li>Post-process: resolve to variable names</li>
+                            <li>Validate all references exist</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 style="color: #fff; margin: 25px 0 15px;">Common Pattern Templates</h4>
+                <div class="code-block">
+EXPRESSION_TEMPLATES = {
+    <span class="comment"># Pattern: "visible/mandatory if {field} is {value}"</span>
+    <span class="string">"visible_if"</span>: {
+        <span class="string">"pattern"</span>: r<span class="string">"(?:make\s+)?visible.*?if\s+[\"']?(.+?)[\"']?\s+is\s+[\"']?(.+?)[\"']?"</span>,
+        <span class="string">"template"</span>: <span class="string">'mvi(vo("{src}")==\'{val}\',"{dest}");'</span>
+    },
+
+    <span class="comment"># Pattern: "mandatory if {field} is {value}"</span>
+    <span class="string">"mandatory_if"</span>: {
+        <span class="string">"pattern"</span>: r<span class="string">"(?:make\s+)?mandatory.*?if\s+[\"']?(.+?)[\"']?\s+is\s+[\"']?(.+?)[\"']?"</span>,
+        <span class="string">"template"</span>: <span class="string">'mm(vo("{src}")==\'{val}\',"{dest}");'</span>
+    },
+
+    <span class="comment"># Pattern: "invisible and non-mandatory otherwise"</span>
+    <span class="string">"invisible_otherwise"</span>: {
+        <span class="string">"pattern"</span>: r<span class="string">"invisible.*?(?:and|,)?\s*non-?mandatory.*?otherwise"</span>,
+        <span class="string">"template"</span>: <span class="string">'minvi(vo("{src}")!=\'{val}\',"{dest}");mnm(vo("{src}")!=\'{val}\',"{dest}");'</span>
+    },
+
+    <span class="comment"># Pattern: "disable" or "non-editable"</span>
+    <span class="string">"disable"</span>: {
+        <span class="string">"pattern"</span>: r<span class="string">"(?:disable|non-?editable)"</span>,
+        <span class="string">"template"</span>: <span class="string">'dis(true,"{dest}");'</span>
+    }
+}
+
+<span class="keyword">def</span> <span class="function">try_template_match</span>(logic: <span class="variable">str</span>, field_name: <span class="variable">str</span>) -> <span class="variable">Optional[str]</span>:
+    <span class="keyword">for</span> template_name, template_data <span class="keyword">in</span> EXPRESSION_TEMPLATES.items():
+        match = re.search(template_data[<span class="string">"pattern"</span>], logic, re.IGNORECASE)
+        <span class="keyword">if</span> match:
+            <span class="comment"># Extract groups and fill template</span>
+            <span class="keyword">return</span> fill_template(template_data[<span class="string">"template"</span>], match, field_name)
+    <span class="keyword">return</span> <span class="variable">None</span>  <span class="comment"># No template match, use LLM</span>
+                </div>
+
+                <h4 style="color: #fff; margin: 25px 0 15px;">Grounded LLM System Prompt</h4>
+                <div class="code-block">
+SYSTEM_PROMPT = <span class="string">"""
+You are a rule extraction engine. Convert English logic to structured JSON.
+
+AVAILABLE FIELDS (use ONLY these exact names):
+- "Company Name"
+- "GSTIN"
+- "Please select GST option"
+- "Additional Mobile Number 1"
+- "Do you wish to add additional mobile numbers (India)?"
+... (full list from field registry)
+
+ALLOWED FUNCTIONS:
+- mvi(condition, ...fields) - Make visible
+- minvi(condition, ...fields) - Make invisible
+- mm(condition, ...fields) - Make mandatory
+- mnm(condition, ...fields) - Make non-mandatory
+- en(condition, ...fields) - Enable
+- dis(condition, ...fields) - Disable
+- ctfd(condition, source, ...fields) - Copy to fill data
+- cf(condition, ...fields) - Clear field
+
+RULES:
+1. Use ONLY field names from the list above
+2. Use ONLY functions from the list above
+3. Output JSON with "statements" array
+4. If a field name doesn't match exactly, find the closest match
+5. If no match possible, return empty array
+
+Output JSON only, no explanation.
+"""</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Processing Flow -->
+        <div class="section">
+            <h2><span class="step-badge">COMPLETE FLOW</span> End-to-End Processing Pipeline</h2>
+
+            <div class="algorithm-box">
+                <h4>def process_field_rules(field: FieldDefinition, registry: Dict) -> List[Rule]:</h4>
+                <div class="algorithm-line"><span class="comment"># Step 1: Pre-processing</span></div>
+                <div class="algorithm-line">logic = field.logic</div>
+                <div class="algorithm-line"><span class="keyword">if</span> <span class="keyword">not</span> logic <span class="keyword">or</span> logic.strip() == <span class="string">""</span>:</div>
+                <div class="algorithm-line indent-1"><span class="keyword">return</span> []</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="comment"># Step 2: Level 1 Classification (Expression vs Standard)</span></div>
+                <div class="algorithm-line">rule_type = classify_rule_type(logic)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="keyword">if</span> rule_type == <span class="string">"EXPRESSION"</span>:</div>
+                <div class="algorithm-line indent-1"><span class="comment"># Try template matching first (no LLM)</span></div>
+                <div class="algorithm-line indent-1">expression = try_template_match(logic, field.name)</div>
+                <div class="algorithm-line indent-1"><span class="keyword">if</span> expression:</div>
+                <div class="algorithm-line indent-2"><span class="keyword">return</span> [build_expression_rule(expression, confidence=<span class="number">0.95</span>)]</div>
+                <div class="algorithm-line indent-1"></div>
+                <div class="algorithm-line indent-1"><span class="comment"># Use grounded LLM for complex cases</span></div>
+                <div class="algorithm-line indent-1"><span class="keyword">return</span> extract_expression_with_llm(logic, field, registry)</div>
+                <div class="algorithm-line"></div>
+                <div class="algorithm-line"><span class="keyword">elif</span> rule_type == <span class="string">"STANDARD"</span>:</div>
+                <div class="algorithm-line indent-1"><span class="comment"># Step 3: Level 2 - Action Type Classification</span></div>
+                <div class="algorithm-line indent-1">action = classify_action_type(logic)</div>
+                <div class="algorithm-line indent-1"></div>
+                <div class="algorithm-line indent-1"><span class="comment"># Step 4: Level 3 - Source Type Classification</span></div>
+                <div class="algorithm-line indent-1">source = detect_source_type(logic, action)</div>
+                <div class="algorithm-line indent-1"></div>
+                <div class="algorithm-line indent-1"><span class="comment"># Step 5: Level 4 - Final Rule Matching</span></div>
+                <div class="algorithm-line indent-1">matched_rule, confidence = match_final_rule(logic, action, source)</div>
+                <div class="algorithm-line indent-1"></div>
+                <div class="algorithm-line indent-1"><span class="keyword">if</span> matched_rule:</div>
+                <div class="algorithm-line indent-2"><span class="keyword">return</span> [build_standard_rule(matched_rule, confidence)]</div>
+                <div class="algorithm-line indent-1"></div>
+                <div class="algorithm-line indent-1"><span class="comment"># Fallback: Try as expression rule</span></div>
+                <div class="algorithm-line indent-1"><span class="keyword">return</span> extract_expression_with_llm(logic, field, registry)</div>
+            </div>
+        </div>
+
+        <!-- Cost & Hallucination Analysis -->
+        <div class="section">
+            <h2><span class="step-badge">ANALYSIS</span> Cost & Hallucination Reduction</h2>
+
+            <div class="step-content">
+                <div class="step-box">
+                    <h4>LLM Calls Distribution</h4>
+                    <ul>
+                        <li><strong>~60%:</strong> Template match (No LLM)</li>
+                        <li><strong>~25%:</strong> Direct standard rule match (No LLM)</li>
+                        <li><strong>~10%:</strong> Grounded LLM for expression rules</li>
+                        <li><strong>~5%:</strong> Constrained LLM for rule selection</li>
+                    </ul>
+                </div>
+
+                <div class="step-box">
+                    <h4>Hallucination Prevention</h4>
+                    <ul>
+                        <li><strong>Field Registry:</strong> LLM sees only real fields</li>
+                        <li><strong>Function Whitelist:</strong> Invalid functions rejected</li>
+                        <li><strong>Constrained Selection:</strong> Multiple-choice, not free-form</li>
+                        <li><strong>Post-Validation:</strong> All outputs verified against registry</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4 style="color: #fff; margin: 25px 0 15px;">Cost Comparison (388 Fields Document)</h4>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Approach</th>
+                        <th>LLM Calls</th>
+                        <th>Est. Cost</th>
+                        <th>Hallucination Risk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Naive (LLM for every field)</td>
+                        <td>388</td>
+                        <td>~$0.50</td>
+                        <td><span class="badge badge-red">HIGH</span></td>
+                    </tr>
+                    <tr>
+                        <td>Basic Optimization (gpt-4o-mini)</td>
+                        <td>388</td>
+                        <td>~$0.15</td>
+                        <td><span class="badge badge-orange">MEDIUM</span></td>
+                    </tr>
+                    <tr>
+                        <td>Template + Classification</td>
+                        <td>~60</td>
+                        <td>~$0.05</td>
+                        <td><span class="badge badge-orange">MEDIUM-LOW</span></td>
+                    </tr>
+                    <tr style="background: rgba(34,197,94,0.1);">
+                        <td><strong>Hierarchical + Grounded (This Architecture)</strong></td>
+                        <td>~40</td>
+                        <td><strong>~$0.03</strong></td>
+                        <td><span class="badge badge-green">LOW</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="callout success">
+                <h4>✅ Architecture Benefits</h4>
+                <p><strong>94% Cost Reduction:</strong> From $0.50 to $0.03 per document<br>
+                <strong>95% Search Space Reduction:</strong> From 182 rules to 1-2 candidates<br>
+                <strong>Minimal Hallucination:</strong> Grounded prompts + constrained selection + post-validation</p>
+            </div>
+        </div>
+
+        <!-- Implementation Checklist -->
+        <div class="section">
+            <h2><span class="step-badge">IMPLEMENTATION</span> Module Checklist</h2>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Purpose</th>
+                        <th>Uses LLM</th>
+                        <th>Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>field_registry.py</code></td>
+                        <td>Build displayName → variableName mapping</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                    <tr>
+                        <td><code>rule_classifier.py</code></td>
+                        <td>Level 1: Expression vs Standard classification</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                    <tr>
+                        <td><code>action_classifier.py</code></td>
+                        <td>Level 2: Action type classification (OCR, VALIDATION, etc.)</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                    <tr>
+                        <td><code>source_classifier.py</code></td>
+                        <td>Level 3: Source type detection</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                    <tr>
+                        <td><code>rule_matcher.py</code></td>
+                        <td>Level 4: Final rule matching with similarity scoring</td>
+                        <td><span class="badge badge-orange">Fallback</span></td>
+                        <td>P1</td>
+                    </tr>
+                    <tr>
+                        <td><code>pattern_cache.py</code></td>
+                        <td>Template matching for expression rules</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P1</td>
+                    </tr>
+                    <tr>
+                        <td><code>grounded_extractor.py</code></td>
+                        <td>Grounded LLM extraction for complex expressions</td>
+                        <td><span class="badge badge-orange">Yes</span></td>
+                        <td>P1</td>
+                    </tr>
+                    <tr>
+                        <td><code>expression_assembler.py</code></td>
+                        <td>Build expr-eval syntax from intent</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                    <tr>
+                        <td><code>validator.py</code></td>
+                        <td>Validate functions, fields, syntax</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                    <tr>
+                        <td><code>rules_orchestrator.py</code></td>
+                        <td>End-to-end pipeline coordination</td>
+                        <td><span class="badge badge-green">No</span></td>
+                        <td>P0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 0; color: #666;">
+            <p>Document Parser - Detailed Rules Extraction Architecture v2.0</p>
+            <p style="font-size: 0.85em; margin-top: 5px;">Hierarchical Classification for Minimal Cost & Hallucination</p>
+        </div>
+    </div>
+</body>
+</html>

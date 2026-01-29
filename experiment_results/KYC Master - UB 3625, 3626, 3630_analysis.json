@@ -1,0 +1,163 @@
+{
+  "file_name": "KYC Master - UB 3625, 3626, 3630.docx",
+  "metadata": {
+    "title": "KYC Master Update United Breweries",
+    "author": "Prepared By Manch Technology",
+    "process_name": "",
+    "created": "2025-04-03 09:07:00+00:00",
+    "modified": "2025-04-03 09:07:00+00:00"
+  },
+  "statistics": {
+    "sections": 5,
+    "all_fields": 29,
+    "initiator_fields": 13,
+    "spoc_fields": 11,
+    "approver_fields": 0,
+    "workflows": {
+      "initiator": 20,
+      "approver": 45,
+      "spoc": 16
+    },
+    "approval_rules": 0,
+    "version_history": 0,
+    "terminology_entries": 0,
+    "reference_tables": 0,
+    "integration_fields": 0,
+    "document_requirements": 0,
+    "dropdown_mappings": 2,
+    "raw_tables": 8
+  },
+  "completeness_checks": {
+    "has_metadata": true,
+    "has_fields": true,
+    "has_workflows": true,
+    "has_version_history": false,
+    "has_categorized_fields": true
+  },
+  "field_types_distribution": {
+    "TEXT": 21,
+    "DROPDOWN": 3,
+    "UNKNOWN": 1,
+    "DATE": 1,
+    "PANEL": 1,
+    "FILE": 2
+  },
+  "mandatory_field_counts": {
+    "mandatory": 7,
+    "optional": 22
+  },
+  "sample_fields": [
+    {
+      "name": "Group Owner Outlet Code",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "",
+      "rules": "",
+      "section": "",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "ASM name",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "",
+      "rules": "",
+      "section": "",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "ASM Mobile",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "",
+      "rules": "",
+      "section": "",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "ASM Email address",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "",
+      "rules": "",
+      "section": "",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    },
+    {
+      "name": "Region",
+      "type": "TEXT",
+      "type_raw": "TEXT",
+      "mandatory": false,
+      "logic": "",
+      "rules": "",
+      "section": "",
+      "dropdown_values": [],
+      "visibility_condition": ""
+    }
+  ],
+  "sample_workflows": {
+    "initiator": [
+      {
+        "step": 1,
+        "description": "Single Transaction :",
+        "action_type": ""
+      },
+      {
+        "step": 2,
+        "description": "UB team will initiate the single transaction by clicking on the create button and selecting the temp",
+        "action_type": "create"
+      },
+      {
+        "step": 3,
+        "description": "UB team needs to enter the below mentioned details in the first PANEL named \u201cgroup owner details\u201d.",
+        "action_type": ""
+      }
+    ],
+    "approver": [
+      {
+        "step": 1,
+        "description": "System will assign this transaction to the entered ASM.",
+        "action_type": ""
+      },
+      {
+        "step": 2,
+        "description": "System will show all the details as mentioned in the previous steps.",
+        "action_type": ""
+      },
+      {
+        "step": 3,
+        "description": "In the group member leaving details panel, system will ask below mentioned question",
+        "action_type": ""
+      }
+    ],
+    "spoc": [
+      {
+        "step": 1,
+        "description": "SMS Notification: An SMS containing a link is sent to SPOC\u2019s mobile number.",
+        "action_type": "notify"
+      },
+      {
+        "step": 2,
+        "description": "OTP Authentication:",
+        "action_type": "verify"
+      },
+      {
+        "step": 3,
+        "description": "The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.",
+        "action_type": "verify"
+      }
+    ]
+  },
+  "issues": [
+    "Some fields not categorized: 29 total, 24 categorized",
+    "Found 1 fields with UNKNOWN type. Raw types: {''}"
+  ]
+}

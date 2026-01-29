@@ -1,0 +1,215 @@
+================================================================================
+SECTION ITERATOR COMPREHENSIVE TEST
+================================================================================
+Document: extraction/Outlet_KYC _UB_3334.docx
+Test Time: 2026-01-22 13:22:24
+================================================================================
+
+INITIALIZATION
+--------------------------------------------------------------------------------
+✓ SectionIterator created
+✓ Document parsed
+
+Total sections found: 9
+================================================================================
+
+
+SECTION 1/9
+================================================================================
+Index: 0
+Heading: UB KYC PROCESS
+Level: 1
+Parent Path: 
+--------------------------------------------------------------------------------
+Content Type: list (with 1 items)
+Content Length: 180 characters
+Content Lines: 1
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+The following steps outline the detailed flow of the process, from initiation to approval. Each step has been structured to ensure clarity, precision, and a smooth user experience.
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 2/9
+================================================================================
+Index: 1
+Heading: INITIATOR PROCESS
+Level: 2
+Parent Path: UB KYC PROCESS
+--------------------------------------------------------------------------------
+Content Type: list (with 5 items)
+Content Length: 356 characters
+Content Lines: 5
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+Login: The UBL team logs in to the Manch application using the provided credentials.
+File Upload:
+The UBL team uploads a bulk file containing all necessary details such as outlet codes, contact information, and any other required data.
+The system validates the uploaded file for completeness.
+Below are the data point mentioned for the file upload format -
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 3/9
+================================================================================
+Index: 2
+Heading: SPOC BEHAVIOR
+Level: 2
+Parent Path: UB KYC PROCESS
+--------------------------------------------------------------------------------
+Content Type: list (with 14 items)
+Content Length: 1218 characters
+Content Lines: 14
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+SMS Notification: An SMS containing a link is sent to the SPOC’s mobile number.
+SMS Reminder: Manch will share the SMS containing a link again to SPOC mobile number on twice a Weekly basis till the KYC is submitted by SPOC.
+Note: Days of the week needs to be finalized.
+OTP Authentication:
+The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.
+The SPOC enters the OTP, and after successful verification, the Manch platform opens the link.
+Outlet Code Entry:
+... [truncated]
+
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 4/9
+================================================================================
+Index: 3
+Heading: APPROVER PROCESS
+Level: 2
+Parent Path: UB KYC PROCESS
+--------------------------------------------------------------------------------
+Content Type: list (with 62 items)
+Content Length: 5816 characters
+Content Lines: 62
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.
+Individual Approval (Without Group concept) :
+The approval flow for individuals will only be routed to the TSE approvers in two specific cases, followed by the UB team as mentioned below.
+In all other scenarios, it directly goes to the UB team.
+Establishment Approval (Without Group concept): All requests will it dire
+... [truncated]
+
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 5/9
+================================================================================
+Index: 4
+Heading: FLOW CHART
+Level: 1
+Parent Path: 
+--------------------------------------------------------------------------------
+Content Type: list (with 0 items)
+Content Length: 0 characters
+Content Lines: 0
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+[EMPTY CONTENT]
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 6/9
+================================================================================
+Index: 5
+Heading: INDIVIDUAL USE CASE
+Level: 2
+Parent Path: FLOW CHART
+--------------------------------------------------------------------------------
+Content Type: list (with 0 items)
+Content Length: 0 characters
+Content Lines: 0
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+[EMPTY CONTENT]
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 7/9
+================================================================================
+Index: 6
+Heading: GROUP USE CASE
+Level: 2
+Parent Path: FLOW CHART
+--------------------------------------------------------------------------------
+Content Type: list (with 0 items)
+Content Length: 0 characters
+Content Lines: 0
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+[EMPTY CONTENT]
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 8/9
+================================================================================
+Index: 7
+Heading: REPORTS
+Level: 1
+Parent Path: 
+--------------------------------------------------------------------------------
+Content Type: list (with 1 items)
+Content Length: 128 characters
+Content Lines: 1
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+One report will be generated by Manch for this process report format will be finalized with UB team, after process finalization.
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+SECTION 9/9
+================================================================================
+Index: 8
+Heading: DEPENDENCY
+Level: 1
+Parent Path: 
+--------------------------------------------------------------------------------
+Content Type: list (with 5 items)
+Content Length: 203 characters
+Content Lines: 5
+--------------------------------------------------------------------------------
+Content Preview (first 500 chars):
+Outlet master - Resolved
+Outlecode to TSE, ASM and state mapping - Resolved
+Group construct mapping
+Confirmation on filed level information for SPOC and approver level
+Need information of UB team members
+--------------------------------------------------------------------------------
+Tables Found: 0
+
+================================================================================
+
+
+SUMMARY
+================================================================================
+Document: extraction/Outlet_KYC _UB_3334.docx
+Total Sections: 9
+
+Sections by Level:
+  Level 1: 4 section(s)
+  Level 2: 5 section(s)
+
+Sections with content: 6/9
+Sections with tables: 0/9
+================================================================================
+
+✓ Test completed successfully

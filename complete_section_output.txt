@@ -1,0 +1,270 @@
+Parsing document: extraction/Outlet_KYC _UB_3334.docx
+
+Searching for embedded Excel files...
+  Found 2 embedded Excel file(s)
+
+  Processing: Microsoft_Excel_Worksheet.xlsx
+    Sheet: Audit Log
+      ✓ Extracted table: 3 columns, 57 rows
+    Sheet: State Head Group approval form
+      ✓ Extracted table: 10 columns, 6 rows
+
+  Processing: Microsoft_Excel_Worksheet1.xlsx
+    Sheet: Audit Log
+      ✓ Extracted table: 3 columns, 57 rows
+    Sheet: State Head Group approval form
+      ✓ Extracted table: 10 columns, 6 rows
+Found 9 sections (including subsections)
+================================================================================
+COMPLETE SECTION DISPLAY
+================================================================================
+📁 Document: extraction/Outlet_KYC _UB_3334.docx
+🕐 Time: 2026-01-22 13:25:10
+================================================================================
+
+🔄 Initializing SectionIterator...
+✓ Document parsed successfully
+✓ Found 9 sections
+
+================================================================================
+SECTION 1/9
+================================================================================
+📍 Index: 0
+📝 Heading: UB KYC PROCESS
+🔢 Level: 1
+📂 Parent Path: (root)
+--------------------------------------------------------------------------------
+📄 Content:
+
+  The following steps outline the detailed flow of the process, from initiation to approval. Each step has been structured to ensure clarity, precision, and a smooth user experience.
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 2/9
+================================================================================
+📍 Index: 1
+📝 Heading: INITIATOR PROCESS
+🔢 Level: 2
+📂 Parent Path: UB KYC PROCESS
+--------------------------------------------------------------------------------
+📄 Content:
+
+  Login: The UBL team logs in to the Manch application using the provided credentials.
+  File Upload:
+  The UBL team uploads a bulk file containing all necessary details such as outlet codes, contact information, and any other required data.
+  The system validates the uploaded file for completeness.
+  Below are the data point mentioned for the file upload format -
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 3/9
+================================================================================
+📍 Index: 2
+📝 Heading: SPOC BEHAVIOR
+🔢 Level: 2
+📂 Parent Path: UB KYC PROCESS
+--------------------------------------------------------------------------------
+📄 Content:
+
+  SMS Notification: An SMS containing a link is sent to the SPOC’s mobile number.
+  SMS Reminder: Manch will share the SMS containing a link again to SPOC mobile number on twice a Weekly basis till the KYC is submitted by SPOC.
+  Note: Days of the week needs to be finalized.
+  OTP Authentication:
+  The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.
+  The SPOC enters the OTP, and after successful verification, the Manch platform opens the link.
+  Outlet Code Entry:  The SPOC enters the Outlet Code, which is validated by the Manch system against the code associated with the generated link.
+  Agreement to Policies:
+  Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions.
+  Note: The wording of the terms of conditions and data privacy policy is provided by the UB team.
+  This can be a hyperlink redirecting the user to view the terms of conditions
+  Form Opening: Manch will open the form and SPOC needs to enter the required details as mentioned below
+  Note: Details will change based on the answer given by SPOC and validated by MANCH with the system data.
+  Below table represent the dropdown values of questionnaires asked in SPOC screen.
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 4/9
+================================================================================
+📍 Index: 3
+📝 Heading: APPROVER PROCESS
+🔢 Level: 2
+📂 Parent Path: UB KYC PROCESS
+--------------------------------------------------------------------------------
+📄 Content:
+
+  Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.
+  Individual Approval (Without Group concept) :
+  The approval flow for individuals will only be routed to the TSE approvers in two specific cases, followed by the UB team as mentioned below.
+  In all other scenarios, it directly goes to the UB team.
+  Establishment Approval (Without Group concept): All requests will it directly goes to the UB team.
+  Group approval: All requests will first go to the ASM, and then proceed to the UB team.
+  Note – The assignment is based on outlet code mapping to ensure the request reaches the correct approver for review UB team needs to provide the TSE, ASM and State mapping based on outlet code.
+  Approver access: Approvers have two methods to access the transaction, review and act on requests as mentioned below -
+  Email and SMS Notification:
+  The Manch system sends an email and SMS notification to the approver with a link to review the request.
+  The approver clicks the link to access all request details and can either approve or reject the request based on the provided information.
+  Manch System Login:
+  The approver can log in to the Manch system, navigate to the "Pending Requests" section, and review the details.
+  After reviewing, the approver can either approve or reject the request.
+  TSE View and Action
+  Log into the Manch system: TSE logs into the Manch system and views all pending requests.
+  Open the transaction: TSE opens a transaction to see the details mentioned below:
+  Outlet code
+  Outlet name
+  Licensee name
+  Beneficiary name
+  Authorisation-letter
+  Respond to mandatory question: TSE answers the mandatory question: "Are you approving this request?" by selecting either "Yes" or "No" from the dropdown menu.
+  Approve or Reject the request:
+  If TSE clicks "Approve," It will submit. The request then moves to the next level of approver.
+  If TSE clicks "Reject," they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.
+  Note : UB team needs to be provide the rejection reasons.
+  Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to TSE, who can then repeat the approval or rejection process as outlined above.
+  ASM View and Action
+  Log into the Manch system: ASM logs into the Manch system and views all pending requests.
+  Open the transaction: ASM opens a transaction to see the details uploaded in the bulk file, details entered by the SPOC, along with the relevant documents.
+  Respond to mandatory question: ASM answers the mandatory question: "Are you approving this group construct?" by selecting either "Yes" or "No" from the dropdown menu.
+  Approve or reject the request:
+  If ASM clicks "Approve," It will submit. The request then moves to the next level of approver.
+  If ASM clicks "Reject," they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.
+  Note : UB team needs to be provide the rejection reasons.
+  Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.
+  UB approver View and Action
+  Log into the Manch system: UB approver logs into the Manch system and views all pending requests.
+  Open the transaction:
+  Individual Use case :
+  UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.
+  Group Use case :
+  UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.
+  UB approver sees group member details along with uploaded documents and match score.
+  Respond to mandatory question:
+  Individual Use case :
+  UB approver answers the mandatory question: "Are you approving this request?" by selecting either "Yes" or "No" from the dropdown menu.
+  Group Use case :
+  UB approver answers the mandatory question: "Are you approving this group KYC?" for group owner level by selecting either "Yes" or "No" from the dropdown menu.
+  UB approver answers the mandatory question: "Are you approving this group member document?" for each group member level by selecting either "Yes" or "No" from the dropdown menu.
+  Approve or reject the request:
+  If UB approver clicks "Approve," It will submit. The request then moves to Accepted status.
+  If UB approver clicks "Reject," they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.
+  Note : UB team needs to be provide the rejection reasons.
+  Resubmit by SPOC :
+  Once the SPOC submits the required details, the request assigns back to TSE(In case of individual use cases) or ASM (In case of group use cases) who can then repeat the approval or rejection process as outlined above
+  If UB team rejects X outlets out of Y, and approve Y-X outlets then SPOC will be able view only X outlets (Rejected Outlets). SPOC will be able to edit X outlet details along with documents and re submit. SPOC will not be able to edit other outlets present in the group (X -Y outlets).
+  Once SPOC resubmits, it will be reassigned to ASM / TSE, and ASM /TSE needs to take the actions mentioned in the ASM / TSE section.
+  Once ASM resubmits, it will be reassigned to UB Team, and UB Team needs to take the actions mentioned in the UB Team section.
+  Once UB team submit the transaction, it will be in Accepted status.
+  If any of the approvals again rejects the re-submitted outlets information then it will go through the same flow as mentioned above.
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 5/9
+================================================================================
+📍 Index: 4
+📝 Heading: FLOW CHART
+🔢 Level: 1
+📂 Parent Path: (root)
+--------------------------------------------------------------------------------
+📄 Content:
+
+  [NO CONTENT]
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 6/9
+================================================================================
+📍 Index: 5
+📝 Heading: INDIVIDUAL USE CASE
+🔢 Level: 2
+📂 Parent Path: FLOW CHART
+--------------------------------------------------------------------------------
+📄 Content:
+
+  [NO CONTENT]
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 7/9
+================================================================================
+📍 Index: 6
+📝 Heading: GROUP USE CASE
+🔢 Level: 2
+📂 Parent Path: FLOW CHART
+--------------------------------------------------------------------------------
+📄 Content:
+
+  [NO CONTENT]
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 8/9
+================================================================================
+📍 Index: 7
+📝 Heading: REPORTS
+🔢 Level: 1
+📂 Parent Path: (root)
+--------------------------------------------------------------------------------
+📄 Content:
+
+  One report will be generated by Manch for this process report format will be finalized with UB team, after process finalization.
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SECTION 9/9
+================================================================================
+📍 Index: 8
+📝 Heading: DEPENDENCY
+🔢 Level: 1
+📂 Parent Path: (root)
+--------------------------------------------------------------------------------
+📄 Content:
+
+  Outlet master - Resolved
+  Outlecode to TSE, ASM and state mapping - Resolved
+  Group construct mapping
+  Confirmation on filed level information for SPOC and approver level
+  Need information of UB team members
+
+--------------------------------------------------------------------------------
+📊 Tables: None
+
+
+================================================================================
+SUMMARY
+================================================================================
+📊 Total Sections: 9
+
+Sections by Level:
+  • Level 1: 4 section(s)
+  • Level 2: 5 section(s)
+
+📝 Sections with content: 6/9
+📊 Sections with tables: 0/9
+📏 Total content length: 7,901 characters
+
+================================================================================
+✓ Display completed successfully
+================================================================================

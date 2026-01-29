@@ -1,0 +1,659 @@
+{
+  "document_name": "Vendor Creation Sample BUD",
+  "total_sections": 35,
+  "field_rules_extracted": 52,
+  "unstructured_field_rules": [
+    {
+      "section_name": "1.1 Purpose",
+      "section_level": 2,
+      "parent_path": "1. Executive Summary",
+      "section_index": 1,
+      "rule_type": "general_field_rule",
+      "text": "This Business User Document describes the requirements for standardizing and automating the vendor creation process within the organization. It aims to ensure that vendor master data is captured accurately, approved efficiently, and made available in downstream systems in a timely and compliant manner.",
+      "affected_fields": [
+        "This Business User Document"
+      ]
+    },
+    {
+      "section_name": "1.2 Audience",
+      "section_level": 2,
+      "parent_path": "1. Executive Summary",
+      "section_index": 2,
+      "rule_type": "field_validation",
+      "text": "The primary audience of this document includes business owners for procurement and finance, business analysts, project managers, solution architects, developers, and key end-users involved in vendor onboarding and maintenance. It may also be referenced by internal audit, compliance, and operations teams to validate that the implemented process aligns with policy and regulatory requirements.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "3.1 In Scope",
+      "section_level": 2,
+      "parent_path": "3. Project Scope",
+      "section_index": 7,
+      "rule_type": "field_validation",
+      "text": "Capture and validation of vendor master data through a standardized vendor creation form (internal and external-facing).",
+      "affected_fields": [
+        "Capture"
+      ]
+    },
+    {
+      "section_name": "3.1 In Scope",
+      "section_level": 2,
+      "parent_path": "3. Project Scope",
+      "section_index": 7,
+      "rule_type": "field_dependency",
+      "text": "Storage and verification of mandatory supporting documents (e.g., tax, banking, registration, and compliance certificates).",
+      "affected_fields": [
+        "Storage"
+      ]
+    },
+    {
+      "section_name": "4.3 Initiation Methods",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 12,
+      "rule_type": "field_validation",
+      "text": "This process can be initiated by any user in the system. The user should be active in the Pidilite HRMS system. This data will be maintained in the Manch EDV system.",
+      "affected_fields": [
+        "Pidilite HRMS",
+        "Manch EDV",
+        "This"
+      ]
+    },
+    {
+      "section_name": "4.3 Initiation Methods",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 12,
+      "rule_type": "field_validation",
+      "text": "Note – Pidilite to share the format and data for maintaining access with the integration API.",
+      "affected_fields": [
+        "API",
+        "Pidilite"
+      ]
+    },
+    {
+      "section_name": "4.4 Field-Level Information",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 13,
+      "rule_type": "general_field_rule",
+      "text": "Below are the details of each field used in this process, with the common logic for all stakeholders in the process.",
+      "affected_fields": [
+        "field",
+        "Below"
+      ]
+    },
+    {
+      "section_name": "4.4 Field-Level Information",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 13,
+      "rule_type": "field_validation",
+      "text": "Note – If there is any dependent dropdown, then it should be clear when the parent dropdown values are changed.",
+      "affected_fields": [
+        "dropdown",
+        "value"
+      ]
+    },
+    {
+      "section_name": "4.4 Field-Level Information",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 13,
+      "rule_type": "field_validation",
+      "text": "Note – If based on dropdown values, fields are visible, invisible, mandatory, or non-mandatory, then respective fields should be clear when dropdown values are changed.",
+      "affected_fields": [
+        "dropdown",
+        "field",
+        "value"
+      ]
+    },
+    {
+      "section_name": "4.4 Field-Level Information",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 13,
+      "rule_type": "field_dependency",
+      "text": "Note – If the user is copying any values to another FFD and the original field is getting cleared, then copy values should also be cleared. E.g. In this process, when GST is uploaded, the GST address is copied into the address detail panel. If the GST address is getting clear, then the address details should also get clear.",
+      "affected_fields": [
+        "GST",
+        "field",
+        "value",
+        "address",
+        "PAN",
+        "panel",
+        "FFD"
+      ]
+    },
+    {
+      "section_name": "4.5.1 Initiator Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 15,
+      "rule_type": "data_copy_rule",
+      "text": "Company Name – Title (Copy the company name FFD Data into Title)",
+      "affected_fields": [
+        "Copy",
+        "PAN",
+        "Company Name",
+        "Title",
+        "FFD Data"
+      ]
+    },
+    {
+      "section_name": "4.5.1 Initiator Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 15,
+      "rule_type": "general_field_rule",
+      "text": "Vendor Code – Attribute 1 (Copt the vendor code FFD Data into Attribute 1)",
+      "affected_fields": [
+        "FFD Data",
+        "Copt",
+        "Attribute",
+        "Vendor Code"
+      ]
+    },
+    {
+      "section_name": "4.5.1 Initiator Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 15,
+      "rule_type": "general_field_rule",
+      "text": "Form will open with the below details of initiator. Initiator will be able to view only Basic details panel and fields as mentioned below. All the fields will be having common logic with them.",
+      "affected_fields": [
+        "Basic",
+        "field",
+        "Initiator",
+        "Form",
+        "PAN",
+        "panel",
+        "All"
+      ]
+    },
+    {
+      "section_name": "4.5.1 Initiator Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 15,
+      "rule_type": "field_validation",
+      "text": "Once the Initiator enters the details and clicks on submit. The system will perform the validation and send the details to the vendor for them to take action.",
+      "affected_fields": [
+        "Once",
+        "Initiator"
+      ]
+    },
+    {
+      "section_name": "4.5.2 Vendor Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 16,
+      "rule_type": "field_validation",
+      "text": "Email Authentication: Once the link is open, system will ask the to enter OTP, and after successful verification, the Manch platform opens the link. Vendor will click on the enter detail option for viewing and entering the information.",
+      "affected_fields": [
+        "Email Authentication",
+        "Vendor",
+        "Manch",
+        "OTP",
+        "Once"
+      ]
+    },
+    {
+      "section_name": "4.5.2 Vendor Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 16,
+      "rule_type": "field_validation",
+      "text": "Form level information: Vendor will be able to view the below mentioned fields for them to view and enter the details. This form will have to common logic along with specific vendor level behaviour logic.",
+      "affected_fields": [
+        "field",
+        "Vendor",
+        "This",
+        "Form"
+      ]
+    },
+    {
+      "section_name": "4.5.2 Vendor Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 16,
+      "rule_type": "field_dependency",
+      "text": "Based on the Vendor Type chosen, the KYC documents are conditionally mandatory and non-mandatory as follows",
+      "affected_fields": [
+        "Based",
+        "KYC",
+        "Vendor Type"
+      ]
+    },
+    {
+      "section_name": "4.5.2 Vendor Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 16,
+      "rule_type": "data_copy_rule",
+      "text": "All the documents should get copied in the respective supporting document by applying the copy to document storage ID rule against each document upload FFD.",
+      "affected_fields": [
+        "All",
+        "FFD"
+      ]
+    },
+    {
+      "section_name": "4.5.2 Vendor Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 16,
+      "rule_type": "field_validation",
+      "text": "Once the Vendor enters the details and clicks on submit. The system will perform the validation and send the details to the approvers for them to take action.",
+      "affected_fields": [
+        "Once",
+        "Vendor"
+      ]
+    },
+    {
+      "section_name": "4.5.3 Approver Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 17,
+      "rule_type": "field_validation",
+      "text": "Assignment to Approver(s): Once all the mandatory fields are entered, validated, and the request is submitted by the Vendor, the system automatically assigns the request to the appropriate approver based on the approver logic defined.",
+      "affected_fields": [
+        "field",
+        "Vendor",
+        "Assignment",
+        "Approver",
+        "Once"
+      ]
+    },
+    {
+      "section_name": "4.5.3 Approver Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 17,
+      "rule_type": "field_validation",
+      "text": "Approver Behaviour: Based on all the information available to approver , they can approve or reject or send back.",
+      "affected_fields": [
+        "Based",
+        "Approver Behaviour"
+      ]
+    },
+    {
+      "section_name": "4.5.3 Approver Behaviour",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details",
+      "section_index": 17,
+      "rule_type": "field_dependency",
+      "text": "If approver send back, transaction will be assigned back to requestor and requestor can view the comment and update the required data.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "4.5.3.1 Approver Flow",
+      "section_level": 4,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details > 4.5.3 Approver Behaviour",
+      "section_index": 18,
+      "rule_type": "field_validation",
+      "text": "Pending with Accounts Team – Validation of accounting and finance-related information.",
+      "affected_fields": [
+        "Validation",
+        "Pending",
+        "Accounts Team"
+      ]
+    },
+    {
+      "section_name": "4.5.3.1 Approver Flow",
+      "section_level": 4,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details > 4.5.3 Approver Behaviour",
+      "section_index": 18,
+      "rule_type": "field_validation",
+      "text": "Pending with Auditor – Compliance and audit validation as required.",
+      "affected_fields": [
+        "Pending",
+        "Compliance",
+        "Auditor"
+      ]
+    },
+    {
+      "section_name": "4.5.3.1 Approver Flow",
+      "section_level": 4,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details > 4.5.3 Approver Behaviour",
+      "section_index": 18,
+      "rule_type": "field_validation",
+      "text": "Pending with Auditor – Compliance and audit validation as required.",
+      "affected_fields": [
+        "Pending",
+        "Compliance",
+        "Auditor"
+      ]
+    },
+    {
+      "section_name": "4.5.3.2 Specific Approver Behaviour for Contributors",
+      "section_level": 4,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details > 4.5.3 Approver Behaviour",
+      "section_index": 19,
+      "rule_type": "field_validation",
+      "text": "It has a contributor-style view where all information entered by both the initiator and the vendor is displayed in a read-only (disabled) form, and, based on this information, Requestor will enter the additional details specified below.",
+      "affected_fields": [
+        "Requestor"
+      ]
+    },
+    {
+      "section_name": "4.5.3.2 Specific Approver Behaviour for Contributors",
+      "section_level": 4,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.5 Process Details > 4.5.3 Approver Behaviour",
+      "section_index": 19,
+      "rule_type": "field_validation",
+      "text": "It has a contributor-style view where all information entered by previous stockholders is displayed in a read-only (disabled) form, and, based on this information, approver will enter the additional details specified below.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "4.7 Record List View",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 21,
+      "rule_type": "visibility_rule",
+      "text": "List key fields to be displayed on user/admin dashboards for quick reference.\nIt will have below mentioned columns",
+      "affected_fields": [
+        "field",
+        "List"
+      ]
+    },
+    {
+      "section_name": "4.7 Record List View",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 21,
+      "rule_type": "data_copy_rule",
+      "text": "Company Name – Title (Copy the company name FFD Data into Title)",
+      "affected_fields": [
+        "Copy",
+        "PAN",
+        "Company Name",
+        "Title",
+        "FFD Data"
+      ]
+    },
+    {
+      "section_name": "4.7 Record List View",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 21,
+      "rule_type": "general_field_rule",
+      "text": "Vendor Code – Attribute 1 (Copt the vendor code FFD Data into Attribute 1)",
+      "affected_fields": [
+        "FFD Data",
+        "Copt",
+        "Attribute",
+        "Vendor Code"
+      ]
+    },
+    {
+      "section_name": "4.8 Communication Requirements",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 22,
+      "rule_type": "field_validation",
+      "text": "Effective communication is pivotal to the success of the vendor creation process. This section delineates the communication strategies, channels, templates, and protocols to ensure timely and accurate information dissemination among stakeholders.",
+      "affected_fields": [
+        "Effective",
+        "This"
+      ]
+    },
+    {
+      "section_name": "4.8.2 Communication Templates",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.8 Communication Requirements",
+      "section_index": 24,
+      "rule_type": "field_validation",
+      "text": "Kindly ensure the following documents are submitted in PDF and JPEG format, with each file not exceeding 4 MB in size:",
+      "affected_fields": [
+        "JPEG",
+        "PDF",
+        "Kindly"
+      ]
+    },
+    {
+      "section_name": "4.8.2 Communication Templates",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.8 Communication Requirements",
+      "section_index": 24,
+      "rule_type": "mandatory_rule",
+      "text": "b)  PAN Card – Mandatory",
+      "affected_fields": [
+        "PAN Card",
+        "PAN",
+        "Mandatory"
+      ]
+    },
+    {
+      "section_name": "4.8.2 Communication Templates",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.8 Communication Requirements",
+      "section_index": 24,
+      "rule_type": "mandatory_rule",
+      "text": "d)  Bank Details / Cancelled Cheque – Mandatory (Alternatively, a Bank Authorization Letter is acceptable)",
+      "affected_fields": [
+        "Alternatively",
+        "Cancelled Cheque",
+        "Bank Authorization Letter",
+        "Mandatory",
+        "Bank Details"
+      ]
+    },
+    {
+      "section_name": "4.8.2 Communication Templates",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.8 Communication Requirements",
+      "section_index": 24,
+      "rule_type": "field_dependency",
+      "text": "f)   CIN (Corporate Identification Number) – Mandatory if registered as a company",
+      "affected_fields": [
+        "CIN",
+        "PAN",
+        "Corporate Identification Number",
+        "Mandatory"
+      ]
+    },
+    {
+      "section_name": "4.10 Reporting Requirements",
+      "section_level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "section_index": 26,
+      "rule_type": "general_field_rule",
+      "text": "Data derivation logic",
+      "affected_fields": [
+        "Data"
+      ]
+    },
+    {
+      "section_name": "4.11.1 Integration Overview",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 28,
+      "rule_type": "general_field_rule",
+      "text": "Integration Objectives: Define the purpose of each integration, such as data synchronization, real-time updates, or batch processing.",
+      "affected_fields": [
+        "Integration Objectives",
+        "Define"
+      ]
+    },
+    {
+      "section_name": "4.11.1 Integration Overview",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 28,
+      "rule_type": "general_field_rule",
+      "text": "External Systems Involved: List all third-party systems, applications, or databases that will interface with the process.",
+      "affected_fields": [
+        "External Systems Involved",
+        "List"
+      ]
+    },
+    {
+      "section_name": "4.11.2 Field-Level Mapping and Logic",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 29,
+      "rule_type": "general_field_rule",
+      "text": "Provide a detailed mapping of fields between the internal system and each external system.",
+      "affected_fields": [
+        "field",
+        "Provide"
+      ]
+    },
+    {
+      "section_name": "4.11.3 Data Flow and Synchronization",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 30,
+      "rule_type": "general_field_rule",
+      "text": "Data Directionality:",
+      "affected_fields": [
+        "Data Directionality"
+      ]
+    },
+    {
+      "section_name": "4.11.3 Data Flow and Synchronization",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 30,
+      "rule_type": "general_field_rule",
+      "text": "Outbound: Data sent from the internal system to external systems.",
+      "affected_fields": [
+        "Data",
+        "Outbound"
+      ]
+    },
+    {
+      "section_name": "4.11.3 Data Flow and Synchronization",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 30,
+      "rule_type": "general_field_rule",
+      "text": "Inbound: Data received from external systems into the internal system.",
+      "affected_fields": [
+        "Data",
+        "Inbound"
+      ]
+    },
+    {
+      "section_name": "4.11.3 Data Flow and Synchronization",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 30,
+      "rule_type": "field_dependency",
+      "text": "Real-Time: Immediate data exchange upon event triggers.",
+      "affected_fields": [
+        "Real",
+        "Time",
+        "Immediate"
+      ]
+    },
+    {
+      "section_name": "4.11.3 Data Flow and Synchronization",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 30,
+      "rule_type": "general_field_rule",
+      "text": "Scheduled: Data exchange occurs at defined intervals (e.g., hourly, daily).",
+      "affected_fields": [
+        "Scheduled",
+        "Data"
+      ]
+    },
+    {
+      "section_name": "4.11.3 Data Flow and Synchronization",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 30,
+      "rule_type": "general_field_rule",
+      "text": "Conflict Resolution: Define rules for handling data discrepancies, such as prioritizing the most recent update or flagging for manual review.",
+      "affected_fields": [
+        "Conflict Resolution",
+        "Define",
+        "PAN"
+      ]
+    },
+    {
+      "section_name": "4.11.4 Error Handling and Logging",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 31,
+      "rule_type": "field_dependency",
+      "text": "Error Detection: Mechanisms to identify integration failures, such as missing fields or data type mismatches.",
+      "affected_fields": [
+        "field",
+        "Error Detection",
+        "Mechanisms"
+      ]
+    },
+    {
+      "section_name": "4.11.5 API Documentations and other information",
+      "section_level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "section_index": 32,
+      "rule_type": "field_validation",
+      "text": "Add other information related to integration",
+      "affected_fields": [
+        "Add"
+      ]
+    },
+    {
+      "section_name": "6. Appendix",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 34,
+      "rule_type": "general_field_rule",
+      "text": "Include supplementary materials such as process diagrams, data models, or detailed analyses that support the BUD.",
+      "affected_fields": [
+        "Include",
+        "BUD"
+      ]
+    },
+    {
+      "section_name": "6. Appendix",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 34,
+      "rule_type": "mandatory_rule",
+      "text": "Mandatory Guidelines for Document Writing",
+      "affected_fields": [
+        "Document Writing",
+        "Mandatory Guidelines"
+      ]
+    },
+    {
+      "section_name": "6. Appendix",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 34,
+      "rule_type": "field_validation",
+      "text": "Formatting Best Practices:",
+      "affected_fields": [
+        "Formatting Best Practices"
+      ]
+    },
+    {
+      "section_name": "6. Appendix",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 34,
+      "rule_type": "field_dependency",
+      "text": "Consistent Numbering: Implement a hierarchical numbering system (e.g., 1, 1.1, 1.1.1) to clearly differentiate between sections and subsections.",
+      "affected_fields": [
+        "Consistent Numbering",
+        "Implement"
+      ]
+    },
+    {
+      "section_name": "6. Appendix",
+      "section_level": 1,
+      "parent_path": "",
+      "section_index": 34,
+      "rule_type": "field_validation",
+      "text": "Styles and Formatting: Adopt consistent heading styles and formatting to enhance readability and project a professional image.",
+      "affected_fields": [
+        "Adopt",
+        "Styles",
+        "Formatting"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,380 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "file_path": "extraction/Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-01-24T10:22:53.881410",
+    "total_sections": 35,
+    "sections_to_analyze": 7
+  },
+  "section_classification": [
+    {
+      "index": 0,
+      "heading": "1. Executive Summary",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "overview"
+    },
+    {
+      "index": 1,
+      "heading": "1.1 Purpose",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 2,
+      "heading": "1.2 Audience",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 3,
+      "heading": "2. Project Description",
+      "is_field_related": false,
+      "reason": "Empty content",
+      "section_type": "other"
+    },
+    {
+      "index": 4,
+      "heading": "2.1 Background",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "overview"
+    },
+    {
+      "index": 5,
+      "heading": "2.2 Objectives",
+      "is_field_related": true,
+      "reason": "Meta-rule pattern found: (visible|invisible|mandatory|non-mandatory)\\s+.*?(when|if|based)",
+      "section_type": "overview"
+    },
+    {
+      "index": 6,
+      "heading": "3. Project Scope",
+      "is_field_related": false,
+      "reason": "Empty content",
+      "section_type": "overview"
+    },
+    {
+      "index": 7,
+      "heading": "3.1 In Scope",
+      "is_field_related": true,
+      "reason": "Meta-rule pattern found: (visible|invisible|mandatory|non-mandatory)\\s+.*?(when|if|based)",
+      "section_type": "overview"
+    },
+    {
+      "index": 8,
+      "heading": "3.2 Out of Scope",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "overview"
+    },
+    {
+      "index": 9,
+      "heading": "4. Vendor Creation Functional Requirements",
+      "is_field_related": false,
+      "reason": "Empty content",
+      "section_type": "other"
+    },
+    {
+      "index": 10,
+      "heading": "4.1 Flow Chart",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'flow chart' in heading",
+      "section_type": "other"
+    },
+    {
+      "index": 11,
+      "heading": "4.2 Manch Terminology Reference",
+      "is_field_related": false,
+      "reason": "Empty content",
+      "section_type": "reference_data"
+    },
+    {
+      "index": 12,
+      "heading": "4.3 Initiation Methods",
+      "is_field_related": true,
+      "reason": "Meta-rule pattern found: note\\s*[-\u2013:]",
+      "section_type": "other"
+    },
+    {
+      "index": 13,
+      "heading": "4.4 Field-Level Information",
+      "is_field_related": true,
+      "reason": "Field keyword 'field-level' in heading",
+      "section_type": "field_information"
+    },
+    {
+      "index": 14,
+      "heading": "4.5 Process Details",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'process detail' in heading",
+      "section_type": "workflow"
+    },
+    {
+      "index": 15,
+      "heading": "4.5.1 Initiator Behaviour",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'behaviour' in heading",
+      "section_type": "workflow"
+    },
+    {
+      "index": 16,
+      "heading": "4.5.2 Vendor Behaviour",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'behaviour' in heading",
+      "section_type": "workflow"
+    },
+    {
+      "index": 17,
+      "heading": "4.5.3 Approver Behaviour",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'behaviour' in heading",
+      "section_type": "workflow"
+    },
+    {
+      "index": 18,
+      "heading": "4.5.3.1 Approver Flow",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'approver' in heading",
+      "section_type": "other"
+    },
+    {
+      "index": 19,
+      "heading": "4.5.3.2 Specific Approver Behaviour for Contributors",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'behaviour' in heading",
+      "section_type": "workflow"
+    },
+    {
+      "index": 20,
+      "heading": "4.6 Reference Tables",
+      "is_field_related": true,
+      "reason": "Field keyword 'reference table' in heading",
+      "section_type": "reference_data"
+    },
+    {
+      "index": 21,
+      "heading": "4.7 Record List View",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 22,
+      "heading": "4.8 Communication Requirements",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'communication' in heading",
+      "section_type": "communication"
+    },
+    {
+      "index": 23,
+      "heading": "4.8.1 Communication Channels",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'communication' in heading",
+      "section_type": "communication"
+    },
+    {
+      "index": 24,
+      "heading": "4.8.2 Communication Templates",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'communication' in heading",
+      "section_type": "communication"
+    },
+    {
+      "index": 25,
+      "heading": "4.9 Access Management",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'access management' in heading",
+      "section_type": "other"
+    },
+    {
+      "index": 26,
+      "heading": "4.10 Reporting Requirements",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'reporting' in heading",
+      "section_type": "other"
+    },
+    {
+      "index": 27,
+      "heading": "4.11 Integration Requirements",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'integration' in heading",
+      "section_type": "integration"
+    },
+    {
+      "index": 28,
+      "heading": "4.11.1 Integration Overview",
+      "is_field_related": false,
+      "reason": "Workflow keyword 'integration' in heading",
+      "section_type": "integration"
+    },
+    {
+      "index": 29,
+      "heading": "4.11.2 Field-Level Mapping and Logic",
+      "is_field_related": true,
+      "reason": "Field keyword 'field-level' in heading",
+      "section_type": "field_information"
+    },
+    {
+      "index": 30,
+      "heading": "4.11.3 Data Flow and Synchronization",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 31,
+      "heading": "4.11.4 Error Handling and Logging",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 32,
+      "heading": "4.11.5 API Documentations and other information",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 33,
+      "heading": "5. Assumptions",
+      "is_field_related": false,
+      "reason": "No field-related indicators found",
+      "section_type": "other"
+    },
+    {
+      "index": 34,
+      "heading": "6. Appendix",
+      "is_field_related": true,
+      "reason": "Meta-rule pattern found: (visible|invisible|mandatory|non-mandatory)\\s+.*?(when|if|based)",
+      "section_type": "other"
+    }
+  ],
+  "sections": [
+    {
+      "index": 5,
+      "heading": "2.2 Objectives",
+      "level": 2,
+      "parent_path": "2. Project Description",
+      "content": [
+        "The project aims to design and implement a controlled, workflow-driven vendor creation process that enforces mandatory data fields, documentation checks, and role-based approvals. It also seeks to improve transparency and auditability through clear status tracking, standardized communications, and integration with the organization\u2019s master data and finance systems."
+      ],
+      "is_field_related": true,
+      "classification_reason": "Meta-rule pattern found: (visible|invisible|mandatory|non-mandatory)\\s+.*?(when|if|based)",
+      "section_type": "overview",
+      "has_tables": false,
+      "table_count": 0
+    },
+    {
+      "index": 7,
+      "heading": "3.1 In Scope",
+      "level": 2,
+      "parent_path": "3. Project Scope",
+      "content": [
+        "Capture and validation of vendor master data through a standardized vendor creation form (internal and external-facing).",
+        "Workflow for vendor request initiation, review, and approval, and compliance as applicable.",
+        "Storage and verification of mandatory supporting documents (e.g., tax, banking, registration, and compliance certificates).",
+        "Creation and update of vendor records in the target ERP/procurement system, including basic integration or interface design.",
+        "Basic reporting and dashboards for tracking vendor requests, status and turnaround times."
+      ],
+      "is_field_related": true,
+      "classification_reason": "Meta-rule pattern found: (visible|invisible|mandatory|non-mandatory)\\s+.*?(when|if|based)",
+      "section_type": "overview",
+      "has_tables": false,
+      "table_count": 0
+    },
+    {
+      "index": 12,
+      "heading": "4.3 Initiation Methods",
+      "level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "content": [
+        "The process will be initiated by the initiator by logging into the system and clicking on the create option in the dashboard.",
+        "This process can be initiated by any user in the system. The user should be active in the Pidilite HRMS system. This data will be maintained in the Manch EDV system.",
+        "Note \u2013 Pidilite to share the format and data for maintaining access with the integration API."
+      ],
+      "is_field_related": true,
+      "classification_reason": "Meta-rule pattern found: note\\s*[-\u2013:]",
+      "section_type": "other",
+      "has_tables": false,
+      "table_count": 0
+    },
+    {
+      "index": 13,
+      "heading": "4.4 Field-Level Information",
+      "level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "content": [
+        "Below are the details of each field used in this process, with the common logic for all stakeholders in the process.",
+        "Note \u2013 If there is any dependent dropdown, then it should be clear when the parent dropdown values are changed.",
+        "Note \u2013 If based on dropdown values, fields are visible, invisible, mandatory, or non-mandatory, then respective fields should be clear when dropdown values are changed.",
+        "Note \u2013 If the user is copying any values to another FFD and the original field is getting cleared, then copy values should also be cleared. E.g. In this process, when GST is uploaded, the GST address is copied into the address detail panel. If the GST address is getting clear, then the address details should also get clear."
+      ],
+      "is_field_related": true,
+      "classification_reason": "Field keyword 'field-level' in heading",
+      "section_type": "field_information",
+      "has_tables": false,
+      "table_count": 0
+    },
+    {
+      "index": 20,
+      "heading": "4.6 Reference Tables",
+      "level": 2,
+      "parent_path": "4. Vendor Creation Functional Requirements",
+      "content": [
+        "Vendor Master",
+        "Table 1.1",
+        "Table 1.2",
+        "Table 1.3",
+        "Table 1.4",
+        "Table 1.5",
+        "Table 1.6",
+        "Table 1.7",
+        "Table 1.8"
+      ],
+      "is_field_related": true,
+      "classification_reason": "Field keyword 'reference table' in heading",
+      "section_type": "reference_data",
+      "has_tables": false,
+      "table_count": 0
+    },
+    {
+      "index": 29,
+      "heading": "4.11.2 Field-Level Mapping and Logic",
+      "level": 3,
+      "parent_path": "4. Vendor Creation Functional Requirements > 4.11 Integration Requirements",
+      "content": [
+        "Provide a detailed mapping of fields between the internal system and each external system."
+      ],
+      "is_field_related": true,
+      "classification_reason": "Field keyword 'field-level' in heading",
+      "section_type": "field_information",
+      "has_tables": false,
+      "table_count": 0
+    },
+    {
+      "index": 34,
+      "heading": "6. Appendix",
+      "level": 1,
+      "parent_path": "",
+      "content": [
+        "Include supplementary materials such as process diagrams, data models, or detailed analyses that support the BUD.",
+        "Mandatory Guidelines for Document Writing",
+        "Formatting Best Practices:",
+        "Consistent Numbering: Implement a hierarchical numbering system (e.g., 1, 1.1, 1.1.1) to clearly differentiate between sections and subsections.",
+        "Styles and Formatting: Adopt consistent heading styles and formatting to enhance readability and project a professional image.",
+        "Table of Contents: Automatically generate a table of contents based on heading styles to ensure effortless navigation.",
+        "Version Control: Always include version numbers and revision dates to effectively track changes over time.",
+        "Review and Approval: Enforce sections for stakeholder review and approval to guarantee alignment and secure necessary sign-off."
+      ],
+      "is_field_related": true,
+      "classification_reason": "Meta-rule pattern found: (visible|invisible|mandatory|non-mandatory)\\s+.*?(when|if|based)",
+      "section_type": "other",
+      "has_tables": false,
+      "table_count": 0
+    }
+  ]
+}

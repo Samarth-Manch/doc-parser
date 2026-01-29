@@ -1,0 +1,1717 @@
+{
+  "file_path": "documents/KYC Master - UB 3625, 3626, 3630.docx",
+  "metadata": {
+    "title": "KYC Master Update United Breweries",
+    "author": "Prepared By Manch Technology",
+    "subject": "HCCB",
+    "created": "2025-04-03 09:07:00+00:00",
+    "modified": "2025-04-03 09:07:00+00:00",
+    "last_modified_by": "Varun Poojary",
+    "company": "",
+    "process_name": ""
+  },
+  "version_history": [],
+  "sections": [
+    {
+      "heading": "PREREQUISITES",
+      "level": 1,
+      "content": [
+        "Below are the points and example explained for all type of updates happened as of now in the UB processes."
+      ],
+      "subsections": [
+        {
+          "heading": "GROUP MEMBER MOVING FROM ONE GROUP TO ANOTHER",
+          "level": 2,
+          "content": [
+            "The UB team will initiate a new process called \"Group Member Outbound Process,\" where they will record the details of members being moved.",
+            "Manch will forward this information to the ASM for confirmation.",
+            "Upon ASM's approval, the group members' status will be updated to inactive, along with the inactivation date.",
+            "Note \u2013 Group Member Outbound Process is explained in details in Group member outbound section.",
+            "The New Group master EDV will be updated by the Central Team, including flags for new and existing group members using Master Status Update Process.",
+            "The New Group will follow the Group Member Inbound Process.",
+            "Note \u2013 Group Member Inbound Process is explained in details in Group member movement section."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "GROUP MEMBER CONVERTING TO AN INDIVIDUAL",
+          "level": 2,
+          "content": [
+            "The UB team will initiate a new process called \"Group Member Outbound Process,\" where they will record the details of members being moved.",
+            "Manch will forward this information to the ASM for confirmation.",
+            "Upon ASM's approval, the group members' status will be updated to inactive, along with the inactivation date.",
+            "Note \u2013 The Group Member Outbound Process is explained in detail in the Group member outbound movement section.",
+            "UB team will initiate the Phase -1 Outlet KYC process for individual after updating the EDV details.",
+            "Note \u2013 This process is already live in production environment."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "INDIVIDUAL CONVERTING INTO A GROUP MEMBER",
+          "level": 2,
+          "content": [
+            "UB team needs to inactive the individual KYC with an inactivation date by following Master Status Update Process. UB team needs to update EDV with the new group member details.",
+            "Then, UB team will initiate a new process called \"Group Member Inbound process,\" where they will record the details of members being moved.",
+            "Note \u2013 Group Member Movement process is explained in details in Group member movement section."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "GROUP OWNER MOVING FROM ONE GROUP TO ANOTHER",
+          "level": 2,
+          "content": [
+            "UB team will inactive the old group KYC details with Inactivation date by following Master Status Update Process. UB team will update the new group details with newly group members. UB team will update the new group owner details for the old group in the EDV.",
+            "The UB team will initiate a new process called \"Group Member Inbound Porcess\" where they will record the details of members being moved.",
+            "Note \u2013 Group Member Movement process is explained in details in Group member movement section.",
+            "UB team will initiate the Phase -1 Outlet KYC process for new Group after updating the EDV details.  If Group Owner moves to another group as a Group Owner",
+            "Note \u2013 This process is already live in the production environment."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "GROUP OWNER CONVERTING TO AN INDIVIDUAL",
+          "level": 2,
+          "content": [
+            "UB team will inactive the group KYC with inactivation date by following Master Status Update Process. UB team will update the group owner details in the EDV.",
+            "UB team will initiate Phase -1 Outlet KYC process 2 times for the old Group and new individual after updating the EDV details.",
+            "Note \u2013 This process is already live in production environment."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "INDIVIDUAL CONVERTING INTO A GROUP OWNER",
+          "level": 2,
+          "content": [
+            "UB team will inactive the individual and group KYC details with inactivation date by following Master Status Update Process. UB team need to update the group owner details and make add group member details in the EDV.",
+            "UB team will initiate separate Phase -1 Outlet KYC process for the new Group after updating the EDV details."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "EDV STRUCTURE",
+          "level": 2,
+          "content": [
+            "We are going to use below mentioned EDV structure from now on in change beneficiary, Group member movement and KYC master update process."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        }
+      ],
+      "tables": [],
+      "fields": [],
+      "workflow_steps": []
+    },
+    {
+      "heading": "GROUP MEMBER OUTBOUND PROCESS",
+      "level": 1,
+      "content": [],
+      "subsections": [
+        {
+          "heading": "INITIATOR PROCESS",
+          "level": 2,
+          "content": [],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "Login: The Central Team Member team logs in to the Manch application using the provided credentials.",
+          "level": 2,
+          "content": [
+            "Single Transaction :",
+            "UB team will initiate the single transaction by clicking on the create button and selecting the template as Group member outbound process.",
+            "UB team needs to enter the below mentioned details in the first PANEL named \u201cgroup owner details\u201d.",
+            "Based on this group owner outlet code, the system will auto derive the below mentioned details in a non-editable format",
+            "Next panel will be show as Group member leaving details as mentioned below.",
+            "UB team will select the Group member outlet code from the dropdown. If there are multiple group member leaving from the group, they have an option + by clicking on this option they can add n, number of group members details.",
+            "Once they select all the group member then they can submit the transaction."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "ASM BEHAVIOR",
+          "level": 2,
+          "content": [
+            "System will assign this transaction to the entered ASM.",
+            "Note \u2013 Entered ASM should be a user in the system.",
+            "System will show all the details as mentioned in the previous steps.",
+            "In the group member leaving details panel, system will ask below mentioned question",
+            "Are the confirming that below mentioned group members are leavling the group?",
+            "Dropdown Values : Yes / No",
+            "System will ask for the Inactivation date also.",
+            "Approve or reject the request:",
+            "If ASM clicks \"Approve,\" It will submit. The request then moves to Accepted status.",
+            "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the central team for necessary modifications.",
+            "Once ASM approve this request, System will update the status as inactive with inactivation date for all the group members."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "REPORT",
+          "level": 2,
+          "content": [
+            "Manch will generate one report for this process. UB team to share the report format."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        }
+      ],
+      "tables": [],
+      "fields": [],
+      "workflow_steps": []
+    },
+    {
+      "heading": "MASTER STATUS UPDATE PROCESS",
+      "level": 1,
+      "content": [],
+      "subsections": [
+        {
+          "heading": "PROCESS DETAIL",
+          "level": 2,
+          "content": [
+            "Login: The UB team logs in to the Manch application using the provided credentials.",
+            "Single Transaction: The UB team can start a new transaction by clicking Create > Onboarding request > select the template [Master Status Update Process] and enter all the details (refer below mentioned table) and submit",
+            "After entering all the details, UB team will click on Submit and the transaction will be Accepted and the status of respective outlet code will be updated in the Master."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        }
+      ],
+      "tables": [],
+      "fields": [],
+      "workflow_steps": []
+    },
+    {
+      "heading": "GROUP MEMBER INBOUND PROCESS",
+      "level": 1,
+      "content": [
+        "The following steps outline the detailed flow of the process, from initiation to approval. Each step has been structured to ensure clarity, precision, and a smooth user experience"
+      ],
+      "subsections": [
+        {
+          "heading": "INITIATOR PROCESS",
+          "level": 2,
+          "content": [
+            "UB central team should update the EDV for all the new group member details before starting this process.",
+            "Login: The Central Team Member team logs in to the Manch application using the provided credentials.",
+            "Bulk Transaction:",
+            "The UB Central Team Member can start a new transaction by clicking Bulk  > Bulk Upload > select the \u201cGROUP MEMBER INBOUND\u201d process and upload the bulk file having below mentioned details.",
+            "Bulk format will have below mentioned columns",
+            "Group Owner Outlet Code",
+            "ASM Name",
+            "ASM Email ID",
+            "ASM Mobile Number",
+            "Based on the group owner outlet code in the bulk file the system will auto derive the below mentioned details in a non-editable format",
+            "Next panel named as Group member confirmation details. System will derive the newly added group member details based on the type as New mentioned in EDV.",
+            "The Group Member Confirmation Details will include all newly added outlets to the group.",
+            "Once all the validations are completed then system will submit the request and it will be assigned to SPOC."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "SPOC BEHAVIOR",
+          "level": 2,
+          "content": [
+            "SMS Notification: An SMS containing a link is sent to SPOC\u2019s mobile number.",
+            "OTP Authentication:",
+            "The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.",
+            "The SPOC enters the OTP, and after successful verification, the Manch platform opens the link.",
+            "Group Owner Outlet Code Entry:  The SPOC enters the Group owner Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+            "Agreement to Policies:",
+            "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions (same Terms as outlet KYC process).",
+            "Form Opening:",
+            "SPOC will open the form by clicking on enter details, and SPOC needs to enter the required details as mentioned below.",
+            "System will show the Group owner details along with The Group Member  Details that includes all newly added outlets to the group in below mentioned format.",
+            "If there are more than 1 Group member then system will show all the group member in the same format.",
+            "System will ask the below mentioned confirmation question to SPOC \u2013",
+            "Are the confirming that below mentioned group members are newly added in the group?",
+            "Dropdown Values: Yes / No",
+            "Once SPOC selects the dropdown value as Yes, then new PANEL will open as Group Member Documents.",
+            "The system will ask for the group member documents as mentioned in the table below."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "APPROVER PROCESS",
+          "level": 2,
+          "content": [
+            "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+            "All requests will first go to the ASM and then proceed to the UB team.",
+            "Approver access: Approvers have two methods to access the transaction, review and act on requests as mentioned below -",
+            "Email and SMS Notification:",
+            "The Manch system sends an email and SMS notification to the approver with a link to review the request.",
+            "The approver clicks the link to access all request details and can either approve or reject the request based on the information provided.",
+            "Manch System Login:",
+            "The approver can log in to the Manch system, navigate to the \"Pending Requests\" section, and review the details.",
+            "After reviewing, the approver can either approve or reject the request.",
+            "ASM View and Action:",
+            "Log into the Manch system: ASM logs into the Manch system and views all pending requests.",
+            "Open the transaction: ASM opens a transaction to see the details uploaded in the bulk file, details entered by the SPOC, along with the confirmation of newly added group member question.",
+            "Approve or reject the request:",
+            "If ASM clicks \"Approve,\" It will submit. The request then moves to the next level of approver (UB central team).",
+            "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request is returned to the SPOC for necessary modifications",
+            "Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.",
+            "UB Central Team Approver View and Action:",
+            "Log into the Manch system: UB Approver logs into the Manch system and views all pending requests.",
+            "Open the transaction:",
+            "UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.",
+            "UB approver sees group member details along with uploaded documents and match score.",
+            "Approve or reject the request:",
+            "If UB approver clicks \"Approve,\" It will submit. The request then moves to Accepted status.",
+            "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+            "Resubmit by SPOC :",
+            "Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.",
+            "If any of the approvals again reject the re-submitted outlets\u2019 information, then it will go through the same flow as mentioned above."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        },
+        {
+          "heading": "REPORT",
+          "level": 2,
+          "content": [
+            "One report will be created for this process. UB team needs to share the format."
+          ],
+          "subsections": [],
+          "tables": [],
+          "fields": [],
+          "workflow_steps": []
+        }
+      ],
+      "tables": [],
+      "fields": [],
+      "workflow_steps": []
+    },
+    {
+      "heading": "DEPENDENCY",
+      "level": 1,
+      "content": [
+        "UB team needs to provide the SMS format for Group member inbound process.",
+        "UB team needs to provide the Reminder service SMS format for Group member inbound process.",
+        "UB team needs to provide the both processes report formats."
+      ],
+      "subsections": [],
+      "tables": [],
+      "fields": [],
+      "workflow_steps": []
+    }
+  ],
+  "all_fields": [
+    {
+      "name": "Group Owner Outlet Code",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Mobile",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "ASM Email address",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Region",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "State",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Depot/District",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto-derived based on the Outlet Code\n\u2022 Disabled and auto derived based on the Group outlet code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Licensee Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto-derived based on the Outlet Code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Individual/Group",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Name of SPOC (Single Point of Contact)",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Mobile Number of SPOC",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "License Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto-derived based on the Outlet Code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto-derived based on the Outlet Code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Owner Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto-derived based on the Outlet Code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Member Outlet code",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "Dropdown",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet licensee Name",
+      "field_type": "UNKNOWN",
+      "field_type_raw": "",
+      "is_mandatory": false,
+      "logic": "Disabled and auto derived based on the Group outlet code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Member Type",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "DROPDOWN",
+      "is_mandatory": true,
+      "logic": "Values will be : Individual Group Owner",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": [
+        "will be : Individual Group Owner"
+      ]
+    },
+    {
+      "name": "Outlet Code",
+      "field_type": "DROPDOWN",
+      "field_type_raw": "DROPDOWN",
+      "is_mandatory": true,
+      "logic": "Dropdown values will be shown based on the option selected in the Member Type. Once use selects the Outlet Code then below mentioned field values will be auto-derived\n\u2022 Disabled and auto derived based on the Group outlet code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": [
+        "values will be shown based on the option selected in the Member Type"
+      ]
+    },
+    {
+      "name": "Status",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Auto-derived based on the Outlet Code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "New Status",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": true,
+      "logic": "Inactive (Default Value)",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Inactivation Date",
+      "field_type": "DATE",
+      "field_type_raw": "DATE",
+      "is_mandatory": true,
+      "logic": "Date Selection (Todays and future Date)",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group member documents",
+      "field_type": "PANEL",
+      "field_type_raw": "PANEL",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Upload PAN of licensee",
+      "field_type": "FILE",
+      "field_type_raw": "FILE",
+      "is_mandatory": true,
+      "logic": "Upload Option",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "PAN Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": true,
+      "logic": "Perform OCR and get the PAN Number then perform PAN verification",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "PAN Holder Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Disabled Name match with outlet licensee Name will be performed",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Pan Status",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Disabled",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Pan Match score",
+      "field_type": "TEXT",
+      "field_type_raw": "Text",
+      "is_mandatory": false,
+      "logic": "Disabled",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Authorization Letter",
+      "field_type": "FILE",
+      "field_type_raw": "FILE",
+      "is_mandatory": true,
+      "logic": "Upload Option",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    }
+  ],
+  "initiator_fields": [
+    {
+      "name": "Region",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "State",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Depot/District",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Licensee Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Individual/Group",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Name of SPOC (Single Point of Contact)",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Mobile Number of SPOC",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "License Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group Owner Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet code",
+      "field_type": "UNKNOWN",
+      "field_type_raw": "",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet licensee Name",
+      "field_type": "UNKNOWN",
+      "field_type_raw": "",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    }
+  ],
+  "spoc_fields": [
+    {
+      "name": "Group member outlet code",
+      "field_type": "UNKNOWN",
+      "field_type_raw": "",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet licensee Name",
+      "field_type": "UNKNOWN",
+      "field_type_raw": "",
+      "is_mandatory": false,
+      "logic": "Disabled and auto derived based on the Group outlet code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet Name",
+      "field_type": "UNKNOWN",
+      "field_type_raw": "",
+      "is_mandatory": false,
+      "logic": "Disabled and auto derived based on the Group outlet code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Group member documents",
+      "field_type": "PANEL",
+      "field_type_raw": "PANEL",
+      "is_mandatory": false,
+      "logic": "",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "",
+      "dropdown_values": []
+    },
+    {
+      "name": "Outlet code",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Disabled and auto derived based on the Group outlet code",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Upload PAN of licensee",
+      "field_type": "FILE",
+      "field_type_raw": "FILE",
+      "is_mandatory": true,
+      "logic": "Upload Option",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "PAN Number",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": true,
+      "logic": "Perform OCR and get the PAN Number then perform PAN verification",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "PAN Holder Name",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Disabled Name match with outlet licensee Name will be performed",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Pan Status",
+      "field_type": "TEXT",
+      "field_type_raw": "TEXT",
+      "is_mandatory": false,
+      "logic": "Disabled",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Pan Match score",
+      "field_type": "TEXT",
+      "field_type_raw": "Text",
+      "is_mandatory": false,
+      "logic": "Disabled",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    },
+    {
+      "name": "Authorization Letter",
+      "field_type": "FILE",
+      "field_type_raw": "FILE",
+      "is_mandatory": true,
+      "logic": "Upload Option",
+      "rules": "",
+      "default_value": "",
+      "visibility_condition": "",
+      "validation": "",
+      "section": "Group member documents",
+      "dropdown_values": []
+    }
+  ],
+  "approver_fields": [],
+  "workflows": {
+    "initiator": [
+      {
+        "step_number": 1,
+        "description": "Single Transaction :",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "UB team will initiate the single transaction by clicking on the create button and selecting the template as Group member outbound process.",
+        "actor": "initiator",
+        "action_type": "create",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "UB team needs to enter the below mentioned details in the first PANEL named \u201cgroup owner details\u201d.",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "Based on this group owner outlet code, the system will auto derive the below mentioned details in a non-editable format",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "Next panel will be show as Group member leaving details as mentioned below.",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "UB team will select the Group member outlet code from the dropdown. If there are multiple group member leaving from the group, they have an option + by clicking on this option they can add n, number of group members details.",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "Once they select all the group member then they can submit the transaction.",
+        "actor": "initiator",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 1,
+        "description": "UB central team should update the EDV for all the new group member details before starting this process.",
+        "actor": "initiator",
+        "action_type": "update",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "Login: The Central Team Member team logs in to the Manch application using the provided credentials.",
+        "actor": "initiator",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "Bulk Transaction:",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "The UB Central Team Member can start a new transaction by clicking Bulk  > Bulk Upload > select the \u201cGROUP MEMBER INBOUND\u201d process and upload the bulk file having below mentioned details.",
+        "actor": "initiator",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "Bulk format will have below mentioned columns",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "Group Owner Outlet Code",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "ASM Name",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 8,
+        "description": "ASM Email ID",
+        "actor": "initiator",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 9,
+        "description": "ASM Mobile Number",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 10,
+        "description": "Based on the group owner outlet code in the bulk file the system will auto derive the below mentioned details in a non-editable format",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 11,
+        "description": "Next panel named as Group member confirmation details. System will derive the newly added group member details based on the type as New mentioned in EDV.",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 12,
+        "description": "The Group Member Confirmation Details will include all newly added outlets to the group.",
+        "actor": "initiator",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 13,
+        "description": "Once all the validations are completed then system will submit the request and it will be assigned to SPOC.",
+        "actor": "initiator",
+        "action_type": "validate",
+        "conditions": [],
+        "notes": []
+      }
+    ],
+    "approver": [
+      {
+        "step_number": 1,
+        "description": "System will assign this transaction to the entered ASM.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "System will show all the details as mentioned in the previous steps.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "In the group member leaving details panel, system will ask below mentioned question",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "Are the confirming that below mentioned group members are leavling the group?",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "Dropdown Values : Yes / No",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "System will ask for the Inactivation date also.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "Approve or reject the request:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 8,
+        "description": "If ASM clicks \"Approve,\" It will submit. The request then moves to Accepted status.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 9,
+        "description": "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the central team for necessary modifications.",
+        "actor": "approver",
+        "action_type": "reject",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 10,
+        "description": "Once ASM approve this request, System will update the status as inactive with inactivation date for all the group members.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 11,
+        "description": "Manch will generate one report for this process. UB team to share the report format.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 12,
+        "description": "Login: The UB team logs in to the Manch application using the provided credentials.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 13,
+        "description": "Single Transaction: The UB team can start a new transaction by clicking Create > Onboarding request > select the template [Master Status Update Process] and enter all the details (refer below mentioned table) and submit",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 14,
+        "description": "After entering all the details, UB team will click on Submit and the transaction will be Accepted and the status of respective outlet code will be updated in the Master.",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 1,
+        "description": "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+        "actor": "approver",
+        "action_type": "validate",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "All requests will first go to the ASM and then proceed to the UB team.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "Approver access: Approvers have two methods to access the transaction, review and act on requests as mentioned below -",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "Email and SMS Notification:",
+        "actor": "approver",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "The Manch system sends an email and SMS notification to the approver with a link to review the request.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "The approver clicks the link to access all request details and can either approve or reject the request based on the information provided.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "Manch System Login:",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 8,
+        "description": "The approver can log in to the Manch system, navigate to the \"Pending Requests\" section, and review the details.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 9,
+        "description": "After reviewing, the approver can either approve or reject the request.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 10,
+        "description": "ASM View and Action:",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 11,
+        "description": "Log into the Manch system: ASM logs into the Manch system and views all pending requests.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 12,
+        "description": "Open the transaction: ASM opens a transaction to see the details uploaded in the bulk file, details entered by the SPOC, along with the confirmation of newly added group member question.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 13,
+        "description": "Approve or reject the request:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 14,
+        "description": "If ASM clicks \"Approve,\" It will submit. The request then moves to the next level of approver (UB central team).",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 15,
+        "description": "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request is returned to the SPOC for necessary modifications",
+        "actor": "approver",
+        "action_type": "reject",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 16,
+        "description": "Resubmit by SPOC : Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 17,
+        "description": "UB Central Team Approver View and Action:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 18,
+        "description": "Log into the Manch system: UB Approver logs into the Manch system and views all pending requests.",
+        "actor": "approver",
+        "action_type": "login",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 19,
+        "description": "Open the transaction:",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 20,
+        "description": "UB approver opens a transaction to see the details uploaded in the bulk file, and details entered by the SPOC, along with the relevant documents.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 21,
+        "description": "UB approver sees group member details along with uploaded documents and match score.",
+        "actor": "approver",
+        "action_type": "upload",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 22,
+        "description": "Approve or reject the request:",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 23,
+        "description": "If UB approver clicks \"Approve,\" It will submit. The request then moves to Accepted status.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 24,
+        "description": "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 25,
+        "description": "Resubmit by SPOC :",
+        "actor": "approver",
+        "action_type": "submit",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 26,
+        "description": "Once the SPOC submits the required details, the request assigns back to ASM, who can then repeat the approval or rejection process as outlined above.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 27,
+        "description": "If any of the approvals again reject the re-submitted outlets\u2019 information, then it will go through the same flow as mentioned above.",
+        "actor": "approver",
+        "action_type": "approve",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 28,
+        "description": "One report will be created for this process. UB team needs to share the format.",
+        "actor": "approver",
+        "action_type": "create",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 29,
+        "description": "UB team needs to provide the SMS format for Group member inbound process.",
+        "actor": "approver",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 30,
+        "description": "UB team needs to provide the Reminder service SMS format for Group member inbound process.",
+        "actor": "approver",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 31,
+        "description": "UB team needs to provide the both processes report formats.",
+        "actor": "approver",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      }
+    ],
+    "spoc": [
+      {
+        "step_number": 1,
+        "description": "SMS Notification: An SMS containing a link is sent to SPOC\u2019s mobile number.",
+        "actor": "spoc",
+        "action_type": "notify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 2,
+        "description": "OTP Authentication:",
+        "actor": "spoc",
+        "action_type": "verify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 3,
+        "description": "The SPOC opens the link and receives an OTP (One-Time Password) for additional authentication.",
+        "actor": "spoc",
+        "action_type": "verify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 4,
+        "description": "The SPOC enters the OTP, and after successful verification, the Manch platform opens the link.",
+        "actor": "spoc",
+        "action_type": "verify",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 5,
+        "description": "Group Owner Outlet Code Entry:  The SPOC enters the Group owner Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+        "actor": "spoc",
+        "action_type": "validate",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 6,
+        "description": "Agreement to Policies:",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 7,
+        "description": "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions (same Terms as outlet KYC process).",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 8,
+        "description": "Form Opening:",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 9,
+        "description": "SPOC will open the form by clicking on enter details, and SPOC needs to enter the required details as mentioned below.",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 10,
+        "description": "System will show the Group owner details along with The Group Member  Details that includes all newly added outlets to the group in below mentioned format.",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 11,
+        "description": "If there are more than 1 Group member then system will show all the group member in the same format.",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 12,
+        "description": "System will ask the below mentioned confirmation question to SPOC \u2013",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 13,
+        "description": "Are the confirming that below mentioned group members are newly added in the group?",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 14,
+        "description": "Dropdown Values: Yes / No",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 15,
+        "description": "Once SPOC selects the dropdown value as Yes, then new PANEL will open as Group Member Documents.",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      },
+      {
+        "step_number": 16,
+        "description": "The system will ask for the group member documents as mentioned in the table below.",
+        "actor": "spoc",
+        "action_type": "",
+        "conditions": [],
+        "notes": []
+      }
+    ]
+  },
+  "approval_rules": [],
+  "reference_tables": [],
+  "terminology": {},
+  "dropdown_mappings": {
+    "Member Type": [
+      "will be : Individual Group Owner"
+    ],
+    "Outlet Code": [
+      "values will be shown based on the option selected in the Member Type"
+    ]
+  },
+  "scope_in": [],
+  "scope_out": [],
+  "objectives": [],
+  "assumptions": [],
+  "dependencies": [
+    "UB team needs to provide the SMS format for Group member inbound process.",
+    "UB team needs to provide the Reminder service SMS format for Group member inbound process.",
+    "UB team needs to provide the both processes report formats."
+  ],
+  "integration_fields": [],
+  "document_requirements": [],
+  "communication_channels": []
+}

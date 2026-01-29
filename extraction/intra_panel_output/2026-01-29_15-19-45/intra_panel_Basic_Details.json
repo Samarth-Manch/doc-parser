@@ -1,0 +1,381 @@
+{
+  "analysis_info": {
+    "panel_name": "Basic Details",
+    "source_file": "input_Basic_Details.json",
+    "document_name": "Vendor Creation Sample BUD.docx",
+    "analysis_timestamp": "2026-01-29T15:19:50",
+    "total_fields_analyzed": 33,
+    "total_dependencies_found": 17
+  },
+  "intra_panel_dependencies": [
+    {
+      "dependent_field": {
+        "field_name": "Process Type",
+        "variable_name": "__process_type__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Select the process type",
+        "variable_name": "__select_the_process_type__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "value_derivation",
+      "rule_description": "IF 'Select the process type' = 'India' THEN 'Process Type' = 'DOM IN'; IF 'Select the process type' = 'International' THEN 'Process Type' = 'INT'",
+      "original_logic": "Not visible, IF India is selected in previous field then Values is DOM IN, If international is selected then value is INT."
+    },
+    {
+      "dependent_field": {
+        "field_name": "Group key/Corporate Group",
+        "variable_name": "__group_key/corporate_group__",
+        "field_type": "DROPDOWN"
+      },
+      "depends_on": {
+        "field_name": "Account Group/Vendor Type",
+        "variable_name": "__account_group/vendor_type__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "dropdown_filter",
+      "rule_description": "Dropdown options for 'Group key/Corporate Group' are filtered based on selected 'Account Group/Vendor Type' value using reference table 1.3 column 2",
+      "original_logic": "Dropdown values will come based on the account group/vendor type selection field as 2nd column of reference table 1.3."
+    },
+    {
+      "dependent_field": {
+        "field_name": "Vendor Domestic or Import",
+        "variable_name": "__vendor_domestic_or_import__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Account Group/Vendor Type",
+        "variable_name": "__account_group/vendor_type__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "value_derivation",
+      "rule_description": "IF 'Account Group/Vendor Type' IN ['ZDES', 'ZDOM', 'ZRPV', 'ZONE'] THEN 'Vendor Domestic or Import' = 'Domestic'; IF 'Account Group/Vendor Type' IN ['ZIMP', 'ZSTV', 'ZDAS'] THEN 'Vendor Domestic or Import' = 'Import'",
+      "original_logic": "Default behaviour is Invisible, If account group/vendor type is selected as ZDES, ZDOM, ZRPV, ZONE (any one) then derived it as Domestic. If Account group/vendor type is selected as ZIMP, ZSTV, ZDAS (any one) then derived it as import"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Country",
+        "variable_name": "__country__",
+        "field_type": "DROPDOWN"
+      },
+      "depends_on": {
+        "field_name": "Select the process type",
+        "variable_name": "__select_the_process_type__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "value_and_editability",
+      "rule_description": "IF 'Select the process type' = 'India' THEN 'Country' = 'India' AND non-editable; IF 'Select the process type' = 'International' THEN 'Country' is editable dropdown with values from reference table 1.1",
+      "original_logic": "If the Select the process type field value is India then country is India and Noneditable, If Select the process type field value is international then country is selectable dropdown. For dropdown values will be Column 2 - Column 5 of reference table 1.1."
+    },
+    {
+      "dependent_field": {
+        "field_name": "Country Name",
+        "variable_name": "__country_name__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Country",
+        "variable_name": "__country__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "value_derivation",
+      "rule_description": "When 'Country' is selected, derive 'Country Name' from column 5 of reference table 1.1",
+      "original_logic": "Not visible, If Country code is selected then derive the country name as column 5 on table 1.1"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Country Code",
+        "variable_name": "__country_code__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Country",
+        "variable_name": "__country__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "value_derivation",
+      "rule_description": "When 'Country' is selected, derive 'Country Code' from column 2 of reference table 1.1",
+      "original_logic": "Not visible, If Country code is selected then derive the country name as column 2 on table 1.1"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Company Code",
+        "variable_name": "__company_code__",
+        "field_type": "DROPDOWN"
+      },
+      "depends_on": {
+        "field_name": "Process Type",
+        "variable_name": "__process_type__",
+        "field_type": "TEXT"
+      },
+      "dependency_type": "dropdown_filter",
+      "rule_description": "Dropdown options for 'Company Code' are filtered based on 'Process Type' value (DOM IN or INT) using column 1 of reference table 1.2",
+      "original_logic": "Dropdown values will come from column 3 based on process type filter (DOM IN or INT) as column 1 of reference table 1.2"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number",
+        "variable_name": "__mobile_number__",
+        "field_type": "MOBILE"
+      },
+      "depends_on": {
+        "field_name": "Country",
+        "variable_name": "__country__",
+        "field_type": "DROPDOWN"
+      },
+      "dependency_type": "validation",
+      "rule_description": "Mobile number validation rules are applied based on selected 'Country' value",
+      "original_logic": "Mobile Number Validation based on the country selection"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 2 (Domestic)",
+        "variable_name": "__mobile_number_2_(domestic)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility_and_mandatory",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (India)?' = 'Yes' THEN visible AND mandatory; ELSE invisible AND non-mandatory",
+      "original_logic": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible and non-mandatory."
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 3 (Domestic)",
+        "variable_name": "__mobile_number_3_(domestic)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 4 (Domestic)",
+        "variable_name": "__mobile_number_4_(domestic)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 5 (Domestic)",
+        "variable_name": "__mobile_number_5_(domestic)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 2 (Import)",
+        "variable_name": "__mobile_number_2_(import)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (Non-India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 3 (Import)",
+        "variable_name": "__mobile_number_3_(import)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (Non-India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 4 (Import)",
+        "variable_name": "__mobile_number_4_(import)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (Non-India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Mobile Number 5 (Import)",
+        "variable_name": "__mobile_number_5_(import)__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "variable_name": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility",
+      "rule_description": "IF 'Do you wish to add additional mobile numbers (Non-India)?' = 'Yes' THEN visible; ELSE invisible. Always non-mandatory",
+      "original_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases"
+    },
+    {
+      "dependent_field": {
+        "field_name": "Email 2",
+        "variable_name": "__email_2__",
+        "field_type": "TEXT"
+      },
+      "depends_on": {
+        "field_name": "Do you wish to add additional email addresses?",
+        "variable_name": "__do_you_wish_to_add_additional_email_addresses?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility_and_mandatory",
+      "rule_description": "IF 'Do you wish to add additional email addresses?' = 'Yes' THEN visible AND mandatory",
+      "original_logic": "If the field \"Do you wish to add additional email addresses?\" value is Yes then it is visible and mandatory"
+    }
+  ],
+  "dependency_chains": [
+    {
+      "chain_name": "Process Type Cascade",
+      "description": "Select the process type drives multiple downstream fields",
+      "chain": [
+        "Select the process type → Process Type",
+        "Process Type → Company Code",
+        "Select the process type → Country",
+        "Country → Country Name",
+        "Country → Country Code",
+        "Country → Mobile Number (validation)"
+      ]
+    },
+    {
+      "chain_name": "Account Group Cascade",
+      "description": "Account Group/Vendor Type drives related dropdown and derivation fields",
+      "chain": [
+        "Account Group/Vendor Type → Group key/Corporate Group",
+        "Account Group/Vendor Type → Vendor Domestic or Import"
+      ]
+    },
+    {
+      "chain_name": "Domestic Mobile Numbers",
+      "description": "Additional domestic mobile numbers controlled by single toggle",
+      "chain": [
+        "Do you wish to add additional mobile numbers (India)? → Mobile Number 2 (Domestic)",
+        "Do you wish to add additional mobile numbers (India)? → Mobile Number 3 (Domestic)",
+        "Do you wish to add additional mobile numbers (India)? → Mobile Number 4 (Domestic)",
+        "Do you wish to add additional mobile numbers (India)? → Mobile Number 5 (Domestic)"
+      ]
+    },
+    {
+      "chain_name": "Import Mobile Numbers",
+      "description": "Additional import mobile numbers controlled by single toggle",
+      "chain": [
+        "Do you wish to add additional mobile numbers (Non-India)? → Mobile Number 2 (Import)",
+        "Do you wish to add additional mobile numbers (Non-India)? → Mobile Number 3 (Import)",
+        "Do you wish to add additional mobile numbers (Non-India)? → Mobile Number 4 (Import)",
+        "Do you wish to add additional mobile numbers (Non-India)? → Mobile Number 5 (Import)"
+      ]
+    },
+    {
+      "chain_name": "Additional Email",
+      "description": "Additional email controlled by toggle",
+      "chain": [
+        "Do you wish to add additional email addresses? → Email 2"
+      ]
+    }
+  ],
+  "dependency_summary": {
+    "by_type": {
+      "visibility": 7,
+      "visibility_and_mandatory": 2,
+      "value_derivation": 4,
+      "dropdown_filter": 2,
+      "value_and_editability": 1,
+      "validation": 1
+    },
+    "controlling_fields": [
+      {
+        "field_name": "Select the process type",
+        "controls_count": 2,
+        "controlled_fields": ["Process Type", "Country"]
+      },
+      {
+        "field_name": "Account Group/Vendor Type",
+        "controls_count": 2,
+        "controlled_fields": ["Group key/Corporate Group", "Vendor Domestic or Import"]
+      },
+      {
+        "field_name": "Country",
+        "controls_count": 3,
+        "controlled_fields": ["Country Name", "Country Code", "Mobile Number"]
+      },
+      {
+        "field_name": "Process Type",
+        "controls_count": 1,
+        "controlled_fields": ["Company Code"]
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "controls_count": 4,
+        "controlled_fields": ["Mobile Number 2 (Domestic)", "Mobile Number 3 (Domestic)", "Mobile Number 4 (Domestic)", "Mobile Number 5 (Domestic)"]
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "controls_count": 4,
+        "controlled_fields": ["Mobile Number 2 (Import)", "Mobile Number 3 (Import)", "Mobile Number 4 (Import)", "Mobile Number 5 (Import)"]
+      },
+      {
+        "field_name": "Do you wish to add additional email addresses?",
+        "controls_count": 1,
+        "controlled_fields": ["Email 2"]
+      }
+    ],
+    "fields_with_no_dependencies": [
+      "Search term / Reference Number(Transaction ID)",
+      "Created on",
+      "Created By",
+      "Name/ First Name of the Organization",
+      "Select the process type",
+      "Account Group/Vendor Type",
+      "Do you wish to add additional mobile numbers (India)?",
+      "Do you wish to add additional mobile numbers (Non-India)?",
+      "Vendor Contact Email",
+      "Vendor Contact Name",
+      "Do you wish to add additional email addresses?",
+      "Concerned email addresses?",
+      "Add the concerned Email Id",
+      "Email ID",
+      "Add Concerned Email",
+      "PAN and GST Details"
+    ]
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "document_name": "Change Beneficiary - UB 3526",
+  "total_sections": 4,
+  "field_rules_extracted": 11,
+  "unstructured_field_rules": [
+    {
+      "section_name": "INITIATOR PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 1,
+      "rule_type": "field_validation",
+      "text": "Note: We have to create a master data (EDV) for getting below information based on the outlet code. Master data (EDV) format needs to be shared by UB team.",
+      "affected_fields": [
+        "EDV",
+        "Master"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 2,
+      "rule_type": "field_validation",
+      "text": "Outlet Code Entry:  The SPOC enters the Outlet Code, which is validated by the Manch system against the code associated with the generated link.",
+      "affected_fields": [
+        "Manch",
+        "Outlet Code",
+        "The SPOC",
+        "Outlet Code Entry"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 2,
+      "rule_type": "general_field_rule",
+      "text": "Values : Yes and No",
+      "affected_fields": [
+        "Yes",
+        "Values",
+        "value"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 2,
+      "rule_type": "general_field_rule",
+      "text": "Upon accessing the link, the SPOC is prompted to agree to the data privacy policy and terms of conditions (Change beneficiary -same TOC (outlet kyc).",
+      "affected_fields": [
+        "Upon",
+        "TOC",
+        "Change",
+        "SPOC"
+      ]
+    },
+    {
+      "section_name": "SPOC BEHAVIOR",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 2,
+      "rule_type": "field_validation",
+      "text": "Note: Details will change based on the answer given by SPOC and validated by MANCH with the system data.",
+      "affected_fields": [
+        "SPOC",
+        "MANCH",
+        "Details"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 3,
+      "rule_type": "field_validation",
+      "text": "Assignment to Approver: Once all the mandatory fields are entered, validated, and the request is submitted, the system automatically assigns the request to the appropriate approver.",
+      "affected_fields": [
+        "Approver",
+        "Once",
+        "field",
+        "Assignment"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 3,
+      "rule_type": "field_validation",
+      "text": "The approver clicks the link to access all request details and can either approve or reject the request based on the provided information.",
+      "affected_fields": []
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 3,
+      "rule_type": "mandatory_rule",
+      "text": "Respond to mandatory question: TSE answers the mandatory question: \"Are you approving this request?\" by selecting either \"Yes\" or \"No\" from the dropdown menu.",
+      "affected_fields": [
+        "Are you approving this request?",
+        "TSE",
+        "Are",
+        "dropdown",
+        "Yes",
+        "Respond",
+        "No"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 3,
+      "rule_type": "field_dependency",
+      "text": "If TSE clicks \"Reject,\" they select a rejection reason from a dropdown and submit it. The request returns to the SPOC for necessary modifications.",
+      "affected_fields": [
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "If TSE",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 3,
+      "rule_type": "field_dependency",
+      "text": "If ASM clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications",
+      "affected_fields": [
+        "If ASM",
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "Reject,"
+      ]
+    },
+    {
+      "section_name": "APPROVER PROCESS",
+      "section_level": 2,
+      "parent_path": "Change Beneficiary PROCESS",
+      "section_index": 3,
+      "rule_type": "field_dependency",
+      "text": "If UB approver clicks \"Reject,\" they select a rejection reason from a dropdown (configured based on UB rejection reasons) and submit it. The request returns to the SPOC for necessary modifications.",
+      "affected_fields": [
+        "SPOC",
+        "Reject",
+        "dropdown",
+        "If UB",
+        "Reject,"
+      ]
+    }
+  ]
+}

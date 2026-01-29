@@ -1,0 +1,439 @@
+{
+  "template": {
+    "id": 3625,
+    "templateName": "KYC Master",
+    "key": "TMPTS03625",
+    "companyCode": "ubgroup",
+    "documentTypes": [
+      {
+        "id": 36250,
+        "documentType": "KYC Master Process",
+        "formFillMetadatas": [
+          {
+            "id": 36250001,
+            "mandatory": false,
+            "formTag": {
+              "id": 362501,
+              "name": "Group Owner Outlet Code",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250002,
+            "mandatory": false,
+            "formTag": {
+              "id": 362502,
+              "name": "ASM name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250003,
+            "mandatory": false,
+            "formTag": {
+              "id": 362503,
+              "name": "ASM Mobile",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250004,
+            "mandatory": false,
+            "formTag": {
+              "id": 362504,
+              "name": "ASM Email address",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250005,
+            "mandatory": false,
+            "formTag": {
+              "id": 362505,
+              "name": "Region",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250006,
+            "mandatory": false,
+            "formTag": {
+              "id": 362506,
+              "name": "State",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250007,
+            "mandatory": false,
+            "formTag": {
+              "id": 362507,
+              "name": "Depot/District",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250008,
+            "mandatory": false,
+            "formTag": {
+              "id": 362508,
+              "name": "Outlet Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250009,
+            "mandatory": false,
+            "formTag": {
+              "id": 362509,
+              "name": "Licensee Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250010,
+            "mandatory": false,
+            "formTag": {
+              "id": 362510,
+              "name": "Individual/Group",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250011,
+            "mandatory": false,
+            "formTag": {
+              "id": 362511,
+              "name": "Name of SPOC (Single Point of Contact)",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250012,
+            "mandatory": false,
+            "formTag": {
+              "id": 362512,
+              "name": "Mobile Number of SPOC",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250013,
+            "mandatory": false,
+            "formTag": {
+              "id": 362513,
+              "name": "License Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250014,
+            "mandatory": false,
+            "formTag": {
+              "id": 362514,
+              "name": "Group Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250015,
+            "mandatory": false,
+            "formTag": {
+              "id": 362515,
+              "name": "Group Owner Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250016,
+            "mandatory": false,
+            "formTag": {
+              "id": 362516,
+              "name": "Group Member Outlet code",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 36250017,
+            "mandatory": true,
+            "formTag": {
+              "id": 362517,
+              "name": "Member Type",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 36250018,
+            "mandatory": true,
+            "formTag": {
+              "id": 362518,
+              "name": "Outlet Code",
+              "type": "DROPDOWN"
+            }
+          },
+          {
+            "id": 36250019,
+            "mandatory": false,
+            "formTag": {
+              "id": 362519,
+              "name": "Outlet Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250020,
+            "mandatory": false,
+            "formTag": {
+              "id": 362520,
+              "name": "Licensee Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250021,
+            "mandatory": false,
+            "formTag": {
+              "id": 362521,
+              "name": "License Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250022,
+            "mandatory": false,
+            "formTag": {
+              "id": 362522,
+              "name": "Group Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250023,
+            "mandatory": false,
+            "formTag": {
+              "id": 362523,
+              "name": "Group Owner Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250024,
+            "mandatory": false,
+            "formTag": {
+              "id": 362524,
+              "name": "Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250025,
+            "mandatory": true,
+            "formTag": {
+              "id": 362525,
+              "name": "New Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250026,
+            "mandatory": true,
+            "formTag": {
+              "id": 362526,
+              "name": "Inactivation Date",
+              "type": "DATE"
+            }
+          },
+          {
+            "id": 36250027,
+            "mandatory": false,
+            "formTag": {
+              "id": 362527,
+              "name": "Region",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250028,
+            "mandatory": false,
+            "formTag": {
+              "id": 362528,
+              "name": "State",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250029,
+            "mandatory": false,
+            "formTag": {
+              "id": 362529,
+              "name": "Depot/District",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250030,
+            "mandatory": false,
+            "formTag": {
+              "id": 362530,
+              "name": "Outlet Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250031,
+            "mandatory": false,
+            "formTag": {
+              "id": 362531,
+              "name": "Licensee Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250032,
+            "mandatory": false,
+            "formTag": {
+              "id": 362532,
+              "name": "Individual/Group",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250033,
+            "mandatory": false,
+            "formTag": {
+              "id": 362533,
+              "name": "Name of SPOC (Single Point of Contact)",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250034,
+            "mandatory": false,
+            "formTag": {
+              "id": 362534,
+              "name": "Mobile Number of SPOC",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250035,
+            "mandatory": false,
+            "formTag": {
+              "id": 362535,
+              "name": "License Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250036,
+            "mandatory": false,
+            "formTag": {
+              "id": 362536,
+              "name": "Group Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250037,
+            "mandatory": false,
+            "formTag": {
+              "id": 362537,
+              "name": "Group Owner Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250038,
+            "mandatory": false,
+            "formTag": {
+              "id": 362538,
+              "name": "Group member documents",
+              "type": "PANEL"
+            }
+          },
+          {
+            "id": 36250039,
+            "mandatory": false,
+            "formTag": {
+              "id": 362539,
+              "name": "Outlet code",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250040,
+            "mandatory": false,
+            "formTag": {
+              "id": 362540,
+              "name": "Outlet Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250041,
+            "mandatory": false,
+            "formTag": {
+              "id": 362541,
+              "name": "Outlet licensee Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250042,
+            "mandatory": true,
+            "formTag": {
+              "id": 362542,
+              "name": "Upload PAN of licensee",
+              "type": "FILE"
+            }
+          },
+          {
+            "id": 36250043,
+            "mandatory": true,
+            "formTag": {
+              "id": 362543,
+              "name": "PAN Number",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250044,
+            "mandatory": false,
+            "formTag": {
+              "id": 362544,
+              "name": "PAN Holder Name",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250045,
+            "mandatory": false,
+            "formTag": {
+              "id": 362545,
+              "name": "Pan Status",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250046,
+            "mandatory": false,
+            "formTag": {
+              "id": 362546,
+              "name": "Pan Match score",
+              "type": "TEXT"
+            }
+          },
+          {
+            "id": 36250047,
+            "mandatory": true,
+            "formTag": {
+              "id": 362547,
+              "name": "Authorization Letter",
+              "type": "FILE"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

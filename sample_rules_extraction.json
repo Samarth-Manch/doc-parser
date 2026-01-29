@@ -1,0 +1,78 @@
+{
+  "fields": [
+    {
+      "name": "Basic Details",
+      "type": "PANEL",
+      "logic": "",
+      "source": null,
+      "rules_count": 0,
+      "rules": []
+    },
+    {
+      "name": "Search term / Reference Number(Transaction ID)",
+      "type": "TEXT",
+      "logic": "System-generated transaction ID from Manch (Non-Editable)",
+      "source": null,
+      "rules_count": 1,
+      "rules": [
+        {
+          "name": "System-generated Transaction ID Visibility",
+          "action": "EXECUTE",
+          "type": "EXPRESSION",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Created on",
+      "type": "DATE",
+      "logic": "The request creation date will be auto-derived (Non-editable)",
+      "source": null,
+      "rules_count": 1,
+      "rules": [
+        {
+          "name": "Auto-derive Created on date",
+          "action": "EXECUTE",
+          "type": "EXPRESSION",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Created By",
+      "type": "TEXT",
+      "logic": "Requester's email address will be auto-derived (Non-editable)",
+      "source": null,
+      "rules_count": 1,
+      "rules": [
+        {
+          "name": "Auto-derive Requester's Email Address",
+          "action": "EXECUTE",
+          "type": "EXPRESSION",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "name": "Name/ First Name of the Organization",
+      "type": "TEXT",
+      "logic": "Maximum 35-character length",
+      "source": null,
+      "rules_count": 2,
+      "rules": [
+        {
+          "name": "Maximum Length for Organization Name",
+          "action": "EXECUTE",
+          "type": "UNKNOWN",
+          "confidence": 0.9
+        },
+        {
+          "name": "Mandatory Field for Organization Name",
+          "action": "EXECUTE",
+          "type": "UNKNOWN",
+          "confidence": 0.9
+        }
+      ]
+    }
+  ]
+}

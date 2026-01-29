@@ -1,0 +1,35 @@
+
+====================================================================================================
+DETAILED RAW TABLES REPORT
+====================================================================================================
+
+Table 1: initiator_fields
+Context: INITIATOR PROCESS
+Size: 19 rows x 4 columns
+Headers: ['Field Name', 'Field Type', 'Rules', 'Mandatory/Non Mandatory?']
+Sample rows:
+  Row 1: ['Region', 'TEXT', 'Auto derived from the outlet code and non-editable', 'Mandatory']
+  Row 2: ['State', 'TEXT', 'Auto derived from the outlet code and non-editable', '']
+  Row 3: ['Depot/District', 'TEXT', 'Auto derived from the outlet code and non-editable', '']
+  ... and 16 more rows
+----------------------------------------------------------------------------------------------------
+
+Table 2: dropdown_mapping
+Context: SPOC BEHAVIOR
+Size: 248 rows x 4 columns
+Headers: ['The SPOC can view the following details along with a dropdown menu.', 'The SPOC can view the following details along with a dropdown menu.', 'The SPOC can view the following details along with a dropdown menu.', 'The SPOC can view the following details along with a dropdown menu.']
+Sample rows:
+  Row 1: ['Field Name', 'Field Type', 'Rules', 'Mandatory/Non Mandatory?']
+  Row 2: ['KYC Details', 'PANEL', '', '']
+  Row 3: ['Is the license under an Individual or an Establishment?', 'TEXT', 'The past records will be available in a non-editable format.', '']
+  ... and 245 more rows
+----------------------------------------------------------------------------------------------------
+
+Table 3: reference
+Context: APPROVER PROCESS
+Size: 2 rows x 5 columns
+Headers: ['Licensee is an individual / Establishment', 'Licensee is an individual / Establishment', 'Licensee is an individual / Establishment', 'Licensee is an individual / Establishment', 'Licensee is an individual / Establishment']
+Sample rows:
+  Row 1: ['Are you the licensee?', 'Yes', 'TSE', 'Are you the licensee?', 'No']
+  Row 2: ['Who is the new beneficiary?', 'Other Beneficiary', 'TSE', 'Who is the new beneficiary?', 'Other Beneficiary']
+----------------------------------------------------------------------------------------------------

@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manch Platform Rules Classification</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section h3 {
+            color: var(--text);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .chain-of-thought {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid var(--warning);
+        }
+
+        .chain-of-thought h2 {
+            color: #92400e;
+            border-bottom-color: #fbbf24;
+        }
+
+        .thought-step {
+            background: rgba(255,255,255,0.7);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .thought-step h4 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .thought-step h4::before {
+            content: counter(step);
+            counter-increment: step;
+            background: var(--warning);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .thought-steps {
+            counter-reset: step;
+        }
+
+        .bucket {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .bucket-header {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bucket-header:hover {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+
+        .bucket-header h3 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .bucket-header .badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .bucket-content {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .bucket.open .bucket-content {
+            display: block;
+        }
+
+        .bucket-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .keyword {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .use-when {
+            background: #dcfce7;
+            border-left: 3px solid var(--success);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .use-when strong {
+            color: #166534;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .rule-id {
+            font-family: monospace;
+            background: #f1f5f9;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .processing-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .processing-server {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .processing-client {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .toc {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .toc h3 {
+            margin-bottom: 1rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.25rem 0;
+            display: block;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+        }
+
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .expression-functions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .func-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .func-card code {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .func-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .quick-ref {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-ref-item {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .quick-ref-item strong {
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 2rem 1rem;
+            }
+
+            header h1 {
+                font-size: 1.75rem;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Manch Platform Rules Classification</h1>
+            <p>Comprehensive classification of 182 rules into functional buckets for efficient LLM search space narrowing</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">182</div>
+                <div class="label">Total Rules</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">22</div>
+                <div class="label">Buckets</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">2</div>
+                <div class="label">Rule Types</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">22</div>
+                <div class="label">Expression Functions</div>
+            </div>
+        </div>
+
+        <!-- Chain of Thought Section -->
+        <section class="section chain-of-thought">
+            <h2>Chain of Thought: How This Classification Was Built</h2>
+            <p style="margin-bottom: 1.5rem;">This section documents the analysis methodology used to classify all 182 rules into meaningful functional buckets.</p>
+
+            <div class="thought-steps">
+                <div class="thought-step">
+                    <h4>Explored Rule-Schemas.json Structure</h4>
+                    <p>First, I examined the <code>rules/Rule-Schemas.json</code> file which contains all 182 rule definitions. Each rule has key properties:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li><strong>id</strong> - Unique rule identifier</li>
+                        <li><strong>name</strong> - Human-readable rule name</li>
+                        <li><strong>action</strong> - What the rule does (OCR, VERIFY, COPY_TO, VALIDATION, etc.)</li>
+                        <li><strong>source</strong> - Data source type (PAN_IMAGE, GSTIN, EXTERNAL_DATA_VALUE, etc.)</li>
+                        <li><strong>processingType</strong> - SERVER or CLIENT execution</li>
+                        <li><strong>destinationFields</strong> - Fields that receive extracted/computed values</li>
+                        <li><strong>params</strong> - Configuration parameters for the rule</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Analyzed Document JSON Outputs</h4>
+                    <p>Examined actual document templates in <code>documents/json_output/</code> to understand how rules are used in practice:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Found rules are stored in <code>formFillRules</code> array within each form field</li>
+                        <li>Discovered common action types: COPY_TO (39), EXECUTE (38), OCR (21), VERIFY (21), MAKE_INVISIBLE (29)</li>
+                        <li>Identified that EDV rules are used for IFSC code lookups to get bank name/branch</li>
+                        <li>Noted FFD (Form Fill Dropdown) rules for cascading dropdown population</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Reviewed Expression Rules Documentation</h4>
+                    <p>Read the <code>Expression Eval Custom Functions-2.pdf</code> to understand the expression rules DSL:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Uses expr-eval JavaScript library for custom expressions</li>
+                        <li>Functions like <code>vo(id)</code>, <code>mvi()</code>, <code>ctfd()</code> for conditional logic</li>
+                        <li>Supports complex multi-condition scenarios not covered by standard rules</li>
+                        <li>Client-side execution for fast response</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Identified Primary Classification Dimensions</h4>
+                    <p>Based on analysis, I identified these key dimensions for classification:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li><strong>By Function:</strong> What the rule does (extract, validate, copy, control UI)</li>
+                        <li><strong>By Domain:</strong> What type of data it works with (identity, business, financial)</li>
+                        <li><strong>By Processing:</strong> Where it runs (server vs client)</li>
+                        <li><strong>By Data Source:</strong> Where data comes from (OCR, EDV, FFD, transaction)</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Grouped Rules by Functional Similarity</h4>
+                    <p>Created initial groupings based on the <code>action</code> field patterns:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li><strong>OCR actions</strong> → Document data extraction bucket</li>
+                        <li><strong>VERIFY actions</strong> → Split into Identity vs Business vs Financial validation</li>
+                        <li><strong>COPY_TO variations</strong> → Data copy, party details, transaction attributes</li>
+                        <li><strong>MAKE_* actions</strong> → Form control (visibility, mandatory, enable/disable)</li>
+                        <li><strong>EXT_VALUE/EXT_DROP_DOWN</strong> → EDV and FFD buckets</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Created Domain-Specific Sub-Classifications</h4>
+                    <p>Further refined validation rules into sub-categories:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li><strong>Identity Validation:</strong> PAN, Aadhaar, Voter ID, DL, Passport, RC</li>
+                        <li><strong>Business Validation:</strong> GSTIN, CIN, MSME, FSSAI, TAN, Drug License</li>
+                        <li><strong>Financial Validation:</strong> Bank Account, eInvoice, Section 206AB</li>
+                        <li><strong>AI/ML:</strong> ClassifyImage, Compare Face, Speech To Text, Sentiment</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Identified EDV vs FFD Pattern</h4>
+                    <p>Key insight from document analysis:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li><strong>EDV (External Data Value):</strong> Global lookup tables shared across templates (e.g., IFSC codes, state/city lists)</li>
+                        <li><strong>FFD (Form Fill Dropdown):</strong> Template-specific dropdown options</li>
+                        <li>Both support cascading dropdowns but at different scopes</li>
+                        <li>EDV validation can check values against master data (e.g., validate IFSC exists)</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Added Keywords and Use Cases for LLM Search</h4>
+                    <p>For each bucket, I added:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li><strong>Keywords:</strong> Terms an LLM might encounter when user describes their need</li>
+                        <li><strong>Use When:</strong> Clear guidance on when to use this bucket</li>
+                        <li><strong>Bucket Selection Guide:</strong> Maps common needs to appropriate buckets</li>
+                    </ul>
+                </div>
+
+                <div class="thought-step">
+                    <h4>Created Machine-Readable JSON Output</h4>
+                    <p>Generated <code>rules_buckets.json</code> for programmatic LLM consumption with:</p>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Structured bucket definitions with rules arrays</li>
+                        <li>Keyword lists for semantic matching</li>
+                        <li>Bucket selection guide for direct need-to-bucket mapping</li>
+                        <li>Expression function documentation for custom logic needs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>Table of Contents - 22 Buckets</h3>
+            <div class="toc-grid">
+                <a href="#ocr">1. OCR (19 rules)</a>
+                <a href="#identity-validation">2. Identity Validation (7 rules)</a>
+                <a href="#business-validation">3. Business Validation (12 rules)</a>
+                <a href="#financial-validation">4. Financial Validation (3 rules)</a>
+                <a href="#edv">5. EDV Rules (9 rules)</a>
+                <a href="#ffd">6. FFD Rules (6 rules)</a>
+                <a href="#aiml">7. AI/ML Rules (6 rules)</a>
+                <a href="#form-visibility">8. Form Visibility (4 rules)</a>
+                <a href="#form-mandatory">9. Form Mandatory (4 rules)</a>
+                <a href="#form-enable-disable">10. Form Enable/Disable (4 rules)</a>
+                <a href="#document-control">11. Document Control (6 rules)</a>
+                <a href="#data-copy">12. Data Copy (4 rules)</a>
+                <a href="#transaction-attributes">13. Transaction Attributes (12 rules)</a>
+                <a href="#party-details">14. Party Details (15 rules)</a>
+                <a href="#data-transform">15. Data Transform (4 rules)</a>
+                <a href="#comparison-validation">16. Comparison Validation (10 rules)</a>
+                <a href="#date-time">17. Date & Time (13 rules)</a>
+                <a href="#geolocation">18. Geolocation (7 rules)</a>
+                <a href="#calculation">19. Calculation (4 rules)</a>
+                <a href="#table-generation">20. Table Generation (4 rules)</a>
+                <a href="#otp-verification">21. OTP Verification (5 rules)</a>
+                <a href="#kyc-esign">22. KYC & eSign (4 rules)</a>
+                <a href="#expression">23. Expression Rules (1 rule + 22 functions)</a>
+                <a href="#user-assignment">24. User Assignment (3 rules)</a>
+                <a href="#payment-pos">25. Payment & POS (4 rules)</a>
+                <a href="#utility">26. Utility (14 rules)</a>
+            </div>
+        </div>
+
+        <!-- Rule Types Overview -->
+        <section class="section">
+            <h2>Rule Types Overview</h2>
+            <p>The Manch platform supports two main types of rules:</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                <div style="background: #dbeafe; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #1e40af; margin-bottom: 0.5rem;">Standard/Pre-defined Rules</h3>
+                    <p>182 server-side or client-side rules with specific, pre-built functionality. Each rule has defined inputs, outputs, and behavior.</p>
+                </div>
+                <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #92400e; margin-bottom: 0.5rem;">Expression Rules</h3>
+                    <p>Custom JavaScript-like expressions using expr-eval library for complex conditional logic not covered by standard rules.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 1: OCR -->
+        <section class="section" id="ocr">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>1. OCR (Optical Character Recognition)</h3>
+                    <span class="badge">19 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Extract structured data from document images automatically</p>
+
+                    <div class="keywords">
+                        <span class="keyword">extract</span>
+                        <span class="keyword">ocr</span>
+                        <span class="keyword">scan</span>
+                        <span class="keyword">read document</span>
+                        <span class="keyword">parse image</span>
+                        <span class="keyword">document extraction</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need to automatically extract data from uploaded identity documents, certificates, or business cards.
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Source</th>
+                                <th>Key Extracted Fields</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">348</span></td>
+                                <td>Aadhaar Back OCR</td>
+                                <td>AADHAR_BACK_IMAGE</td>
+                                <td>address, pin, city, state, father name</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">359</span></td>
+                                <td>Aadhaar Front OCR</td>
+                                <td>AADHAR_IMAGE</td>
+                                <td>name, gender, dob, aadhaar number, age</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">216</span></td>
+                                <td>Business Card OCR</td>
+                                <td>BUSINESS_CARD</td>
+                                <td>name, company, emails, phones, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">269</span></td>
+                                <td>Cheque OCR</td>
+                                <td>CHEQUEE</td>
+                                <td>bank name, IFSC, account number, beneficiary</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">357</span></td>
+                                <td>CIN OCR</td>
+                                <td>CIN</td>
+                                <td>CIN number, company name, PAN, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">306</span></td>
+                                <td>Cowin OCR</td>
+                                <td>COWIN</td>
+                                <td>name, age, vaccine name, dose dates</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">250</span></td>
+                                <td>Driving License (India) OCR</td>
+                                <td>DRIVING_LICENCE_IMAGE</td>
+                                <td>DL number, name, dob, validity, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">327</span></td>
+                                <td>FSSAI OCR</td>
+                                <td>FSSAI</td>
+                                <td>registration no, name, validity, business type</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">347</span></td>
+                                <td>GSTIN OCR</td>
+                                <td>GSTIN_IMAGE</td>
+                                <td>GSTIN, legal name, trade name, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">253</span></td>
+                                <td>GSTIN OCR (Client)</td>
+                                <td>GSTIN_IMAGE</td>
+                                <td>Client-side GSTIN extraction</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">194</span></td>
+                                <td>IncomeTax Return OCR</td>
+                                <td>INCOME_TAX_RETURN</td>
+                                <td>ITR number, PAN, income, tax payable</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">208</span></td>
+                                <td>IncomeTax Return Summary OCR</td>
+                                <td>INCOME_TAX_RETURN_SUMMARY</td>
+                                <td>Income tax summary</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">214</span></td>
+                                <td>MSME OCR</td>
+                                <td>MSME</td>
+                                <td>Udyam number, name, category, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">189</span></td>
+                                <td>Oversea Document OCR</td>
+                                <td>OVERSEAS_DOCUMENT</td>
+                                <td>Generic OCR for overseas documents</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">344</span></td>
+                                <td>PAN OCR</td>
+                                <td>PAN_IMAGE</td>
+                                <td>PAN number, name, father name, dob</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">318</span></td>
+                                <td>Passport Back (India) OCR</td>
+                                <td>PASSPORT_BACK_IMAGE</td>
+                                <td>father name, mother name, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">204</span></td>
+                                <td>Passport Front (India) OCR</td>
+                                <td>PASSPORT</td>
+                                <td>passport no, name, nationality, dob, expiry</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">305</span></td>
+                                <td>TDS OCR</td>
+                                <td>TDS</td>
+                                <td>deductor name, TAN, certificate no, year</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">312</span></td>
+                                <td>Voter Id OCR</td>
+                                <td>VOTER_ID_IMAGE</td>
+                                <td>voter ID, name, father name, dob, gender</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 2: Identity Validation -->
+        <section class="section" id="identity-validation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>2. Identity Document Validation</h3>
+                    <span class="badge">7 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Verify authenticity of personal identity documents against government databases</p>
+
+                    <div class="keywords">
+                        <span class="keyword">verify</span>
+                        <span class="keyword">validate</span>
+                        <span class="keyword">authenticate</span>
+                        <span class="keyword">pan</span>
+                        <span class="keyword">aadhaar</span>
+                        <span class="keyword">voter</span>
+                        <span class="keyword">driving license</span>
+                        <span class="keyword">identity</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need to verify submitted identity documents against authoritative government sources.
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Source</th>
+                                <th>Processing</th>
+                                <th>What It Validates</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">360</span></td>
+                                <td>Validate PAN</td>
+                                <td>PAN_NUMBER</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>PAN card details, name, type, Aadhaar seeding status</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">213</span></td>
+                                <td>Validate PAN (Client)</td>
+                                <td>PAN_NUMBER</td>
+                                <td><span class="processing-badge processing-client">CLIENT</span></td>
+                                <td>Client-side PAN validation</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">236</span></td>
+                                <td>Validate PAN V2</td>
+                                <td>PAN_NUMBER_V2</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Enhanced PAN validation with additional fields</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">182</span></td>
+                                <td>Validate Voter Id</td>
+                                <td>VOTER_ID</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Voter ID with electoral roll, district, state</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">261</span></td>
+                                <td>Validate Driving Licence</td>
+                                <td>DRIVING_LICENCE_NUMBER</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>DL validity, vehicle classes, address</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">279</span></td>
+                                <td>Validate RC</td>
+                                <td>VEHICLE_REG_NUMBER</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Vehicle registration, owner, insurance, fitness</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">303</span></td>
+                                <td>Offline Aadhaar EKYC</td>
+                                <td>OFFLINE_AADHAAR_EKYC</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Offline Aadhaar XML verification</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 3: Business Validation -->
+        <section class="section" id="business-validation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>3. Business Registration Validation</h3>
+                    <span class="badge">12 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Verify business registrations and licenses against government/regulatory databases</p>
+
+                    <div class="keywords">
+                        <span class="keyword">gstin</span>
+                        <span class="keyword">cin</span>
+                        <span class="keyword">msme</span>
+                        <span class="keyword">fssai</span>
+                        <span class="keyword">tan</span>
+                        <span class="keyword">company</span>
+                        <span class="keyword">business</span>
+                        <span class="keyword">registration</span>
+                        <span class="keyword">license</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need to verify business registrations, company details, or regulatory compliance.
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Source</th>
+                                <th>What It Validates</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">355</span></td>
+                                <td>Validate GSTIN</td>
+                                <td>GSTIN</td>
+                                <td>GST registration, trade name, jurisdiction</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">296</span></td>
+                                <td>Validate GSTIN With PAN</td>
+                                <td>GSTIN_WITH_PAN</td>
+                                <td>Cross-validates GSTIN with PAN</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">274</span></td>
+                                <td>Validate GSTN Filing</td>
+                                <td>GSTIN_RETURN_STATUS</td>
+                                <td>GST return filing status (GSTR-1, GSTR-3B)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">349</span></td>
+                                <td>Validate CIN</td>
+                                <td>CIN_ID</td>
+                                <td>Company registration, directors, MCA status</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">289</span></td>
+                                <td>PAN to CIN Validation</td>
+                                <td>PAN_TO_CIN</td>
+                                <td>Maps company PAN to CIN</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">337</span></td>
+                                <td>Validate MSME</td>
+                                <td>MSME_UDYAM_REG_NUMBER</td>
+                                <td>MSME/Udyam registration, enterprise type</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">356</span></td>
+                                <td>Validate FSSAI</td>
+                                <td>FSSAI</td>
+                                <td>Food license validity, category</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">271</span></td>
+                                <td>Validate FSSAI Application Number</td>
+                                <td>FSSAI_APPLICATION_NUMBER</td>
+                                <td>FSSAI application status</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">290</span></td>
+                                <td>Validate Drug Licence</td>
+                                <td>DRUG_LICENCE</td>
+                                <td>Drug license verification</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">335</span></td>
+                                <td>Validate Shops and Est</td>
+                                <td>SHOP_OR_ESTABLISMENT</td>
+                                <td>Shop & establishment registration</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">322</span></td>
+                                <td>Validate TAN</td>
+                                <td>TAN_NUMBER</td>
+                                <td>Tax deduction account number (server)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">311</span></td>
+                                <td>Validate TAN (Client)</td>
+                                <td>TAN_NUMBER</td>
+                                <td>Tax deduction account number (client)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 4: Financial Validation -->
+        <section class="section" id="financial-validation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>4. Financial Validation</h3>
+                    <span class="badge">3 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Verify bank accounts, invoices, and tax compliance</p>
+
+                    <div class="keywords">
+                        <span class="keyword">bank</span>
+                        <span class="keyword">account</span>
+                        <span class="keyword">ifsc</span>
+                        <span class="keyword">einvoice</span>
+                        <span class="keyword">206ab</span>
+                        <span class="keyword">financial</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need to verify bank account details, e-invoice status, or tax compliance.
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Source</th>
+                                <th>What It Validates</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">361</span></td>
+                                <td>Validate Bank Account</td>
+                                <td>BANK_ACCOUNT_NUMBER</td>
+                                <td>Bank account number with beneficiary name verification</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">244</span></td>
+                                <td>Validate eInvoice Status</td>
+                                <td>EINVOICE_STATUS</td>
+                                <td>E-invoice generation status</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">319</span></td>
+                                <td>Section206ABVerification</td>
+                                <td>SECTION_206AB</td>
+                                <td>Section 206AB compliance for TDS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 5: EDV -->
+        <section class="section" id="edv">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>5. EDV (External Data Value) Rules</h3>
+                    <span class="badge">9 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Work with external lookup tables for dropdown population, data retrieval, and validation</p>
+
+                    <div class="keywords">
+                        <span class="keyword">edv</span>
+                        <span class="keyword">external</span>
+                        <span class="keyword">lookup</span>
+                        <span class="keyword">master data</span>
+                        <span class="keyword">dropdown</span>
+                        <span class="keyword">ifsc</span>
+                        <span class="keyword">table</span>
+                        <span class="keyword">reference data</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need to populate dropdowns from external tables, validate against master data, or lookup reference data (like IFSC to bank name).
+                    </div>
+
+                    <div style="background: #e0f2fe; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>Common EDV Use Cases:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li>IFSC code lookup to get bank name and branch</li>
+                            <li>State/City cascading dropdowns</li>
+                            <li>Product catalog lookups</li>
+                            <li>Custom validation against master data tables</li>
+                        </ul>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Processing</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">295</span></td>
+                                <td>EDV Dropdown (Client)</td>
+                                <td>EXT_VALUE</td>
+                                <td><span class="processing-badge processing-client">CLIENT</span></td>
+                                <td>Populate dropdown from EDV table</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">196</span></td>
+                                <td>Validate External Data Value (Client)</td>
+                                <td>VERIFY</td>
+                                <td><span class="processing-badge processing-client">CLIENT</span></td>
+                                <td>Client-side EDV validation</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">346</span></td>
+                                <td>Validate EDV (Server)</td>
+                                <td>VALIDATION</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Server-side EDV validation</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">285</span></td>
+                                <td>Get Data From EDV</td>
+                                <td>VERIFY</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Retrieve data from EDV (e.g., IFSC lookup)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">266</span></td>
+                                <td>Count EDV Records</td>
+                                <td>COUNT</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Count matching EDV records</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">281</span></td>
+                                <td>Create Master Record</td>
+                                <td>INSERT_INTO_TABLE</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Insert new record into EDV table</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">320</span></td>
+                                <td>Generate Table From EDV</td>
+                                <td>GENERATE_ARRAY_FORM_GROUPS</td>
+                                <td><span class="processing-badge processing-server">SERVER</span></td>
+                                <td>Create dynamic table from EDV data</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">353</span></td>
+                                <td>Fetch Related Txns External Data Value</td>
+                                <td>FETCH_RELATED_TRANSACTIONS</td>
+                                <td><span class="processing-badge processing-client">CLIENT</span></td>
+                                <td>Fetch related transactions via EDV</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">207</span></td>
+                                <td>Set Date EDV (Client)</td>
+                                <td>SET_DATE</td>
+                                <td><span class="processing-badge processing-client">CLIENT</span></td>
+                                <td>Set date from EDV lookup</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 6: FFD -->
+        <section class="section" id="ffd">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>6. FFD (Form Fill Dropdown) Rules</h3>
+                    <span class="badge">6 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Work with form-specific dropdown tables</p>
+
+                    <div class="keywords">
+                        <span class="keyword">ffd</span>
+                        <span class="keyword">dropdown</span>
+                        <span class="keyword">form dropdown</span>
+                        <span class="keyword">cascading</span>
+                        <span class="keyword">options</span>
+                        <span class="keyword">select</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need template-specific dropdown options or cascading dropdowns.
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">192</span></td>
+                                <td>FFD Dropdown (Client)</td>
+                                <td>EXT_DROP_DOWN</td>
+                                <td>Populate dropdown from FFD table</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">226</span></td>
+                                <td>Create FFDD Record</td>
+                                <td>INSERT_INTO_TABLE</td>
+                                <td>Insert new dropdown record</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">219</span></td>
+                                <td>Invalidate FFDD Record</td>
+                                <td>DUPLICATE_VALUE_CHECK</td>
+                                <td>Mark FFD record as invalid</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">330</span></td>
+                                <td>Get value from FFDD</td>
+                                <td>VALIDATION</td>
+                                <td>Retrieve value from FFD</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">222</span></td>
+                                <td>Generate Table Form DropDown</td>
+                                <td>GENERATE_ARRAY_FORM_GROUPS</td>
+                                <td>Create table from FFD</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">331</span></td>
+                                <td>AppUser List FormFillDropDown</td>
+                                <td>APP_USER_LIST</td>
+                                <td>Populate dropdown with app users</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bucket 7: AI/ML -->
+        <section class="section" id="aiml">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>7. AI/ML Rules</h3>
+                    <span class="badge">6 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Intelligent document processing, face recognition, and natural language features</p>
+
+                    <div class="keywords">
+                        <span class="keyword">ai</span>
+                        <span class="keyword">ml</span>
+                        <span class="keyword">classify</span>
+                        <span class="keyword">detect</span>
+                        <span class="keyword">face</span>
+                        <span class="keyword">speech</span>
+                        <span class="keyword">sentiment</span>
+                        <span class="keyword">recognition</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> You need intelligent document processing, biometric verification, speech-to-text, or sentiment analysis.
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">186</span></td>
+                                <td>ClassifyImage</td>
+                                <td>CLASSIFY_DOCUMENT</td>
+                                <td>Classify document type using AI</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">278</span></td>
+                                <td>Detect Document Type</td>
+                                <td>DETECT_MENU</td>
+                                <td>Detect if document is a menu/form</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">273</span></td>
+                                <td>Compare Face</td>
+                                <td>FACE_COMPARE</td>
+                                <td>Compare faces in two images for verification</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">362</span></td>
+                                <td>Speech To Text</td>
+                                <td>SPEECH_TO_TEXT</td>
+                                <td>Convert audio to text transcription</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">365</span></td>
+                                <td>Customer Feedback Sentiment</td>
+                                <td>CUSTOMER_FEEDBACK_SENTIMENT</td>
+                                <td>Analyze customer feedback sentiment</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">333</span></td>
+                                <td>GigIndiaNameMatch</td>
+                                <td>GIG_INDIA_NAME_MATCH</td>
+                                <td>AI-based name matching for identity verification</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Control Rules (combined section) -->
+        <section class="section" id="form-visibility">
+            <h2>Form Control Rules</h2>
+            <p style="margin-bottom: 1.5rem;">Rules that control field visibility, mandatory status, and enabled state</p>
+
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>8. Form Visibility Control</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">343</span></td>
+                                <td>Make Visible (Client)</td>
+                                <td>MAKE_VISIBLE</td>
+                                <td>Make field visible</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">336</span></td>
+                                <td>Make Invisible (Client)</td>
+                                <td>MAKE_INVISIBLE</td>
+                                <td>Make field invisible</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">191</span></td>
+                                <td>Make Visible - Session Based</td>
+                                <td>SESSION_BASED_MAKE_VISIBLE</td>
+                                <td>Session-based visibility</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">217</span></td>
+                                <td>Make Invisible - Session Based</td>
+                                <td>SESSION_BASED_MAKE_INVISIBLE</td>
+                                <td>Session-based invisibility</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bucket open" id="form-mandatory">
+                <div class="bucket-header">
+                    <h3>9. Form Mandatory Control</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">325</span></td>
+                                <td>Make Mandatory (Client)</td>
+                                <td>MAKE_MANDATORY</td>
+                                <td>Make field required</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">288</span></td>
+                                <td>Make Non Mandatory (Client)</td>
+                                <td>MAKE_NON_MANDATORY</td>
+                                <td>Make field optional</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">252</span></td>
+                                <td>Make Mandatory - Session Based</td>
+                                <td>SESSION_BASED_MAKE_MANDATORY</td>
+                                <td>Session-based mandatory</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">197</span></td>
+                                <td>Make NonMandatory - Session Based</td>
+                                <td>SESSION_BASED_MAKE_NON_MANDATORY</td>
+                                <td>Session-based optional</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bucket open" id="form-enable-disable">
+                <div class="bucket-header">
+                    <h3>10. Form Enable/Disable Control</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">185</span></td>
+                                <td>Enable Field (Client)</td>
+                                <td>MAKE_ENABLED</td>
+                                <td>Enable field for editing</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">314</span></td>
+                                <td>Disable Field (Client)</td>
+                                <td>MAKE_DISABLED</td>
+                                <td>Disable field editing</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">272</span></td>
+                                <td>Enable Field - Session Based</td>
+                                <td>SESSION_BASED_MAKE_ENABLED</td>
+                                <td>Session-based enable</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">193</span></td>
+                                <td>Make Disable - Session Based</td>
+                                <td>SESSION_BASED_MAKE_DISABLED</td>
+                                <td>Session-based disable</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bucket open" id="document-control">
+                <div class="bucket-header">
+                    <h3>11. Document Visibility Control</h3>
+                    <span class="badge">6 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">229</span></td>
+                                <td>Hide Document</td>
+                                <td>DELETE_DOCUMENT</td>
+                                <td>Hide a document type from view</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">238</span></td>
+                                <td>Unhide Document</td>
+                                <td>UNDELETE_DOCUMENT</td>
+                                <td>Show hidden document type</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">262</span></td>
+                                <td>Unhide Document (Client)</td>
+                                <td>UNDELETE_DOCUMENT</td>
+                                <td>Client-side unhide</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">283</span></td>
+                                <td>Delete Document</td>
+                                <td>DELETE_FILE</td>
+                                <td>Permanently delete uploaded document</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">200</span></td>
+                                <td>Make Document Sign Mandatory</td>
+                                <td>MAKE_DOCUMENT_SIGN_MANDATORY</td>
+                                <td>Require document signature</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">230</span></td>
+                                <td>Make Upload Mandatory</td>
+                                <td>MAKE_DOCUMENT_UPLOAD_MANDATORY</td>
+                                <td>Require document upload</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Copy & Transform Rules -->
+        <section class="section" id="data-copy">
+            <h2>Data Copy & Transform Rules</h2>
+
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>12. Data Copy & Field Transfer</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">270</span></td>
+                                <td>Copy Value</td>
+                                <td>COPY_TO</td>
+                                <td>Copy value between form fields</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">210</span></td>
+                                <td>Copy To FormField Client</td>
+                                <td>COPY_TO</td>
+                                <td>Client-side copy</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">228</span></td>
+                                <td>Conditional Copy (Client)</td>
+                                <td>CONDITIONAL_COPY</td>
+                                <td>Copy based on condition</td>
+                            </tr>
+                            <tr>
+                                <td><span class="rule-id">221</span></td>
+                                <td>Clear FormField (Client)</td>
+                                <td>CLEAR_FIELD</td>
+                                <td>Clear field value</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bucket open" id="transaction-attributes">
+                <div class="bucket-header">
+                    <h3>13. Transaction Attribute Copy</h3>
+                    <span class="badge">12 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Copy values to transaction-level attributes for reporting and filtering</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Destination</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">260</span></td><td>Copy To Attr1</td><td>Transaction Attr1</td></tr>
+                            <tr><td><span class="rule-id">190</span></td><td>Copy To Attr2</td><td>Transaction Attr2</td></tr>
+                            <tr><td><span class="rule-id">324</span></td><td>Copy To Attr3</td><td>Transaction Attr3</td></tr>
+                            <tr><td><span class="rule-id">184</span></td><td>Copy To Attr4</td><td>Transaction Attr4</td></tr>
+                            <tr><td><span class="rule-id">188</span></td><td>Copy To Attr5</td><td>Transaction Attr5</td></tr>
+                            <tr><td><span class="rule-id">225</span></td><td>Copy To Attr6</td><td>Transaction Attr6</td></tr>
+                            <tr><td><span class="rule-id">341</span></td><td>Copy To Attr7</td><td>Transaction Attr7</td></tr>
+                            <tr><td><span class="rule-id">280</span></td><td>Copy To Attr8</td><td>Transaction Attr8</td></tr>
+                            <tr><td><span class="rule-id">302</span></td><td>Copy To Internal Attr1</td><td>Internal Attr1</td></tr>
+                            <tr><td><span class="rule-id">263</span></td><td>Copy To Internal Attr2</td><td>Internal Attr2</td></tr>
+                            <tr><td><span class="rule-id">317</span></td><td>Copy To Internal Attr3</td><td>Internal Attr3</td></tr>
+                            <tr><td><span class="rule-id">334</span></td><td>Copy To Internal Attr4</td><td>Internal Attr4</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bucket open" id="party-details">
+                <div class="bucket-header">
+                    <h3>14. Party Details Copy</h3>
+                    <span class="badge">15 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Copy party (user) details to form fields</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>What It Copies</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">277</span></td><td>Copy FirstParty Name</td><td>First party name</td></tr>
+                            <tr><td><span class="rule-id">227</span></td><td>Copy FirstParty Email</td><td>First party email</td></tr>
+                            <tr><td><span class="rule-id">233</span></td><td>Copy FirstParty Mobile Number</td><td>First party mobile</td></tr>
+                            <tr><td><span class="rule-id">310</span></td><td>Copy FirstParty Company Name</td><td>First party company</td></tr>
+                            <tr><td><span class="rule-id">241</span></td><td>Copy To SecondParty Name</td><td>Second party name</td></tr>
+                            <tr><td><span class="rule-id">256</span></td><td>Copy To SecondParty Email</td><td>Second party email</td></tr>
+                            <tr><td><span class="rule-id">212</span></td><td>Copy To SecondParty Mobile Number</td><td>Second party mobile</td></tr>
+                            <tr><td><span class="rule-id">203</span></td><td>Copy To SecondParty Company Name</td><td>Second party company</td></tr>
+                            <tr><td><span class="rule-id">240</span></td><td>Copy To GenericParty Name</td><td>Generic party name</td></tr>
+                            <tr><td><span class="rule-id">249</span></td><td>Copy To GenericParty Email</td><td>Generic party email</td></tr>
+                            <tr><td><span class="rule-id">358</span></td><td>Copy To GenericParty Mobile Number</td><td>Generic party mobile</td></tr>
+                            <tr><td><span class="rule-id">215</span></td><td>Copy To GenericParty Company Name</td><td>Generic party company</td></tr>
+                            <tr><td><span class="rule-id">258</span></td><td>Copy CreatedBy Details</td><td>Creator details</td></tr>
+                            <tr><td><span class="rule-id">287</span></td><td>Copy CreatedFor Details</td><td>Created-for details</td></tr>
+                            <tr><td><span class="rule-id">187</span></td><td>Copy Aadhaar Signer Details</td><td>Aadhaar signer info</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bucket open" id="data-transform">
+                <div class="bucket-header">
+                    <h3>15. Data Transformation</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">294</span></td><td>Concatenate</td><td>CONCAT</td><td>Join multiple field values</td></tr>
+                            <tr><td><span class="rule-id">298</span></td><td>Convert To Lower Case</td><td>CONVERT_TO</td><td>Convert to lowercase</td></tr>
+                            <tr><td><span class="rule-id">345</span></td><td>Convert to UPPER</td><td>CONVERT_TO</td><td>Convert to uppercase</td></tr>
+                            <tr><td><span class="rule-id">183</span></td><td>Convert To Words</td><td>CONVERT_TO_WORDS</td><td>Convert number to words</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison & Validation -->
+        <section class="section" id="comparison-validation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>16. Comparison & Value Validation</h3>
+                    <span class="badge">10 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Compare values between fields and validate content</p>
+
+                    <div class="keywords">
+                        <span class="keyword">compare</span>
+                        <span class="keyword">same</span>
+                        <span class="keyword">different</span>
+                        <span class="keyword">match</span>
+                        <span class="keyword">contains</span>
+                        <span class="keyword">duplicate</span>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Action</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">232</span></td><td>Compare Text</td><td>CONTAINS_TEXT</td><td>Check if text contains substring</td></tr>
+                            <tr><td><span class="rule-id">326</span></td><td>Does Not Contain</td><td>DOES_NOT_CONTAIN_TEXT</td><td>Check text doesn't contain</td></tr>
+                            <tr><td><span class="rule-id">243</span></td><td>Compare If Same</td><td>VALIDATION</td><td>Validate two fields match</td></tr>
+                            <tr><td><span class="rule-id">352</span></td><td>Compare If Not Same</td><td>VALIDATION</td><td>Validate two fields differ</td></tr>
+                            <tr><td><span class="rule-id">354</span></td><td>Compare Name</td><td>COMPARE</td><td>Name comparison with fuzzy matching</td></tr>
+                            <tr><td><span class="rule-id">237</span></td><td>Validation Same As FormField</td><td>VALIDATION</td><td>Client-side match check</td></tr>
+                            <tr><td><span class="rule-id">267</span></td><td>SameAsFormFllMetadataValidationV2</td><td>VALIDATION</td><td>Enhanced match validation</td></tr>
+                            <tr><td><span class="rule-id">350</span></td><td>Validate Same FromFillMetadata</td><td>VALIDATION</td><td>Validate and compare</td></tr>
+                            <tr><td><span class="rule-id">242</span></td><td>De-duplication check</td><td>VALIDATION</td><td>Check for duplicate records</td></tr>
+                            <tr><td><span class="rule-id">195</span></td><td>Check Duplicate</td><td>CHECK_DUPLICATE</td><td>Find duplicate transactions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Date & Time -->
+        <section class="section" id="date-time">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>17. Date & Time Rules</h3>
+                    <span class="badge">13 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Date manipulation, comparison, and calculations</p>
+
+                    <div class="keywords">
+                        <span class="keyword">date</span>
+                        <span class="keyword">age</span>
+                        <span class="keyword">time</span>
+                        <span class="keyword">year</span>
+                        <span class="keyword">month</span>
+                        <span class="keyword">quarter</span>
+                        <span class="keyword">financial year</span>
+                        <span class="keyword">dob</span>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">259</span></td><td>Set Age From Date</td><td>Calculate age from DOB (server)</td></tr>
+                            <tr><td><span class="rule-id">276</span></td><td>Set Age From Date (Client)</td><td>Calculate age from DOB (client)</td></tr>
+                            <tr><td><span class="rule-id">202</span></td><td>Check Data Range</td><td>Validate date within range</td></tr>
+                            <tr><td><span class="rule-id">286</span></td><td>Compare Date With Offset</td><td>Compare date with offset</td></tr>
+                            <tr><td><span class="rule-id">301</span></td><td>Compare Time</td><td>Compare time values</td></tr>
+                            <tr><td><span class="rule-id">315</span></td><td>Compare time with start time</td><td>Compare with start time</td></tr>
+                            <tr><td><span class="rule-id">234</span></td><td>Split Date</td><td>Split date into day/month/year</td></tr>
+                            <tr><td><span class="rule-id">206</span></td><td>Set Date From Month Or Year</td><td>Construct date from parts</td></tr>
+                            <tr><td><span class="rule-id">209</span></td><td>Set Date From Previous Date</td><td>Date operations</td></tr>
+                            <tr><td><span class="rule-id">239</span></td><td>SetNextOrPreviousWeekdayFromDate</td><td>Get weekday from date</td></tr>
+                            <tr><td><span class="rule-id">201</span></td><td>Set Date Firstparty Mobile No</td><td>Set date from party info</td></tr>
+                            <tr><td><span class="rule-id">309</span></td><td>Get FY</td><td>Get financial year from date</td></tr>
+                            <tr><td><span class="rule-id">332</span></td><td>Derive QTR</td><td>Get quarter from date</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Geolocation -->
+        <section class="section" id="geolocation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>18. Geolocation Rules</h3>
+                    <span class="badge">7 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Location-based validation and calculations</p>
+
+                    <div class="keywords">
+                        <span class="keyword">location</span>
+                        <span class="keyword">gps</span>
+                        <span class="keyword">coordinates</span>
+                        <span class="keyword">distance</span>
+                        <span class="keyword">address</span>
+                        <span class="keyword">geocode</span>
+                        <span class="keyword">polygon</span>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">265</span></td><td>Calculate Distance</td><td>Calculate distance between coordinates</td></tr>
+                            <tr><td><span class="rule-id">329</span></td><td>Check Location Serviceability</td><td>Check if location is serviceable</td></tr>
+                            <tr><td><span class="rule-id">211</span></td><td>Get Lat/Long From Address</td><td>Geocode address to coordinates</td></tr>
+                            <tr><td><span class="rule-id">351</span></td><td>Get Lat/Long From Image</td><td>Extract GPS from image EXIF</td></tr>
+                            <tr><td><span class="rule-id">220</span></td><td>Get Location Generic Map</td><td>Get location from map</td></tr>
+                            <tr><td><span class="rule-id">308</span></td><td>Get Distance Generic Map</td><td>Calculate distance on map</td></tr>
+                            <tr><td><span class="rule-id">199</span></td><td>Out Of Polygon Check</td><td>Check if point is within polygon</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculation -->
+        <section class="section" id="calculation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>19. Calculation & Financial Rules</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Financial calculations and TDS processing</p>
+
+                    <div class="keywords">
+                        <span class="keyword">calculate</span>
+                        <span class="keyword">tds</span>
+                        <span class="keyword">tax</span>
+                        <span class="keyword">liability</span>
+                        <span class="keyword">count</span>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">307</span></td><td>Calculate TDS</td><td>Calculate TDS amount based on rules</td></tr>
+                            <tr><td><span class="rule-id">205</span></td><td>Calculate BulkBatch Liability</td><td>Calculate bulk batch liability</td></tr>
+                            <tr><td><span class="rule-id">282</span></td><td>Validate BulkBatch</td><td>Validate bulk batch data</td></tr>
+                            <tr><td><span class="rule-id">291</span></td><td>Get Count</td><td>Count values in fields</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Table Generation -->
+        <section class="section" id="table-generation">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>20. Table Generation Rules</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Create dynamic tables from data sources</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Data Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">320</span></td><td>Generate Table From EDV</td><td>External Data Value</td></tr>
+                            <tr><td><span class="rule-id">222</span></td><td>Generate Table Form DropDown</td><td>Form Fill Dropdown</td></tr>
+                            <tr><td><span class="rule-id">321</span></td><td>Generate Table Form Staging</td><td>Staging Data</td></tr>
+                            <tr><td><span class="rule-id">323</span></td><td>Generate Table From Transaction</td><td>Transaction</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- OTP Verification -->
+        <section class="section" id="otp-verification">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>21. OTP & Verification Rules</h3>
+                    <span class="badge">5 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Send and validate one-time passwords</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">339</span></td><td>Send Email OTP (Client)</td><td>Send OTP via email</td></tr>
+                            <tr><td><span class="rule-id">338</span></td><td>Send Mobile OTP (Client)</td><td>Send OTP via SMS</td></tr>
+                            <tr><td><span class="rule-id">340</span></td><td>Validate Otp (Client)</td><td>Validate entered OTP</td></tr>
+                            <tr><td><span class="rule-id">255</span></td><td>Validate Email</td><td>Email verification link</td></tr>
+                            <tr><td><span class="rule-id">275</span></td><td>Validate Liveliness Otp</td><td>Liveliness check OTP</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- KYC & eSign -->
+        <section class="section" id="kyc-esign">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>22. KYC & eSign Rules</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Digital signature and KYC verification</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">223</span></td><td>DigiLocker E-Kyc (Client)</td><td>Fetch documents from DigiLocker</td></tr>
+                            <tr><td><span class="rule-id">299</span></td><td>Video Kyc (Client)</td><td>Video-based KYC</td></tr>
+                            <tr><td><span class="rule-id">292</span></td><td>Set eSign Auth Mode</td><td>Configure eSign authentication</td></tr>
+                            <tr><td><span class="rule-id">313</span></td><td>Generate eStamp</td><td>Generate eStamp certificate</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expression Rules -->
+        <section class="section" id="expression">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>23. Expression Rules (Custom Logic)</h3>
+                    <span class="badge">1 rule + 22 functions</span>
+                </div>
+                <div class="bucket-content">
+                    <p class="bucket-description">Execute custom JavaScript-like expressions for complex conditional logic not covered by standard rules</p>
+
+                    <div class="keywords">
+                        <span class="keyword">expression</span>
+                        <span class="keyword">custom</span>
+                        <span class="keyword">logic</span>
+                        <span class="keyword">condition</span>
+                        <span class="keyword">if else</span>
+                        <span class="keyword">complex</span>
+                        <span class="keyword">formula</span>
+                    </div>
+
+                    <div class="use-when">
+                        <strong>Use when:</strong> Pre-defined rules don't cover your logic needs - complex multi-condition scenarios.
+                    </div>
+
+                    <table style="margin-bottom: 1.5rem;">
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Processing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rule-id">328</span></td>
+                                <td>Expression (Client)</td>
+                                <td><span class="processing-badge processing-client">CLIENT</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 style="margin-bottom: 1rem;">Available Expression Functions</h4>
+                    <div class="expression-functions">
+                        <div class="func-card">
+                            <code>vo(id)</code> / <code>valOf(id)</code>
+                            <p>Get field value by form-fill-metadata-id</p>
+                        </div>
+                        <div class="func-card">
+                            <code>mvi(condition, destIds)</code>
+                            <p>Make visible if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>minvi(condition, destIds)</code>
+                            <p>Make invisible if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>mm(condition, destIds)</code>
+                            <p>Make mandatory if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>mnm(condition, destIds)</code>
+                            <p>Make non-mandatory if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>en(condition, destIds)</code>
+                            <p>Enable if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>dis(condition, destIds)</code>
+                            <p>Disable if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>ctfd(condition, srcValue, destIds)</code>
+                            <p>Copy to fill data if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>cf(condition, destIds)</code>
+                            <p>Clear field if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>adderr(condition, message, destIds)</code>
+                            <p>Add error message if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>remerr(condition, destIds)</code>
+                            <p>Remove error message if condition evaluates to true</p>
+                        </div>
+                        <div class="func-card">
+                            <code>concat(values)</code>
+                            <p>Concatenate values</p>
+                        </div>
+                        <div class="func-card">
+                            <code>cwd(delimiter, values)</code>
+                            <p>Concatenate with delimiter (ignores empty/null)</p>
+                        </div>
+                        <div class="func-card">
+                            <code>tolc(value)</code> / <code>touc(value)</code>
+                            <p>Convert to lowercase / uppercase</p>
+                        </div>
+                        <div class="func-card">
+                            <code>cntns(sequence, value)</code>
+                            <p>Check if string contains sequence</p>
+                        </div>
+                        <div class="func-card">
+                            <code>vso(id)</code>
+                            <p>Get validation status (SUCCESS, FAIL, PENDING, etc.)</p>
+                        </div>
+                        <div class="func-card">
+                            <code>pt()</code>
+                            <p>Get party type (FP or SP)</p>
+                        </div>
+                        <div class="func-card">
+                            <code>mt()</code>
+                            <p>Get member type (CREATED_BY, APPROVER, etc.)</p>
+                        </div>
+                        <div class="func-card">
+                            <code>rplrng(str, start, end, subst)</code>
+                            <p>Replace range of chars in string</p>
+                        </div>
+                        <div class="func-card">
+                            <code>rgxtst(value, regex)</code>
+                            <p>Test if string matches regex pattern</p>
+                        </div>
+                        <div class="func-card">
+                            <code>setAgeFromDate(srcId, destId)</code>
+                            <p>Calculate age from date field</p>
+                        </div>
+                        <div class="func-card">
+                            <code>erbyid(condition, ids)</code>
+                            <p>Execute all rules of other form-fill-data</p>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 1.5rem 0 1rem;">Expression Examples</h4>
+                    <pre>// Make field visible if dropdown equals specific value
+mvi(vo("_dropdown_") == "Option1", "_targetField_");
+
+// Copy value based on condition
+ctfd(vo("_panType_") == "Company", "CO", "_companyType_");
+
+// Validate age is 18+
+adderr(vo("_age_") < 18, "Must be 18 or older", "_age_");
+
+// Conditional visibility based on multiple conditions
+mvi(vo("_type_") == "A" and vo("_status_") == "Active", "_field1_", "_field2_");
+
+// Make field mandatory for approver only
+mm(mt() == "APPROVER", "_approvalNotes_");</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Assignment -->
+        <section class="section" id="user-assignment">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>24. User & Assignment Rules</h3>
+                    <span class="badge">3 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">251</span></td><td>Fetch user details</td><td>Get user details by ID/email/mobile</td></tr>
+                            <tr><td><span class="rule-id">231</span></td><td>Copy User As CreatedFor</td><td>Assign user as created-for</td></tr>
+                            <tr><td><span class="rule-id">248</span></td><td>Reassign Create For</td><td>Reassign transaction to different user</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment & POS -->
+        <section class="section" id="payment-pos">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>25. Payment & POS Rules</h3>
+                    <span class="badge">4 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">218</span></td><td>Check Payment Status (Client)</td><td>Check payment status</td></tr>
+                            <tr><td><span class="rule-id">198</span></td><td>Qc Bosch Quick POS</td><td>Bosch POS verification</td></tr>
+                            <tr><td><span class="rule-id">304</span></td><td>Qc Qwik POS Create Code</td><td>Create POS code</td></tr>
+                            <tr><td><span class="rule-id">316</span></td><td>Qc Reload Amount</td><td>Reload amount to card</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Utility -->
+        <section class="section" id="utility">
+            <div class="bucket open">
+                <div class="bucket-header">
+                    <h3>26. Utility & Miscellaneous Rules</h3>
+                    <span class="badge">14 rules</span>
+                </div>
+                <div class="bucket-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule ID</th>
+                                <th>Rule Name</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="rule-id">245</span></td><td>Generate Unique Code</td><td>Generate unique identifiers</td></tr>
+                            <tr><td><span class="rule-id">268</span></td><td>Reminder Service</td><td>Configure reminders</td></tr>
+                            <tr><td><span class="rule-id">224</span></td><td>Export Import FormField</td><td>Export/import form data</td></tr>
+                            <tr><td><span class="rule-id">293</span></td><td>Make Action Based On FormFill Txn Info</td><td>Action based on transaction</td></tr>
+                            <tr><td><span class="rule-id">247</span></td><td>Upload File Size Limit</td><td>Limit file upload size</td></tr>
+                            <tr><td><span class="rule-id">364</span></td><td>Lookup Staging Data</td><td>Query staging data</td></tr>
+                            <tr><td><span class="rule-id">264</span></td><td>Copy To Transaction Title</td><td>Set transaction title</td></tr>
+                            <tr><td><span class="rule-id">300</span></td><td>Copy To Transaction Message</td><td>Set transaction message</td></tr>
+                            <tr><td><span class="rule-id">342</span></td><td>Copy to Title</td><td>Set workflow data title</td></tr>
+                            <tr><td><span class="rule-id">257</span></td><td>Copy To WorkFlowData Message</td><td>Set workflow message</td></tr>
+                            <tr><td><span class="rule-id">246</span></td><td>Copy to Supporting Document</td><td>Link supporting document</td></tr>
+                            <tr><td><span class="rule-id">254</span></td><td>Copy Offer Transaction Details</td><td>Chain transaction copy</td></tr>
+                            <tr><td><span class="rule-id">297</span></td><td>Copy To Option Name</td><td>Copy dropdown option name</td></tr>
+                            <tr><td><span class="rule-id">284</span></td><td>Reset PreFill Value</td><td>Reset prefilled data</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Reference -->
+        <section class="section">
+            <h2>Quick Reference: Bucket Selection Guide</h2>
+            <p style="margin-bottom: 1rem;">Use this guide to quickly find the right bucket for your needs:</p>
+
+            <div class="quick-ref">
+                <div class="quick-ref-item">
+                    <strong>Extract data from documents</strong>
+                    <p>Use: OCR bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Verify identity (PAN, Aadhaar, etc.)</strong>
+                    <p>Use: Identity Validation bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Verify business (GSTIN, CIN, etc.)</strong>
+                    <p>Use: Business Validation bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Verify bank account</strong>
+                    <p>Use: Financial Validation bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Populate dropdown from table</strong>
+                    <p>Use: EDV or FFD bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Validate against master data</strong>
+                    <p>Use: EDV bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Show/hide fields conditionally</strong>
+                    <p>Use: Form Visibility or Expression</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Make fields mandatory conditionally</strong>
+                    <p>Use: Form Mandatory or Expression</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Copy data between fields</strong>
+                    <p>Use: Data Copy or Expression</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Calculate age from DOB</strong>
+                    <p>Use: Date & Time bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Location-based validation</strong>
+                    <p>Use: Geolocation bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Calculate TDS</strong>
+                    <p>Use: Calculation bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>AI document classification</strong>
+                    <p>Use: AI/ML bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Face matching</strong>
+                    <p>Use: AI/ML bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>OTP verification</strong>
+                    <p>Use: OTP Verification bucket</p>
+                </div>
+                <div class="quick-ref-item">
+                    <strong>Complex conditional logic</strong>
+                    <p>Use: Expression bucket</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Processing Types -->
+        <section class="section">
+            <h2>Processing Types</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                <div style="background: #fee2e2; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #991b1b; margin-bottom: 0.5rem;">SERVER</h3>
+                    <p>Rules executed on server. Full validation capability but requires network round-trip. Used for OCR, validation against external APIs, and database operations.</p>
+                </div>
+                <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="color: #065f46; margin-bottom: 0.5rem;">CLIENT</h3>
+                    <p>Rules executed on client device. Faster response, works offline, but limited access to server data. Used for UI control (visibility, mandatory, enable) and expressions.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Manch Platform Rules Classification | Generated from Rule-Schemas.json | Total: 182 rules in 22 buckets</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Files: <code>rules/RULES_CLASSIFICATION.md</code>, <code>rules/rules_buckets.json</code>, <code>rules/RULES_CLASSIFICATION.html</code></p>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle bucket content on click
+        document.querySelectorAll('.bucket-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>

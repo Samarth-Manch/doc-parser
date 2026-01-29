@@ -1,0 +1,135 @@
+
+====================================================================================================
+DETAILED WORKFLOW REPORT
+====================================================================================================
+
+SPOC WORKFLOW (3 steps)
+----------------------------------------------------------------------------------------------------
+
+Step 1: The process will be initiated by the initiator by logging into the system and clicking on the create option in the dashboard.
+  Action Type: create
+
+Step 2: This process can be initiated by any user in the system. The user should be active in the Pidilite HRMS system. This data will be maintained in the Manch EDV system.
+
+Step 1: Once the Vendor enters the details and clicks on submit. The system will perform the validation and send the details to the approvers for them to take action.
+  Action Type: validate
+
+INITIATOR WORKFLOW (11 steps)
+----------------------------------------------------------------------------------------------------
+
+Step 1: Login: The Pidilite team logs in to the Manch application using the provided credentials. The following basic details are shown to the user for each transaction created.
+  Action Type: login
+
+Step 2: Transaction ID
+
+Step 3: Company Name – Title (Copy the company name FFD Data into Title)
+
+Step 4: Process Name
+
+Step 5: Vendor Code – Attribute 1 (Copt the vendor code FFD Data into Attribute 1)
+
+Step 6: Create By – Show the created by email id
+  Action Type: notify
+
+Step 7: Created Date
+  Action Type: create
+
+Step 8: Status – Display the external status with next approver and rejection details (when applicable)
+  Action Type: approve
+
+Step 9: Initiation: The user will click on the create option and select the vendor creation process.
+  Action Type: create
+
+Step 10: Form will open with the below details of initiator. Initiator will be able to view only Basic details panel and fields as mentioned below. All the fields will be having common logic with them.
+
+Step 11: Once the Initiator enters the details and clicks on submit. The system will perform the validation and send the details to the vendor for them to take action.
+  Action Type: validate
+
+APPROVER WORKFLOW (35 steps)
+----------------------------------------------------------------------------------------------------
+
+Step 1: For India, the workflow will consist of six sequential approval levels:
+  Action Type: approve
+
+Step 2: Pending with Requestor – Initial review and confirmation by the requestor.
+
+Step 3: Pending with Vertical Head – Review and approval by the relevant business/vertical head.
+  Action Type: approve
+
+Step 4: Pending with Functional Head – Review and approval by the applicable functional head (e.g., Finance, Operations).
+  Action Type: approve
+
+Step 5: Pending with Accounts Team – Validation of accounting and finance-related information.
+  Action Type: validate
+
+Step 6: Pending with Auditor – Compliance and audit validation as required.
+  Action Type: validate
+
+Step 7: Pending with MDC Team – Final review by the MDC team. The MDC team can add ad hoc approvers as needed, up to a maximum of five parallel approvers. All ad hoc approvers must record their decisions, after which the request returns to the MDC approver, who then takes the final action in line with the defined common behaviour.
+  Action Type: approve
+
+Step 8: For Non-India, the workflow will consist of four sequential approval levels:
+  Action Type: approve
+
+Step 9: Pending with Requestor – Initial review and confirmation by the requestor. It is a contributor.
+
+Step 10: Pending with Country Head – Review and approval by the respective country head.
+  Action Type: approve
+
+Step 11: Pending with Auditor – Compliance and audit validation as required.
+  Action Type: validate
+
+Step 12: Pending with MDC Team – Final review by the MDC team. The MDC team can add ad hoc approvers as needed, up to a maximum of five parallel approvers. All ad hoc approvers must record their decisions, after which the request returns to the MDC approver, who then takes the final action in line with the defined common behaviour.
+  Action Type: approve
+
+Step 1: In this process, Pending with the requestor also acts as the Initiator for the vendor creation workflow. After the vendor submits the request, the system automatically routes it to pending with requestor.
+  Action Type: submit
+
+Step 2: It has a contributor-style view where all information entered by both the initiator and the vendor is displayed in a read-only (disabled) form, and, based on this information, Requestor will enter the additional details specified below.
+
+Step 3: After the previous approver submits the request, the system automatically routes it to pending with account team based on the flow chart.
+  Action Type: approve
+
+Step 4: It has a contributor-style view where all information entered by previous stockholders is displayed in a read-only (disabled) form, and, based on this information, approver will enter the additional details specified below.
+  Action Type: approve
+
+Step 5: Vendor Master
+
+Step 6: Table 1.1
+
+Step 7: Table 1.2
+
+Step 8: Table 1.3
+
+Step 9: Table 1.4
+
+Step 10: Table 1.5
+
+Step 11: Table 1.6
+
+Step 12: Table 1.7
+
+Step 13: Table 1.8
+
+Step 14: Transaction ID
+
+Step 15: Company Name – Title (Copy the company name FFD Data into Title)
+
+Step 16: Process Name
+
+Step 17: Vendor Code – Attribute 1 (Copt the vendor code FFD Data into Attribute 1)
+
+Step 18: Create By – Show the created by email id
+  Action Type: notify
+
+Step 19: Created Date
+  Action Type: create
+
+Step 20: Status – Display the external status with next approver and rejection details (when applicable)
+  Action Type: approve
+
+Step 21: Add API documentation available for each system.
+
+Step 22: Add other information related to integration
+
+Step 23: Formatting Best Practices:

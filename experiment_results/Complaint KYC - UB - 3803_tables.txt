@@ -1,0 +1,46 @@
+
+====================================================================================================
+DETAILED RAW TABLES REPORT
+====================================================================================================
+
+Table 1: initiator_fields
+Context: INITIATOR PROCESS
+Size: 15 rows x 4 columns
+Headers: ['Field Name', 'Field Type', 'Rules', 'Mandatory/Non Mandatory?']
+Sample rows:
+  Row 1: ['Region', 'TEXT', '', 'Mandatory']
+  Row 2: ['State', 'TEXT', 'Based on the outlet code state name should be derived', 'Mandatory']
+  Row 3: ['Depot/District', 'TEXT', '', '']
+  ... and 12 more rows
+----------------------------------------------------------------------------------------------------
+
+Table 2: reference
+Context: SPOC BEHAVIOR
+Size: 6 rows x 3 columns
+Headers: ['Is the license under an Individual or an Establishment?', 'Are you the licensee?', 'Who is the beneficiary?']
+Sample rows:
+  Row 1: ['Individual', 'Yes', 'Self']
+  Row 2: ['Individual', 'Yes', 'Other beneficiary']
+  Row 3: ['Individual', 'No', 'Other beneficiary']
+  ... and 3 more rows
+----------------------------------------------------------------------------------------------------
+
+Table 3: dropdown_mapping
+Context: SPOC BEHAVIOR
+Size: 138 rows x 4 columns
+Headers: ['These are the series of questions / dropdown values that SPOC needs to fill / provide the details.', 'These are the series of questions / dropdown values that SPOC needs to fill / provide the details.', 'These are the series of questions / dropdown values that SPOC needs to fill / provide the details.', 'These are the series of questions / dropdown values that SPOC needs to fill / provide the details.']
+Sample rows:
+  Row 1: ['Field Name', 'Field Type', 'Rules', 'Mandatory/Non Mandatory?']
+  Row 2: ['Basic Details', 'PANEL', '', '']
+  Row 3: ['Is the license under an Individual or an Establishment?', 'DROPDOWN', '', 'Mandatory']
+  ... and 135 more rows
+----------------------------------------------------------------------------------------------------
+
+Table 4: reference
+Context: APPROVER PROCESS
+Size: 2 rows x 5 columns
+Headers: ['Licensee is an individual', 'Licensee is an individual', 'Licensee is an individual', 'Licensee is an individual', 'Licensee is an individual']
+Sample rows:
+  Row 1: ['Are you the licensee?', 'Yes', 'TSE', 'Are you the licensee?', 'No']
+  Row 2: ['Are you the beneficiary?', 'No', 'TSE', 'Are you the beneficiary?', '(Yes)']
+----------------------------------------------------------------------------------------------------
