@@ -643,6 +643,285 @@ External data value (EDV) rules require complex table mapping configuration that
 
 ---
 
+## EDV (External Data Value) Rules - Comprehensive Guide
+
+### What is EDV?
+
+EDV (External Data Value) is an external table system used for:
+1. **Dropdown values**: Populating dropdown options from master tables
+2. **Cascading/Parent-child dropdowns**: Filtering child dropdown based on parent selection
+3. **Validations**: IFSC validation, PAN lookup, etc.
+4. **Auto-population**: Filling fields based on external table lookups
+
+### Reference Table to EDV Table Mapping
+
+BUD documents reference tables like "Reference Table 1.3". These map to EDV table names:
+
+| BUD Reference | EDV Table Name | Purpose |
+|---------------|----------------|---------|
+| Table 1.3 | `VC_VENDOR_TYPES` | Vendor type and group codes |
+| Table 1.2 | `COMPANY_CODE_PURCHASE_ORGANIZATION` | Company codes and purchase orgs |
+| Table 2.1 | `COUNTRY` | Country list |
+| Table 3.1 | `BANK_OPTIONS` | Bank selection options |
+| Table 4.1 | `CURRENCY_COUNTRY` | Currency codes |
+| Table 5.1 | `TITLE` | Title (Mr/Mrs/Ms) |
+| - | `PIDILITE_YES_NO` | Simple Yes/No dropdown |
+| - | `YES_NO`, `CB_YES_NO` | Yes/No dropdowns |
+| - | `INDIVIDUAL_GROUP` | Individual/Group selection |
+| - | `WITHHOLDING_TAX_DATA` | Tax codes |
+
+### EXT_DROP_DOWN vs EXT_VALUE
+
+| Type | When to Use | params Format | sourceType |
+|------|-------------|---------------|------------|
+| `EXT_DROP_DOWN` | Simple dropdown from EDV table | String: `"TABLE_NAME"` | `EXTERNAL_DATA_VALUE` or `FORM_FILL_DROP_DOWN` |
+| `EXT_VALUE` | Cascading dropdown OR auto-populate | JSON: `"[{conditionList...}]"` | `EXTERNAL_DATA_VALUE` |
+
+---
+
+### EXT_DROP_DOWN params Structure (Simple String)
+
+EXT_DROP_DOWN uses simple string params for dropdown tables:
+
+```json
+{
+  "actionType": "EXT_DROP_DOWN",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "processingType": "CLIENT",
+  "sourceIds": [238480],
+  "destinationIds": [-1],
+  "params": "YES_NO",
+  "searchable": false,
+  "executeOnFill": true
+}
+```
+
+**params** is just the EDV table name as a string.
+
+**Common EXT_DROP_DOWN params values from production**:
+- `YES_NO`, `CB_YES_NO`, `PIDILITE_YES_NO` - Yes/No dropdowns
+- `INDIVIDUAL_GROUP`, `CB_IND_GROUP` - Individual/Group selection
+- `LINK`, `LINK_EST_PRO` - Link type dropdowns
+- `IND_ESTA` - Individual/Establishment
+- `INACTIVE` - Active/Inactive status
+- `COMPANY_CODE` - Company codes
+
+---
+
+### EXT_VALUE params Structure (JSON conditionList)
+
+EXT_VALUE uses JSON params with `conditionList` structure for cascading dropdowns and filtered lookups.
+
+**Key fields in conditionList**:
+| Field | Description | Example |
+|-------|-------------|---------|
+| `ddType` | EDV table name (array) | `["VC_VENDOR_TYPES"]` |
+| `criterias` | Filter criteria: column → parent field ID | `[{"a1": 275496}]` |
+| `da` | Display attribute/column to show | `["a2"]` |
+| `ddProperties` | Group property (optional) | `"OUTLET_LICENSE_GROUP"` |
+| `criteriaSearchAttr` | Search attributes (usually empty) | `[]` |
+
+**Column Notation**: EDV uses `a1`, `a2`, `a3`... for columns:
+- `a1` = Column 1, `a2` = Column 2, etc.
+- "first column" → `a1`, "second column" → `a2`
+
+---
+
+### EXT_VALUE Params Patterns (From Production)
+
+#### Pattern 1: Simple lookup (no filtering)
+```json
+[{
+  "conditionList": [
+    {"ddType": ["COMPLIANT_KYC"]},
+    {"da": ["a1"]}
+  ]
+}]
+```
+
+#### Pattern 2: With ddProperties (group property)
+```json
+[{
+  "conditionList": [
+    {"ddType": ["OUTLET_LICENSEE_DETAILS"]},
+    {"ddProperties": "OUTLET_LICENSE_GROUP"},
+    {"da": ["a1"]}
+  ]
+}]
+```
+
+#### Pattern 3: Single parent filtering (cascading dropdown)
+```json
+[{
+  "conditionList": [
+    {"ddType": ["OUTLET_LICENSEE_DETAILS"]},
+    {"criterias": [{"a1": 232150}]},
+    {"da": ["a2"]}
+  ]
+}]
+```
+**Explanation**: Filter rows where column `a1` matches value from field `232150`, display column `a2`.
+
+#### Pattern 4: Multi-parent filtering (multiple criteria)
+```json
+[{
+  "conditionList": [
+    {"ddType": ["OUTLET_LICENSEE_DETAILS"]},
+    {"criterias": [{"a1": 238459, "a2": 238460}]},
+    {"da": ["a3"]}
+  ]
+}]
+```
+**Explanation**: Filter by BOTH `a1` (from field 238459) AND `a2` (from field 238460), display `a3`.
+
+#### Pattern 5: Complex multi-level filtering (4+ criteria)
+```json
+[{
+  "conditionList": [
+    {"ddType": ["OUTLET_LICENSEE_DETAILS"]},
+    {"criterias": [{"a1": 238459, "a2": 238460, "a3": 238462, "a4": 238463}]},
+    {"da": ["a5"]}
+  ]
+}]
+```
+
+---
+
+### Parent-Child Dropdown Examples
+
+#### Example: Vendor Type → Group Key
+
+**BUD Logic**:
+- **Account Group/Vendor Type** (ID: 275496): "Dropdown values are first and second columns of reference table 1.3"
+- **Group key/Corporate Group** (ID: 275498): "Dropdown values will come based on the account group/vendor type selection field as 2nd column of reference table 1.3"
+
+**Generated Rules**:
+
+**Parent field (simple dropdown)**:
+```json
+{
+  "actionType": "EXT_DROP_DOWN",
+  "sourceType": "FORM_FILL_DROP_DOWN",
+  "sourceIds": [275496],
+  "params": "VC_VENDOR_TYPES"
+}
+```
+
+**Child field (cascading lookup)**:
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [275498],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"VC_VENDOR_TYPES\"]},{\"criterias\":[{\"a1\":275496}]},{\"da\":[\"a2\"]}]}]"
+}
+```
+
+---
+
+### Building EXT_VALUE params Programmatically
+
+```python
+import json
+
+def build_ext_value_params(
+    edv_table: str,
+    filter_column: str = None,
+    parent_field_id: int = None,
+    display_column: str = "a1",
+    dd_properties: str = None
+) -> str:
+    """Build EXT_VALUE params JSON."""
+
+    condition_list = [{"ddType": [edv_table]}]
+
+    # Add ddProperties if specified
+    if dd_properties:
+        condition_list.append({"ddProperties": dd_properties})
+
+    # Add filter criteria if parent-child relationship
+    if filter_column and parent_field_id:
+        condition_list.append({"criterias": [{filter_column: parent_field_id}]})
+
+    # Add display attribute
+    condition_list.append({"da": [display_column]})
+
+    params_obj = [{"conditionList": condition_list}]
+    return json.dumps(params_obj)
+
+# Example: Simple lookup
+params = build_ext_value_params("COMPLIANT_KYC", display_column="a1")
+# Result: '[{"conditionList":[{"ddType":["COMPLIANT_KYC"]},{"da":["a1"]}]}]'
+
+# Example: Cascading dropdown
+params = build_ext_value_params(
+    edv_table="VC_VENDOR_TYPES",
+    filter_column="a1",
+    parent_field_id=275496,
+    display_column="a2"
+)
+# Result: '[{"conditionList":[{"ddType":["VC_VENDOR_TYPES"]},{"criterias":[{"a1":275496}]},{"da":["a2"]}]}]'
+```
+
+---
+
+### VERIFY Rules - External Validation (NO params!)
+
+**IMPORTANT**: VERIFY rules do NOT have `params`. They use `sourceType` for validation type:
+
+```json
+{
+  "actionType": "VERIFY",
+  "sourceType": "PAN_NUMBER",
+  "sourceIds": [238473],
+  "destinationIds": [-1, -1, -1, -1, -1, 238475, 238474, -1, -1, -1]
+}
+```
+
+```json
+{
+  "actionType": "VERIFY",
+  "sourceType": "BANK_ACCOUNT_NUMBER",
+  "sourceIds": [238481, 238482],  // [IFSC_ID, Account_Number_ID]
+  "destinationIds": [238483, -1, -1, 238486]
+}
+```
+
+**VERIFY sourceType values**: `PAN_NUMBER`, `BANK_ACCOUNT_NUMBER`, `GSTIN`, `IFSC`, `AADHAR`, `MSME_UDYAM_REG_NUMBER`, `CIN_ID`
+
+---
+
+### EDV Detection Patterns in BUD Logic
+
+```python
+EDV_PATTERNS = [
+    r"reference\s+table\s+(\d+\.?\d*)",     # "reference table 1.3"
+    r"dropdown\s+values?\s+(?:from|are)",   # "Dropdown values from..."
+    r"based\s+on\s+(?:the\s+)?(.+?)\s+selection",  # "based on X selection"
+    r"parent\s+dropdown\s+field",           # "Parent dropdown field"
+    r"cascading\s+dropdown",                # "Cascading dropdown"
+    r"external\s+(?:data\s+)?value",        # "External data value"
+    r"edv\s+rule",                          # "EDV rule"
+    r"column\s+(\d+)\s+of\s+(?:reference\s+)?table",  # "column 2 of table"
+    r"first\s+(?:and\s+second\s+)?columns?\s+of",     # "first column of"
+]
+```
+
+---
+
+### EDV Input Files (from Orchestrator)
+
+When available, use these files passed via command-line:
+- `--edv-tables`: `*_edv_tables.json` - Table name mappings
+- `--field-edv-mapping`: `*_field_edv_mapping.json` - Pre-built params templates
+
+These contain:
+1. `table_name_mapping`: Reference table → EDV table name mapping
+2. `field_edv_mappings`: Pre-built params templates for each field
+3. `parent_child_chains`: Parent-child dropdown relationships
+
+---
+
 ## CRITICAL: Field-Level Rule Comparison (Not Just Counts!)
 
 **Problem**: The current eval passes when total rule counts match, but rules may be on WRONG FIELDS.

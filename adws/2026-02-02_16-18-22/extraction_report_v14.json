@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-02-02T11:43:17.202063",
+  "input_files": {
+    "schema": "output/complete_format/6421-schema.json",
+    "intra_panel": "adws/2026-02-02_16-18-22/templates_output/Vendor Creation Sample BUD_intra_panel_references.json",
+    "edv_tables": "adws/2026-02-02_16-18-22/templates_output/Vendor_Creation_Sample_BUD_edv_tables.json",
+    "field_edv_mapping": "adws/2026-02-02_16-18-22/templates_output/Vendor_Creation_Sample_BUD_field_edv_mapping.json"
+  },
+  "output_files": {
+    "populated_schema": "adws/2026-02-02_16-18-22/populated_schema_v14.json",
+    "report": "adws/2026-02-02_16-18-22/extraction_report_v14.json"
+  },
+  "stats": {
+    "total_fields": 168,
+    "fields_with_rules": 92,
+    "total_rules_generated": 60,
+    "rules_by_type": {
+      "MAKE_DISABLED": 1,
+      "MAKE_MANDATORY": 2,
+      "MAKE_NON_MANDATORY": 2,
+      "MAKE_VISIBLE": 2,
+      "MAKE_INVISIBLE": 2,
+      "CONVERT_TO": 29,
+      "OCR": 6,
+      "VERIFY": 4,
+      "EXT_DROP_DOWN": 11,
+      "EXT_VALUE": 1
+    },
+    "llm_fallback_used": 0,
+    "validation_errors": 0
+  },
+  "config": {
+    "llm_threshold": 0.7,
+    "verbose": true,
+    "validate": false
+  }
+}

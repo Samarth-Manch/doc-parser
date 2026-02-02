@@ -1,0 +1,1925 @@
+{
+  "iteration": 2,
+  "evaluation_passed": false,
+  "score": 0.22535211267605637,
+  "threshold": 0.9,
+  "needs_fixes": true,
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "category": "missing_rules",
+      "action": "Add 45 missing MAKE_VISIBLE rules",
+      "rule_type": "MAKE_VISIBLE",
+      "affected_fields": [
+        "TDS Applicable?",
+        "Do you wish to add additional mobile numbers (India)?",
+        "Please select GST option",
+        "Business Registration Number Available?",
+        "Concerned email addresses?",
+        "Please choose the option",
+        "Please Choose Address Proof",
+        "Is Vendor Your Customer?",
+        "Is SSI / MSME Applicable?",
+        "Order currency"
+      ],
+      "count": 45
+    },
+    {
+      "priority": 2,
+      "category": "missing_rules",
+      "action": "Add 43 missing MAKE_NON_MANDATORY rules",
+      "rule_type": "MAKE_NON_MANDATORY",
+      "affected_fields": [
+        "TDS Applicable?",
+        "Do you wish to add additional mobile numbers (India)?",
+        "Please select GST option",
+        "Business Registration Number Available?",
+        "Please choose the option",
+        "Please Choose Address Proof",
+        "Is Vendor Your Customer?",
+        "Is SSI / MSME Applicable?",
+        "Order currency",
+        "PAN Type"
+      ],
+      "count": 43
+    },
+    {
+      "priority": 3,
+      "category": "missing_rules",
+      "action": "Add 37 missing MAKE_MANDATORY rules",
+      "rule_type": "MAKE_MANDATORY",
+      "affected_fields": [
+        "TDS Applicable?",
+        "Do you wish to add additional mobile numbers (India)?",
+        "Please select GST option",
+        "Business Registration Number Available?",
+        "Please choose the option",
+        "Please Choose Address Proof",
+        "Is Vendor Your Customer?",
+        "Is SSI / MSME Applicable?",
+        "Order currency",
+        "PAN Type"
+      ],
+      "count": 37
+    },
+    {
+      "priority": 4,
+      "category": "missing_rules",
+      "action": "Add 32 missing MAKE_INVISIBLE rules",
+      "rule_type": "MAKE_INVISIBLE",
+      "affected_fields": [
+        "TDS Applicable?",
+        "Do you wish to add additional mobile numbers (India)?",
+        "Please select GST option",
+        "Business Registration Number Available?",
+        "Concerned email addresses?",
+        "Please choose the option",
+        "Please Choose Address Proof",
+        "Is Vendor Your Customer?",
+        "Is SSI / MSME Applicable?",
+        "Order currency"
+      ],
+      "count": 32
+    },
+    {
+      "priority": 5,
+      "category": "missing_rules",
+      "action": "Add 15 missing EXT_DROP_DOWN rules",
+      "rule_type": "EXT_DROP_DOWN",
+      "affected_fields": [
+        "TDS Applicable?",
+        "Do you wish to add additional mobile numbers (India)?",
+        "Incoterms",
+        "Incoterms (Part 2)",
+        "Please select GST option",
+        "Business Registration Number Available?",
+        "Terms of Payment",
+        "Please Choose Address Proof",
+        "Withholding Tax Code",
+        "Is Vendor Your Customer?"
+      ],
+      "count": 15
+    },
+    {
+      "priority": 6,
+      "category": "missing_rules",
+      "action": "Add 14 missing VALIDATION rules",
+      "rule_type": "VALIDATION",
+      "affected_fields": [
+        "Incoterms",
+        "Incoterms (Part 2)",
+        "Please select GST option",
+        "Account Group/Vendor Type",
+        "IFSC Code",
+        "Terms of Payment",
+        "Currency",
+        "Is SSI / MSME Applicable?",
+        "Order currency",
+        "PAN Type"
+      ],
+      "count": 14
+    },
+    {
+      "priority": 7,
+      "category": "missing_rules",
+      "action": "Add 10 missing CONVERT_TO rules",
+      "rule_type": "CONVERT_TO",
+      "affected_fields": [
+        "FDA Registration Number",
+        "Street",
+        "PAN",
+        "Name/ First Name of the Organization",
+        "IFSC Code",
+        "MSME Registration Number",
+        "GSTIN",
+        "Vendor Contact Name",
+        "Email 2",
+        "Vendor Contact Email"
+      ],
+      "count": 10
+    },
+    {
+      "priority": 8,
+      "category": "missing_rules",
+      "action": "Add 8 missing EXT_VALUE rules",
+      "rule_type": "EXT_VALUE",
+      "affected_fields": [
+        "Title",
+        "Withholding Tax Type",
+        "Account Group/Vendor Type",
+        "Please choose the option",
+        "Order currency",
+        "Currency",
+        "Purchase Organization",
+        "Group key/Corporate Group"
+      ],
+      "count": 8
+    },
+    {
+      "priority": 9,
+      "category": "missing_rules",
+      "action": "Add 8 missing COPY_TO rules",
+      "rule_type": "COPY_TO",
+      "affected_fields": [
+        "Country",
+        "State",
+        "Incoterms",
+        "Postal Code",
+        "Please select GST option",
+        "District",
+        "City",
+        "Mobile Number"
+      ],
+      "count": 8
+    },
+    {
+      "priority": 10,
+      "category": "missing_rules",
+      "action": "Add 4 missing VERIFY rules",
+      "rule_type": "VERIFY",
+      "affected_fields": [
+        "Bank Account Number",
+        "GSTIN",
+        "PAN"
+      ],
+      "count": 4
+    },
+    {
+      "priority": 11,
+      "category": "missing_rules",
+      "action": "Add 4 missing MAKE_DISABLED rules",
+      "rule_type": "MAKE_DISABLED",
+      "affected_fields": [
+        "GSTIN IMAGE",
+        "PAN Type",
+        "Order currency",
+        "MSME Image"
+      ],
+      "count": 4
+    },
+    {
+      "priority": 12,
+      "category": "missing_rules",
+      "action": "Add 3 missing OCR rules",
+      "rule_type": "OCR",
+      "affected_fields": [
+        "CIN Certificate",
+        "Cancelled Cheque Image",
+        "MSME Image"
+      ],
+      "count": 3
+    },
+    {
+      "priority": 13,
+      "category": "missing_rules",
+      "action": "Add 2 missing MAKE_ENABLED rules",
+      "rule_type": "MAKE_ENABLED",
+      "affected_fields": [
+        "PAN Type",
+        "Please choose the option"
+      ],
+      "count": 2
+    },
+    {
+      "priority": 14,
+      "category": "missing_rules",
+      "action": "Add 1 missing SET_DATE rules",
+      "rule_type": "SET_DATE",
+      "affected_fields": [
+        "Created on"
+      ],
+      "count": 1
+    },
+    {
+      "priority": 15,
+      "category": "missing_rules",
+      "action": "Add 1 missing COPY_TO_TRANSACTION_ATTR3 rules",
+      "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+      "affected_fields": [
+        "Name/ First Name of the Organization"
+      ],
+      "count": 1
+    },
+    {
+      "priority": 16,
+      "category": "missing_rules",
+      "action": "Add 1 missing COPY_TO_GENERIC_PARTY_EMAIL rules",
+      "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+      "affected_fields": [
+        "Vendor Contact Email"
+      ],
+      "count": 1
+    },
+    {
+      "priority": 17,
+      "category": "missing_rules",
+      "action": "Add 1 missing COPY_TO_GENERIC_PARTY_NAME rules",
+      "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+      "affected_fields": [
+        "Vendor Contact Name"
+      ],
+      "count": 1
+    },
+    {
+      "priority": 18,
+      "category": "missing_rules",
+      "action": "Add 1 missing CONCAT rules",
+      "rule_type": "CONCAT",
+      "affected_fields": [
+        "Street"
+      ],
+      "count": 1
+    },
+    {
+      "priority": 19,
+      "category": "id_mismatch",
+      "action": "Fix 37 ID reference mismatches in rules",
+      "affected_fields": [
+        "Area",
+        "Date of Commencement",
+        "Applied State",
+        "Name",
+        "Category",
+        "District",
+        "Expiry Date",
+        "Address Line1",
+        "Dic Name",
+        "MSME Registration Number"
+      ],
+      "count": 37
+    },
+    {
+      "priority": 20,
+      "category": "post_trigger_rules",
+      "action": "Fix 2 postTriggerRuleId issues",
+      "affected_fields": [
+        "GSTIN IMAGE",
+        "Upload PAN"
+      ],
+      "count": 2
+    }
+  ],
+  "self_heal_instructions": [
+    {
+      "priority": 1,
+      "category": "field_missing",
+      "action": "Add field 'RuleCheck' to generated output",
+      "field_name": "RuleCheck",
+      "rule_type": null,
+      "details": {
+        "expected": "RuleCheck",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 2,
+      "category": "field_missing",
+      "action": "Add field 'Transaction ID' to generated output",
+      "field_name": "Transaction ID",
+      "rule_type": null,
+      "details": {
+        "expected": "Transaction ID",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 3,
+      "category": "field_missing",
+      "action": "Add field 'Created By Name' to generated output",
+      "field_name": "Created By Name",
+      "rule_type": null,
+      "details": {
+        "expected": "Created By Name",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 4,
+      "category": "field_missing",
+      "action": "Add field 'Created By Email' to generated output",
+      "field_name": "Created By Email",
+      "rule_type": null,
+      "details": {
+        "expected": "Created By Email",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 5,
+      "category": "field_missing",
+      "action": "Add field 'Created By Mobile' to generated output",
+      "field_name": "Created By Mobile",
+      "rule_type": null,
+      "details": {
+        "expected": "Created By Mobile",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 6,
+      "category": "field_missing",
+      "action": "Add field 'Choose the Group of Company' to generated output",
+      "field_name": "Choose the Group of Company",
+      "rule_type": null,
+      "details": {
+        "expected": "Choose the Group of Company",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 7,
+      "category": "field_missing",
+      "action": "Add field 'Company and Ownership' to generated output",
+      "field_name": "Company and Ownership",
+      "rule_type": null,
+      "details": {
+        "expected": "Company and Ownership",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 8,
+      "category": "field_missing",
+      "action": "Add field 'Company Ownership' to generated output",
+      "field_name": "Company Ownership",
+      "rule_type": null,
+      "details": {
+        "expected": "Company Ownership",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 9,
+      "category": "field_missing",
+      "action": "Add field 'Company Country' to generated output",
+      "field_name": "Company Country",
+      "rule_type": null,
+      "details": {
+        "expected": "Company Country",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 10,
+      "category": "field_missing",
+      "action": "Add field 'Account Group Code' to generated output",
+      "field_name": "Account Group Code",
+      "rule_type": null,
+      "details": {
+        "expected": "Account Group Code",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 11,
+      "category": "field_missing",
+      "action": "Add field 'Account Group description' to generated output",
+      "field_name": "Account Group description",
+      "rule_type": null,
+      "details": {
+        "expected": "Account Group description",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 12,
+      "category": "field_missing",
+      "action": "Add field 'Process Flow Condition' to generated output",
+      "field_name": "Process Flow Condition",
+      "rule_type": null,
+      "details": {
+        "expected": "Process Flow Condition",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 13,
+      "category": "field_missing",
+      "action": "Add field 'Country Code (Domestic)' to generated output",
+      "field_name": "Country Code (Domestic)",
+      "rule_type": null,
+      "details": {
+        "expected": "Country Code (Domestic)",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 14,
+      "category": "field_missing",
+      "action": "Add field 'Country Description (Domestic)' to generated output",
+      "field_name": "Country Description (Domestic)",
+      "rule_type": null,
+      "details": {
+        "expected": "Country Description (Domestic)",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 15,
+      "category": "field_missing",
+      "action": "Add field 'Vendor Country' to generated output",
+      "field_name": "Vendor Country",
+      "rule_type": null,
+      "details": {
+        "expected": "Vendor Country",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 16,
+      "category": "field_missing",
+      "action": "Add field 'Country Description' to generated output",
+      "field_name": "Country Description",
+      "rule_type": null,
+      "details": {
+        "expected": "Country Description",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 17,
+      "category": "field_missing",
+      "action": "Add field 'E4' to generated output",
+      "field_name": "E4",
+      "rule_type": null,
+      "details": {
+        "expected": "E4",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 18,
+      "category": "field_missing",
+      "action": "Add field 'E5' to generated output",
+      "field_name": "E5",
+      "rule_type": null,
+      "details": {
+        "expected": "E5",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 19,
+      "category": "field_missing",
+      "action": "Add field 'E6' to generated output",
+      "field_name": "E6",
+      "rule_type": null,
+      "details": {
+        "expected": "E6",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 20,
+      "category": "field_missing",
+      "action": "Add field 'Mobile Number' to generated output",
+      "field_name": "Mobile Number",
+      "rule_type": null,
+      "details": {
+        "expected": "Mobile Number",
+        "actual": null,
+        "severity": "high"
+      }
+    },
+    {
+      "priority": 21,
+      "category": "field_type_mismatch",
+      "action": "Change field type from DATE to TEXT",
+      "field_name": "Created on",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "DATE",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 22,
+      "category": "field_type_mismatch",
+      "action": "Change field type from EXTERNAL_DROP_DOWN_VALUE to TEXT",
+      "field_name": "Country",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "EXTERNAL_DROP_DOWN_VALUE",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 23,
+      "category": "field_type_mismatch",
+      "action": "Change field type from EXTERNAL_DROP_DOWN_VALUE to TEXT",
+      "field_name": "Company Code",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "EXTERNAL_DROP_DOWN_VALUE",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 24,
+      "category": "field_type_mismatch",
+      "action": "Change field type from NUMBER to TEXT",
+      "field_name": "Mobile Number",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "NUMBER",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 25,
+      "category": "field_type_mismatch",
+      "action": "Change field type from EXTERNAL_DROP_DOWN_VALUE to TEXT",
+      "field_name": "Company Code",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "EXTERNAL_DROP_DOWN_VALUE",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 26,
+      "category": "field_type_mismatch",
+      "action": "Change field type from MULTISELECT_EXTERNAL_DROPDOWN to EXTERNAL_DROP_DOWN_VALUE",
+      "field_name": "Purchase Organization",
+      "rule_type": null,
+      "details": {
+        "expected": "EXTERNAL_DROP_DOWN_VALUE",
+        "actual": "MULTISELECT_EXTERNAL_DROPDOWN",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 27,
+      "category": "field_type_mismatch",
+      "action": "Change field type from EXTERNAL_DROP_DOWN_VALUE to TEXT",
+      "field_name": "Incoterms (Part 2)",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "EXTERNAL_DROP_DOWN_VALUE",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 28,
+      "category": "field_type_mismatch",
+      "action": "Change field type from TEXT to STATIC_CHECK_BOX",
+      "field_name": "Service-Based Invoice Verification",
+      "rule_type": null,
+      "details": {
+        "expected": "STATIC_CHECK_BOX",
+        "actual": "TEXT",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 29,
+      "category": "field_type_mismatch",
+      "action": "Change field type from EXTERNAL_DROP_DOWN_VALUE to TEXT",
+      "field_name": "House Bank",
+      "rule_type": null,
+      "details": {
+        "expected": "TEXT",
+        "actual": "EXTERNAL_DROP_DOWN_VALUE",
+        "severity": "medium"
+      }
+    },
+    {
+      "priority": 30,
+      "category": "field_type_mismatch",
+      "action": "Change field type from TEXT to STATIC_CHECK_BOX",
+      "field_name": "All financial & bank details are verified",
+      "rule_type": null,
+      "details": {
+        "expected": "STATIC_CHECK_BOX",
+        "actual": "TEXT",
+        "severity": "medium"
+      }
+    }
+  ],
+  "missing_rules": {
+    "SET_DATE": [
+      {
+        "field_name": "Created on",
+        "field_id": 3,
+        "message": "Missing rule of type 'SET_DATE' on field 'Created on'"
+      }
+    ],
+    "CONVERT_TO": [
+      {
+        "field_name": "Name/ First Name of the Organization",
+        "field_id": 5,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'Name/ First Name of the Organization'"
+      },
+      {
+        "field_name": "Vendor Contact Email",
+        "field_id": 26,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'Vendor Contact Email'"
+      },
+      {
+        "field_name": "Vendor Contact Name",
+        "field_id": 27,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'Vendor Contact Name'"
+      },
+      {
+        "field_name": "Email 2",
+        "field_id": 29,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'Email 2'"
+      },
+      {
+        "field_name": "PAN",
+        "field_id": 37,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'PAN'"
+      },
+      {
+        "field_name": "GSTIN",
+        "field_id": 45,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'GSTIN'"
+      },
+      {
+        "field_name": "Street",
+        "field_id": 74,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'Street'"
+      },
+      {
+        "field_name": "IFSC Code",
+        "field_id": 87,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'IFSC Code'"
+      },
+      {
+        "field_name": "FDA Registration Number",
+        "field_id": 97,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'FDA Registration Number'"
+      },
+      {
+        "field_name": "MSME Registration Number",
+        "field_id": 103,
+        "message": "Missing rule of type 'CONVERT_TO' on field 'MSME Registration Number'"
+      }
+    ],
+    "COPY_TO_TRANSACTION_ATTR3": [
+      {
+        "field_name": "Name/ First Name of the Organization",
+        "field_id": 5,
+        "message": "Missing rule of type 'COPY_TO_TRANSACTION_ATTR3' on field 'Name/ First Name of the Organization'"
+      }
+    ],
+    "EXT_VALUE": [
+      {
+        "field_name": "Account Group/Vendor Type",
+        "field_id": 8,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Account Group/Vendor Type'"
+      },
+      {
+        "field_name": "Group key/Corporate Group",
+        "field_id": 9,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Group key/Corporate Group'"
+      },
+      {
+        "field_name": "Title",
+        "field_id": 66,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Title'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Purchase Organization",
+        "field_id": 143,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Purchase Organization'"
+      },
+      {
+        "field_name": "Currency",
+        "field_id": 157,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Currency'"
+      },
+      {
+        "field_name": "Withholding Tax Type",
+        "field_id": 164,
+        "message": "Missing rule of type 'EXT_VALUE' on field 'Withholding Tax Type'"
+      }
+    ],
+    "VALIDATION": [
+      {
+        "field_name": "Account Group/Vendor Type",
+        "field_id": 8,
+        "message": "Missing rule of type 'VALIDATION' on field 'Account Group/Vendor Type'"
+      },
+      {
+        "field_name": "Account Group/Vendor Type",
+        "field_id": 8,
+        "message": "Missing rule of type 'VALIDATION' on field 'Account Group/Vendor Type'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'VALIDATION' on field 'PAN Type'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'VALIDATION' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'VALIDATION' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Postal Code",
+        "field_id": 78,
+        "message": "Missing rule of type 'VALIDATION' on field 'Postal Code'"
+      },
+      {
+        "field_name": "IFSC Code",
+        "field_id": 87,
+        "message": "Missing rule of type 'VALIDATION' on field 'IFSC Code'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'VALIDATION' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'VALIDATION' on field 'Order currency'"
+      },
+      {
+        "field_name": "Purchase Organization",
+        "field_id": 143,
+        "message": "Missing rule of type 'VALIDATION' on field 'Purchase Organization'"
+      },
+      {
+        "field_name": "Terms of Payment",
+        "field_id": 144,
+        "message": "Missing rule of type 'VALIDATION' on field 'Terms of Payment'"
+      },
+      {
+        "field_name": "Incoterms",
+        "field_id": 145,
+        "message": "Missing rule of type 'VALIDATION' on field 'Incoterms'"
+      },
+      {
+        "field_name": "Incoterms (Part 2)",
+        "field_id": 146,
+        "message": "Missing rule of type 'VALIDATION' on field 'Incoterms (Part 2)'"
+      },
+      {
+        "field_name": "Currency",
+        "field_id": 157,
+        "message": "Missing rule of type 'VALIDATION' on field 'Currency'"
+      }
+    ],
+    "COPY_TO": [
+      {
+        "field_name": "Country",
+        "field_id": 11,
+        "message": "Missing rule of type 'COPY_TO' on field 'Country'"
+      },
+      {
+        "field_name": "Mobile Number",
+        "field_id": 15,
+        "message": "Missing rule of type 'COPY_TO' on field 'Mobile Number'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'COPY_TO' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Postal Code",
+        "field_id": 78,
+        "message": "Missing rule of type 'COPY_TO' on field 'Postal Code'"
+      },
+      {
+        "field_name": "City",
+        "field_id": 79,
+        "message": "Missing rule of type 'COPY_TO' on field 'City'"
+      },
+      {
+        "field_name": "District",
+        "field_id": 80,
+        "message": "Missing rule of type 'COPY_TO' on field 'District'"
+      },
+      {
+        "field_name": "State",
+        "field_id": 81,
+        "message": "Missing rule of type 'COPY_TO' on field 'State'"
+      },
+      {
+        "field_name": "Incoterms",
+        "field_id": 145,
+        "message": "Missing rule of type 'COPY_TO' on field 'Incoterms'"
+      }
+    ],
+    "EXT_DROP_DOWN": [
+      {
+        "field_name": "Country Code",
+        "field_id": 13,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Country Code'"
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "field_id": 16,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Do you wish to add additional mobile numbers (India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "field_id": 17,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Do you wish to add additional mobile numbers (Non-India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional email addresses?",
+        "field_id": 28,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Do you wish to add additional email addresses?'"
+      },
+      {
+        "field_name": "Concerned email addresses?",
+        "field_id": 30,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Concerned email addresses?'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Business Registration Number Available?",
+        "field_id": 67,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Business Registration Number Available?'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "TDS Applicable?",
+        "field_id": 98,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'TDS Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Terms of Payment",
+        "field_id": 144,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Terms of Payment'"
+      },
+      {
+        "field_name": "Incoterms",
+        "field_id": 145,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Incoterms'"
+      },
+      {
+        "field_name": "Incoterms (Part 2)",
+        "field_id": 146,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Incoterms (Part 2)'"
+      },
+      {
+        "field_name": "Is Vendor Your Customer?",
+        "field_id": 158,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Is Vendor Your Customer?'"
+      },
+      {
+        "field_name": "Withholding Tax Code",
+        "field_id": 167,
+        "message": "Missing rule of type 'EXT_DROP_DOWN' on field 'Withholding Tax Code'"
+      }
+    ],
+    "MAKE_VISIBLE": [
+      {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "field_id": 16,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Do you wish to add additional mobile numbers (India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "field_id": 17,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Do you wish to add additional mobile numbers (Non-India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional email addresses?",
+        "field_id": 28,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Do you wish to add additional email addresses?'"
+      },
+      {
+        "field_name": "Concerned email addresses?",
+        "field_id": 30,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Concerned email addresses?'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'PAN Type'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Business Registration Number Available?",
+        "field_id": 67,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Business Registration Number Available?'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "TDS Applicable?",
+        "field_id": 98,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'TDS Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Is Vendor Your Customer?",
+        "field_id": 158,
+        "message": "Missing rule of type 'MAKE_VISIBLE' on field 'Is Vendor Your Customer?'"
+      }
+    ],
+    "MAKE_MANDATORY": [
+      {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "field_id": 16,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Do you wish to add additional mobile numbers (India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "field_id": 17,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Do you wish to add additional mobile numbers (Non-India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional email addresses?",
+        "field_id": 28,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Do you wish to add additional email addresses?'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'PAN Type'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'PAN Type'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Business Registration Number Available?",
+        "field_id": 67,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Business Registration Number Available?'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "TDS Applicable?",
+        "field_id": 98,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'TDS Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Is Vendor Your Customer?",
+        "field_id": 158,
+        "message": "Missing rule of type 'MAKE_MANDATORY' on field 'Is Vendor Your Customer?'"
+      }
+    ],
+    "MAKE_INVISIBLE": [
+      {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "field_id": 16,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Do you wish to add additional mobile numbers (India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "field_id": 17,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Do you wish to add additional mobile numbers (Non-India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional email addresses?",
+        "field_id": 28,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Do you wish to add additional email addresses?'"
+      },
+      {
+        "field_name": "Concerned email addresses?",
+        "field_id": 30,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Concerned email addresses?'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'PAN Type'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Business Registration Number Available?",
+        "field_id": 67,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Business Registration Number Available?'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "TDS Applicable?",
+        "field_id": 98,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'TDS Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Order currency'"
+      },
+      {
+        "field_name": "Is Vendor Your Customer?",
+        "field_id": 158,
+        "message": "Missing rule of type 'MAKE_INVISIBLE' on field 'Is Vendor Your Customer?'"
+      }
+    ],
+    "MAKE_NON_MANDATORY": [
+      {
+        "field_name": "Do you wish to add additional mobile numbers (India)?",
+        "field_id": 16,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Do you wish to add additional mobile numbers (India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+        "field_id": 17,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Do you wish to add additional mobile numbers (Non-India)?'"
+      },
+      {
+        "field_name": "Do you wish to add additional email addresses?",
+        "field_id": 28,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Do you wish to add additional email addresses?'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'PAN Type'"
+      },
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'PAN Type'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Please select GST option",
+        "field_id": 43,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please select GST option'"
+      },
+      {
+        "field_name": "Business Registration Number Available?",
+        "field_id": 67,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Business Registration Number Available?'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please Choose Address Proof",
+        "field_id": 70,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please Choose Address Proof'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Please choose the option'"
+      },
+      {
+        "field_name": "TDS Applicable?",
+        "field_id": 98,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'TDS Applicable?'"
+      },
+      {
+        "field_name": "Is SSI / MSME Applicable?",
+        "field_id": 101,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Is SSI / MSME Applicable?'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Order currency'"
+      },
+      {
+        "field_name": "Is Vendor Your Customer?",
+        "field_id": 158,
+        "message": "Missing rule of type 'MAKE_NON_MANDATORY' on field 'Is Vendor Your Customer?'"
+      }
+    ],
+    "COPY_TO_GENERIC_PARTY_EMAIL": [
+      {
+        "field_name": "Vendor Contact Email",
+        "field_id": 26,
+        "message": "Missing rule of type 'COPY_TO_GENERIC_PARTY_EMAIL' on field 'Vendor Contact Email'"
+      }
+    ],
+    "COPY_TO_GENERIC_PARTY_NAME": [
+      {
+        "field_name": "Vendor Contact Name",
+        "field_id": 27,
+        "message": "Missing rule of type 'COPY_TO_GENERIC_PARTY_NAME' on field 'Vendor Contact Name'"
+      }
+    ],
+    "VERIFY": [
+      {
+        "field_name": "PAN",
+        "field_id": 37,
+        "message": "Missing rule of type 'VERIFY' on field 'PAN'"
+      },
+      {
+        "field_name": "GSTIN",
+        "field_id": 45,
+        "message": "Missing rule of type 'VERIFY' on field 'GSTIN'"
+      },
+      {
+        "field_name": "GSTIN",
+        "field_id": 45,
+        "message": "Missing rule of type 'VERIFY' on field 'GSTIN'"
+      },
+      {
+        "field_name": "Bank Account Number",
+        "field_id": 88,
+        "message": "Missing rule of type 'VERIFY' on field 'Bank Account Number'"
+      }
+    ],
+    "MAKE_DISABLED": [
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_DISABLED' on field 'PAN Type'"
+      },
+      {
+        "field_name": "GSTIN IMAGE",
+        "field_id": 44,
+        "message": "Missing rule of type 'MAKE_DISABLED' on field 'GSTIN IMAGE'"
+      },
+      {
+        "field_name": "MSME Image",
+        "field_id": 102,
+        "message": "Missing rule of type 'MAKE_DISABLED' on field 'MSME Image'"
+      },
+      {
+        "field_name": "Order currency",
+        "field_id": 142,
+        "message": "Missing rule of type 'MAKE_DISABLED' on field 'Order currency'"
+      }
+    ],
+    "MAKE_ENABLED": [
+      {
+        "field_name": "PAN Type",
+        "field_id": 39,
+        "message": "Missing rule of type 'MAKE_ENABLED' on field 'PAN Type'"
+      },
+      {
+        "field_name": "Please choose the option",
+        "field_id": 83,
+        "message": "Missing rule of type 'MAKE_ENABLED' on field 'Please choose the option'"
+      }
+    ],
+    "CONCAT": [
+      {
+        "field_name": "Street",
+        "field_id": 74,
+        "message": "Missing rule of type 'CONCAT' on field 'Street'"
+      }
+    ],
+    "OCR": [
+      {
+        "field_name": "Cancelled Cheque Image",
+        "field_id": 84,
+        "message": "Missing rule of type 'OCR' on field 'Cancelled Cheque Image'"
+      },
+      {
+        "field_name": "CIN Certificate",
+        "field_id": 95,
+        "message": "Missing rule of type 'OCR' on field 'CIN Certificate'"
+      },
+      {
+        "field_name": "MSME Image",
+        "field_id": 102,
+        "message": "Missing rule of type 'OCR' on field 'MSME Image'"
+      }
+    ]
+  },
+  "critical_checks": {
+    "ocr_verify_chaining": {
+      "ocr_generated": 2,
+      "ocr_reference": 6,
+      "verify_generated": 21,
+      "verify_reference": 5,
+      "issue": null
+    },
+    "visibility_pairs": {
+      "make_visible_generated": 0,
+      "make_visible_reference": 103,
+      "make_invisible_generated": 0,
+      "make_invisible_reference": 63
+    },
+    "external_dropdowns": {
+      "generated": 0,
+      "reference": 33,
+      "gap": 33
+    }
+  },
+  "llm_summary": "{\"is_match\": false, \"confidence\": 0.5, \"reasoning\": \"Mock response - no LLM available\"}",
+  "rule_type_comparison": {
+    "generated": {
+      "VERIFY": 21,
+      "OCR": 2,
+      "MAKE_DISABLED": 18
+    },
+    "reference": {
+      "MAKE_DISABLED": 11,
+      "MAKE_INVISIBLE": 63,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 84,
+      "MAKE_VISIBLE": 103,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "MAKE_ENABLED": 3,
+      "MAKE_NON_MANDATORY": 96,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "OCR": 6,
+      "VERIFY": 5
+    }
+  },
+  "evaluation_summary": {
+    "passed": false,
+    "overall_score": 0.22535211267605637,
+    "threshold": 0.9,
+    "field_coverage": 0.5633802816901409,
+    "rule_coverage": 0.0,
+    "rule_accuracy": 0.0,
+    "total_discrepancies": 412,
+    "critical_discrepancies": 0,
+    "high_discrepancies": 393
+  },
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

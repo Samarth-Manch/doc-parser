@@ -1,0 +1,510 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-02-02T15:38:17.960464"
+  },
+  "edv_tables": [
+    {
+      "reference_id": "1.1",
+      "edv_name": "COLUMN_NAME",
+      "original_title": "Reference Table 1.1",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Column Name"
+        }
+      ],
+      "row_count": 56,
+      "sample_data": [
+        {
+          "a1": "Vendor Number"
+        },
+        {
+          "a1": "Country"
+        },
+        {
+          "a1": "Company Code"
+        }
+      ],
+      "used_by_fields": [
+        "Country",
+        "Country Name",
+        "Country Code"
+      ]
+    },
+    {
+      "reference_id": "1.2",
+      "edv_name": "COUNTRY",
+      "original_title": "Reference Table 1.2",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Language Key"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Country/Region Key"
+        },
+        {
+          "index": 3,
+          "attribute": "a3",
+          "header": "Country/Region Name"
+        },
+        {
+          "index": 4,
+          "attribute": "a4",
+          "header": "Nationality"
+        },
+        {
+          "index": 5,
+          "attribute": "a5",
+          "header": "Country/Region Name"
+        },
+        {
+          "index": 6,
+          "attribute": "a6",
+          "header": "Nationality (Long)"
+        }
+      ],
+      "row_count": 246,
+      "sample_data": [
+        {
+          "a1": "EN",
+          "a2": "AD",
+          "a3": "Andorran",
+          "a4": "Andorran",
+          "a5": "Andorra",
+          "a6": "Andorran"
+        },
+        {
+          "a1": "EN",
+          "a2": "AE",
+          "a3": "Utd.Arab Emir.",
+          "a4": "Unit.Arab Emir.",
+          "a5": "United Arab Emirates",
+          "a6": "United Arab Emirates"
+        },
+        {
+          "a1": "EN",
+          "a2": "AF",
+          "a3": "Afghanistan",
+          "a4": "Afghan",
+          "a5": "Afghanistan",
+          "a6": "Afghan"
+        }
+      ],
+      "used_by_fields": [
+        "Company Code",
+        "Schema Grp, Supplier"
+      ]
+    },
+    {
+      "reference_id": "1.3",
+      "edv_name": "VC_VENDOR_TYPES",
+      "original_title": "Reference Table 1.3",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Vendor India or Vendor International"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Description"
+        },
+        {
+          "index": 3,
+          "attribute": "a3",
+          "header": "Company Code"
+        },
+        {
+          "index": 4,
+          "attribute": "a4",
+          "header": "Description"
+        },
+        {
+          "index": 5,
+          "attribute": "a5",
+          "header": "City"
+        },
+        {
+          "index": 6,
+          "attribute": "a6",
+          "header": "County"
+        },
+        {
+          "index": 7,
+          "attribute": "a7",
+          "header": "Currency"
+        },
+        {
+          "index": 8,
+          "attribute": "a8",
+          "header": "Purchase Org"
+        },
+        {
+          "index": 9,
+          "attribute": "a9",
+          "header": "Description"
+        },
+        {
+          "index": 10,
+          "attribute": "a10",
+          "header": "Type"
+        },
+        {
+          "index": 11,
+          "attribute": "a11",
+          "header": "Schema Gr"
+        }
+      ],
+      "row_count": 34,
+      "sample_data": [
+        {
+          "a1": "DOM IN",
+          "a2": "India - Domestic",
+          "a3": "1000",
+          "a4": "Pidilite Industries Ltd",
+          "a5": "Mumbai",
+          "a6": "IN",
+          "a7": "INR",
+          "a8": "1000",
+          "a9": "CENTRAL PUR. ORG.",
+          "a10": "Other than ZIMP",
+          "a11": "1"
+        },
+        {
+          "a1": "DOM IN",
+          "a2": "India - Domestic",
+          "a3": "1000",
+          "a4": "Pidilite Industries Ltd",
+          "a5": "Mumbai",
+          "a6": "IN",
+          "a7": "INR",
+          "a8": "1000",
+          "a9": "CENTRAL PUR. ORG.",
+          "a10": "ZIMP",
+          "a11": "2"
+        },
+        {
+          "a1": "DOM IN",
+          "a2": "India - Domestic",
+          "a3": "1000",
+          "a4": "Pidilite Industries Ltd",
+          "a5": "Mumbai",
+          "a6": "IN",
+          "a7": "INR",
+          "a8": "2000",
+          "a9": "ADMIN. PUR. ORG.",
+          "a10": "Other than ZIMP",
+          "a11": "1"
+        }
+      ],
+      "used_by_fields": [
+        "Account Group/Vendor Type",
+        "Group key/Corporate Group"
+      ]
+    },
+    {
+      "reference_id": "1.4",
+      "edv_name": "VC_VENDOR_TYPES",
+      "original_title": "Reference Table 1.4",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Account Group/Vendor Type"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Group Key Description"
+        }
+      ],
+      "row_count": 27,
+      "sample_data": [
+        {
+          "a1": "ZDOM",
+          "a2": "Raw Materials"
+        },
+        {
+          "a1": "ZDOM",
+          "a2": "Packaging Materials"
+        },
+        {
+          "a1": "ZDES",
+          "a2": "Other Materials"
+        }
+      ],
+      "used_by_fields": [
+        "Order currency",
+        "Purchase Organization",
+        "Currency"
+      ]
+    },
+    {
+      "reference_id": "1.5",
+      "edv_name": "COUNTRY",
+      "original_title": "Reference Table 1.5",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Company"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Porg"
+        },
+        {
+          "index": 3,
+          "attribute": "a3",
+          "header": "Descriprion"
+        },
+        {
+          "index": 4,
+          "attribute": "a4",
+          "header": "Currency"
+        },
+        {
+          "index": 5,
+          "attribute": "a5",
+          "header": "Country"
+        }
+      ],
+      "row_count": 20,
+      "sample_data": [
+        {
+          "a1": "1000",
+          "a2": "1000",
+          "a3": "CENTRAL PUR. ORG.",
+          "a4": "INR",
+          "a5": "INDIA"
+        },
+        {
+          "a1": "1000",
+          "a2": "2000",
+          "a3": "ADMIN. PUR. ORG.",
+          "a4": "INR",
+          "a5": "INDIA"
+        },
+        {
+          "a1": "1000",
+          "a2": "3000",
+          "a3": "IT PUR. ORG.",
+          "a4": "INR",
+          "a5": "INDIA"
+        }
+      ],
+      "used_by_fields": [
+        "Incoterms",
+        "Incoterms (Part 2)"
+      ]
+    },
+    {
+      "reference_id": "1.6",
+      "edv_name": "INCOTERMS",
+      "original_title": "Reference Table 1.6",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "IncoTerms"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Description"
+        }
+      ],
+      "row_count": 99,
+      "sample_data": [
+        {
+          "a1": "CFR",
+          "a2": "Costs and freight"
+        },
+        {
+          "a1": "CIF",
+          "a2": "Costs, insurance & freight"
+        },
+        {
+          "a1": "CIP",
+          "a2": "Carriage and insurance paid to"
+        }
+      ],
+      "used_by_fields": [
+        "Withholding Tax Type",
+        "Withholding Tax Code"
+      ]
+    },
+    {
+      "reference_id": "1.7",
+      "edv_name": "COUNTRY",
+      "original_title": "Reference Table 1.7",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Country/Region Key"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Withholding Tax Type"
+        },
+        {
+          "index": 3,
+          "attribute": "a3",
+          "header": "Withholding Tax Code"
+        },
+        {
+          "index": 4,
+          "attribute": "a4",
+          "header": "Official Withholding Tax Key"
+        },
+        {
+          "index": 5,
+          "attribute": "a5",
+          "header": "Percentage Subject to Tax"
+        },
+        {
+          "index": 6,
+          "attribute": "a6",
+          "header": "Withholding Tax Rate"
+        },
+        {
+          "index": 7,
+          "attribute": "a7",
+          "header": "Name"
+        },
+        {
+          "index": 8,
+          "attribute": "a8",
+          "header": "Reduced WTax Rate"
+        }
+      ],
+      "row_count": 66,
+      "sample_data": [
+        {
+          "a1": "IN",
+          "a2": "CH",
+          "a3": "H1",
+          "a4": "194H",
+          "a5": "100",
+          "a6": "5",
+          "a7": "Inv:10%:194H-TDS-Comm&Brokerage",
+          "a8": "0"
+        },
+        {
+          "a1": "IN",
+          "a2": "DH",
+          "a3": "H1",
+          "a4": "194H",
+          "a5": "100",
+          "a6": "5",
+          "a7": "Inv:10%:194H-TDS-Comm&Brokerage",
+          "a8": "0"
+        },
+        {
+          "a1": "IN",
+          "a2": "IA",
+          "a3": "A1",
+          "a4": "194A",
+          "a5": "100",
+          "a6": "10",
+          "a7": "Inv:10%:194A-TDS-Other Interest",
+          "a8": "0"
+        }
+      ],
+      "used_by_fields": []
+    },
+    {
+      "reference_id": "1.8",
+      "edv_name": "INDUSTRY_DESCRIPTION",
+      "original_title": "Reference Table 1.8",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Industry"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Description"
+        }
+      ],
+      "row_count": 154,
+      "sample_data": [
+        {
+          "a1": "1",
+          "a2": "Diversified Holding Companies"
+        },
+        {
+          "a1": "2",
+          "a2": "Financial Services"
+        },
+        {
+          "a1": "3",
+          "a2": "Real Estate"
+        }
+      ],
+      "used_by_fields": [
+        "Reconciliation acct"
+      ]
+    },
+    {
+      "reference_id": "1.9",
+      "edv_name": "COMPANY_CODE_PURCHASE_ORGANIZATION",
+      "original_title": "Reference Table 1.9",
+      "columns": [
+        {
+          "index": 1,
+          "attribute": "a1",
+          "header": "Purchase Organization Code"
+        },
+        {
+          "index": 2,
+          "attribute": "a2",
+          "header": "Purchase Organization Description"
+        }
+      ],
+      "row_count": 31,
+      "sample_data": [
+        {
+          "a1": "10302001",
+          "a2": "SUNDRY CREDITORS - DOMESTIC RM"
+        },
+        {
+          "a1": "10302002",
+          "a2": "SUNDRY CREDITORS - DOMESTIC PM"
+        },
+        {
+          "a1": "10302003",
+          "a2": "SUNDRY CREDITORS - DOMESTIC TRADING"
+        }
+      ],
+      "used_by_fields": []
+    }
+  ],
+  "table_name_mapping": {
+    "1.1": "COLUMN_NAME",
+    "1.2": "COUNTRY",
+    "1.3": "VC_VENDOR_TYPES",
+    "1.4": "VC_VENDOR_TYPES",
+    "1.5": "COUNTRY",
+    "1.6": "INCOTERMS",
+    "1.7": "COUNTRY",
+    "1.8": "INDUSTRY_DESCRIPTION",
+    "1.9": "COMPANY_CODE_PURCHASE_ORGANIZATION"
+  },
+  "summary": {
+    "total_reference_tables": 9,
+    "total_edv_tables_generated": 9
+  }
+}

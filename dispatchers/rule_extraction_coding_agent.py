@@ -59,7 +59,8 @@ def call_claude_agent(schema_path: str, intra_panel_path: str, output_path: str,
                      prev_workspace: str = None, prev_self_heal: str = None,
                      prev_schema: str = None, prev_eval: str = None,
                      prev_extraction: str = None, prev_api_schema: str = None,
-                     prev_api_response: str = None) -> bool:
+                     prev_api_response: str = None,
+                     edv_tables: str = None, field_edv_mapping: str = None) -> bool:
     """
     Call the Claude rule extraction coding agent.
 
@@ -78,6 +79,8 @@ def call_claude_agent(schema_path: str, intra_panel_path: str, output_path: str,
         prev_extraction: Path to previous extraction_report JSON
         prev_api_schema: Path to previous api_schema JSON
         prev_api_response: Path to previous api_response JSON
+        edv_tables: Path to EDV tables registry JSON
+        field_edv_mapping: Path to field-EDV mapping JSON
 
     Returns:
         True if successful, False otherwise
@@ -117,6 +120,29 @@ The following files contain valuable context from previous iterations that you s
 4. Do NOT repeat the same mistakes from previous runs
 """
 
+    # Build EDV context section
+    edv_context = ""
+    if edv_tables or field_edv_mapping:
+        edv_context = """
+
+## EDV (External Data Value) Mapping Files
+
+**These files contain EDV table mappings for generating EXT_DROP_DOWN and EXT_VALUE rules.**
+"""
+        if edv_tables:
+            edv_context += f"\n- **EDV Tables Registry**: {edv_tables}"
+        if field_edv_mapping:
+            edv_context += f"\n- **Field-EDV Mapping**: {field_edv_mapping}"
+
+        edv_context += """
+
+**Use these files to:**
+1. Resolve "reference table X.Y" to EDV table names
+2. Generate correct params for EXT_DROP_DOWN rules (sourceType: FORM_FILL_DROP_DOWN)
+3. Generate correct params for EXT_VALUE rules (sourceType: EXTERNAL_DATA_VALUE)
+4. Identify parent-child dropdown relationships for cascading dropdowns
+"""
+
     prompt = f"""Implement the rule extraction system according to the plan.
 
 ## Task
@@ -125,6 +151,8 @@ Implement the complete rule extraction coding agent system that extracts rules f
 ## Input Files
 - Schema JSON: {schema_path}
 - Intra-Panel References: {intra_panel_path}
+{f"- EDV Tables: {edv_tables}" if edv_tables else ""}
+{f"- Field-EDV Mapping: {field_edv_mapping}" if field_edv_mapping else ""}
 
 ## Output Files
 - Populated Schema: {output_path}
@@ -135,6 +163,7 @@ Implement the complete rule extraction coding agent system that extracts rules f
 - Validate rules: {validate}
 - LLM threshold: {llm_threshold}
 {prev_context}
+{edv_context}
 
 ## Instructions
 Use the /rule_extraction_coding_agent skill to implement the complete system following the plan in .claude/plans/plan.md.
@@ -155,19 +184,38 @@ The system should:
 """
 
     try:
-        result = subprocess.run(
+        # Use Popen to stream output in real-time
+        print("\n" + "-"*60)
+        print("CLAUDE AGENT OUTPUT (streaming)")
+        print("-"*60 + "\n")
+
+        process = subprocess.Popen(
             [
                 "claude",
                 "-p", prompt,
                 "--allowedTools", "Read,Write,Edit,Bash,Glob,Grep"
             ],
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
+            bufsize=1,  # Line buffered
             cwd=str(Path(__file__).parent.parent)
         )
 
-        if result.returncode != 0:
-            print(f"Claude agent failed: {result.stderr}", file=sys.stderr)
+        # Stream output in real-time
+        output_lines = []
+        for line in process.stdout:
+            print(line, end='', flush=True)
+            output_lines.append(line)
+
+        process.wait()
+
+        print("\n" + "-"*60)
+        print(f"CLAUDE AGENT FINISHED (exit code: {process.returncode})")
+        print("-"*60 + "\n")
+
+        if process.returncode != 0:
+            print(f"Claude agent failed with exit code: {process.returncode}", file=sys.stderr)
             return False
 
         # Check if output file was created
@@ -176,6 +224,11 @@ The system should:
             return True
         else:
             print(f"✗ Output file not created: {output_path}", file=sys.stderr)
+            # Print last few lines of output for debugging
+            if output_lines:
+                print("Last 20 lines of output:", file=sys.stderr)
+                for line in output_lines[-20:]:
+                    print(f"  {line}", end='', file=sys.stderr)
             return False
 
     except FileNotFoundError:
@@ -183,6 +236,8 @@ The system should:
         return False
     except Exception as e:
         print(f"Error calling Claude agent: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
         return False
 
 
@@ -264,6 +319,18 @@ def main():
         help="Path to previous api_response JSON"
     )
 
+    # EDV (External Data Value) mapping arguments
+    parser.add_argument(
+        "--edv-tables",
+        default=None,
+        help="Path to EDV tables registry JSON (from edv_table_mapping dispatcher)"
+    )
+    parser.add_argument(
+        "--field-edv-mapping",
+        default=None,
+        help="Path to field-EDV mapping JSON (from edv_table_mapping dispatcher)"
+    )
+
     args = parser.parse_args()
 
     # Validate input files
@@ -287,6 +354,10 @@ def main():
     print("="*60)
     print(f"Schema: {args.schema}")
     print(f"Intra-panel refs: {args.intra_panel}")
+    if args.edv_tables:
+        print(f"EDV tables: {args.edv_tables}")
+    if args.field_edv_mapping:
+        print(f"Field-EDV mapping: {args.field_edv_mapping}")
     print(f"Output: {output_path}")
     if args.report:
         print(f"Report: {args.report}")
@@ -314,7 +385,9 @@ def main():
         prev_eval=args.prev_eval,
         prev_extraction=args.prev_extraction,
         prev_api_schema=args.prev_api_schema,
-        prev_api_response=args.prev_api_response
+        prev_api_response=args.prev_api_response,
+        edv_tables=args.edv_tables,
+        field_edv_mapping=args.field_edv_mapping
     )
 
     if success:

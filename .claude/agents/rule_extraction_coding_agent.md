@@ -332,22 +332,6 @@ def fix_from_api_error(error_message: str, rules: list, all_fields: list) -> lis
     return rules
 ```
 
-### Issue 13: Skip EXT_VALUE and EXT_DROP_DOWN Rules (Temporary)
-**Status**: SKIP THESE RULES FOR NOW
-**Reason**: External data value (EDV) rules require complex table mapping and will be explained separately
-**Action**:
-- Do NOT generate EXT_VALUE or EXT_DROP_DOWN rules in current implementation
-- The eval should NOT flag missing EXT_VALUE/EXT_DROP_DOWN as errors
-- These rules will be implemented in a future phase
-
-```python
-# In rule generation, skip EDV rule types for now
-SKIP_RULE_TYPES = ['EXT_VALUE', 'EXT_DROP_DOWN']
-
-def should_skip_rule_generation(action_type: str) -> bool:
-    return action_type in SKIP_RULE_TYPES
-```
-
 ### Issue 14: Over-Generation Detection and Prevention
 **Symptom**: Generated rule count exceeds reference count (e.g., 40 rules vs 20 expected)
 **Common Causes**:
@@ -1260,69 +1244,532 @@ MSME (ID 214) - 6 destination ordinals:
 }
 ```
 
-#### EDV Rules (EXT_VALUE, EXT_DROP_DOWN)
+#### EDV Rules (EXT_VALUE, EXT_DROP_DOWN) - COMPREHENSIVE GUIDE
 
-**CRITICAL: EXT_DROP_DOWN/EXT_VALUE rules apply when logic references EXTERNAL TABLES or EXCEL FILES in the BUD!**
+**CRITICAL: EDV (External Data Value) rules populate dropdown values and auto-fill fields from external tables!**
 
-**Logic patterns to detect**:
-```
-- "Dropdown values from reference table"
-- "External data value based on Company Code"
-- "Parent dropdown field: Account Group"
-- "EDV rule"
-- "Values from [Excel file name].xlsx"
-- "Dropdown from [table name]"
-- "Cascading dropdown based on [parent field]"
-- References to sheets/tables in the same BUD document
-```
+---
 
-**BUD Excel Reference Examples**:
-When BUD contains references like:
-- "Dropdown values from Company_Codes.xlsx"
-- "Reference table: Master_Data sheet"
-- "Values from Pidilite_Reference.xlsx → States sheet"
-→ Generate EXT_DROP_DOWN rule
+### What is EDV?
 
-**Build process**:
-1. Detect EDV keywords (dropdown, reference table, external data, EDV, .xlsx, .xls, sheet)
-2. Check if field type is DROPDOWN, MULTI_DROPDOWN, or EXTERNAL_DROP_DOWN
-3. Look for Excel file references in the logic text
-4. Look for table/sheet references in the BUD
-5. Lookup Rule-Schemas.json: `action=EXT_VALUE` or `action=EXT_DROP_DOWN`
-6. Build params JSON with lookup configuration (e.g., "COMPANY_CODE", "TYPE_OF_INDUSTRY")
+EDV is an external table system used for:
+1. **Dropdown values**: Populating dropdown options from master tables (EXT_DROP_DOWN)
+2. **Cascading/Parent-child dropdowns**: Filtering child dropdown based on parent selection (EXT_VALUE)
+3. **EDV Validation**: Validating fields against EDV tables (VALIDATION with EXTERNAL_DATA_VALUE)
+4. **Auto-population**: Filling fields based on EDV lookups (EXT_VALUE)
 
-**Real params values from reference**:
-- "COMPANY_CODE" - Company code lookup
-- "PIDILITE_YES_NO" - Yes/No lookup
-- "TYPE_OF_INDUSTRY" - Industry type lookup
+**NOTE**: PAN, GSTIN, IFSC, Bank Account verifications use **VERIFY rules** (API-based), NOT EDV!
 
-**EXT_VALUE vs EXT_DROP_DOWN**:
-- **EXT_DROP_DOWN**: Use for DROPDOWN/MULTI_DROPDOWN fields that get options from external source
-- **EXT_VALUE**: Use for TEXT/NUMBER fields that get auto-populated values from external source
+---
 
-**EXT_VALUE Detection Patterns**:
-```python
-EXT_VALUE_PATTERNS = [
-    r"external\s+(?:data\s+)?value",           # "External value", "External data value"
-    r"value\s+from\s+(?:table|excel|external)", # "Value from table"
-    r"edv\s+rule",                             # "EDV rule"
-    r"lookup\s+value",                         # "Lookup value"
-    r"data\s+from\s+(?:reference|master)",     # "Data from reference table"
-    r"auto-?populate\s+from",                  # "Auto-populate from"
-    r"fetch\s+(?:from|value)",                 # "Fetch from", "Fetch value"
-]
+### Reference Table to EDV Table Mapping
 
-# EXT_VALUE rule structure
+BUD documents reference tables like "Reference Table 1.3". These map to EDV table names:
+
+| BUD Reference | EDV Table Name | Purpose |
+|---------------|----------------|---------|
+| Table 1.3 | `VC_VENDOR_TYPES` | Vendor type and group codes |
+| Table 1.2 | `COMPANY_CODE_PURCHASE_ORGANIZATION` | Company codes and purchase orgs |
+| Table 2.1 | `COUNTRY` | Country list |
+| Table 3.1 | `BANK_OPTIONS` | Bank selection options |
+| Table 4.1 | `CURRENCY_COUNTRY` | Currency codes |
+| Table 5.1 | `TITLE` | Title (Mr/Mrs/Ms) |
+| - | `PIDILITE_YES_NO` | Simple Yes/No dropdown |
+| - | `WITHHOLDING_TAX_DATA` | Tax codes |
+
+**If EDV mapping file is provided**: Use `--edv-tables` file for exact mappings.
+
+---
+
+### EXT_DROP_DOWN vs EXT_VALUE
+
+| Type | When to Use | params Format |
+|------|-------------|---------------|
+| `EXT_DROP_DOWN` | Simple dropdown from EDV table | String: `"TABLE_NAME"` |
+| `EXT_VALUE` | Cascading dropdown OR auto-populate | JSON: `"[{conditionList...}]"` |
+
+---
+
+### params Structure - CRITICAL REFERENCE
+
+#### Simple EXT_DROP_DOWN (no parent filtering)
+
+```json
 {
-    "actionType": "EXT_VALUE",
-    "sourceType": "EXTERNAL_DATA_VALUE",
-    "processingType": "SERVER",
-    "sourceIds": [field_id],
-    "destinationIds": [],
-    "params": "EXTERNAL_TABLE_NAME",
-    "executeOnFill": True
+  "actionType": "EXT_DROP_DOWN",
+  "sourceType": "FORM_FILL_DROP_DOWN",
+  "processingType": "CLIENT",
+  "sourceIds": [275506],
+  "params": "COMPANY_CODE",
+  "searchable": true,
+  "executeOnFill": true
 }
 ```
+
+**params** is just the EDV table name as a string.
+
+---
+
+#### EXT_VALUE with Parent-Child Filtering (Cascading Dropdown)
+
+For dropdowns filtered by another field's selection:
+
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "processingType": "CLIENT",
+  "sourceIds": [275498],
+  "destinationIds": [],
+  "postTriggerRuleIds": [],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"VC_VENDOR_TYPES\"],\"criterias\":[{\"a4\":275496}],\"da\":[\"a1\"],\"criteriaSearchAttr\":[],\"additionalOptions\":null,\"emptyAddOptionCheck\":null,\"ddProperties\":null}]}]",
+  "searchable": true,
+  "executeOnFill": true
+}
+```
+
+**params JSON structure breakdown**:
+
+```json
+{
+  "conditionList": [{
+    "ddType": ["VC_VENDOR_TYPES"],     // EDV table name (array)
+    "criterias": [{"a4": 275496}],     // Filter: column a4 = value from field 275496
+    "da": ["a1"],                      // Display attribute: show column a1
+    "criteriaSearchAttr": [],          // Search attributes (usually empty)
+    "additionalOptions": null,
+    "emptyAddOptionCheck": null,
+    "ddProperties": null
+  }]
+}
+```
+
+---
+
+### Column Notation (a1, a2, a3...)
+
+EDV tables use `a1`, `a2`, `a3`... for columns:
+- `a1` = Column 1 of the EDV table
+- `a2` = Column 2
+- `a7` = Column 7
+
+**BUD to Column Mapping**:
+- "first column" → `a1`
+- "second column" → `a2`
+- "column 7" → `a7`
+
+---
+
+### Parent-Child Dropdown Examples
+
+#### Example 1: Vendor Type → Group Key
+
+BUD Logic:
+- **Account Group/Vendor Type**: "Dropdown values are first and second columns of reference table 1.3"
+- **Group key/Corporate Group**: "Dropdown values will come based on the account group/vendor type selection field as 2nd column of reference table 1.3"
+
+Generated Rules:
+
+**Parent field (Account Group/Vendor Type - ID: 275496)**:
+```json
+{
+  "actionType": "EXT_DROP_DOWN",
+  "sourceIds": [275496],
+  "params": "VC_VENDOR_TYPES"
+}
+```
+
+**Child field (Group key/Corporate Group - ID: 275498)**:
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [275498],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"VC_VENDOR_TYPES\"],\"criterias\":[{\"a1\":275496}],\"da\":[\"a2\"],\"criteriaSearchAttr\":[],\"additionalOptions\":null,\"emptyAddOptionCheck\":null,\"ddProperties\":null}]}]"
+}
+```
+
+**Explanation**:
+- `criterias: [{"a1": 275496}]` - Filter rows where column a1 matches value from field 275496 (parent)
+- `da: ["a2"]` - Display column a2 values
+
+---
+
+#### Example 2: Company Code → Purchase Organization
+
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceIds": [275506],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"COMPANY_CODE_PURCHASE_ORGANIZATION\"],\"criterias\":[{\"a3\":276416}],\"da\":[\"a1\"],\"criteriaSearchAttr\":[],\"additionalOptions\":null,\"emptyAddOptionCheck\":null,\"ddProperties\":null}]}]"
+}
+```
+
+**Explanation**:
+- `criterias: [{"a3": 276416}]` - Filter by column a3 matching field 276416
+- `da: ["a1"]` - Show column a1
+
+---
+
+### Detection Patterns
+
+**Logic patterns indicating EDV rules**:
+```
+- "Dropdown values from reference table X.Y"
+- "Dropdown values are Nth column of reference table"
+- "Dropdown values will come based on {parent_field}"
+- "Parent dropdown field: {field_name}"
+- "Cascading dropdown"
+- "Values from [Excel file].xlsx"
+- "External data value"
+- "EDV rule"
+```
+
+**Code to detect**:
+```python
+EDV_PATTERNS = [
+    r"reference\s+table\s+(\d+\.?\d*)",     # "reference table 1.3"
+    r"dropdown\s+values?\s+(?:from|are)",   # "Dropdown values from..."
+    r"based\s+on\s+(?:the\s+)?(.+?)\s+selection",  # "based on X selection"
+    r"parent\s+dropdown\s+field",           # "Parent dropdown field"
+    r"cascading\s+dropdown",                # "Cascading dropdown"
+    r"external\s+(?:data\s+)?value",        # "External data value"
+    r"edv\s+rule",                          # "EDV rule"
+]
+```
+
+---
+
+### Building params Programmatically
+
+```python
+import json
+
+def build_ext_value_params(edv_table: str, filter_column: str,
+                           parent_field_id: int, display_column: str) -> str:
+    """Build EXT_VALUE params JSON for cascading dropdown."""
+    params_obj = [{
+        "conditionList": [{
+            "ddType": [edv_table],
+            "criterias": [{filter_column: parent_field_id}],
+            "da": [display_column],
+            "criteriaSearchAttr": [],
+            "additionalOptions": None,
+            "emptyAddOptionCheck": None,
+            "ddProperties": None
+        }]
+    }]
+    return json.dumps(params_obj)
+
+# Example usage:
+params = build_ext_value_params(
+    edv_table="VC_VENDOR_TYPES",
+    filter_column="a1",
+    parent_field_id=275496,
+    display_column="a2"
+)
+# Result: '[{"conditionList":[{"ddType":["VC_VENDOR_TYPES"],"criterias":[{"a1":275496}],"da":["a2"],...}]}]'
+```
+
+---
+
+### EXT_VALUE for Auto-Population (from EDV Tables)
+
+For auto-populating fields from EDV table lookup (NOT API verification!):
+
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [276416],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"COMPANY_CODE_PURCHASE_ORGANIZATION\"],\"criterias\":[{\"a7\":275496}],\"da\":[\"a3\"],\"criteriaSearchAttr\":[],\"additionalOptions\":null,\"emptyAddOptionCheck\":null,\"ddProperties\":null}]}]"
+}
+```
+
+**IMPORTANT**: PAN, GSTIN, IFSC, Bank Account lookups use **VERIFY rules** (API-based), NOT EXT_VALUE!
+```
+
+---
+
+### Input Files for EDV Mapping
+
+When `--edv-tables` and `--field-edv-mapping` files are provided:
+
+1. **edv_tables.json**: Contains `table_name_mapping` to resolve "reference table X.Y" to EDV name
+2. **field_edv_mapping.json**: Contains pre-built params templates for each field
+
+Use these to generate accurate params without manual interpretation.
+
+---
+
+### REAL EXAMPLES FROM PRODUCTION SCHEMAS (vendor_creation.json)
+
+---
+
+#### CRITICAL: Rule Type Summary
+
+| Action Type | sourceType | Description |
+|-------------|------------|-------------|
+| `EXT_DROP_DOWN` | `FORM_FILL_DROP_DOWN` | Simple dropdown from EDV table |
+| `EXT_VALUE` | `EXTERNAL_DATA_VALUE` | Cascading dropdown / auto-populate from EDV |
+| `VALIDATION` | `EXTERNAL_DATA_VALUE` | Validate field against EDV table |
+| `VERIFY` | `PAN_NUMBER`, `GSTIN`, etc. | **API-based verification (NOT EDV!)** |
+
+---
+
+#### EXT_DROP_DOWN - Simple Dropdown from EDV Table
+
+**IMPORTANT**: EXT_DROP_DOWN uses `sourceType: "FORM_FILL_DROP_DOWN"` (NOT EXTERNAL_DATA_VALUE!)
+
+```json
+// Example 1: Company Code dropdown
+{
+  "actionType": "EXT_DROP_DOWN",
+  "sourceType": "FORM_FILL_DROP_DOWN",
+  "processingType": "CLIENT",
+  "sourceIds": [275506],
+  "params": "COMPANY_CODE",
+  "searchable": true,
+  "executeOnFill": true
+}
+
+// Example 2: Yes/No dropdown
+{
+  "actionType": "EXT_DROP_DOWN",
+  "sourceType": "FORM_FILL_DROP_DOWN",
+  "processingType": "CLIENT",
+  "sourceIds": [276246],
+  "params": "PIDILITE_YES_NO",
+  "searchable": true,
+  "executeOnFill": true
+}
+```
+
+**Common EXT_DROP_DOWN params values**:
+- `YES_NO`, `CB_YES_NO`, `PIDILITE_YES_NO` - Yes/No dropdowns
+- `INDIVIDUAL_GROUP`, `CB_IND_GROUP` - Individual/Group selection
+- `LINK`, `LINK_EST_PRO` - Link types
+- `COMPANY_CODE` - Company code dropdown
+- `COUNTRY` - Country dropdown
+- `CURRENCY_COUNTRY` - Currency dropdown
+- `TITLE` - Title (Mr/Mrs/Ms) dropdown
+
+---
+
+#### VALIDATION with EDV - Validate Against EDV Table
+
+**This is a separate rule type that uses EDV for validation!**
+
+```json
+{
+  "actionType": "VALIDATION",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "processingType": "SERVER",
+  "sourceIds": [275506],  // Field to validate
+  "destinationIds": [276399, 276400, 276383, 275629],  // Fields to auto-populate
+  "postTriggerRuleIds": [120145, 120479],
+  "params": "COMPANY_CODE",  // EDV table name (simple string)
+  "executeOnFill": true
+}
+
+// Multi-source VALIDATION (validate multiple fields together)
+{
+  "actionType": "VALIDATION",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "processingType": "SERVER",
+  "sourceIds": [275494, 276244, 276383],  // Multiple fields to validate
+  "destinationIds": [-1, -1, 276401, 276402, ...],
+  "params": "COMPANY_CODE"
+}
+```
+
+---
+
+#### VERIFY Rules - API-Based Verification (NOT EDV!)
+
+**CRITICAL: VERIFY rules call external APIs, NOT EDV tables!**
+
+```json
+// PAN Verification - Calls PAN API
+{
+  "actionType": "VERIFY",
+  "sourceType": "PAN_NUMBER",  // API type, NOT EDV!
+  "processingType": "SERVER",
+  "sourceIds": [275534],
+  "destinationIds": [-1, -1, -1, 275535, -1, 275537, -1, 275536, 275538],
+  "postTriggerRuleIds": [120188, 120233, 120232],
+  "button": "VERIFY",
+  "executeOnFill": true
+}
+
+// GSTIN Verification - Calls GSTIN API
+{
+  "actionType": "VERIFY",
+  "sourceType": "GSTIN",  // API type, NOT EDV!
+  "processingType": "SERVER",
+  "sourceIds": [275513],
+  "destinationIds": [275514, 275515, 275516, 275517, 275518, 275519, -1, 275520, 275521, 275522, 275523],
+  "postTriggerRuleIds": [120188, 120171, 120176, 120177, 120178, 120179],
+  "button": "Verify",
+  "executeOnFill": true
+}
+
+// GSTIN with PAN Cross-Validation
+{
+  "actionType": "VERIFY",
+  "sourceType": "GSTIN_WITH_PAN",  // Cross-validates GSTIN against PAN
+  "processingType": "SERVER",
+  "sourceIds": [275534, 275513],  // [PAN_ID, GSTIN_ID]
+  "destinationIds": [],
+  "params": "{ \"paramMap\": {\"errorMessage\": \"GSTIN and PAN doesn't match.\"}}",
+  "onStatusFail": "CONTINUE",
+  "executeOnFill": true
+}
+
+// Bank Account Verification - Requires TWO sourceIds
+{
+  "actionType": "VERIFY",
+  "sourceType": "BANK_ACCOUNT_NUMBER",
+  "processingType": "SERVER",
+  "sourceIds": [275560, 275561],  // [IFSC_Code_ID, Bank_Account_ID]
+  "destinationIds": [275562],
+  "button": "VERIFY",
+  "executeOnFill": true
+}
+
+// MSME Udyam Verification
+{
+  "actionType": "VERIFY",
+  "sourceType": "MSME_UDYAM_REG_NUMBER",
+  "processingType": "SERVER",
+  "sourceIds": [275587],
+  "destinationIds": [275588, 275589, 275591, 275593, ...],  // 21+ fields
+  "button": "VERIFY",
+  "executeOnFill": true
+}
+```
+
+**VERIFY sourceType values** (API-based, NOT EDV):
+| sourceType | Description | sourceIds Required |
+|------------|-------------|-------------------|
+| `PAN_NUMBER` | PAN verification | 1 (PAN field) |
+| `GSTIN` | GSTIN verification | 1 (GSTIN field) |
+| `GSTIN_WITH_PAN` | Cross-validate GSTIN/PAN | 2 (PAN_ID, GSTIN_ID) |
+| `BANK_ACCOUNT_NUMBER` | Bank verification | 2 (IFSC_ID, Account_ID) |
+| `MSME_UDYAM_REG_NUMBER` | MSME verification | 1 (MSME number field) |
+| `CIN_ID` | CIN verification | 1 (CIN field) |
+| `TAN_NUMBER` | TAN verification | 1 (TAN field) |
+| `FSSAI` | FSSAI verification | 1 (FSSAI field) |
+
+---
+
+#### EXT_VALUE - Complex Params (JSON conditionList)
+
+EXT_VALUE uses JSON params with `conditionList` structure:
+
+**Pattern 1: Simple lookup (no filtering)**
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [275689],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"COMPLIANT_KYC\"]},{\"da\":[\"a1\"]}]}]"
+}
+// Parsed params:
+[{
+  "conditionList": [
+    {"ddType": ["COMPLIANT_KYC"]},
+    {"da": ["a1"]}
+  ]
+}]
+```
+
+**Pattern 2: With ddProperties (group property)**
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [238459],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"OUTLET_LICENSEE_DETAILS\"]},{\"ddProperties\":\"OUTLET_LICENSE_GROUP\"},{\"da\":[\"a1\"]}]}]"
+}
+// Parsed params:
+[{
+  "conditionList": [
+    {"ddType": ["OUTLET_LICENSEE_DETAILS"]},
+    {"ddProperties": "OUTLET_LICENSE_GROUP"},
+    {"da": ["a1"]}
+  ]
+}]
+```
+
+**Pattern 3: Single parent filtering (cascading dropdown)**
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [238460],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"OUTLET_LICENSEE_DETAILS\"]},{\"criterias\":[{\"a1\":232150}]},{\"da\":[\"a2\"]}]}]"
+}
+// Parsed: Filter by column a1 (value from field 232150), display column a2
+```
+
+**Pattern 4: Multi-parent filtering (multiple criteria)**
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [238462],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"OUTLET_LICENSEE_DETAILS\"]},{\"criterias\":[{\"a1\":238459,\"a2\":238460}]},{\"da\":[\"a3\"]}]}]"
+}
+// Parsed: Filter by BOTH a1 (from 238459) AND a2 (from 238460), display a3
+```
+
+**Pattern 5: Complex multi-level filtering**
+```json
+{
+  "actionType": "EXT_VALUE",
+  "sourceType": "EXTERNAL_DATA_VALUE",
+  "sourceIds": [238464],
+  "params": "[{\"conditionList\":[{\"ddType\":[\"OUTLET_LICENSEE_DETAILS\"]},{\"criterias\":[{\"a1\":238459,\"a2\":238460,\"a3\":238462,\"a4\":238463}]},{\"da\":[\"a5\"]}]}]"
+}
+// Parsed: Filter by 4 columns (a1-a4), display column a5
+```
+
+---
+
+#### VERIFY Rules - External Validation (NO params!)
+
+**IMPORTANT**: VERIFY rules do NOT have params. They use `sourceType` for validation type:
+
+```json
+// PAN Validation
+{
+  "actionType": "VERIFY",
+  "sourceType": "PAN_NUMBER",
+  "sourceIds": [238473],
+  "destinationIds": [-1, -1, -1, -1, -1, 238475, 238474, -1, -1, -1]
+}
+
+// Bank Account Validation (requires IFSC + Account Number)
+{
+  "actionType": "VERIFY",
+  "sourceType": "BANK_ACCOUNT_NUMBER",
+  "sourceIds": [238481, 238482],  // [IFSC_ID, Account_Number_ID]
+  "destinationIds": [238483, -1, -1, 238486]
+}
+
+// GSTIN Validation
+{
+  "actionType": "VERIFY",
+  "sourceType": "GSTIN",
+  "sourceIds": [238563],
+  "destinationIds": [238564, 238565]
+}
+```
+
+**VERIFY sourceType values**: `PAN_NUMBER`, `BANK_ACCOUNT_NUMBER`, `GSTIN`, `IFSC`, `AADHAR`
+
+---
 
 #### Visibility/Mandatory Rules
 
