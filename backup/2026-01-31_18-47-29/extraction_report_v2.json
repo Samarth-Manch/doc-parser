@@ -1,0 +1,167 @@
+{
+  "extraction_timestamp": "2026-01-31T19:03:27.983964",
+  "version": "v4",
+  "input_schema": "output/complete_format/6421-schema.json",
+  "intra_panel_refs": "adws/2026-01-31_18-47-29/templates_output/Vendor Creation Sample BUD_intra_panel_references.json",
+  "summary": {
+    "total_fields": 157,
+    "total_rules": 93,
+    "rules_by_type": {
+      "MAKE_VISIBLE": 14,
+      "MAKE_INVISIBLE": 14,
+      "MAKE_MANDATORY": 7,
+      "MAKE_NON_MANDATORY": 7,
+      "MAKE_DISABLED": 1,
+      "EXT_DROP_DOWN": 20,
+      "EXT_VALUE": 13,
+      "OCR": 7,
+      "VERIFY": 5,
+      "CONVERT_TO": 5
+    },
+    "fields_with_rules": 46
+  },
+  "ocr_chains": {
+    "PAN_IMAGE": {
+      "rule_id": 76,
+      "destination_ids": [
+        37
+      ],
+      "post_trigger": [
+        83
+      ],
+      "chained": true
+    },
+    "GSTIN_IMAGE": {
+      "rule_id": 77,
+      "destination_ids": [
+        45
+      ],
+      "post_trigger": [
+        84
+      ],
+      "chained": true
+    },
+    "AADHAR_IMAGE": {
+      "rule_id": 78,
+      "destination_ids": [],
+      "post_trigger": [],
+      "chained": false
+    },
+    "AADHAR_BACK_IMAGE": {
+      "rule_id": 79,
+      "destination_ids": [],
+      "post_trigger": [],
+      "chained": false
+    },
+    "CHEQUEE": {
+      "rule_id": 80,
+      "destination_ids": [
+        87
+      ],
+      "post_trigger": [
+        86
+      ],
+      "chained": true
+    },
+    "CIN": {
+      "rule_id": 81,
+      "destination_ids": [
+        96
+      ],
+      "post_trigger": [],
+      "chained": false
+    },
+    "MSME": {
+      "rule_id": 82,
+      "destination_ids": [
+        103
+      ],
+      "post_trigger": [
+        87
+      ],
+      "chained": true
+    }
+  },
+  "verify_rules": {
+    "PAN_NUMBER": {
+      "rule_id": 83,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        -1,
+        50,
+        -1,
+        124,
+        123,
+        119
+      ],
+      "dest_count": 8
+    },
+    "GSTIN": {
+      "rule_id": 84,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        105,
+        50,
+        -1,
+        124,
+        123,
+        119,
+        55,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "dest_count": 10
+    },
+    "BANK_ACCOUNT_NUMBER": {
+      "rule_id": 86,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121
+      ],
+      "dest_count": 4
+    },
+    "MSME_UDYAM_REG_NUMBER": {
+      "rule_id": 87,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        -1,
+        50,
+        -1,
+        124,
+        123,
+        119,
+        55,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "dest_count": 9
+    }
+  }
+}

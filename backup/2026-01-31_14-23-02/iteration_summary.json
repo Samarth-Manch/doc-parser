@@ -1,0 +1,96 @@
+{
+  "workspace": "adws/2026-01-31_14-23-02",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-01-31T14:44:38.687242",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v1.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 13
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-01-31T14:54:40.424436",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v2.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v2.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v2.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v2.json",
+      "score": 0.56,
+      "passed": false,
+      "priority_fixes_count": 7
+    },
+    {
+      "iteration": 3,
+      "timestamp": "2026-01-31T15:02:52.599995",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v3.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v3.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v3.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 21
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-01-31T15:10:51.479674",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v4.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v4.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v4.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v4.json",
+      "score": 0.765,
+      "passed": false,
+      "priority_fixes_count": 7
+    },
+    {
+      "iteration": 5,
+      "timestamp": "2026-01-31T15:18:15.193952",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v5.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v5.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v5.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v5.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 5
+    },
+    {
+      "iteration": 6,
+      "timestamp": "2026-01-31T15:25:06.986060",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v6.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v6.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v6.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v6.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 15
+    },
+    {
+      "iteration": 7,
+      "timestamp": "2026-01-31T15:32:35.979899",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v7.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v7.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v7.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v7.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 5
+    },
+    {
+      "iteration": 8,
+      "timestamp": "2026-01-31T15:42:19.827397",
+      "output_file": "adws/2026-01-31_14-23-02/populated_schema_v8.json",
+      "eval_report_file": "adws/2026-01-31_14-23-02/eval_report_v8.json",
+      "extraction_report_file": "adws/2026-01-31_14-23-02/extraction_report_v8.json",
+      "self_heal_file": "adws/2026-01-31_14-23-02/self_heal_instructions_v8.json",
+      "score": 0.692,
+      "passed": false,
+      "priority_fixes_count": 8
+    }
+  ],
+  "current_iteration": 8,
+  "final_status": "in_progress",
+  "last_updated": "2026-01-31T15:42:19.827458"
+}

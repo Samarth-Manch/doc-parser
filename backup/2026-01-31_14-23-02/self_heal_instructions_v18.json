@@ -1,0 +1,792 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "fix_type": "ocr_verify_chains",
+      "severity": "CRITICAL",
+      "description": "Add postTriggerRuleIds to link OCR \u2192 VERIFY rules",
+      "affected_count": 1,
+      "affected_rules": [
+        {
+          "ocr_source_type": "PAN_IMAGE",
+          "ocr_field": "OCR_PAN_IMAGE",
+          "destination_field": "UNKNOWN"
+        }
+      ],
+      "implementation": "For each OCR rule, find the VERIFY rule that uses the OCR destination field as source, then add: ocr_rule['postTriggerRuleIds'] = [verify_rule_id]"
+    },
+    {
+      "priority": 2,
+      "fix_type": "fix_ordinal_mapping",
+      "severity": "CRITICAL",
+      "description": "Fix VERIFY destinationIds ordinal mapping",
+      "affected_count": 3,
+      "affected_rules": [
+        {
+          "source_type": "GSTIN",
+          "expected_count": 21,
+          "actual_count": 0
+        },
+        {
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "expected_count": 4,
+          "actual_count": 0
+        },
+        {
+          "source_type": "MSME_UDYAM_REG_NUMBER",
+          "expected_count": 21,
+          "actual_count": 0
+        }
+      ],
+      "implementation": "destinationIds must match schema numberOfItems. Use -1 for unmapped positions. Example: GSTIN needs 21 positions, BANK_ACCOUNT_NUMBER needs 4 positions."
+    },
+    {
+      "priority": 3,
+      "fix_type": "missing_ocr_rules",
+      "severity": "CRITICAL",
+      "description": "Add missing OCR rules (2 needed)",
+      "details": {
+        "category": "OCR",
+        "missing_count": 2,
+        "missing_source_types": [
+          "AADHAR_BACK_IMAGE",
+          "CIN"
+        ],
+        "generated_count": 4,
+        "reference_count": 6
+      },
+      "implementation": "Reference has 6 OCR rules, generated has 4. Add rules for missing fields/types."
+    },
+    {
+      "priority": 4,
+      "fix_type": "missing_ext_drop_down_rules",
+      "severity": "HIGH",
+      "description": "Add missing EXT_DROP_DOWN rules (17 needed)",
+      "details": {
+        "category": "EXT_DROP_DOWN",
+        "missing_count": 17,
+        "generated_count": 3,
+        "reference_count": 20,
+        "pattern": "Fields with external/cascading dropdown logic"
+      },
+      "implementation": "Reference has 20 EXT_DROP_DOWN rules, generated has 3. Add rules for missing fields/types."
+    },
+    {
+      "priority": 5,
+      "fix_type": "missing_make_visible_rules",
+      "severity": "MEDIUM",
+      "description": "Add missing MAKE_VISIBLE rules (14 needed)",
+      "details": {
+        "category": "MAKE_VISIBLE",
+        "missing_count": 14,
+        "generated_count": 4,
+        "reference_count": 18
+      },
+      "implementation": "Reference has 18 MAKE_VISIBLE rules, generated has 4. Add rules for missing fields/types."
+    },
+    {
+      "priority": 6,
+      "fix_type": "missing_ext_value_rules",
+      "severity": "HIGH",
+      "description": "Add missing EXT_VALUE rules (13 needed)",
+      "details": {
+        "category": "EXT_VALUE",
+        "missing_count": 13,
+        "generated_count": 0,
+        "reference_count": 13,
+        "pattern": "External value rules for cascading data"
+      },
+      "implementation": "Reference has 13 EXT_VALUE rules, generated has 0. Add rules for missing fields/types."
+    },
+    {
+      "priority": 7,
+      "fix_type": "consolidate_disabled_rules",
+      "severity": "HIGH",
+      "description": "Consolidate 23 MAKE_DISABLED rules (expected: 5)",
+      "current_count": 23,
+      "expected_count": 5,
+      "implementation": "Group MAKE_DISABLED rules by sourceIds + condition, merge destinationIds into single rules. Reference shows consolidated rules with multiple destinations."
+    },
+    {
+      "priority": 8,
+      "fix_type": "complete_visibility_pairs",
+      "severity": "MEDIUM",
+      "description": "Complete visibility rule pairs (3 incomplete)",
+      "incomplete_details": [
+        {
+          "source_ids": [
+            158
+          ],
+          "source_fields": [
+            ""
+          ],
+          "has_visible": true,
+          "has_invisible": false,
+          "missing": "MAKE_INVISIBLE"
+        },
+        {
+          "source_ids": [
+            70
+          ],
+          "source_fields": [
+            ""
+          ],
+          "has_visible": false,
+          "has_invisible": true,
+          "missing": "MAKE_VISIBLE"
+        },
+        {
+          "source_ids": [
+            83
+          ],
+          "source_fields": [
+            ""
+          ],
+          "has_visible": true,
+          "has_invisible": false,
+          "missing": "MAKE_INVISIBLE"
+        }
+      ],
+      "implementation": "Each visibility condition needs both MAKE_VISIBLE (condition=IN) and MAKE_INVISIBLE (condition=NOT_IN) rules."
+    }
+  ],
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "EXECUTE": 40,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "generated": {
+      "MAKE_DISABLED": 23,
+      "EXT_DROP_DOWN": 3,
+      "VERIFY": 13,
+      "OCR": 4,
+      "CONVERT_TO": 1,
+      "MAKE_INVISIBLE": 5,
+      "MAKE_NON_MANDATORY": 5,
+      "MAKE_VISIBLE": 4
+    },
+    "discrepancies": [
+      {
+        "action_type": "CONCAT",
+        "generated": 0,
+        "reference": 2,
+        "difference": -2,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "CONVERT_TO",
+        "generated": 1,
+        "reference": 21,
+        "difference": -20,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO",
+        "generated": 0,
+        "reference": 13,
+        "difference": -13,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "generated": 0,
+        "reference": 18,
+        "difference": -18,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR1",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR3",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TXNID_TO_FORM_FILL",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "DELETE_DOCUMENT",
+        "generated": 0,
+        "reference": 15,
+        "difference": -15,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "DUMMY_ACTION",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "EXECUTE",
+        "generated": 0,
+        "reference": 40,
+        "difference": -40,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "EXT_DROP_DOWN",
+        "generated": 3,
+        "reference": 20,
+        "difference": -17,
+        "status": "MISSING",
+        "severity": "CRITICAL"
+      },
+      {
+        "action_type": "EXT_VALUE",
+        "generated": 0,
+        "reference": 13,
+        "difference": -13,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_DISABLED",
+        "generated": 23,
+        "reference": 5,
+        "issue": "Rules not consolidated - should have single rule with multiple destinationIds",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_ENABLED",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_INVISIBLE",
+        "generated": 5,
+        "reference": 19,
+        "difference": -14,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_MANDATORY",
+        "generated": 0,
+        "reference": 12,
+        "difference": -12,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_NON_MANDATORY",
+        "generated": 5,
+        "reference": 10,
+        "difference": -5,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_VISIBLE",
+        "generated": 4,
+        "reference": 18,
+        "difference": -14,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "OCR",
+        "generated": 4,
+        "reference": 6,
+        "difference": -2,
+        "status": "MISSING",
+        "severity": "CRITICAL"
+      },
+      {
+        "action_type": "SEND_OTP",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_INVISIBLE",
+        "generated": 0,
+        "reference": 6,
+        "difference": -6,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_MANDATORY",
+        "generated": 0,
+        "reference": 3,
+        "difference": -3,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_NON_MANDATORY",
+        "generated": 0,
+        "reference": 2,
+        "difference": -2,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_VISIBLE",
+        "generated": 0,
+        "reference": 6,
+        "difference": -6,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "SET_DATE",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "UNDELETE_DOCUMENT",
+        "generated": 0,
+        "reference": 17,
+        "difference": -17,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "VALIDATE_OTP",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "VALIDATION",
+        "generated": 0,
+        "reference": 18,
+        "difference": -18,
+        "status": "MISSING",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "VERIFY",
+        "generated": 13,
+        "reference": 5,
+        "difference": 8,
+        "status": "EXTRA",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "missing_rules": [
+    {
+      "category": "OCR",
+      "missing_count": 2,
+      "missing_source_types": [
+        "AADHAR_BACK_IMAGE",
+        "CIN"
+      ],
+      "generated_count": 4,
+      "reference_count": 6
+    },
+    {
+      "category": "EXT_DROP_DOWN",
+      "missing_count": 17,
+      "generated_count": 3,
+      "reference_count": 20,
+      "pattern": "Fields with external/cascading dropdown logic"
+    },
+    {
+      "category": "MAKE_VISIBLE",
+      "missing_count": 14,
+      "generated_count": 4,
+      "reference_count": 18
+    },
+    {
+      "category": "EXT_VALUE",
+      "missing_count": 13,
+      "generated_count": 0,
+      "reference_count": 13,
+      "pattern": "External value rules for cascading data"
+    }
+  ],
+  "critical_checks": {
+    "json_structure_valid": true,
+    "json_structure_errors": [],
+    "ocr_verify_chains": {
+      "total_ocr_rules": 4,
+      "correctly_chained": 3,
+      "missing_chains": 1,
+      "details": [
+        {
+          "ocr_field": "OCR_PAN_IMAGE",
+          "ocr_source_type": "PAN_IMAGE",
+          "destination_field": "UNKNOWN",
+          "verify_field": "NOT_FOUND",
+          "verify_id": 22,
+          "chained": false,
+          "has_post_trigger": true,
+          "post_trigger_ids": [
+            54
+          ]
+        },
+        {
+          "ocr_field": "OCR_GSTIN_IMAGE",
+          "ocr_source_type": "GSTIN_IMAGE",
+          "destination_field": "UNKNOWN",
+          "verify_field": "NOT_FOUND",
+          "verify_id": 56,
+          "chained": true,
+          "has_post_trigger": true,
+          "post_trigger_ids": [
+            56
+          ]
+        },
+        {
+          "ocr_field": "OCR_CHEQUEE",
+          "ocr_source_type": "CHEQUEE",
+          "destination_field": "UNKNOWN",
+          "verify_field": "NOT_FOUND",
+          "verify_id": 58,
+          "chained": true,
+          "has_post_trigger": true,
+          "post_trigger_ids": [
+            58
+          ]
+        },
+        {
+          "ocr_field": "OCR_MSME",
+          "ocr_source_type": "MSME",
+          "destination_field": "UNKNOWN",
+          "verify_field": "NOT_FOUND",
+          "verify_id": 60,
+          "chained": true,
+          "has_post_trigger": true,
+          "post_trigger_ids": [
+            60
+          ]
+        }
+      ]
+    },
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 13,
+      "known_type_rules": 6,
+      "correct_ordinals": 3,
+      "incorrect_ordinals": 3,
+      "unknown_type_rules": 7,
+      "details": [
+        {
+          "field": "VERIFY_PAN_NUMBER",
+          "source_type": "PAN_NUMBER",
+          "status": "PASS",
+          "expected_dest_count": 10,
+          "actual_dest_count": 10,
+          "has_params": false
+        },
+        {
+          "field": "VERIFY_GSTIN_WITH_PAN",
+          "source_type": "GSTIN_WITH_PAN",
+          "status": "PASS",
+          "expected_dest_count": 0,
+          "actual_dest_count": 0,
+          "has_params": true
+        },
+        {
+          "field": "VERIFY_GSTIN_WITH_PAN",
+          "source_type": "GSTIN_WITH_PAN",
+          "status": "PASS",
+          "expected_dest_count": 0,
+          "actual_dest_count": 0,
+          "has_params": true
+        },
+        {
+          "field": "VERIFY_GSTIN",
+          "source_type": "GSTIN",
+          "status": "FAIL",
+          "expected_dest_count": 21,
+          "actual_dest_count": 0,
+          "has_params": false
+        },
+        {
+          "field": "VERIFY_BANK_ACCOUNT_NUMBER",
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "status": "FAIL",
+          "expected_dest_count": 4,
+          "actual_dest_count": 0,
+          "has_params": false
+        },
+        {
+          "field": "VERIFY_MSME_UDYAM_REG_NUMBER",
+          "source_type": "MSME_UDYAM_REG_NUMBER",
+          "status": "FAIL",
+          "expected_dest_count": 21,
+          "actual_dest_count": 0,
+          "has_params": false
+        }
+      ]
+    },
+    "disabled_consolidation": {
+      "total_disabled_rules": 23,
+      "unique_groups": 23,
+      "total_destination_ids": 23,
+      "is_consolidated": false,
+      "expected_count": 5,
+      "recommendation": "Rules should be consolidated",
+      "consolidation_opportunities": []
+    },
+    "visibility_pairs": {
+      "total_visible": 4,
+      "total_invisible": 5,
+      "complete_pairs": 1,
+      "incomplete_pairs": 3,
+      "pair_completion_rate": 0.25,
+      "complete_pair_details": [
+        {
+          "source_ids": [
+            43
+          ],
+          "source_fields": [
+            ""
+          ],
+          "visible_count": 2,
+          "invisible_count": 3
+        }
+      ],
+      "incomplete_pair_details": [
+        {
+          "source_ids": [
+            158
+          ],
+          "source_fields": [
+            ""
+          ],
+          "has_visible": true,
+          "has_invisible": false,
+          "missing": "MAKE_INVISIBLE"
+        },
+        {
+          "source_ids": [
+            70
+          ],
+          "source_fields": [
+            ""
+          ],
+          "has_visible": false,
+          "has_invisible": true,
+          "missing": "MAKE_VISIBLE"
+        },
+        {
+          "source_ids": [
+            83
+          ],
+          "source_fields": [
+            ""
+          ],
+          "has_visible": true,
+          "has_invisible": false,
+          "missing": "MAKE_INVISIBLE"
+        }
+      ]
+    }
+  },
+  "panel_evaluation": [
+    {
+      "panel_name": "Unknown",
+      "total_fields": 1,
+      "fields_evaluated": 1,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Basic Details",
+      "total_fields": 33,
+      "fields_evaluated": 33,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "total_fields": 27,
+      "fields_evaluated": 27,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "total_fields": 8,
+      "fields_evaluated": 8,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Address Details",
+      "total_fields": 13,
+      "fields_evaluated": 13,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Bank Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "total_fields": 6,
+      "fields_evaluated": 6,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "MSME Details",
+      "total_fields": 28,
+      "fields_evaluated": 28,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "total_fields": 11,
+      "fields_evaluated": 11,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Payment Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "total_fields": 5,
+      "fields_evaluated": 5,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    }
+  ],
+  "bud_logic_verification": {
+    "total_fields_with_logic": 148,
+    "fields_analyzed": 168
+  },
+  "false_positives": [],
+  "evaluation_summary": {
+    "generated_output": "/home/samart/project/doc-parser/adws/2026-01-31_14-23-02/populated_schema_v8.json",
+    "reference_output": "/home/samart/project/doc-parser/documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "/home/samart/project/doc-parser/documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-01-31T15:41:57.419886",
+    "iteration": 8,
+    "overall_score": 0.692,
+    "score_breakdown": {
+      "panel_score": 1.0,
+      "ocr_chain_score": 0.75,
+      "ordinal_mapping_score": 0.5,
+      "rule_coverage_score": 0.208,
+      "structure_score": 1.0
+    },
+    "pass_threshold": 0.9,
+    "evaluation_passed": false
+  },
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ],
+  "previous_iteration_error": {
+    "error_type": "Exception",
+    "error_message": "Rule extraction agent returned no output",
+    "instruction": "The previous iteration crashed with this error. Fix the issue and continue."
+  }
+}

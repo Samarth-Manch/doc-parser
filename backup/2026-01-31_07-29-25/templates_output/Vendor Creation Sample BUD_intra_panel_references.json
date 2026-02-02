@@ -1,0 +1,1421 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "file_path": "documents/Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-01-31T07:29:31.843693",
+    "total_fields": 168,
+    "total_panels": 12
+  },
+  "panels_analyzed": 10,
+  "panel_results": [
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "source_field": "Process Type",
+          "source_variable": "__process_type__",
+          "referenced_field": "Select the process type",
+          "referenced_variable": "__select_the_process_type__",
+          "reference_type": "derivation",
+          "logic_excerpt": "IF India is selected in previous field then Values is DOM IN, If international is selected then value is INT",
+          "dependency_description": "Process Type value is derived based on the selection in 'Select the process type' field"
+        },
+        {
+          "source_field": "Group key/Corporate Group",
+          "source_variable": "__group_key/corporate_group__",
+          "referenced_field": "Account Group/Vendor Type",
+          "referenced_variable": "__account_group/vendor_type__",
+          "reference_type": "dropdown_filter",
+          "logic_excerpt": "Dropdown values will come based on the account group/vendor type selection field",
+          "dependency_description": "Dropdown options for Group key/Corporate Group are filtered based on Account Group/Vendor Type selection"
+        },
+        {
+          "source_field": "Vendor Domestic or Import",
+          "source_variable": "__vendor_domestic_or_import__",
+          "referenced_field": "Account Group/Vendor Type",
+          "referenced_variable": "__account_group/vendor_type__",
+          "reference_type": "derivation",
+          "logic_excerpt": "If account group/vendor type is selected as ZDES, ZDOM, ZRPV, ZONE (any one) then derived it as Domestic. If Account group/vendor type is selected as ZIMP, ZSTV, ZDAS (any one) then derived it as import",
+          "dependency_description": "Vendor Domestic or Import value is derived based on the Account Group/Vendor Type selection"
+        },
+        {
+          "source_field": "Country",
+          "source_variable": "__country__",
+          "referenced_field": "Select the process type",
+          "referenced_variable": "__select_the_process_type__",
+          "reference_type": "conditional_behavior",
+          "logic_excerpt": "If the Select the process type field value is India then country is India and Noneditable, If Select the process type field value is international then country is selectable dropdown",
+          "dependency_description": "Country field behavior (editable vs non-editable, fixed value vs dropdown) depends on Select the process type field"
+        },
+        {
+          "source_field": "Country Name",
+          "source_variable": "__country_name__",
+          "referenced_field": "Country",
+          "referenced_variable": "__country__",
+          "reference_type": "derivation",
+          "logic_excerpt": "If Country code is selected then derive the country name as column 5 on table 1.1",
+          "dependency_description": "Country Name is derived from the Country field selection"
+        },
+        {
+          "source_field": "Country Code",
+          "source_variable": "__country_code__",
+          "referenced_field": "Country",
+          "referenced_variable": "__country__",
+          "reference_type": "derivation",
+          "logic_excerpt": "If Country code is selected then derive the country name as column 2 on table 1.1",
+          "dependency_description": "Country Code is derived from the Country field selection"
+        },
+        {
+          "source_field": "Company Code",
+          "source_variable": "__company_code__",
+          "referenced_field": "Process Type",
+          "referenced_variable": "__process_type__",
+          "reference_type": "dropdown_filter",
+          "logic_excerpt": "Dropdown values will come from column 3 based on process type filter (DOM IN or INT) as column 1 of reference table 1.2",
+          "dependency_description": "Company Code dropdown options are filtered based on Process Type value (DOM IN or INT)"
+        },
+        {
+          "source_field": "Mobile Number",
+          "source_variable": "__mobile_number__",
+          "referenced_field": "Country",
+          "referenced_variable": "__country__",
+          "reference_type": "validation",
+          "logic_excerpt": "Mobile Number Validation based on the country selection",
+          "dependency_description": "Mobile Number validation rules depend on the Country field selection"
+        },
+        {
+          "source_field": "Mobile Number 2 (Domestic)",
+          "source_variable": "__mobile_number_2_(domestic)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+          "reference_type": "visibility_and_mandatory",
+          "logic_excerpt": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible and non-mandatory",
+          "dependency_description": "Mobile Number 2 (Domestic) visibility and mandatory status depends on 'Do you wish to add additional mobile numbers (India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 3 (Domestic)",
+          "source_variable": "__mobile_number_3_(domestic)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 3 (Domestic) visibility depends on 'Do you wish to add additional mobile numbers (India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 4 (Domestic)",
+          "source_variable": "__mobile_number_4_(domestic)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 4 (Domestic) visibility depends on 'Do you wish to add additional mobile numbers (India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 5 (Domestic)",
+          "source_variable": "__mobile_number_5_(domestic)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 5 (Domestic) visibility depends on 'Do you wish to add additional mobile numbers (India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 2 (Import)",
+          "source_variable": "__mobile_number_2_(import)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 2 (Import) visibility depends on 'Do you wish to add additional mobile numbers (Non-India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 3 (Import)",
+          "source_variable": "__mobile_number_3_(import)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 3 (Import) visibility depends on 'Do you wish to add additional mobile numbers (Non-India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 4 (Import)",
+          "source_variable": "__mobile_number_4_(import)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 4 (Import) visibility depends on 'Do you wish to add additional mobile numbers (Non-India)?' field"
+        },
+        {
+          "source_field": "Mobile Number 5 (Import)",
+          "source_variable": "__mobile_number_5_(import)__",
+          "referenced_field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "referenced_variable": "__do_you_wish_to_add_additional_mobile_numbers_(non-india)?__",
+          "reference_type": "visibility",
+          "logic_excerpt": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible",
+          "dependency_description": "Mobile Number 5 (Import) visibility depends on 'Do you wish to add additional mobile numbers (Non-India)?' field"
+        },
+        {
+          "source_field": "Email 2",
+          "source_variable": "__email_2__",
+          "referenced_field": "Do you wish to add additional email addresses?",
+          "referenced_variable": "__do_you_wish_to_add_additional_email_addresses?__",
+          "reference_type": "visibility_and_mandatory",
+          "logic_excerpt": "If the field \"Do you wish to add additional email addresses?\" value is Yes then it is visible and mandatory",
+          "dependency_description": "Email 2 visibility and mandatory status depends on 'Do you wish to add additional email addresses?' field"
+        },
+        {
+          "source_field": "Email ID",
+          "source_variable": "__email_id__",
+          "referenced_field": "Add the concerned Email Id",
+          "referenced_variable": "__add_the_concerned_email_id__",
+          "reference_type": "visibility_and_mandatory",
+          "logic_excerpt": "If the field \"Add the concerned Email Id\" value is Yes then it is visible and mandatory",
+          "dependency_description": "Email ID visibility and mandatory status depends on 'Add the concerned Email Id' field"
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "dependent_field": {
+            "field_name": "PAN",
+            "variable_name": "__pan__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Upload PAN",
+              "referenced_variable_name": "__upload_pan__",
+              "reference_type": "data_source",
+              "description": "PAN field receives OCR-extracted data from Upload PAN file",
+              "logic_excerpt": "Get PAN from OCR rule"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Pan Holder Name",
+            "variable_name": "__pan_holder_name__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "PAN",
+              "referenced_variable_name": "__pan__",
+              "reference_type": "data_source",
+              "description": "Data populated from PAN validation result",
+              "logic_excerpt": "Data will come from PAN validation"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "PAN Type",
+            "variable_name": "__pan_type__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "PAN",
+              "referenced_variable_name": "__pan__",
+              "reference_type": "data_source",
+              "description": "Data populated from PAN validation result",
+              "logic_excerpt": "Data will come from PAN validation"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "PAN Status",
+            "variable_name": "__pan_status__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "PAN",
+              "referenced_variable_name": "__pan__",
+              "reference_type": "data_source",
+              "description": "Data populated from PAN validation result",
+              "logic_excerpt": "Data will come from PAN validation"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Aadhaar PAN List Status",
+            "variable_name": "__aadhaar_pan_list_status__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "PAN",
+              "referenced_variable_name": "__pan__",
+              "reference_type": "data_source",
+              "description": "Data populated from PAN validation result",
+              "logic_excerpt": "Data will come from PAN validation"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "GSTIN IMAGE",
+            "variable_name": "__gstin_image__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility and mandatory status controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible and non-mandatory"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "GSTIN",
+            "variable_name": "__gstin__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility and mandatory status controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible and non-mandatory"
+            },
+            {
+              "referenced_field_name": "GSTIN IMAGE",
+              "referenced_variable_name": "__gstin_image__",
+              "reference_type": "data_source",
+              "description": "Data comes from GSTIN OCR extraction from uploaded image",
+              "logic_excerpt": "Data will come from GSTIN OCR rule"
+            },
+            {
+              "referenced_field_name": "PAN",
+              "referenced_variable_name": "__pan__",
+              "reference_type": "cross_validation",
+              "description": "PAN and GSTIN must be cross-validated",
+              "logic_excerpt": "Apply PAN with GST rule also"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Trade Name",
+            "variable_name": "__trade_name__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Legal Name",
+            "variable_name": "__legal_name__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Reg Date",
+            "variable_name": "__reg_date__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Type",
+            "variable_name": "__type__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Building Number",
+            "variable_name": "__building_number__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Street",
+            "variable_name": "__street__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "City",
+            "variable_name": "__city__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "District",
+            "variable_name": "__district__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "State",
+            "variable_name": "__state__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Pin Code",
+            "variable_name": "__pin_code__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility controlled by GST option selection",
+              "logic_excerpt": "if the field \"Please select GST option\" values is yes then visible otherwise invisible"
+            },
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "data_source",
+              "description": "Data populated from GSTIN verification result",
+              "logic_excerpt": "Data will come from GSTIN verification"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Upload Declaration",
+            "variable_name": "__upload_declaration__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Please select GST option",
+              "referenced_variable_name": "__please_select_gst_option__",
+              "reference_type": "visibility_condition",
+              "description": "Visibility and mandatory status controlled by GST option (inverse of GST fields)",
+              "logic_excerpt": "if the field \"Please select GST option\" values is No then visible and Mandatory otherwise invisible and Non-Mandatory"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "GST Vendor Classification",
+            "variable_name": "__gst_vendor_classification__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "GSTIN",
+              "referenced_variable_name": "__gstin__",
+              "reference_type": "conditional_value",
+              "description": "Value depends on whether GSTIN is available",
+              "logic_excerpt": "IF GST number is available \"Blank\" else populate default value as \"0\""
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "ID Type",
+            "variable_name": "__id_type__"
+          },
+          "references": [
+            {
+              "referenced_field_name": "PAN",
+              "referenced_variable_name": "__pan__",
+              "reference_type": "conditional_value",
+              "description": "Value depends on 4th character of PAN",
+              "logic_excerpt": "If the 4th Character of PAN is C then ID type default Value is ZCUCIN"
+            }
+          ]
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "dependent_field": {
+            "field_name": "Name/ Middle Name of the Organization",
+            "variable_name": "__name/_middle_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Name/ First Name of the Organization",
+              "referenced_variable_name": "__name/_first_name_of_the_organization__",
+              "reference_type": "value_copy",
+              "reference_context": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 35,69 characters in this field and rest other character should go to next field.",
+              "dependency_description": "Copies characters 35-69 from the source field value, with logical word-boundary splitting"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Name/ Last Name of the Organization",
+            "variable_name": "__name/_last_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Name/ First Name of the Organization",
+              "referenced_variable_name": "__name/_first_name_of_the_organization__",
+              "reference_type": "value_copy",
+              "reference_context": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 70,104 characters in this field and rest other character should go to next field.",
+              "dependency_description": "Copies characters 70-104 from the source field value, with logical word-boundary splitting"
+            }
+          ]
+        },
+        {
+          "dependent_field": {
+            "field_name": "Name 4/Alternate Name",
+            "variable_name": "__name_4/alternate_name__",
+            "field_type": "TEXT"
+          },
+          "references": [
+            {
+              "referenced_field_name": "Name/ First Name of the Organization",
+              "referenced_variable_name": "__name/_first_name_of_the_organization__",
+              "reference_type": "value_copy",
+              "reference_context": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 105,139 characters in this field and rest other character should go to next field.",
+              "dependency_description": "Copies characters 105-139 from the source field value, with logical word-boundary splitting"
+            }
+          ]
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "source_field": "Electricity bill copy",
+          "source_variable": "__electricity_bill_copy__",
+          "references": [
+            {
+              "referenced_field": "Please Choose Address Proof",
+              "referenced_variable": "__please_choose_address_proof__",
+              "reference_type": "visibility_dependency",
+              "condition_extracted": "Visible if Address proof is chosen as 'Electricity bill copy'",
+              "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Electricity bill copy'"
+            }
+          ]
+        },
+        {
+          "source_field": "Aadhaar Front copy",
+          "source_variable": "__aadhaar_front_copy__",
+          "references": [
+            {
+              "referenced_field": "Please Choose Address Proof",
+              "referenced_variable": "__please_choose_address_proof__",
+              "reference_type": "visibility_dependency",
+              "condition_extracted": "Visible if Address proof is chosen as 'Aadhaar copy'",
+              "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar copy'"
+            }
+          ]
+        },
+        {
+          "source_field": "Aadhaar Back Image",
+          "source_variable": "__aadhaar_back_image__",
+          "references": [
+            {
+              "referenced_field": "Please Choose Address Proof",
+              "referenced_variable": "__please_choose_address_proof__",
+              "reference_type": "visibility_dependency",
+              "condition_extracted": "Visible if Address proof is chosen as 'Aadhaar copy'",
+              "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar copy'"
+            }
+          ]
+        },
+        {
+          "source_field": "Street",
+          "source_variable": "__street__",
+          "references": [
+            {
+              "referenced_field": "Aadhaar Front copy",
+              "referenced_variable": "__aadhaar_front_copy__",
+              "reference_type": "data_population",
+              "condition_extracted": "If Aadhaar is uploaded then get the data from Aadhaar OCR",
+              "logic_snippet": "If Aadhaar is uploaded then get the data from Aadhaar OCR and non-editable"
+            },
+            {
+              "referenced_field": "Electricity bill copy",
+              "referenced_variable": "__electricity_bill_copy__",
+              "reference_type": "editability_dependency",
+              "condition_extracted": "If Electricity bill is uploaded then user will enter the data",
+              "logic_snippet": "If Electricity bill is uploaded then user will enter the data"
+            }
+          ]
+        },
+        {
+          "source_field": "Street 1",
+          "source_variable": "__street_1__",
+          "references": [
+            {
+              "referenced_field": "Aadhaar Front copy",
+              "referenced_variable": "__aadhaar_front_copy__",
+              "reference_type": "data_population",
+              "condition_extracted": "If Aadhaar is uploaded then get the data from Aadhaar OCR",
+              "logic_snippet": "If Aadhaar is uploaded then get the data from Aadhaar OCR and non-editable"
+            },
+            {
+              "referenced_field": "Electricity bill copy",
+              "referenced_variable": "__electricity_bill_copy__",
+              "reference_type": "editability_dependency",
+              "condition_extracted": "If Electricity bill is uploaded then user will enter the data",
+              "logic_snippet": "If Electricity bill is uploaded then user will enter the data"
+            }
+          ]
+        },
+        {
+          "source_field": "Street 2",
+          "source_variable": "__street_2__",
+          "references": [
+            {
+              "referenced_field": "Aadhaar Front copy",
+              "referenced_variable": "__aadhaar_front_copy__",
+              "reference_type": "data_population",
+              "condition_extracted": "If Aadhaar is uploaded then get the data from Aadhaar OCR",
+              "logic_snippet": "If Aadhaar is uploaded then get the data from Aadhaar OCR and non-editable"
+            },
+            {
+              "referenced_field": "Electricity bill copy",
+              "referenced_variable": "__electricity_bill_copy__",
+              "reference_type": "editability_dependency",
+              "condition_extracted": "If Electricity bill is uploaded then user will enter the data",
+              "logic_snippet": "If Electricity bill is uploaded then user will enter the data"
+            }
+          ]
+        },
+        {
+          "source_field": "Street 3",
+          "source_variable": "__street_3__",
+          "references": [
+            {
+              "referenced_field": "Aadhaar Front copy",
+              "referenced_variable": "__aadhaar_front_copy__",
+              "reference_type": "data_population",
+              "condition_extracted": "If Aadhaar is uploaded then get the data from Aadhaar OCR",
+              "logic_snippet": "If Aadhaar is uploaded then get the data from Aadhaar OCR and non-editable"
+            },
+            {
+              "referenced_field": "Electricity bill copy",
+              "referenced_variable": "__electricity_bill_copy__",
+              "reference_type": "editability_dependency",
+              "condition_extracted": "If Electricity bill is uploaded then user will enter the data",
+              "logic_snippet": "If Electricity bill is uploaded then user will enter the data"
+            }
+          ]
+        },
+        {
+          "source_field": "Postal Code",
+          "source_variable": "__postal_code__",
+          "references": [
+            {
+              "referenced_field": "Aadhaar Front copy",
+              "referenced_variable": "__aadhaar_front_copy__",
+              "reference_type": "data_population",
+              "condition_extracted": "If Aadhaar is uploaded then get the data from Aadhaar OCR",
+              "logic_snippet": "If Aadhaar is uploaded then get the data from Aadhaar OCR and non-editable"
+            },
+            {
+              "referenced_field": "Electricity bill copy",
+              "referenced_variable": "__electricity_bill_copy__",
+              "reference_type": "editability_dependency",
+              "condition_extracted": "If Electricity bill is uploaded then user will enter the data",
+              "logic_snippet": "If Electricity bill is uploaded then user will enter the data"
+            }
+          ]
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "dependent_field": {
+            "field_name": "Cancelled Cheque Image",
+            "variable_name": "__cancelled_cheque_image__",
+            "field_type": "FILE"
+          },
+          "depends_on": [
+            {
+              "field_name": "Please choose the option",
+              "variable_name": "__please_choose_the_option__",
+              "dependency_type": "visibility_and_mandatory",
+              "condition": "Please choose the option == 'Cancelled Cheque'",
+              "condition_values": [
+                "Cancelled Cheque (India Domestic)",
+                "Cancelled Cheque (India Import and International)"
+              ],
+              "effect": "Field becomes visible and mandatory when Cancelled Cheque option is selected"
+            }
+          ],
+          "source_logic": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visible and mandatory. The upload limit should be up to 15 Mb. Perform the Bank OCR and get IFSC code and Account Number"
+        },
+        {
+          "dependent_field": {
+            "field_name": "Passbook/Bank Letter",
+            "variable_name": "__passbook/bank_letter__",
+            "field_type": "FILE"
+          },
+          "depends_on": [
+            {
+              "field_name": "Please choose the option",
+              "variable_name": "__please_choose_the_option__",
+              "dependency_type": "visibility_and_mandatory",
+              "condition": "Please choose the option == 'Passbook Front Page (India Domestic and International)'",
+              "condition_values": [
+                "Passbook Front Page (India Domestic and International)"
+              ],
+              "effect": "Field becomes visible and mandatory when Passbook Front Page option is selected"
+            }
+          ],
+          "source_logic": "If Please the option is chosen as Passbook Front Page (India Domestic and International)then it is visible and mandatory. The upload limit should be up to 15 Mb."
+        },
+        {
+          "dependent_field": {
+            "field_name": "Please enter IFSC and Account Number manually",
+            "variable_name": "__please_enter_ifsc_and_account_number_manually__",
+            "field_type": "LABEL"
+          },
+          "depends_on": [
+            {
+              "field_name": "Please choose the option",
+              "variable_name": "__please_choose_the_option__",
+              "dependency_type": "visibility",
+              "condition": "Please choose the option == 'Passbook Front Page (India Domestic and International)'",
+              "condition_values": [
+                "Passbook Front Page (India Domestic and International)"
+              ],
+              "effect": "Label becomes visible when Passbook Front Page option is selected"
+            }
+          ],
+          "source_logic": "Show this fields if passbook front page (India Domestic and International) is selected"
+        },
+        {
+          "dependent_field": {
+            "field_name": "IFSC Code",
+            "variable_name": "__ifsc_code__",
+            "field_type": "TEXT"
+          },
+          "depends_on": [
+            {
+              "field_name": "Please choose the option",
+              "variable_name": "__please_choose_the_option__",
+              "dependency_type": "visibility_mandatory_and_editability",
+              "condition": "Please choose the option IN ['Cancelled Cheque (India Domestic)', 'Passbook Front Page (India Domestic and International)']",
+              "condition_values": [
+                "Cancelled Cheque (India Domestic)",
+                "Passbook Front Page (India Domestic and International)"
+              ],
+              "effect": "Visible and mandatory for Cancelled Cheque or Passbook options. Non-editable when Cancelled Cheque is selected (OCR auto-derived), editable for other options (manual entry). Invisible and non-mandatory for other process types."
+            }
+          ],
+          "source_logic": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options. Perform IFSC code verification"
+        },
+        {
+          "dependent_field": {
+            "field_name": "Bank Account Number",
+            "variable_name": "__bank_account_number__",
+            "field_type": "TEXT"
+          },
+          "depends_on": [
+            {
+              "field_name": "Please choose the option",
+              "variable_name": "__please_choose_the_option__",
+              "dependency_type": "visibility_mandatory_and_editability",
+              "condition": "Please choose the option IN ['Cancelled Cheque (India Domestic)', 'Passbook Front Page (India Domestic and International)']",
+              "condition_values": [
+                "Cancelled Cheque (India Domestic)",
+                "Passbook Front Page (India Domestic and International)"
+              ],
+              "effect": "Visible and mandatory for Cancelled Cheque or Passbook options. Non-editable when Cancelled Cheque is selected (OCR auto-derived), editable for other options (manual entry). Invisible and non-mandatory for other process types."
+            }
+          ],
+          "source_logic": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options ,Perform Bank account verification"
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [],
+      "relationship_summary": {},
+      "controlling_fields": [
+        {
+          "field_name": "Is SSI / MSME Applicable?",
+          "variable_name": "__is_ssi_/_msme_applicable?__",
+          "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+          "controls_count": 3,
+          "dependent_fields": [
+            {
+              "field_name": "MSME Image",
+              "variable_name": "__msme_image__",
+              "dependency_type": "visibility",
+              "condition": "Is SSI / MSME Applicable? == 'YES'",
+              "logic_source": "If yes, Vendor will upload MSME Certificate and OCR will be performed post upload"
+            },
+            {
+              "field_name": "MSME Registration Number",
+              "variable_name": "__msme_registration_number__",
+              "dependency_type": "editability_and_mandatory",
+              "condition": "Is SSI / MSME Applicable? == 'YES'",
+              "logic_source": "If yes, editable and mandatory"
+            },
+            {
+              "field_name": "MSME Declaration",
+              "variable_name": "__msme_declaration__",
+              "dependency_type": "visibility",
+              "condition": "Is SSI / MSME Applicable? == 'NO'",
+              "logic_source": "If no, Vendor will upload MSME Declaration (Not Mandatory)"
+            }
+          ]
+        },
+        {
+          "field_name": "MSME Registration Number",
+          "variable_name": "__msme_registration_number__",
+          "field_type": "TEXT",
+          "controls_count": 21,
+          "note": "Triggers MSME Validation API which auto-populates downstream fields",
+          "dependent_fields": [
+            {
+              "field_name": "Name",
+              "variable_name": "__name__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Type",
+              "variable_name": "__type__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Address",
+              "variable_name": "__address__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Category",
+              "variable_name": "__category__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Date",
+              "variable_name": "__date__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Enterprise",
+              "variable_name": "__enterprise__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Major Activity",
+              "variable_name": "__major_activity__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Date of Commencement",
+              "variable_name": "__date_of_commencement__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Dice Name",
+              "variable_name": "__dice_name__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "State",
+              "variable_name": "__state__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Applied State",
+              "variable_name": "__applied_state__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Modified Date",
+              "variable_name": "__modified_date__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Expiry Date",
+              "variable_name": "__expiry_date__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Address Line1",
+              "variable_name": "__address_line1__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Building",
+              "variable_name": "__building__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Street",
+              "variable_name": "__street__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Area",
+              "variable_name": "__area__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "City",
+              "variable_name": "__city__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Pin",
+              "variable_name": "__pin__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "District",
+              "variable_name": "__district__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Classification Year",
+              "variable_name": "__classification_year__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            },
+            {
+              "field_name": "Classification Date",
+              "variable_name": "__classification_date__",
+              "dependency_type": "auto_derived",
+              "condition": "MSME Validation completed",
+              "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "source_field": "Exception Duplicate Vendor creation",
+          "source_variable": "__exception_duplicate_vendor_creation__",
+          "source_field_type": "STATIC_CHECK_BOX",
+          "referenced_fields": [
+            {
+              "target_field": "Duplicate GST Result",
+              "target_variable": "__duplicate_gst_result__",
+              "reference_type": "mandatory_condition",
+              "reference_context": "Exception checkbox becomes mandatory if duplicate GST is found",
+              "extracted_from": "logic"
+            },
+            {
+              "target_field": "Duplicate PAN Result",
+              "target_variable": "__duplicate_pan_result__",
+              "reference_type": "mandatory_condition",
+              "reference_context": "Exception checkbox becomes mandatory if duplicate PAN Card is found",
+              "extracted_from": "logic"
+            },
+            {
+              "target_field": "Duplicate Email Result",
+              "target_variable": "__duplicate_email_result__",
+              "reference_type": "mandatory_condition",
+              "reference_context": "Exception checkbox becomes mandatory if duplicate Email Id is found",
+              "extracted_from": "logic"
+            },
+            {
+              "target_field": "Duplicate Mobile Result",
+              "target_variable": "__duplicate_mobile_result__",
+              "reference_type": "mandatory_condition",
+              "reference_context": "Exception checkbox becomes mandatory if duplicate Mobile Number is found",
+              "extracted_from": "logic"
+            },
+            {
+              "target_field": "Duplicate Bank Account Number Result",
+              "target_variable": "__duplicate_bank_account_number_result__",
+              "reference_type": "mandatory_condition",
+              "reference_context": "Exception checkbox becomes mandatory if duplicate Bank Account Number is found",
+              "extracted_from": "logic"
+            }
+          ],
+          "original_logic": "If duplicate vendor found based on 1. Duplicate GST 2. PAN Card 3. Email Id 4. Mobile Number 5. Bank Account Number then Exception duplicate vendor creation field is mandatory 6. Business Registration Number (Applicable only for Import and International)"
+        },
+        {
+          "source_field": "Justification for Duplicate Vendor Creation",
+          "source_variable": "__justification_for_duplicate_vendor_creation__",
+          "source_field_type": "TEXT",
+          "referenced_fields": [
+            {
+              "target_field": "Exception Duplicate Vendor creation",
+              "target_variable": "__exception_duplicate_vendor_creation__",
+              "reference_type": "implicit_dependency",
+              "reference_context": "Justification field is semantically linked to the Exception checkbox - when exception is checked, justification would be expected",
+              "extracted_from": "field_name_semantic_analysis"
+            }
+          ],
+          "original_logic": ""
+        },
+        {
+          "source_field": "Duplicate Vendor Number",
+          "source_variable": "__duplicate_vendor_number__",
+          "source_field_type": "TEXT",
+          "referenced_fields": [
+            {
+              "target_field": "Duplicate Vendor Description",
+              "target_variable": "__duplicate_vendor_description__",
+              "reference_type": "data_correlation",
+              "reference_context": "Vendor Number and Description are correlated - both represent duplicate vendor identification data",
+              "extracted_from": "logic_pattern_matching"
+            },
+            {
+              "target_field": "Block status",
+              "target_variable": "__block_status__",
+              "reference_type": "data_correlation",
+              "reference_context": "Block status relates to the duplicate vendor identified by Vendor Number",
+              "extracted_from": "logic_pattern_matching"
+            }
+          ],
+          "original_logic": "True if duplicate, False if not duplicate"
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [
+        {
+          "dependent_field": {
+            "field_name": "Customer Code",
+            "variable_name": "__customer_code__",
+            "field_type": "TEXT"
+          },
+          "depends_on": {
+            "field_name": "Is Vendor Your Customer?",
+            "variable_name": "__is_vendor_your_customer?__",
+            "field_type": "DROPDOWN"
+          },
+          "reference_type": "visibility_and_mandatory",
+          "condition": "If 'Is Vendor Your Customer?' = YES, then Customer Code is visible and mandatory; else hidden",
+          "extracted_from_logic": "If YES, then visible and mandatory, else hidden. (Need discussion on the logic. Can we derive using a dropdown field)",
+          "confidence": "high"
+        }
+      ],
+      "relationship_summary": {},
+      "controlling_fields": []
+    },
+    {
+      "panel_name": "Unknown",
+      "panel_info": {},
+      "intra_panel_references": [],
+      "relationship_summary": {},
+      "controlling_fields": []
+    }
+  ],
+  "total_relationship_summary": {
+    "visibility_control": 0,
+    "mandatory_control": 0,
+    "value_derivation": 0,
+    "data_dependency": 0,
+    "validation": 0,
+    "enable_disable": 0,
+    "conditional": 0,
+    "clear_operation": 0,
+    "other": 0
+  },
+  "all_controlling_fields": [
+    {
+      "field_name": "Is SSI / MSME Applicable?",
+      "variable_name": "__is_ssi_/_msme_applicable?__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "controls_count": 3,
+      "dependent_fields": [
+        {
+          "field_name": "MSME Image",
+          "variable_name": "__msme_image__",
+          "dependency_type": "visibility",
+          "condition": "Is SSI / MSME Applicable? == 'YES'",
+          "logic_source": "If yes, Vendor will upload MSME Certificate and OCR will be performed post upload"
+        },
+        {
+          "field_name": "MSME Registration Number",
+          "variable_name": "__msme_registration_number__",
+          "dependency_type": "editability_and_mandatory",
+          "condition": "Is SSI / MSME Applicable? == 'YES'",
+          "logic_source": "If yes, editable and mandatory"
+        },
+        {
+          "field_name": "MSME Declaration",
+          "variable_name": "__msme_declaration__",
+          "dependency_type": "visibility",
+          "condition": "Is SSI / MSME Applicable? == 'NO'",
+          "logic_source": "If no, Vendor will upload MSME Declaration (Not Mandatory)"
+        }
+      ],
+      "panel": "Unknown"
+    },
+    {
+      "field_name": "MSME Registration Number",
+      "variable_name": "__msme_registration_number__",
+      "field_type": "TEXT",
+      "controls_count": 21,
+      "note": "Triggers MSME Validation API which auto-populates downstream fields",
+      "dependent_fields": [
+        {
+          "field_name": "Name",
+          "variable_name": "__name__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Type",
+          "variable_name": "__type__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Address",
+          "variable_name": "__address__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Category",
+          "variable_name": "__category__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Date",
+          "variable_name": "__date__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Enterprise",
+          "variable_name": "__enterprise__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Major Activity",
+          "variable_name": "__major_activity__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Date of Commencement",
+          "variable_name": "__date_of_commencement__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Dice Name",
+          "variable_name": "__dice_name__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "State",
+          "variable_name": "__state__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Applied State",
+          "variable_name": "__applied_state__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Modified Date",
+          "variable_name": "__modified_date__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Expiry Date",
+          "variable_name": "__expiry_date__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Address Line1",
+          "variable_name": "__address_line1__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Building",
+          "variable_name": "__building__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Street",
+          "variable_name": "__street__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Area",
+          "variable_name": "__area__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "City",
+          "variable_name": "__city__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Pin",
+          "variable_name": "__pin__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "District",
+          "variable_name": "__district__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Classification Year",
+          "variable_name": "__classification_year__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field_name": "Classification Date",
+          "variable_name": "__classification_date__",
+          "dependency_type": "auto_derived",
+          "condition": "MSME Validation completed",
+          "logic_source": "Auto-derived via MSME Validation (Non-Editable)"
+        }
+      ],
+      "panel": "Unknown"
+    }
+  ]
+}

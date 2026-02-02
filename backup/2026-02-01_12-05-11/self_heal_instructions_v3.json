@@ -1,0 +1,852 @@
+{
+  "priority_fixes": [
+    {
+      "priority": "HIGH",
+      "type": "ocr_chain_missing",
+      "field": "Aadhaar Front copy",
+      "action": "Add postTriggerRuleIds to OCR rule for Aadhaar Front copy",
+      "reference_pattern": "Reference OCR for Upload PAN has postTriggerRuleIds: [119970]"
+    },
+    {
+      "priority": "HIGH",
+      "type": "verify_invalid_destinations",
+      "field": "PAN",
+      "action": "Fix invalid destinationIds in VERIFY rule for PAN",
+      "details": "Invalid destinations: ['Unknown(-1)']"
+    },
+    {
+      "priority": "HIGH",
+      "type": "verify_invalid_destinations",
+      "field": "GSTIN",
+      "action": "Fix invalid destinationIds in VERIFY rule for GSTIN",
+      "details": "Invalid destinations: ['Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)']"
+    },
+    {
+      "priority": "HIGH",
+      "type": "verify_invalid_destinations",
+      "field": "IFSC Code",
+      "action": "Fix invalid destinationIds in VERIFY rule for IFSC Code",
+      "details": "Invalid destinations: ['Unknown(-1)']"
+    },
+    {
+      "priority": "HIGH",
+      "type": "verify_invalid_destinations",
+      "field": "CIN",
+      "action": "Fix invalid destinationIds in VERIFY rule for CIN",
+      "details": "Invalid destinations: ['Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)', 'Unknown(-1)']"
+    },
+    {
+      "priority": "HIGH",
+      "type": "verify_invalid_destinations",
+      "field": "MSME Registration Number",
+      "action": "Fix invalid destinationIds in VERIFY rule for MSME Registration Number",
+      "details": "Invalid destinations: ['Unknown(-1)', 'Unknown(-1)']"
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Vendor Country",
+      "action": "Add field Vendor Country with rules: ['EXT_VALUE', 'VALIDATION']",
+      "expected_rules": [
+        "EXT_VALUE",
+        "VALIDATION"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Central Enrolment number (CEN)",
+      "action": "Add field Central Enrolment number (CEN) with rules: ['CONVERT_TO']",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Bank Statement/Confirmation/Passbook Image",
+      "action": "Add field Bank Statement/Confirmation/Passbook Image with rules: ['COPY_TO_DOCUMENT_STORAGE_ID']",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Bank Country (Import)",
+      "action": "Add field Bank Country (Import) with rules: ['EXT_VALUE']",
+      "expected_rules": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "SWIFT Image",
+      "action": "Add field SWIFT Image with rules: ['COPY_TO_DOCUMENT_STORAGE_ID']",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Aadhaar  Front copy",
+      "action": "Add field Aadhaar  Front copy with rules: ['COPY_TO_DOCUMENT_STORAGE_ID']",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "RuleCheck",
+      "action": "Add field RuleCheck with rules: ['MAKE_DISABLED', 'MAKE_INVISIBLE']",
+      "expected_rules": [
+        "MAKE_DISABLED",
+        "MAKE_INVISIBLE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Cheque (Import)",
+      "action": "Add field Cheque (Import) with rules: ['COPY_TO_DOCUMENT_STORAGE_ID']",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Withholding Tax Type ",
+      "action": "Add field Withholding Tax Type  with rules: ['EXT_VALUE']",
+      "expected_rules": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "FDA Registered?",
+      "action": "Add field FDA Registered? with rules: ['EXT_DROP_DOWN', 'MAKE_INVISIBLE', 'MAKE_MANDATORY', 'MAKE_NON_MANDATORY', 'MAKE_VISIBLE']",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "MAKE_INVISIBLE",
+        "MAKE_MANDATORY",
+        "MAKE_NON_MANDATORY",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Reconciliation Account",
+      "action": "Add field Reconciliation Account with rules: ['EXT_DROP_DOWN', 'VALIDATION']",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "VALIDATION"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Vendor Invoice",
+      "action": "Add field Vendor Invoice with rules: ['COPY_TO_DOCUMENT_STORAGE_ID']",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Transaction ID",
+      "action": "Add field Transaction ID with rules: ['COPY_TXNID_TO_FORM_FILL']",
+      "expected_rules": [
+        "COPY_TXNID_TO_FORM_FILL"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "District (Import)",
+      "action": "Add field District (Import) with rules: ['CONVERT_TO']",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Region (Import)",
+      "action": "Add field Region (Import) with rules: ['EXT_VALUE']",
+      "expected_rules": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Name of Account Holder (Import)",
+      "action": "Add field Name of Account Holder (Import) with rules: ['CONVERT_TO']",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Bank Name (Import)",
+      "action": "Add field Bank Name (Import) with rules: ['CONVERT_TO']",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Company and Ownership",
+      "action": "Add field Company and Ownership with rules: ['COPY_TO', 'COPY_TO_TRANSACTION_ATTR1', 'EXT_VALUE', 'VALIDATION']",
+      "expected_rules": [
+        "COPY_TO",
+        "COPY_TO_TRANSACTION_ATTR1",
+        "EXT_VALUE",
+        "VALIDATION"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Created By Name",
+      "action": "Add field Created By Name with rules: ['COPY_TO']",
+      "expected_rules": [
+        "COPY_TO"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Is Withholding Tax applicable?",
+      "action": "Add field Is Withholding Tax applicable? with rules: ['EXT_DROP_DOWN', 'MAKE_INVISIBLE', 'MAKE_VISIBLE']",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "MAKE_INVISIBLE",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Country Description (Domestic)",
+      "action": "Add field Country Description (Domestic) with rules: ['COPY_TO']",
+      "expected_rules": [
+        "COPY_TO"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Aaadhar Back Image",
+      "action": "Add field Aaadhar Back Image with rules: ['COPY_TO_DOCUMENT_STORAGE_ID', 'OCR']",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID",
+        "OCR"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Additional Registration Number Applicable?",
+      "action": "Add field Additional Registration Number Applicable? with rules: ['EXT_DROP_DOWN', 'MAKE_INVISIBLE', 'MAKE_MANDATORY', 'MAKE_NON_MANDATORY', 'MAKE_VISIBLE']",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "MAKE_INVISIBLE",
+        "MAKE_MANDATORY",
+        "MAKE_NON_MANDATORY",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "type": "missing_field_with_rules",
+      "field": "Process Flow Condition",
+      "action": "Add field Process Flow Condition with rules: ['CONCAT', 'DELETE_DOCUMENT', 'DELETE_DOCUMENT', 'DELETE_DOCUMENT', 'UNDELETE_DOCUMENT', 'UNDELETE_DOCUMENT', 'UNDELETE_DOCUMENT']",
+      "expected_rules": [
+        "CONCAT",
+        "DELETE_DOCUMENT",
+        "DELETE_DOCUMENT",
+        "DELETE_DOCUMENT",
+        "UNDELETE_DOCUMENT",
+        "UNDELETE_DOCUMENT",
+        "UNDELETE_DOCUMENT"
+      ]
+    }
+  ],
+  "focus_areas": [
+    "OCR chains need postTriggerRuleIds linking to VERIFY rules",
+    "VERIFY rules need correct ordinal destinationIds mapping",
+    "Visibility rules should come in pairs (MAKE_VISIBLE + MAKE_INVISIBLE)",
+    "Mandatory rules should come in pairs (MAKE_MANDATORY + MAKE_NON_MANDATORY)",
+    "MAKE_DISABLED rules should be consolidated by source field"
+  ],
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_DISABLED": 5,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "EXT_DROP_DOWN": 20,
+      "VALIDATION": 18,
+      "EXT_VALUE": 13,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "CONVERT_TO": 21,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "OCR": 6,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "VERIFY": 5,
+      "MAKE_VISIBLE": 16,
+      "MAKE_INVISIBLE": 17,
+      "MAKE_MANDATORY": 11,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "DUMMY_ACTION": 1,
+      "MAKE_NON_MANDATORY": 9,
+      "DELETE_DOCUMENT": 12,
+      "UNDELETE_DOCUMENT": 13,
+      "CONCAT": 2,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "MAKE_ENABLED": 1
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "discrepancies": {
+      "MAKE_NON_MANDATORY": {
+        "generated": 9,
+        "reference": 10,
+        "difference": -1
+      },
+      "MAKE_VISIBLE": {
+        "generated": 16,
+        "reference": 18,
+        "difference": -2
+      },
+      "UNDELETE_DOCUMENT": {
+        "generated": 13,
+        "reference": 17,
+        "difference": -4
+      },
+      "MAKE_INVISIBLE": {
+        "generated": 17,
+        "reference": 19,
+        "difference": -2
+      },
+      "MAKE_MANDATORY": {
+        "generated": 11,
+        "reference": 12,
+        "difference": -1
+      },
+      "DELETE_DOCUMENT": {
+        "generated": 12,
+        "reference": 15,
+        "difference": -3
+      }
+    }
+  },
+  "missing_rules": [
+    {
+      "type": "missing_field",
+      "field": "Vendor Country",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_VALUE",
+        "VALIDATION"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Central Enrolment number (CEN)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Bank Statement/Confirmation/Passbook Image",
+      "field_type": "FILE",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Bank Country (Import)",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "SWIFT Image",
+      "field_type": "FILE",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Aadhaar  Front copy",
+      "field_type": "FILE",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "RuleCheck",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "MAKE_DISABLED",
+        "MAKE_INVISIBLE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Cheque (Import)",
+      "field_type": "FILE",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Withholding Tax Type ",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "FDA Registered?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "MAKE_INVISIBLE",
+        "MAKE_MANDATORY",
+        "MAKE_NON_MANDATORY",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Reconciliation Account",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "VALIDATION"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Vendor Invoice",
+      "field_type": "FILE",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Transaction ID",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "COPY_TXNID_TO_FORM_FILL"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "District (Import)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Region (Import)",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Name of Account Holder (Import)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Bank Name (Import)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Company and Ownership",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "COPY_TO",
+        "COPY_TO_TRANSACTION_ATTR1",
+        "EXT_VALUE",
+        "VALIDATION"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Created By Name",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "COPY_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Is Withholding Tax applicable?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "MAKE_INVISIBLE",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Country Description (Domestic)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "COPY_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Aaadhar Back Image",
+      "field_type": "FILE",
+      "expected_rules": [
+        "COPY_TO_DOCUMENT_STORAGE_ID",
+        "OCR"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Additional Registration Number Applicable?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_DROP_DOWN",
+        "MAKE_INVISIBLE",
+        "MAKE_MANDATORY",
+        "MAKE_NON_MANDATORY",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Process Flow Condition",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONCAT",
+        "DELETE_DOCUMENT",
+        "DELETE_DOCUMENT",
+        "DELETE_DOCUMENT",
+        "UNDELETE_DOCUMENT",
+        "UNDELETE_DOCUMENT",
+        "UNDELETE_DOCUMENT"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "E4",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Bank Address (Import)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Country Description",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "COPY_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Company Country",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "VALIDATION"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Bank Branch (Import)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Created On",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "SET_DATE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Account Group Code",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "MAKE_DISABLED"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "E6",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Type of Industry",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "EXT_DROP_DOWN"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "E5",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "IFSC Code / SWIFT Code / Bank Key",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Choose the Group of Company",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "expected_rules": [
+        "DUMMY_ACTION",
+        "EXT_VALUE",
+        "MAKE_INVISIBLE",
+        "MAKE_INVISIBLE",
+        "MAKE_MANDATORY",
+        "MAKE_MANDATORY",
+        "MAKE_VISIBLE",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Vendor Mobile Number OTP",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "VALIDATE_OTP"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "Vendor Mobile Number ",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "SEND_OTP"
+      ]
+    },
+    {
+      "type": "missing_field",
+      "field": "City (Import)",
+      "field_type": "TEXT",
+      "expected_rules": [
+        "CONVERT_TO"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "GSTIN IMAGE",
+      "missing_rule_types": [
+        "MAKE_DISABLED"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Order currency",
+      "missing_rule_types": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Bank Account Number",
+      "missing_rule_types": [
+        "VERIFY"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Group key/Corporate Group",
+      "missing_rule_types": [
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "MSME Image",
+      "missing_rule_types": [
+        "MAKE_DISABLED"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Withholding Tax Code",
+      "missing_rule_types": [
+        "EXT_DROP_DOWN"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "MSME Registration Number",
+      "missing_rule_types": [
+        "MAKE_DISABLED"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Is Vendor Your Customer?",
+      "missing_rule_types": [
+        "EXT_DROP_DOWN"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Purchase Organization",
+      "missing_rule_types": [
+        "VALIDATION",
+        "EXT_VALUE"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Incoterms (Part 2)",
+      "missing_rule_types": [
+        "VALIDATION"
+      ]
+    },
+    {
+      "type": "missing_rules",
+      "field": "Country Code",
+      "missing_rule_types": [
+        "EXT_DROP_DOWN"
+      ]
+    }
+  ],
+  "critical_checks": {
+    "ocr_rules": {
+      "generated_count": 6,
+      "reference_count": 6,
+      "generated_with_chains": 5,
+      "reference_with_chains": 4,
+      "ocr_fields_generated": [
+        "Upload PAN",
+        "GSTIN IMAGE",
+        "Aadhaar Front copy",
+        "Cancelled Cheque Image",
+        "CIN Certificate",
+        "MSME Image"
+      ],
+      "ocr_fields_reference": [
+        "Upload PAN",
+        "GSTIN IMAGE",
+        "Aaadhar Back Image",
+        "Cancelled Cheque Image",
+        "CIN Certificate",
+        "MSME Image"
+      ]
+    },
+    "verify_rules": {
+      "generated_count": 5,
+      "reference_count": 5,
+      "generated_with_destinations": 5,
+      "reference_with_destinations": 4,
+      "verify_fields_generated": [
+        "PAN",
+        "GSTIN",
+        "IFSC Code",
+        "CIN",
+        "MSME Registration Number"
+      ],
+      "verify_fields_reference": [
+        "PAN",
+        "GSTIN",
+        "GSTIN",
+        "Bank Account Number",
+        "MSME Registration Number"
+      ]
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {}
+}

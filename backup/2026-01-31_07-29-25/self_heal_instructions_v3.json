@@ -1,0 +1,450 @@
+{
+  "iteration": 2,
+  "overall_score": 0.1147,
+  "target_score": 0.9,
+  "gap": 0.7853,
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "issue": "VERIFY_MISSING_DESTINATION_IDS",
+      "description": "All 8 VERIFY rules have empty destinationIds - verification responses cannot be mapped to destination fields",
+      "affected_fields": [
+        "_pan_",
+        "_gstin_",
+        "_ifsccode_",
+        "_msmeregistrationnumber_",
+        "_mobilenumber_",
+        "_processtype_",
+        "_vendordomesticorimport_",
+        "_idtype_"
+      ],
+      "fix_action": "Add destinationIds array with ordinal positions matching verification API response fields",
+      "example": {
+        "before": {
+          "actionType": "VERIFY",
+          "sourceIds": [
+            37
+          ],
+          "destinationIds": []
+        },
+        "after": {
+          "actionType": "VERIFY",
+          "sourceIds": [
+            37
+          ],
+          "destinationIds": [
+            -1,
+            -1,
+            -1,
+            38,
+            -1,
+            39,
+            -1,
+            40,
+            41
+          ]
+        }
+      }
+    },
+    {
+      "priority": 2,
+      "issue": "MISSING_EXT_VALUE_RULES",
+      "description": "No EXT_VALUE rules generated (reference has 13). External dropdown values cannot be derived.",
+      "reference_count": 13,
+      "generated_count": 0,
+      "fix_action": "Add EXT_VALUE rules for fields that derive values from external dropdown selections"
+    },
+    {
+      "priority": 3,
+      "issue": "VISIBILITY_PAIRS_INCOMPLETE",
+      "description": "15 MAKE_VISIBLE destinations missing corresponding MAKE_INVISIBLE rules",
+      "affected_fields": [
+        "_doyouwishtoaddadditionalemailaddresses_",
+        "_addtheconcernedemailid_",
+        "_pleaseselectgstoption_"
+      ],
+      "fix_action": "Add MAKE_INVISIBLE rules with inverted conditions for each MAKE_VISIBLE rule"
+    },
+    {
+      "priority": 4,
+      "issue": "MANDATORY_PAIRS_INCOMPLETE",
+      "description": "2 MAKE_MANDATORY destinations missing corresponding MAKE_NON_MANDATORY rules",
+      "affected_fields": [
+        "_doyouwishtoaddadditionalemailaddresses_",
+        "_addtheconcernedemailid_"
+      ],
+      "fix_action": "Add MAKE_NON_MANDATORY rules with inverted conditions for each MAKE_MANDATORY rule"
+    },
+    {
+      "priority": 5,
+      "issue": "MISSING_EXECUTE_RULES",
+      "description": "No EXECUTE rules generated (reference has 40). Field derivation logic not implemented.",
+      "reference_count": 40,
+      "generated_count": 0,
+      "fix_action": "Add EXECUTE rules for computed/derived fields like vendor type, country derivation, name splitting"
+    },
+    {
+      "priority": 6,
+      "issue": "MISSING_VALIDATION_RULES",
+      "description": "No VALIDATION rules generated (reference has 18). Field validations not implemented.",
+      "reference_count": 18,
+      "generated_count": 0,
+      "fix_action": "Add VALIDATION rules for email format, PAN format, mobile number, and other field validations"
+    }
+  ],
+  "rule_type_comparison": {
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "difference": -2,
+      "coverage": 0.0
+    },
+    "CONVERT_TO": {
+      "generated": 0,
+      "reference": 21,
+      "difference": -21,
+      "coverage": 0.0
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "reference": 13,
+      "difference": -13,
+      "coverage": 0.0
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "reference": 18,
+      "difference": -18,
+      "coverage": 0.0
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 15,
+      "difference": -15,
+      "coverage": 0.0
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "reference": 40,
+      "difference": -40,
+      "coverage": 0.0
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 1,
+      "reference": 20,
+      "difference": -19,
+      "coverage": 0.05
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "reference": 13,
+      "difference": -13,
+      "coverage": 0.0
+    },
+    "MAKE_DISABLED": {
+      "generated": 1,
+      "reference": 5,
+      "difference": -4,
+      "coverage": 0.2
+    },
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "reference": 19,
+      "difference": -14,
+      "coverage": 0.2631578947368421
+    },
+    "MAKE_MANDATORY": {
+      "generated": 2,
+      "reference": 12,
+      "difference": -10,
+      "coverage": 0.16666666666666666
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 2,
+      "reference": 10,
+      "difference": -8,
+      "coverage": 0.2
+    },
+    "MAKE_VISIBLE": {
+      "generated": 9,
+      "reference": 18,
+      "difference": -9,
+      "coverage": 0.5
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "difference": -2,
+      "coverage": 0.6666666666666666
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "difference": -6,
+      "coverage": 0.0
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 3,
+      "difference": -3,
+      "coverage": 0.0
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "reference": 2,
+      "difference": -2,
+      "coverage": 0.0
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "difference": -6,
+      "coverage": 0.0
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 17,
+      "difference": -17,
+      "coverage": 0.0
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "coverage": 0.0
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "reference": 18,
+      "difference": -18,
+      "coverage": 0.0
+    },
+    "VERIFY": {
+      "generated": 8,
+      "reference": 5,
+      "difference": 3,
+      "coverage": 1.6
+    }
+  },
+  "missing_rules": [
+    {
+      "rule_type": "CONCAT",
+      "reference_count": 2,
+      "description": "Missing 2 CONCAT rules"
+    },
+    {
+      "rule_type": "CONVERT_TO",
+      "reference_count": 21,
+      "description": "Missing 21 CONVERT_TO rules"
+    },
+    {
+      "rule_type": "COPY_TO",
+      "reference_count": 13,
+      "description": "Missing 13 COPY_TO rules"
+    },
+    {
+      "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "reference_count": 18,
+      "description": "Missing 18 COPY_TO_DOCUMENT_STORAGE_ID rules"
+    },
+    {
+      "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+      "reference_count": 1,
+      "description": "Missing 1 COPY_TO_GENERIC_PARTY_EMAIL rules"
+    },
+    {
+      "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+      "reference_count": 1,
+      "description": "Missing 1 COPY_TO_GENERIC_PARTY_NAME rules"
+    },
+    {
+      "rule_type": "COPY_TO_TRANSACTION_ATTR1",
+      "reference_count": 1,
+      "description": "Missing 1 COPY_TO_TRANSACTION_ATTR1 rules"
+    },
+    {
+      "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+      "reference_count": 1,
+      "description": "Missing 1 COPY_TO_TRANSACTION_ATTR3 rules"
+    },
+    {
+      "rule_type": "COPY_TXNID_TO_FORM_FILL",
+      "reference_count": 1,
+      "description": "Missing 1 COPY_TXNID_TO_FORM_FILL rules"
+    },
+    {
+      "rule_type": "DELETE_DOCUMENT",
+      "reference_count": 15,
+      "description": "Missing 15 DELETE_DOCUMENT rules"
+    },
+    {
+      "rule_type": "DUMMY_ACTION",
+      "reference_count": 1,
+      "description": "Missing 1 DUMMY_ACTION rules"
+    },
+    {
+      "rule_type": "EXECUTE",
+      "reference_count": 40,
+      "description": "Missing 40 EXECUTE rules"
+    },
+    {
+      "rule_type": "EXT_VALUE",
+      "reference_count": 13,
+      "description": "Missing 13 EXT_VALUE rules"
+    },
+    {
+      "rule_type": "MAKE_ENABLED",
+      "reference_count": 1,
+      "description": "Missing 1 MAKE_ENABLED rules"
+    },
+    {
+      "rule_type": "SEND_OTP",
+      "reference_count": 1,
+      "description": "Missing 1 SEND_OTP rules"
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_INVISIBLE",
+      "reference_count": 6,
+      "description": "Missing 6 SESSION_BASED_MAKE_INVISIBLE rules"
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_MANDATORY",
+      "reference_count": 3,
+      "description": "Missing 3 SESSION_BASED_MAKE_MANDATORY rules"
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_NON_MANDATORY",
+      "reference_count": 2,
+      "description": "Missing 2 SESSION_BASED_MAKE_NON_MANDATORY rules"
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_VISIBLE",
+      "reference_count": 6,
+      "description": "Missing 6 SESSION_BASED_MAKE_VISIBLE rules"
+    },
+    {
+      "rule_type": "SET_DATE",
+      "reference_count": 1,
+      "description": "Missing 1 SET_DATE rules"
+    },
+    {
+      "rule_type": "UNDELETE_DOCUMENT",
+      "reference_count": 17,
+      "description": "Missing 17 UNDELETE_DOCUMENT rules"
+    },
+    {
+      "rule_type": "VALIDATE_OTP",
+      "reference_count": 1,
+      "description": "Missing 1 VALIDATE_OTP rules"
+    },
+    {
+      "rule_type": "VALIDATION",
+      "reference_count": 18,
+      "description": "Missing 18 VALIDATION rules"
+    }
+  ],
+  "critical_checks": [
+    {
+      "check": "OCR_CHAIN_TO_VERIFY",
+      "description": "OCR rules should chain to VERIFY via postTriggerRuleIds",
+      "generated_count": 4,
+      "generated_with_chain": 4,
+      "reference_count": 6,
+      "reference_with_chain": 4,
+      "status": "PASS",
+      "severity": "HIGH"
+    },
+    {
+      "check": "VERIFY_ORDINAL_MAPPING",
+      "description": "VERIFY rules should have destinationIds for ordinal response mapping",
+      "generated_count": 8,
+      "generated_with_mapping": 0,
+      "status": "FAIL",
+      "severity": "CRITICAL"
+    },
+    {
+      "check": "VISIBILITY_PAIRS",
+      "description": "MAKE_VISIBLE should have corresponding MAKE_INVISIBLE",
+      "unpaired_visible": 15,
+      "unpaired_invisible": 0,
+      "status": "FAIL",
+      "severity": "HIGH"
+    },
+    {
+      "check": "MANDATORY_PAIRS",
+      "description": "MAKE_MANDATORY should have corresponding MAKE_NON_MANDATORY",
+      "unpaired_mandatory": 2,
+      "unpaired_non_mandatory": 1,
+      "status": "FAIL",
+      "severity": "MEDIUM"
+    },
+    {
+      "check": "EXT_DROP_DOWN_VALUE_PAIRS",
+      "description": "External dropdowns need EXT_DROP_DOWN for options and EXT_VALUE for derivation",
+      "generated_ext_dropdown": 1,
+      "generated_ext_value": 0,
+      "reference_ext_dropdown": 20,
+      "reference_ext_value": 13,
+      "status": "FAIL",
+      "severity": "HIGH"
+    }
+  ],
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {}
+}

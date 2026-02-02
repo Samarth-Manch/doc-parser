@@ -1,0 +1,30 @@
+{
+  "workspace": "adws/2026-01-31_21-44-59",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-01-31T21:53:59.654948",
+      "output_file": "adws/2026-01-31_21-44-59/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-01-31_21-44-59/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-01-31_21-44-59/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-01-31_21-44-59/self_heal_instructions_v1.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 11
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-01-31T22:04:18.867106",
+      "output_file": "adws/2026-01-31_21-44-59/populated_schema_v2.json",
+      "eval_report_file": "adws/2026-01-31_21-44-59/eval_report_v2.json",
+      "extraction_report_file": "adws/2026-01-31_21-44-59/extraction_report_v2.json",
+      "self_heal_file": "adws/2026-01-31_21-44-59/self_heal_instructions_v2.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 15
+    }
+  ],
+  "current_iteration": 2,
+  "final_status": "in_progress",
+  "last_updated": "2026-01-31T22:04:18.867173"
+}

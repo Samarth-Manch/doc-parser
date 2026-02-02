@@ -1,0 +1,7 @@
+{
+  "previous_iteration_error": {
+    "error_type": "Exception",
+    "error_message": "Rule extraction agent returned no output",
+    "instruction": "The previous iteration crashed with this error. Fix the issue and continue."
+  }
+}

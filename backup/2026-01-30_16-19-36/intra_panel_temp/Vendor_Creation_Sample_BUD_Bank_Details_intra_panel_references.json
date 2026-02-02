@@ -1,0 +1,136 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-01-30T16:19:39.103274"
+  },
+  "panel_info": {
+    "panel_name": "Bank Details",
+    "total_fields": 12,
+    "fields_with_intra_panel_refs": 5,
+    "fields_controlling_others": 1
+  },
+  "controlling_fields": [
+    {
+      "field_name": "Please choose the option",
+      "variable_name": "__please_choose_the_option__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "controls_count": 5,
+      "controlled_fields": ["Cancelled Cheque Image", "Passbook/Bank Letter", "Please enter IFSC and Account Number manually", "IFSC Code", "Bank Account Number"]
+    }
+  ],
+  "intra_panel_references": [
+    {
+      "source_field": {
+        "field_name": "Please choose the option",
+        "variable_name": "__please_choose_the_option__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "target_field": {
+        "field_name": "Cancelled Cheque Image",
+        "variable_name": "__cancelled_cheque_image__",
+        "field_type": "FILE"
+      },
+      "reference_details": {
+        "matched_text": "Please choose the option",
+        "location_found": "logic",
+        "relationship_type": "visibility_control",
+        "operation_type": "controlled_by",
+        "raw_expression": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visible and mandatory. The upload limit should be up to 15 Mb. Perform the Bank OCR and get IFSC code and Account Number"
+      }
+    },
+    {
+      "source_field": {
+        "field_name": "Please choose the option",
+        "variable_name": "__please_choose_the_option__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "target_field": {
+        "field_name": "Passbook/Bank Letter",
+        "variable_name": "__passbook/bank_letter__",
+        "field_type": "FILE"
+      },
+      "reference_details": {
+        "matched_text": "Please the option",
+        "location_found": "logic",
+        "relationship_type": "visibility_control",
+        "operation_type": "controlled_by",
+        "raw_expression": "If Please the option is chosen as Passbook Front Page (India Domestic and International)then it is visible and mandatory. The upload limit should be up to 15 Mb."
+      }
+    },
+    {
+      "source_field": {
+        "field_name": "Please choose the option",
+        "variable_name": "__please_choose_the_option__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "target_field": {
+        "field_name": "Please enter IFSC and Account Number manually",
+        "variable_name": "__please_enter_ifsc_and_account_number_manually__",
+        "field_type": "LABEL"
+      },
+      "reference_details": {
+        "matched_text": "passbook front page",
+        "location_found": "logic",
+        "relationship_type": "visibility_control",
+        "operation_type": "controlled_by",
+        "raw_expression": "Show this fields if passbook front page (India Domestic and International) is selected"
+      }
+    },
+    {
+      "source_field": {
+        "field_name": "Please choose the option",
+        "variable_name": "__please_choose_the_option__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "target_field": {
+        "field_name": "IFSC Code",
+        "variable_name": "__ifsc_code__",
+        "field_type": "TEXT"
+      },
+      "reference_details": {
+        "matched_text": "cancelled cheque is selected",
+        "location_found": "logic",
+        "relationship_type": "enable_disable",
+        "operation_type": "controlled_by",
+        "raw_expression": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options. Perform IFSC code verification"
+      }
+    },
+    {
+      "source_field": {
+        "field_name": "Please choose the option",
+        "variable_name": "__please_choose_the_option__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "target_field": {
+        "field_name": "Bank Account Number",
+        "variable_name": "__bank_account_number__",
+        "field_type": "TEXT"
+      },
+      "reference_details": {
+        "matched_text": "cancelled cheque is selected",
+        "location_found": "logic",
+        "relationship_type": "enable_disable",
+        "operation_type": "controlled_by",
+        "raw_expression": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options ,Perform Bank account verification"
+      }
+    }
+  ],
+  "relationship_summary": {
+    "visibility_control": 3,
+    "mandatory_control": 0,
+    "value_derivation": 0,
+    "data_dependency": 0,
+    "validation": 0,
+    "enable_disable": 2,
+    "conditional": 0,
+    "clear_operation": 0,
+    "other": 0
+  },
+  "dependency_chains": [
+    {
+      "root_field": "Please choose the option",
+      "chain_length": 1,
+      "affected_fields": ["Cancelled Cheque Image", "Passbook/Bank Letter", "Please enter IFSC and Account Number manually", "IFSC Code", "Bank Account Number"]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "extraction_summary": {
+    "version": "v11",
+    "timestamp": "2026-02-01T00:20:01.151850",
+    "total_rules": 194,
+    "total_fields": 157
+  },
+  "rule_counts": {
+    "EXT_DROP_DOWN": 24,
+    "EXT_VALUE": 10,
+    "OCR": 7,
+    "VERIFY": 6,
+    "MAKE_VISIBLE": 13,
+    "MAKE_INVISIBLE": 12,
+    "MAKE_MANDATORY": 11,
+    "VALIDATION": 18,
+    "MAKE_NON_MANDATORY": 7,
+    "COPY_TO": 11,
+    "DELETE_DOCUMENT": 12,
+    "UNDELETE_DOCUMENT": 14,
+    "MAKE_ENABLED": 1,
+    "MAKE_DISABLED": 3,
+    "CONVERT_TO": 19,
+    "COPY_TO_DOCUMENT_STORAGE_ID": 16,
+    "COPY_TXNID_TO_FORM_FILL": 1,
+    "SET_DATE": 1,
+    "CONCAT": 1,
+    "COPY_TO_TRANSACTION_ATTR3": 1,
+    "COPY_TO_TRANSACTION_ATTR1": 1,
+    "DUMMY_ACTION": 1,
+    "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+    "COPY_TO_GENERIC_PARTY_NAME": 1,
+    "SEND_OTP": 1,
+    "VALIDATE_OTP": 1
+  },
+  "ocr_verify_chains": {
+    "PAN_IMAGE": {
+      "ocr_rule_id": 37,
+      "verify_type": "PAN_NUMBER",
+      "verify_rule_id": 44
+    },
+    "GSTIN_IMAGE": {
+      "ocr_rule_id": 38,
+      "verify_type": "GSTIN",
+      "verify_rule_id": 46
+    },
+    "CHEQUEE": {
+      "ocr_rule_id": 41,
+      "verify_type": "BANK_ACCOUNT_NUMBER",
+      "verify_rule_id": 45
+    },
+    "MSME": {
+      "ocr_rule_id": 43,
+      "verify_type": "MSME_UDYAM_REG_NUMBER",
+      "verify_rule_id": 47
+    },
+    "CIN": {
+      "ocr_rule_id": 42,
+      "verify_type": "CIN_ID",
+      "verify_rule_id": 48
+    },
+    "AADHAR_IMAGE": {
+      "ocr_rule_id": 39,
+      "verify_type": null,
+      "verify_rule_id": null
+    },
+    "AADHAR_BACK_IMAGE": {
+      "ocr_rule_id": 40,
+      "verify_type": null,
+      "verify_rule_id": null
+    }
+  },
+  "missing_rules_addressed": [
+    "CONCAT",
+    "COPY_TO_TRANSACTION_ATTR1",
+    "COPY_TO_TRANSACTION_ATTR3",
+    "COPY_TO_GENERIC_PARTY_EMAIL",
+    "COPY_TO_GENERIC_PARTY_NAME",
+    "SEND_OTP",
+    "VALIDATE_OTP",
+    "DUMMY_ACTION",
+    "MAKE_ENABLED",
+    "GSTIN_WITH_PAN"
+  ]
+}

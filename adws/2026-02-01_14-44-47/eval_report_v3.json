@@ -1,0 +1,249 @@
+{
+  "evaluation_metadata": {
+    "generated_file": "adws/2026-02-01_14-44-47/populated_schema_v3.json",
+    "reference_file": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_file": "documents/Vendor Creation Sample BUD.docx",
+    "timestamp": "2026-02-01T15:37:27.235465",
+    "iteration": 3,
+    "pass_threshold": 0.9
+  },
+  "summary": {
+    "overall_score": 0.1901,
+    "passed": false,
+    "scores": {
+      "action_type_coverage": 0.2917,
+      "rule_count_ratio": 0.1628,
+      "field_coverage": 0.125
+    }
+  },
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_DISABLED": 2,
+      "MAKE_VISIBLE": 7,
+      "MAKE_INVISIBLE": 7,
+      "MAKE_MANDATORY": 4,
+      "MAKE_NON_MANDATORY": 4,
+      "OCR": 2,
+      "VERIFY": 2
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 1
+    },
+    "missing_types": [
+      "DUMMY_ACTION",
+      "COPY_TO_GENERIC_PARTY_NAME",
+      "COPY_TXNID_TO_FORM_FILL",
+      "COPY_TO_TRANSACTION_ATTR3",
+      "EXT_VALUE",
+      "CONCAT",
+      "EXT_DROP_DOWN",
+      "COPY_TO",
+      "VALIDATION",
+      "CONVERT_TO",
+      "COPY_TO_TRANSACTION_ATTR1",
+      "SEND_OTP",
+      "COPY_TO_GENERIC_PARTY_EMAIL",
+      "MAKE_ENABLED",
+      "VALIDATE_OTP",
+      "COPY_TO_DOCUMENT_STORAGE_ID",
+      "SET_DATE"
+    ],
+    "extra_types": []
+  },
+  "field_comparison": {
+    "generated_fields_with_rules": 12,
+    "reference_fields_with_rules": 80,
+    "common_fields": 10,
+    "missing_fields_count": 70,
+    "sample_missing_fields": [
+      "Title",
+      "Account Group Code",
+      "Bank Branch (Import)",
+      "Name of Account Holder (Import)",
+      "Purchase Organization",
+      "Is Withholding Tax applicable?",
+      "Transaction ID",
+      "Country Description",
+      "City",
+      "MSME Registration Number",
+      "Company and Ownership",
+      "Bank Name (Import)",
+      "Vendor Contact Name",
+      "E5",
+      "FDA Registered?",
+      "Vendor Invoice",
+      "Bank Country (Import)",
+      "Vendor Mobile Number OTP",
+      "Email 2",
+      "Vendor Mobile Number "
+    ]
+  },
+  "critical_checks": {
+    "ocr_chains_valid": true,
+    "verify_ordinal_mapping": true,
+    "visibility_pairs_complete": true,
+    "mandatory_pairs_complete": true,
+    "ext_dropdown_present": false,
+    "validation_rules_present": false,
+    "make_disabled_consolidated": true
+  },
+  "ocr_analysis": {
+    "generated_ocr_count": 2,
+    "reference_ocr_count": 6,
+    "ocr_chains_valid": true,
+    "missing_ocr_fields": [
+      "Aadhaar Back Image",
+      "Cancelled Cheque Image",
+      "CIN Certificate",
+      "MSME Image"
+    ]
+  },
+  "verify_analysis": {
+    "generated_verify_count": 2,
+    "reference_verify_count": 5,
+    "ordinal_mapping_present": true,
+    "missing_verify_fields": [
+      "Bank Account Number",
+      "MSME Registration Number"
+    ]
+  },
+  "visibility_analysis": {
+    "generated_visible_count": 26,
+    "reference_visible_count": 18,
+    "pairs_complete": true
+  },
+  "mandatory_analysis": {
+    "generated_mandatory_count": 4,
+    "reference_mandatory_count": 12,
+    "pairs_complete": true
+  },
+  "schema_validation": {
+    "valid": true,
+    "total_fields": 168,
+    "total_rules": 28,
+    "unique_rule_ids": true,
+    "required_keys_present": true
+  },
+  "self_heal_instructions": {
+    "total_issues": 7,
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "issue": "Missing EXT_DROP_DOWN rules",
+        "description": "Reference has 20 EXT_DROP_DOWN rules for dropdown fields",
+        "action": "Add EXT_DROP_DOWN rules for all external dropdown fields (e.g., Country, Company Code, Account Group)",
+        "affected_fields": [
+          "Country",
+          "Company Code",
+          "Account Group/Vendor Type",
+          "Group key/Corporate Group"
+        ]
+      },
+      {
+        "priority": 2,
+        "issue": "Missing VALIDATION rules",
+        "description": "Reference has 18 VALIDATION rules",
+        "action": "Add VALIDATION rules for fields requiring format/value validation",
+        "affected_fields": [
+          "PAN",
+          "GSTIN",
+          "IFSC Code",
+          "Postal Code",
+          "Mobile Number"
+        ]
+      },
+      {
+        "priority": 3,
+        "issue": "Missing EXT_VALUE rules",
+        "description": "Reference has 13 EXT_VALUE rules for derived values",
+        "action": "Add EXT_VALUE rules for fields that derive values from external tables",
+        "affected_fields": [
+          "Group key/Corporate Group",
+          "Title",
+          "Region",
+          "Bank Country"
+        ]
+      },
+      {
+        "priority": 4,
+        "issue": "Missing CONVERT_TO rules",
+        "description": "Reference has 21 CONVERT_TO rules",
+        "action": "Add CONVERT_TO rules for case conversion and formatting",
+        "affected_fields": [
+          "PAN",
+          "GSTIN",
+          "Name fields"
+        ]
+      },
+      {
+        "priority": 5,
+        "issue": "Missing COPY_TO rules",
+        "description": "Reference has 12 COPY_TO rules",
+        "action": "Add COPY_TO rules to copy values between fields",
+        "affected_fields": [
+          "Country",
+          "Address fields",
+          "GST derived fields"
+        ]
+      },
+      {
+        "priority": 6,
+        "issue": "Insufficient OCR rules (2 vs 6)",
+        "description": "Missing OCR rules for document processing",
+        "action": "Add OCR rules for Aadhaar, Cancelled Cheque, CIN Certificate, MSME Image",
+        "affected_fields": [
+          "Aadhaar Front copy",
+          "Aadhaar Back Image",
+          "Cancelled Cheque Image",
+          "CIN Certificate",
+          "MSME Image"
+        ]
+      },
+      {
+        "priority": 7,
+        "issue": "Insufficient VERIFY rules (2 vs 5)",
+        "description": "Missing verification rules",
+        "action": "Add VERIFY rules for Bank Account Number, MSME Registration Number",
+        "affected_fields": [
+          "Bank Account Number",
+          "MSME Registration Number"
+        ]
+      }
+    ]
+  },
+  "bud_verification": {
+    "total_bud_rules_extracted": 284,
+    "bud_rules_with_logic": "Visibility, Mandatory, OCR, Verify patterns identified",
+    "coverage_assessment": {
+      "visibility_rules": "Partially covered - missing many GST-dependent fields",
+      "mandatory_rules": "Partially covered - missing conditional mandatory fields",
+      "ocr_rules": "Partially covered - only PAN and GSTIN OCR implemented",
+      "verify_rules": "Partially covered - missing Bank and MSME verification",
+      "dropdown_rules": "Not covered - EXT_DROP_DOWN rules missing",
+      "validation_rules": "Not covered - VALIDATION rules missing"
+    }
+  }
+}

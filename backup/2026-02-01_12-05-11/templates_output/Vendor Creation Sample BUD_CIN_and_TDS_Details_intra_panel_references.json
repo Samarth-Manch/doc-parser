@@ -1,0 +1,63 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "analysis_type": "intra_panel_field_references",
+    "analysis_timestamp": "2026-02-01T12:05:14",
+    "panel_analyzed": "CIN and TDS Details"
+  },
+  "panel_name": "CIN and TDS Details",
+  "total_fields": 6,
+  "intra_panel_references": [
+    {
+      "source_field": "TDS Certificate",
+      "source_variable": "__tds_certificate__",
+      "source_field_type": "FILE",
+      "referenced_field": "TDS Applicable?",
+      "referenced_variable": "__tds_applicable?__",
+      "referenced_field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "dependency_type": "visibility_and_mandatory",
+      "condition": {
+        "when_value": "Yes",
+        "effect": "TDS Certificate becomes visible and mandatory"
+      },
+      "condition_alternate": {
+        "when_value": "No",
+        "effect": "TDS Certificate is hidden"
+      },
+      "original_logic": "If \"Yes\" then TDS certificate upload field is mandatory. If "No", field will be hidden. Upload size is 15 Mb",
+      "confidence": "high"
+    }
+  ],
+  "cross_panel_references_noted": [
+    {
+      "field": "CIN Certificate",
+      "variable": "__cin_certificate__",
+      "references_field": "PAN",
+      "condition": "4th character of PAN = 'C'",
+      "effect": "CIN Certificate becomes mandatory",
+      "note": "PAN field is likely in a different panel (cross-panel dependency)"
+    },
+    {
+      "field": "CIN",
+      "variable": "__cin__",
+      "references_field": "PAN",
+      "condition": "4th character of PAN = 'C'",
+      "effect": "CIN number becomes mandatory",
+      "note": "PAN field is likely in a different panel (cross-panel dependency)"
+    },
+    {
+      "field": "FDA Registration Number",
+      "variable": "__fda_registration_number__",
+      "references_field": "ID Type",
+      "condition": "ID Type = 'ZCUCIN'",
+      "effect": "FDA Registration Number becomes mandatory",
+      "note": "ID Type field is likely in a different panel (cross-panel dependency)"
+    }
+  ],
+  "summary": {
+    "intra_panel_dependencies_count": 1,
+    "cross_panel_references_noted_count": 3,
+    "fields_with_no_dependencies": ["MSME Details"],
+    "notes": "The panel contains mostly cross-panel dependencies referencing PAN and ID Type fields from other panels. Only the TDS Certificate/TDS Applicable relationship is a true intra-panel dependency."
+  }
+}

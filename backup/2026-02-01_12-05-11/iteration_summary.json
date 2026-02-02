@@ -1,0 +1,60 @@
+{
+  "workspace": "adws/2026-02-01_12-05-11",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-02-01T12:25:15.263538",
+      "output_file": "adws/2026-02-01_12-05-11/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-02-01_12-05-11/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-02-01_12-05-11/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-02-01_12-05-11/self_heal_instructions_v1.json",
+      "score": 0.745,
+      "passed": false,
+      "priority_fixes_count": 4
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-02-01T12:37:35.476186",
+      "output_file": "adws/2026-02-01_12-05-11/populated_schema_v2.json",
+      "eval_report_file": "adws/2026-02-01_12-05-11/eval_report_v2.json",
+      "extraction_report_file": "adws/2026-02-01_12-05-11/extraction_report_v2.json",
+      "self_heal_file": "adws/2026-02-01_12-05-11/self_heal_instructions_v2.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 30
+    },
+    {
+      "iteration": 3,
+      "timestamp": "2026-02-01T12:45:08.823543",
+      "output_file": "adws/2026-02-01_12-05-11/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-02-01_12-05-11/eval_report_v3.json",
+      "extraction_report_file": "adws/2026-02-01_12-05-11/extraction_report_v3.json",
+      "self_heal_file": "adws/2026-02-01_12-05-11/self_heal_instructions_v3.json",
+      "score": 0.886,
+      "passed": false,
+      "priority_fixes_count": 10
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-02-01T12:48:31.806028",
+      "output_file": "adws/2026-02-01_12-05-11/populated_schema_v4.json",
+      "eval_report_file": "adws/2026-02-01_12-05-11/eval_report_v4.json",
+      "extraction_report_file": "adws/2026-02-01_12-05-11/extraction_report_v4.json",
+      "self_heal_file": "adws/2026-02-01_12-05-11/self_heal_instructions_v4.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "Exception",
+        "message": "Evaluation returned no report"
+      }
+    }
+  ],
+  "current_iteration": 4,
+  "final_status": "failed",
+  "last_updated": "2026-02-01T12:48:31.806085",
+  "final_score": 0.886,
+  "total_iterations": 101,
+  "completed_at": "2026-02-01T13:02:56.246952",
+  "final_output": null,
+  "intra_panel_path": "adws/2026-02-01_12-05-11/templates_output/Vendor Creation Sample BUD_intra_panel_references.json"
+}

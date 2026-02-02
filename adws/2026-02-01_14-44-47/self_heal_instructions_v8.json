@@ -1,0 +1,324 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "CONVERT_TO",
+      "count": 21,
+      "instruction": "Implement CONVERT_TO rule extraction. Reference has 21 instances.",
+      "panels_affected": [
+        "CIN and TDS Details",
+        "Basic Details",
+        "MSME Details",
+        "PAN and GST Details",
+        "Address Details",
+        "Bank Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "EXT_DROP_DOWN",
+      "count": 20,
+      "instruction": "Implement EXT_DROP_DOWN rule extraction. Reference has 20 instances.",
+      "panels_affected": [
+        "CIN and TDS Details",
+        "Basic Details",
+        "Withholding Tax Details",
+        "MSME Details",
+        "PAN and GST Details",
+        "Purchase Organization Details",
+        "Vendor Basic Details",
+        "Address Details",
+        "Payment Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "VALIDATION",
+      "count": 18,
+      "instruction": "Implement VALIDATION rule extraction. Reference has 18 instances.",
+      "panels_affected": [
+        "Basic Details",
+        "MSME Details",
+        "PAN and GST Details",
+        "Purchase Organization Details",
+        "Address Details",
+        "Payment Details",
+        "Bank Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "EXT_VALUE",
+      "count": 13,
+      "instruction": "Implement EXT_VALUE rule extraction. Reference has 13 instances.",
+      "panels_affected": [
+        "Basic Details",
+        "Withholding Tax Details",
+        "Purchase Organization Details",
+        "Address Details",
+        "Vendor Basic Details",
+        "Payment Details",
+        "Bank Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO",
+      "count": 12,
+      "instruction": "Implement COPY_TO rule extraction. Reference has 12 instances.",
+      "panels_affected": [
+        "PAN and GST Details",
+        "Basic Details",
+        "Purchase Organization Details",
+        "Address Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "CONCAT",
+      "count": 2,
+      "instruction": "Implement CONCAT rule extraction. Reference has 2 instances.",
+      "panels_affected": [
+        "Basic Details",
+        "Address Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "count": 1,
+      "instruction": "Implement COPY_TO_DOCUMENT_STORAGE_ID rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Payment Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+      "count": 1,
+      "instruction": "Implement COPY_TO_GENERIC_PARTY_EMAIL rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+      "count": 1,
+      "instruction": "Implement COPY_TO_GENERIC_PARTY_NAME rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO_TRANSACTION_ATTR1",
+      "count": 1,
+      "instruction": "Implement COPY_TO_TRANSACTION_ATTR1 rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+      "count": 1,
+      "instruction": "Implement COPY_TO_TRANSACTION_ATTR3 rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TXNID_TO_FORM_FILL",
+      "count": 1,
+      "instruction": "Implement COPY_TXNID_TO_FORM_FILL rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "DUMMY_ACTION",
+      "count": 1,
+      "instruction": "Implement DUMMY_ACTION rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "MAKE_ENABLED",
+      "count": 1,
+      "instruction": "Implement MAKE_ENABLED rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Bank Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "SEND_OTP",
+      "count": 1,
+      "instruction": "Implement SEND_OTP rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "SET_DATE",
+      "count": 1,
+      "instruction": "Implement SET_DATE rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 1,
+      "category": "missing_rule_type",
+      "rule_type": "VALIDATE_OTP",
+      "count": 1,
+      "instruction": "Implement VALIDATE_OTP rule extraction. Reference has 1 instances.",
+      "panels_affected": [
+        "Basic Details"
+      ]
+    },
+    {
+      "priority": 2,
+      "category": "undercounted_rules",
+      "rule_type": "OCR",
+      "generated": 2,
+      "expected": 6,
+      "missing": 4,
+      "instruction": "Expand OCR rule extraction. Generated 2 but reference has 6."
+    },
+    {
+      "priority": 2,
+      "category": "undercounted_rules",
+      "rule_type": "MAKE_NON_MANDATORY",
+      "generated": 4,
+      "expected": 10,
+      "missing": 6,
+      "instruction": "Expand MAKE_NON_MANDATORY rule extraction. Generated 4 but reference has 10."
+    },
+    {
+      "priority": 2,
+      "category": "undercounted_rules",
+      "rule_type": "MAKE_INVISIBLE",
+      "generated": 7,
+      "expected": 19,
+      "missing": 12,
+      "instruction": "Expand MAKE_INVISIBLE rule extraction. Generated 7 but reference has 19."
+    }
+  ],
+  "total_fixes_needed": 34,
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_DISABLED": 2,
+      "MAKE_VISIBLE": 7,
+      "MAKE_INVISIBLE": 7,
+      "MAKE_MANDATORY": 4,
+      "MAKE_NON_MANDATORY": 4,
+      "OCR": 2,
+      "VERIFY": 2
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 1
+    },
+    "missing_types": [
+      "DUMMY_ACTION",
+      "COPY_TO_GENERIC_PARTY_EMAIL",
+      "VALIDATION",
+      "MAKE_ENABLED",
+      "COPY_TO",
+      "CONVERT_TO",
+      "EXT_DROP_DOWN",
+      "EXT_VALUE",
+      "CONCAT",
+      "COPY_TO_TRANSACTION_ATTR3",
+      "VALIDATE_OTP",
+      "COPY_TO_DOCUMENT_STORAGE_ID",
+      "COPY_TO_TRANSACTION_ATTR1",
+      "SET_DATE",
+      "COPY_TXNID_TO_FORM_FILL",
+      "COPY_TO_GENERIC_PARTY_NAME",
+      "SEND_OTP"
+    ],
+    "extra_types": []
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "ocr_chains": {
+      "generated_ocr_count": 2,
+      "reference_ocr_count": 6,
+      "generated_issues": [],
+      "reference_issues": [
+        "OCR rule 120180 has no postTriggerRuleIds",
+        "OCR rule 120399 has no postTriggerRuleIds"
+      ],
+      "status": "PASS"
+    },
+    "verify_rules": {
+      "generated_verify_count": 2,
+      "reference_verify_count": 5,
+      "status": "NEEDS_IMPROVEMENT"
+    },
+    "visibility_pairs": {
+      "generated_visible": 7,
+      "generated_invisible": 7,
+      "reference_visible": 18,
+      "reference_invisible": 19,
+      "status": "BALANCED"
+    },
+    "mandatory_pairs": {
+      "generated_mandatory": 4,
+      "generated_non_mandatory": 4,
+      "reference_mandatory": 12,
+      "reference_non_mandatory": 10,
+      "status": "NEEDS_IMPROVEMENT"
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {}
+}

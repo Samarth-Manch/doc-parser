@@ -1,0 +1,39 @@
+{
+  "extraction_timestamp": "2026-01-31T15:14:42.573284",
+  "input_schema": "output/complete_format/6421-schema.json",
+  "bud_document": null,
+  "output_file": "adws/2026-01-31_14-23-02/extraction_report_v5.json",
+  "summary": {
+    "total_fields_processed": 168,
+    "total_rules_generated": 59,
+    "rules_by_type": {
+      "MAKE_INVISIBLE": 5,
+      "MAKE_NON_MANDATORY": 5,
+      "MAKE_VISIBLE": 4,
+      "MAKE_DISABLED": 24,
+      "EXT_DROP_DOWN": 3,
+      "VERIFY": 13,
+      "CONVERT_TO": 1,
+      "OCR": 4
+    },
+    "deterministic_matches": 74,
+    "llm_fallbacks": 0,
+    "skipped_fields": 122,
+    "unmatched_fields": [],
+    "errors": [],
+    "warnings": []
+  },
+  "rules_by_type": {
+    "MAKE_INVISIBLE": 5,
+    "MAKE_NON_MANDATORY": 5,
+    "MAKE_VISIBLE": 4,
+    "MAKE_DISABLED": 24,
+    "EXT_DROP_DOWN": 3,
+    "VERIFY": 13,
+    "CONVERT_TO": 1,
+    "OCR": 4
+  },
+  "unmatched_fields": [],
+  "errors": [],
+  "warnings": []
+}

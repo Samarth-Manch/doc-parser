@@ -1,0 +1,476 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "issue": "MAKE_DISABLED rules not consolidated",
+      "fix_instruction": "Consolidate all MAKE_DISABLED rules into a single rule per source field. Instead of 22 individual rules, create one rule with all destination field IDs in the destinationIds array. Reference shows 5 consolidated rules targeting 45 fields."
+    },
+    {
+      "priority": 2,
+      "issue": "Missing EXT_VALUE rules for external dropdowns",
+      "fix_instruction": "Add EXT_VALUE rules for all external dropdown fields. Reference has 13 EXT_VALUE rules. Each external dropdown needs: 1) EXT_DROP_DOWN rule to load options, 2) EXT_VALUE rule to populate related fields with sourceType='EXTERNAL_DATA_VALUE'."
+    },
+    {
+      "priority": 3,
+      "issue": "Missing all EXECUTE rules",
+      "fix_instruction": "Add 40 EXECUTE rules for complex field logic. EXECUTE rules use conditionalValues with expressions like 'ctfd()' and 'asdff()' for conditional field population and dynamic behavior."
+    },
+    {
+      "priority": 4,
+      "issue": "VERIFY rules missing 'Verify' button",
+      "fix_instruction": "Set button='Verify' for VERIFY rules on fields: PAN, GSTIN. The button field triggers the verification action."
+    },
+    {
+      "priority": 5,
+      "issue": "Missing MAKE_VISIBLE/MAKE_INVISIBLE rules",
+      "fix_instruction": "Add conditional visibility rules. Generated has 4 MAKE_VISIBLE vs 18 in reference. These rules show/hide fields based on other field values."
+    }
+  ],
+  "recommendations": [
+    "Focus on panels with lowest scores first: Basic Details (0.05), Purchase Organization Details (0.00), CIN and TDS Details (0.00)",
+    "Ensure all external dropdowns have both EXT_DROP_DOWN and EXT_VALUE rules",
+    "Consolidate MAKE_DISABLED rules to reduce rule count and improve maintainability",
+    "Add VALIDATION rules for required field validations",
+    "Add COPY_TO rules for fields that should copy values between fields",
+    "Review VERIFY rules to ensure they have correct sourceType and button='Verify'"
+  ],
+  "rule_type_comparison": {
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "match": false,
+      "difference": -2
+    },
+    "CONVERT_TO": {
+      "generated": 1,
+      "reference": 21,
+      "match": false,
+      "difference": -20
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "reference": 13,
+      "match": false,
+      "difference": -13
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "reference": 18,
+      "match": false,
+      "difference": -18
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 15,
+      "match": false,
+      "difference": -15
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "reference": 40,
+      "match": false,
+      "difference": -40
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 3,
+      "reference": 20,
+      "match": false,
+      "difference": -17
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "reference": 13,
+      "match": false,
+      "difference": -13
+    },
+    "MAKE_DISABLED": {
+      "generated": 22,
+      "reference": 5,
+      "match": false,
+      "difference": 17
+    },
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "reference": 19,
+      "match": false,
+      "difference": -14
+    },
+    "MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 12,
+      "match": false,
+      "difference": -12
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 5,
+      "reference": 10,
+      "match": false,
+      "difference": -5
+    },
+    "MAKE_VISIBLE": {
+      "generated": 4,
+      "reference": 18,
+      "match": false,
+      "difference": -14
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "match": false,
+      "difference": -2
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "match": false,
+      "difference": -6
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 3,
+      "match": false,
+      "difference": -3
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "reference": 2,
+      "match": false,
+      "difference": -2
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "match": false,
+      "difference": -6
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 17,
+      "match": false,
+      "difference": -17
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "match": false,
+      "difference": -1
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "reference": 18,
+      "match": false,
+      "difference": -18
+    },
+    "VERIFY": {
+      "generated": 12,
+      "reference": 5,
+      "match": false,
+      "difference": 7
+    }
+  },
+  "missing_rules": [
+    {
+      "field_name": "RuleCheck",
+      "field_id": 275633,
+      "expected_action_type": "MAKE_INVISIBLE",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_INVISIBLE rule but generated does not"
+    },
+    {
+      "field_name": "Created By Name",
+      "field_id": 275493,
+      "expected_action_type": "COPY_TO",
+      "panel": "Basic Details",
+      "details": "Reference has COPY_TO rule but generated does not"
+    },
+    {
+      "field_name": "Name/ First Name of the Organization",
+      "field_id": 276245,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Select the process type",
+      "field_id": 275496,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "EXT_VALUE",
+      "panel": "Basic Details",
+      "details": "Reference has EXT_VALUE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "MAKE_INVISIBLE",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_INVISIBLE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "MAKE_INVISIBLE",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_INVISIBLE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "MAKE_MANDATORY",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_MANDATORY rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "MAKE_MANDATORY",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_MANDATORY rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "MAKE_VISIBLE",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_VISIBLE rule but generated does not"
+    },
+    {
+      "field_name": "Choose the Group of Company",
+      "field_id": 276416,
+      "expected_action_type": "MAKE_VISIBLE",
+      "panel": "Basic Details",
+      "details": "Reference has MAKE_VISIBLE rule but generated does not"
+    },
+    {
+      "field_name": "Company and Ownership",
+      "field_id": 275506,
+      "expected_action_type": "COPY_TO",
+      "panel": "Basic Details",
+      "details": "Reference has COPY_TO rule but generated does not"
+    },
+    {
+      "field_name": "Company and Ownership",
+      "field_id": 275506,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Company and Ownership",
+      "field_id": 275506,
+      "expected_action_type": "EXT_VALUE",
+      "panel": "Basic Details",
+      "details": "Reference has EXT_VALUE rule but generated does not"
+    },
+    {
+      "field_name": "Company and Ownership",
+      "field_id": 275506,
+      "expected_action_type": "VALIDATION",
+      "panel": "Basic Details",
+      "details": "Reference has VALIDATION rule but generated does not"
+    },
+    {
+      "field_name": "Company Country",
+      "field_id": 276383,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Company Country",
+      "field_id": 276383,
+      "expected_action_type": "VALIDATION",
+      "panel": "Basic Details",
+      "details": "Reference has VALIDATION rule but generated does not"
+    },
+    {
+      "field_name": "Process Type",
+      "field_id": 276339,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "field_id": 275498,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "field_id": 275498,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "field_id": 275498,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "field_id": 275498,
+      "expected_action_type": "EXT_VALUE",
+      "panel": "Basic Details",
+      "details": "Reference has EXT_VALUE rule but generated does not"
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "field_id": 275498,
+      "expected_action_type": "VALIDATION",
+      "panel": "Basic Details",
+      "details": "Reference has VALIDATION rule but generated does not"
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "field_id": 275498,
+      "expected_action_type": "VALIDATION",
+      "panel": "Basic Details",
+      "details": "Reference has VALIDATION rule but generated does not"
+    },
+    {
+      "field_name": "Group key/Corporate Group",
+      "field_id": 275499,
+      "expected_action_type": "EXT_VALUE",
+      "panel": "Basic Details",
+      "details": "Reference has EXT_VALUE rule but generated does not"
+    },
+    {
+      "field_name": "Process Flow Condition",
+      "field_id": 276244,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Process Flow Condition",
+      "field_id": 276244,
+      "expected_action_type": "EXECUTE",
+      "panel": "Basic Details",
+      "details": "Reference has EXECUTE rule but generated does not"
+    },
+    {
+      "field_name": "Country",
+      "field_id": 276340,
+      "expected_action_type": "COPY_TO",
+      "panel": "Basic Details",
+      "details": "Reference has COPY_TO rule but generated does not"
+    }
+  ],
+  "critical_checks": {
+    "ocr_verify_chains": {
+      "status": "pass",
+      "details": "4 OCR rules, 0 with issues"
+    },
+    "ext_dropdown_pairs": {
+      "status": "fail",
+      "details": "Generated: 3 EXT_DROP_DOWN, 0 EXT_VALUE. Reference: 20 EXT_DROP_DOWN, 13 EXT_VALUE"
+    },
+    "visibility_pairs": {
+      "status": "pass",
+      "details": "Generated: 4 MAKE_VISIBLE, 5 MAKE_INVISIBLE. Reference: 18 MAKE_VISIBLE, 19 MAKE_INVISIBLE"
+    },
+    "disabled_consolidation": {
+      "status": "fail",
+      "details": "Generated: 22 rules for 22 destinations (avg 1.0/rule). Reference: 5 rules for 45 destinations (avg 9.0/rule)"
+    },
+    "verify_button": {
+      "status": "fail",
+      "details": "12 VERIFY rules, 2 missing 'Verify' button: PAN, GSTIN"
+    },
+    "ordinal_mapping": {
+      "status": "pass",
+      "details": "0 potential ordinal mapping issues"
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {},
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

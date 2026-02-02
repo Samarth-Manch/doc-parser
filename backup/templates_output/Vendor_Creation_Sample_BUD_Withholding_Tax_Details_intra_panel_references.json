@@ -1,0 +1,26 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-01-30T15:32:51.564443"
+  },
+  "panel_info": {
+    "panel_name": "Withholding Tax Details",
+    "total_fields": 5,
+    "fields_with_intra_panel_refs": 0,
+    "fields_controlling_others": 0
+  },
+  "controlling_fields": [],
+  "intra_panel_references": [],
+  "relationship_summary": {
+    "visibility_control": 0,
+    "mandatory_control": 0,
+    "value_derivation": 0,
+    "data_dependency": 0,
+    "validation": 0,
+    "enable_disable": 0,
+    "conditional": 0,
+    "clear_operation": 0,
+    "other": 0
+  },
+  "dependency_chains": []
+}

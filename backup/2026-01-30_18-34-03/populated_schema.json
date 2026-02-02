@@ -1,0 +1,2784 @@
+{
+  "extraction_timestamp": "2026-01-30T19:08:07.622407",
+  "source_bud": "/home/samart/project/doc-parser/documents/Vendor Creation Sample BUD.docx",
+  "statistics": {
+    "total_fields": 284,
+    "fields_with_logic": 146,
+    "rules_generated": 97,
+    "skipped_expression_rules": 0,
+    "ocr_rules": 2,
+    "verify_rules": 2,
+    "visibility_rules": 8,
+    "mandatory_rules": 4,
+    "disabled_rules": 53,
+    "ext_dropdown_rules": 3,
+    "copy_rules": 0,
+    "convert_rules": 5
+  },
+  "fields_with_rules": [
+    {
+      "field_id": 275496,
+      "field_name": "Select the process type",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275496
+          ],
+          "destinationIds": [
+            275550
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "India"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275496
+          ],
+          "destinationIds": [
+            275550
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "India"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 276246,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276246
+          ],
+          "destinationIds": [
+            276248
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276246
+          ],
+          "destinationIds": [
+            276248
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276246
+          ],
+          "destinationIds": [
+            276248
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_NON_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276246
+          ],
+          "destinationIds": [
+            276248
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276246
+          ],
+          "destinationIds": [
+            276249,
+            276250,
+            276251
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276246
+          ],
+          "destinationIds": [
+            276249,
+            276250,
+            276251
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 276247,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276247
+          ],
+          "destinationIds": [
+            276252,
+            276253,
+            276254,
+            276255
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276247
+          ],
+          "destinationIds": [
+            276252,
+            276253,
+            276254,
+            276255
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 276256,
+      "field_name": "Do you wish to add additional email addresses?",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276256
+          ],
+          "destinationIds": [
+            276257
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276256
+          ],
+          "destinationIds": [
+            276257
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276256
+          ],
+          "destinationIds": [
+            276257
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_NON_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276256
+          ],
+          "destinationIds": [
+            276257
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 276267,
+      "field_name": "Concerned email addresses?",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276267
+          ],
+          "destinationIds": [
+            276888
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276267
+          ],
+          "destinationIds": [
+            276888
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276267
+          ],
+          "destinationIds": [
+            276888
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_NON_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276267
+          ],
+          "destinationIds": [
+            276888
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 276284,
+      "field_name": "Is Vendor Your Customer?",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276284
+          ],
+          "destinationIds": [
+            276285
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES,"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276284
+          ],
+          "destinationIds": [
+            276285
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES,"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275512,
+            275513
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275512,
+            275513
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275512,
+            275513
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_NON_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275512,
+            275513
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275514,
+            275515,
+            275516,
+            275589,
+            275519,
+            275603,
+            275605,
+            275608,
+            275607,
+            275523
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "yes"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275514,
+            275515,
+            275516,
+            275589,
+            275519,
+            275603,
+            275605,
+            275608,
+            275607,
+            275523
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "yes"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275525
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "No"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275525
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "No"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275525
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "No"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_NON_MANDATORY",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275511
+          ],
+          "destinationIds": [
+            275525
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "No"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 276259,
+      "field_name": "Additional Registration Number Applicable?",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_VISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276259
+          ],
+          "destinationIds": [
+            276264
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_INVISIBLE",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            276259
+          ],
+          "destinationIds": [
+            276264
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "YES"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275492,
+      "field_name": "Created On",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275492
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275493,
+      "field_name": "Created By Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275493
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275498,
+      "field_name": "Account Group/Vendor Type",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "EXT_DROP_DOWN",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275498
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "FORM_FILL_DROP_DOWN",
+          "params": "ACCOUNT_GROUP"
+        }
+      ]
+    },
+    {
+      "field_id": 275499,
+      "field_name": "Group key/Corporate Group",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "EXT_DROP_DOWN",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275498
+          ],
+          "destinationIds": [
+            275499
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "FORM_FILL_DROP_DOWN",
+          "params": "REF_TABLE_1_3"
+        }
+      ]
+    },
+    {
+      "field_id": 275550,
+      "field_name": "Country",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "EXT_DROP_DOWN",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275550
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "FORM_FILL_DROP_DOWN",
+          "params": "COUNTRY"
+        }
+      ]
+    },
+    {
+      "field_id": 275533,
+      "field_name": "Upload PAN",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "OCR",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275533
+          ],
+          "destinationIds": [
+            275534
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "PAN_IMAGE"
+        }
+      ]
+    },
+    {
+      "field_id": 275534,
+      "field_name": "PAN",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "VERIFY",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275534
+          ],
+          "destinationIds": [
+            -1,
+            -1,
+            -1,
+            275535,
+            -1,
+            275537,
+            -1,
+            275536,
+            275538
+          ],
+          "postTriggerRuleIds": [],
+          "button": "VERIFY",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "PAN_NUMBER"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "CONVERT_TO",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275534
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "UPPER_CASE"
+        }
+      ]
+    },
+    {
+      "field_id": 275535,
+      "field_name": "Pan Holder Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275535
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "CONVERT_TO",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275535
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "UPPER_CASE"
+        }
+      ]
+    },
+    {
+      "field_id": 275536,
+      "field_name": "PAN Type",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275536
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "CONVERT_TO",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275536
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "UPPER_CASE"
+        }
+      ]
+    },
+    {
+      "field_id": 275537,
+      "field_name": "PAN Status",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275537
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "CONVERT_TO",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275537
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "UPPER_CASE"
+        }
+      ]
+    },
+    {
+      "field_id": 275538,
+      "field_name": "Aadhaar PAN List Status",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275538
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "CONVERT_TO",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275538
+          ],
+          "destinationIds": [],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "UPPER_CASE"
+        }
+      ]
+    },
+    {
+      "field_id": 275512,
+      "field_name": "GSTIN IMAGE",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "OCR",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275512
+          ],
+          "destinationIds": [
+            275513
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "GSTIN_IMAGE"
+        }
+      ]
+    },
+    {
+      "field_id": 275513,
+      "field_name": "GSTIN",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "VERIFY",
+          "processingType": "SERVER",
+          "sourceIds": [
+            275513
+          ],
+          "destinationIds": [
+            275514,
+            275515,
+            275516,
+            275605,
+            275589,
+            275519,
+            -1,
+            275608,
+            275607,
+            275603,
+            275523
+          ],
+          "postTriggerRuleIds": [],
+          "button": "VERIFY",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "sourceType": "GSTIN"
+        }
+      ]
+    },
+    {
+      "field_id": 275514,
+      "field_name": "Trade Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275514
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275515,
+      "field_name": "Legal Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275515
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275516,
+      "field_name": "Reg Date",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275516
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275589,
+      "field_name": "Type",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275589
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275589
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275519,
+      "field_name": "Building Number",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275519
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275603,
+      "field_name": "Street",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275603
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275603
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275603
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275605,
+      "field_name": "City",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275605
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275605
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275605
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275608,
+      "field_name": "District",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275608
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275608
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275608
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275607,
+      "field_name": "State",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275607
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275607
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275607
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        },
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275607
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275523,
+      "field_name": "Pin Code",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275523
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275544,
+      "field_name": "Street 1",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275544
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275543,
+      "field_name": "Street 2",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275543
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275545,
+      "field_name": "Street 3",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275545
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275546,
+      "field_name": "Postal Code",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275546
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275560,
+      "field_name": "IFSC Code",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275560
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275561,
+      "field_name": "Bank Account Number",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275561
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275562,
+      "field_name": "Name of Account Holder",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275562
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275563,
+      "field_name": "Bank Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275563
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275564,
+      "field_name": "Bank Branch",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275564
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275565,
+      "field_name": "Bank Address",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275565
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275588,
+      "field_name": "Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275588
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275590,
+      "field_name": "Address",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275590
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275591,
+      "field_name": "Category",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275591
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275592,
+      "field_name": "Date",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275592
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275593,
+      "field_name": "Enterprise",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275593
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275594,
+      "field_name": "Major Activity",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275594
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275595,
+      "field_name": "Date of Commencement",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275595
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275596,
+      "field_name": "Dic Name",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275596
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275598,
+      "field_name": "Applied State",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275598
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275599,
+      "field_name": "Modified Date",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275599
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275600,
+      "field_name": "Expiry Date",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275600
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275601,
+      "field_name": "Address Line1",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275601
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275602,
+      "field_name": "Buliding",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275602
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275604,
+      "field_name": "Area",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275604
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275606,
+      "field_name": "Pin",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275606
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275609,
+      "field_name": "Classification Year",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275609
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    },
+    {
+      "field_id": 275610,
+      "field_name": "Classification Date",
+      "formFillRules": [
+        {
+          "createUser": "FIRST_PARTY",
+          "updateUser": "FIRST_PARTY",
+          "actionType": "MAKE_DISABLED",
+          "processingType": "CLIENT",
+          "sourceIds": [
+            275633
+          ],
+          "destinationIds": [
+            275610
+          ],
+          "postTriggerRuleIds": [],
+          "button": "",
+          "searchable": false,
+          "executeOnFill": true,
+          "executeOnRead": false,
+          "executeOnEsign": false,
+          "executePostEsign": false,
+          "runPostConditionFail": false,
+          "conditionalValues": [
+            "Disable"
+          ],
+          "condition": "NOT_IN",
+          "conditionValueType": "TEXT"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "extraction_timestamp": "2026-01-31T17:50:42.350472",
+  "input_schema": "/home/samart/project/doc-parser/output/complete_format/6421-schema.json",
+  "intra_panel_refs": "/home/samart/project/doc-parser/adws/2026-01-31_17-32-48/templates_output/Vendor Creation Sample BUD_intra_panel_references.json",
+  "summary": {
+    "total_fields": 157,
+    "total_rules": 79,
+    "rules_by_type": {
+      "MAKE_VISIBLE": 11,
+      "MAKE_INVISIBLE": 11,
+      "MAKE_MANDATORY": 5,
+      "MAKE_NON_MANDATORY": 5,
+      "MAKE_DISABLED": 1,
+      "OCR": 7,
+      "VERIFY": 5,
+      "EXT_DROP_DOWN": 20,
+      "EXT_VALUE": 9,
+      "CONVERT_TO": 5
+    },
+    "fields_with_rules": 41
+  },
+  "ocr_chains": {
+    "PAN_IMAGE": {
+      "rule_id": 33,
+      "destination_ids": [
+        37
+      ],
+      "post_trigger": [
+        34
+      ]
+    },
+    "GSTIN_IMAGE": {
+      "rule_id": 35,
+      "destination_ids": [
+        45
+      ],
+      "post_trigger": [
+        36
+      ]
+    },
+    "AADHAR_IMAGE": {
+      "rule_id": 38,
+      "destination_ids": [],
+      "post_trigger": []
+    },
+    "AADHAR_BACK_IMAGE": {
+      "rule_id": 39,
+      "destination_ids": [],
+      "post_trigger": []
+    },
+    "CHEQUEE": {
+      "rule_id": 40,
+      "destination_ids": [
+        86
+      ],
+      "post_trigger": [
+        41
+      ]
+    },
+    "CIN": {
+      "rule_id": 42,
+      "destination_ids": [
+        96
+      ],
+      "post_trigger": []
+    },
+    "MSME": {
+      "rule_id": 43,
+      "destination_ids": [
+        103
+      ],
+      "post_trigger": [
+        44
+      ]
+    }
+  },
+  "verify_rules": {
+    "PAN_NUMBER": {
+      "rule_id": 34,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        -1,
+        50,
+        -1,
+        124,
+        123,
+        119
+      ],
+      "dest_count": 8
+    },
+    "GSTIN": {
+      "rule_id": 36,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        105,
+        50,
+        -1,
+        124,
+        123,
+        119,
+        55,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "dest_count": 10
+    },
+    "BANK_ACCOUNT_NUMBER": {
+      "rule_id": 41,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121
+      ],
+      "dest_count": 4
+    },
+    "MSME_UDYAM_REG_NUMBER": {
+      "rule_id": 44,
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        -1,
+        50,
+        -1,
+        124,
+        123,
+        119,
+        55,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "dest_count": 9
+    }
+  }
+}

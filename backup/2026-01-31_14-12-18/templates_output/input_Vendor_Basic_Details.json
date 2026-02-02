@@ -1,0 +1,91 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "file_path": "documents/Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-01-31T14:12:21.858718",
+    "total_fields": 8
+  },
+  "panel_name": "Vendor Basic Details",
+  "fields": [
+    {
+      "field_name": "Name/ First Name of the Organization",
+      "variable_name": "__name/_first_name_of_the_organization__",
+      "field_type": "TEXT",
+      "logic": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 0,34 character in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word.",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Name/ Middle Name of the Organization",
+      "variable_name": "__name/_middle_name_of_the_organization__",
+      "field_type": "TEXT",
+      "logic": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 35,69 characters in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word.",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Name/ Last Name of the Organization",
+      "variable_name": "__name/_last_name_of_the_organization__",
+      "field_type": "TEXT",
+      "logic": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 70,104 characters in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word.",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Name 4/Alternate Name",
+      "variable_name": "__name_4/alternate_name__",
+      "field_type": "TEXT",
+      "logic": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 105,139 characters in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word.",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Title",
+      "variable_name": "__title__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "logic": "Title derived from PAN Card as follow:1. If the 4th character is 'C' \u2192 It represents a Company 2. Else if the 4th character is 'T' \u2192 It represents a Trust 3. Else if the 4th character is 'F' \u2192 It represents a Firm or LLP 4. Else if the 5th character is '0' \u2192 It represents a Government Body (This field applicable only for India-Domestic)",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Business Registration Number Available?",
+      "variable_name": "__business_registration_number_available?__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "logic": "YES/NO Dropdown values. Visible and editable for India-Import, International-Domestic, International-Import. Hidden and non-mandatory for India-Domestic",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Business Registration Number",
+      "variable_name": "__business_registration_number__",
+      "field_type": "TEXT",
+      "logic": "If the field \"Additional Registration Number Applicable?\" value is YES then Visible, mandatory and editable for India-Import, International-Domestic, International-Import otherwise Hidden and non-mandatory for India-Domestic",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    },
+    {
+      "field_name": "Address Details",
+      "variable_name": "__address_details__",
+      "field_type": "PANEL",
+      "logic": "",
+      "rules": "",
+      "visibility_condition": "",
+      "validation": "",
+      "mandatory": false
+    }
+  ]
+}

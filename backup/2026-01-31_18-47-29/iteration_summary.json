@@ -1,0 +1,52 @@
+{
+  "workspace": "adws/2026-01-31_18-47-29",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-01-31T18:57:18.978132",
+      "output_file": "adws/2026-01-31_18-47-29/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-01-31_18-47-29/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-01-31_18-47-29/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-01-31_18-47-29/self_heal_instructions_v1.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 1
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-01-31T19:08:42.045812",
+      "output_file": "adws/2026-01-31_18-47-29/populated_schema_v2.json",
+      "eval_report_file": "adws/2026-01-31_18-47-29/eval_report_v2.json",
+      "extraction_report_file": "adws/2026-01-31_18-47-29/extraction_report_v2.json",
+      "self_heal_file": "adws/2026-01-31_18-47-29/self_heal_instructions_v2.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 30
+    },
+    {
+      "iteration": 3,
+      "timestamp": "2026-01-31T19:23:36.289716",
+      "output_file": "adws/2026-01-31_18-47-29/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_18-47-29/eval_report_v3.json",
+      "extraction_report_file": "adws/2026-01-31_18-47-29/extraction_report_v3.json",
+      "self_heal_file": "adws/2026-01-31_18-47-29/self_heal_instructions_v3.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 17
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-01-31T19:36:19.899406",
+      "output_file": "adws/2026-01-31_18-47-29/populated_schema_v4.json",
+      "eval_report_file": "adws/2026-01-31_18-47-29/eval_report_v4.json",
+      "extraction_report_file": "adws/2026-01-31_18-47-29/extraction_report_v4.json",
+      "self_heal_file": "adws/2026-01-31_18-47-29/self_heal_instructions_v4.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 11
+    }
+  ],
+  "current_iteration": 4,
+  "final_status": "in_progress",
+  "last_updated": "2026-01-31T19:36:19.899461"
+}

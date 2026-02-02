@@ -1,0 +1,483 @@
+{
+  "evaluation_summary": {
+    "generated_output": "adws/2026-01-31_21-44-59/populated_schema_v6.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "evaluation_timestamp": "2026-01-31T22:35:51.464883",
+    "overall_score": 0.6378,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false
+  },
+  "metrics": {
+    "coverage_score": 0.6538,
+    "accuracy_score": 0.4722,
+    "verify_score": 0.5,
+    "ocr_score": 1.0,
+    "total_generated_rules": 144,
+    "total_reference_rules": 221,
+    "total_generated_fields": 168,
+    "total_reference_fields": 237
+  },
+  "rule_type_comparison": {
+    "generated": {
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "EXT_DROP_DOWN": 13,
+      "EXT_VALUE": 10,
+      "VALIDATION": 10,
+      "COPY_TO": 6,
+      "CONVERT_TO": 16,
+      "OCR": 7,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 15,
+      "MAKE_INVISIBLE": 15,
+      "MAKE_VISIBLE": 15,
+      "MAKE_MANDATORY": 10,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 6,
+      "DELETE_DOCUMENT": 6,
+      "UNDELETE_DOCUMENT": 5,
+      "MAKE_DISABLED": 3
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "discrepancies": [
+      {
+        "action_type": "CONCAT",
+        "generated_count": 0,
+        "reference_count": 2,
+        "difference": -2,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "CONVERT_TO",
+        "generated_count": 16,
+        "reference_count": 21,
+        "difference": -5,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO",
+        "generated_count": 6,
+        "reference_count": 12,
+        "difference": -6,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "generated_count": 15,
+        "reference_count": 18,
+        "difference": -3,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR1",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR3",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "DELETE_DOCUMENT",
+        "generated_count": 6,
+        "reference_count": 15,
+        "difference": -9,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "DUMMY_ACTION",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "EXT_DROP_DOWN",
+        "generated_count": 13,
+        "reference_count": 20,
+        "difference": -7,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "EXT_VALUE",
+        "generated_count": 10,
+        "reference_count": 13,
+        "difference": -3,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_DISABLED",
+        "generated_count": 3,
+        "reference_count": 5,
+        "difference": -2,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "MAKE_ENABLED",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "MAKE_INVISIBLE",
+        "generated_count": 15,
+        "reference_count": 19,
+        "difference": -4,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_MANDATORY",
+        "generated_count": 10,
+        "reference_count": 12,
+        "difference": -2,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "MAKE_NON_MANDATORY",
+        "generated_count": 6,
+        "reference_count": 10,
+        "difference": -4,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_VISIBLE",
+        "generated_count": 15,
+        "reference_count": 18,
+        "difference": -3,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "OCR",
+        "generated_count": 7,
+        "reference_count": 6,
+        "difference": 1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "SEND_OTP",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "UNDELETE_DOCUMENT",
+        "generated_count": 5,
+        "reference_count": 17,
+        "difference": -12,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "VALIDATE_OTP",
+        "generated_count": 0,
+        "reference_count": 1,
+        "difference": -1,
+        "severity": "LOW"
+      },
+      {
+        "action_type": "VALIDATION",
+        "generated_count": 10,
+        "reference_count": 18,
+        "difference": -8,
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "verify_rules_analysis": {
+    "generated_count": 5,
+    "reference_count": 5,
+    "details": [
+      {
+        "sourceType": "BANK_ACCOUNT_NUMBER",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 4,
+        "ref_dest_count": 1,
+        "gen_post_trigger": false,
+        "ref_post_trigger": false,
+        "status": "WARN",
+        "issues": [
+          "destinationIds count mismatch: generated=4, reference=1"
+        ]
+      },
+      {
+        "sourceType": "CIN_ID",
+        "in_generated": true,
+        "in_reference": false,
+        "status": "EXTRA",
+        "issues": [
+          "Generated has VERIFY rule not in reference (could be valid)"
+        ]
+      },
+      {
+        "sourceType": "GSTIN",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 21,
+        "ref_dest_count": 11,
+        "gen_post_trigger": false,
+        "ref_post_trigger": true,
+        "status": "FAIL",
+        "issues": [
+          "destinationIds count mismatch: generated=21, reference=11",
+          "Missing postTriggerRuleIds (reference has chained rules)"
+        ]
+      },
+      {
+        "sourceType": "GSTIN_WITH_PAN",
+        "in_generated": false,
+        "in_reference": true,
+        "status": "MISSING",
+        "issues": [
+          "Missing VERIFY rule for GSTIN_WITH_PAN"
+        ]
+      },
+      {
+        "sourceType": "MSME_UDYAM_REG_NUMBER",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 21,
+        "ref_dest_count": 39,
+        "gen_post_trigger": false,
+        "ref_post_trigger": false,
+        "status": "WARN",
+        "issues": [
+          "destinationIds count mismatch: generated=21, reference=39"
+        ]
+      },
+      {
+        "sourceType": "PAN_NUMBER",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 10,
+        "ref_dest_count": 9,
+        "gen_post_trigger": false,
+        "ref_post_trigger": true,
+        "status": "FAIL",
+        "issues": [
+          "destinationIds count mismatch: generated=10, reference=9",
+          "Missing postTriggerRuleIds (reference has chained rules)"
+        ]
+      }
+    ]
+  },
+  "ocr_rules_analysis": {
+    "generated_count": 7,
+    "reference_count": 6,
+    "details": [
+      {
+        "sourceType": "AADHAR_BACK_IMAGE",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 0,
+        "ref_dest_count": 8,
+        "gen_has_chain": false,
+        "ref_has_chain": false,
+        "status": "WARN",
+        "issues": [
+          "destinationIds count mismatch: generated=0, reference=8"
+        ]
+      },
+      {
+        "sourceType": "AADHAR_IMAGE",
+        "in_generated": true,
+        "in_reference": false,
+        "status": "EXTRA",
+        "issues": [
+          "Generated has OCR rule for AADHAR_IMAGE not in reference"
+        ]
+      },
+      {
+        "sourceType": "CHEQUEE",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 1,
+        "ref_dest_count": 4,
+        "gen_has_chain": true,
+        "ref_has_chain": true,
+        "status": "WARN",
+        "issues": [
+          "destinationIds count mismatch: generated=1, reference=4"
+        ]
+      },
+      {
+        "sourceType": "CIN",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 1,
+        "ref_dest_count": 1,
+        "gen_has_chain": true,
+        "ref_has_chain": false,
+        "status": "PASS",
+        "issues": []
+      },
+      {
+        "sourceType": "GSTIN_IMAGE",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 1,
+        "ref_dest_count": 1,
+        "gen_has_chain": true,
+        "ref_has_chain": true,
+        "status": "PASS",
+        "issues": []
+      },
+      {
+        "sourceType": "MSME",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 1,
+        "ref_dest_count": 3,
+        "gen_has_chain": true,
+        "ref_has_chain": true,
+        "status": "WARN",
+        "issues": [
+          "destinationIds count mismatch: generated=1, reference=3"
+        ]
+      },
+      {
+        "sourceType": "PAN_IMAGE",
+        "in_generated": true,
+        "in_reference": true,
+        "gen_dest_count": 1,
+        "ref_dest_count": 1,
+        "gen_has_chain": true,
+        "ref_has_chain": true,
+        "status": "PASS",
+        "issues": []
+      }
+    ]
+  },
+  "critical_checks": {
+    "json_structure_valid": true,
+    "has_template": true,
+    "has_document_types": true,
+    "verify_types_complete": false,
+    "ocr_types_complete": true
+  },
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "fix_type": "missing_rule_types",
+        "description": "Add support for missing rule types: COPY_TO_TRANSACTION_ATTR3, DUMMY_ACTION, COPY_TO_TRANSACTION_ATTR1, CONCAT, COPY_TO_GENERIC_PARTY_EMAIL, COPY_TO_GENERIC_PARTY_NAME, SEND_OTP, VALIDATE_OTP, MAKE_ENABLED",
+        "affected_types": [
+          "COPY_TO_TRANSACTION_ATTR3",
+          "DUMMY_ACTION",
+          "COPY_TO_TRANSACTION_ATTR1",
+          "CONCAT",
+          "COPY_TO_GENERIC_PARTY_EMAIL",
+          "COPY_TO_GENERIC_PARTY_NAME",
+          "SEND_OTP",
+          "VALIDATE_OTP",
+          "MAKE_ENABLED"
+        ],
+        "severity": "HIGH"
+      },
+      {
+        "priority": 2,
+        "fix_type": "verify_rules",
+        "description": "Fix VERIFY rules - add missing types or correct configurations",
+        "affected_rules": [
+          {
+            "sourceType": "GSTIN",
+            "in_generated": true,
+            "in_reference": true,
+            "gen_dest_count": 21,
+            "ref_dest_count": 11,
+            "gen_post_trigger": false,
+            "ref_post_trigger": true,
+            "status": "FAIL",
+            "issues": [
+              "destinationIds count mismatch: generated=21, reference=11",
+              "Missing postTriggerRuleIds (reference has chained rules)"
+            ]
+          },
+          {
+            "sourceType": "GSTIN_WITH_PAN",
+            "in_generated": false,
+            "in_reference": true,
+            "status": "MISSING",
+            "issues": [
+              "Missing VERIFY rule for GSTIN_WITH_PAN"
+            ]
+          },
+          {
+            "sourceType": "PAN_NUMBER",
+            "in_generated": true,
+            "in_reference": true,
+            "gen_dest_count": 10,
+            "ref_dest_count": 9,
+            "gen_post_trigger": false,
+            "ref_post_trigger": true,
+            "status": "FAIL",
+            "issues": [
+              "destinationIds count mismatch: generated=10, reference=9",
+              "Missing postTriggerRuleIds (reference has chained rules)"
+            ]
+          }
+        ],
+        "severity": "HIGH"
+      },
+      {
+        "priority": 4,
+        "fix_type": "rule_count_discrepancies",
+        "description": "Investigate large rule count differences",
+        "affected_types": [
+          "COPY_TO",
+          "DELETE_DOCUMENT",
+          "EXT_DROP_DOWN",
+          "UNDELETE_DOCUMENT",
+          "VALIDATION"
+        ],
+        "severity": "MEDIUM"
+      }
+    ]
+  }
+}

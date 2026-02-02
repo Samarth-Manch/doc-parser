@@ -1,0 +1,11 @@
+{
+  "status_code": 400,
+  "response": {
+    "error": "Id is not present for the mandatory field Bank Account Number",
+    "errorCode": 400,
+    "status": false,
+    "timestamp": 1769925750208
+  },
+  "timestamp": "2026-02-01T11:32:30.268747",
+  "auth_retry_count": 0
+}

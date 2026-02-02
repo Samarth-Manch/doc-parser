@@ -1,0 +1,2750 @@
+{
+  "evaluation_metadata": {
+    "generated_file": "/home/samart/project/doc-parser/adws/2026-01-31_21-44-59/populated_schema_v1.json",
+    "reference_file": "/home/samart/project/doc-parser/documents/json_output/vendor_creation_sample_bud.json",
+    "evaluation_timestamp": "2026-01-31T21:53:09.824562",
+    "pass_threshold": 0.9,
+    "iteration": 1
+  },
+  "overall_score": 0.8786,
+  "pass": false,
+  "layer_scores": {
+    "bud_verification": 0.9643,
+    "reference_comparison": 0.6667,
+    "schema_validation": 1.0
+  },
+  "summary": {
+    "generated_field_count": 168,
+    "reference_field_count": 237,
+    "generated_total_rules": 176,
+    "reference_total_rules": 221,
+    "missing_rules_count": 221,
+    "extra_rules_count": 176
+  },
+  "rule_type_summary": {
+    "OCR": {
+      "generated": 7,
+      "reference": 6,
+      "difference": 1,
+      "match": false
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "EXT_VALUE": {
+      "generated": 32,
+      "reference": 13,
+      "difference": 19,
+      "match": false
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 14,
+      "reference": 19,
+      "difference": -5,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "difference": -2,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 15,
+      "reference": 15,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 11,
+      "reference": 10,
+      "difference": 1,
+      "match": false
+    },
+    "MAKE_DISABLED": {
+      "generated": 1,
+      "reference": 5,
+      "difference": -4,
+      "match": false
+    },
+    "EXECUTE": {
+      "generated": 3,
+      "reference": 0,
+      "difference": 3,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 15,
+      "reference": 18,
+      "difference": -3,
+      "match": false
+    },
+    "VERIFY": {
+      "generated": 8,
+      "reference": 5,
+      "difference": 3,
+      "match": false
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 18,
+      "reference": 20,
+      "difference": -2,
+      "match": false
+    },
+    "VALIDATION": {
+      "generated": 2,
+      "reference": 18,
+      "difference": -16,
+      "match": false
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "MAKE_VISIBLE": {
+      "generated": 14,
+      "reference": 18,
+      "difference": -4,
+      "match": false
+    },
+    "CONVERT_TO": {
+      "generated": 5,
+      "reference": 21,
+      "difference": -16,
+      "match": false
+    },
+    "COPY_TO": {
+      "generated": 3,
+      "reference": 12,
+      "difference": -9,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "SET_DATE": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_MANDATORY": {
+      "generated": 11,
+      "reference": 12,
+      "difference": -1,
+      "match": false
+    },
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "match": false
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 15,
+      "reference": 17,
+      "difference": -2,
+      "match": false
+    }
+  },
+  "critical_checks": {
+    "ocr_chain_validation": {
+      "total_ocr_rules": 7,
+      "valid_chains": 6,
+      "broken_chains": [
+        {
+          "ocr_rule_id": 104,
+          "field_name": "Aadhaar Back Image",
+          "issue": "No postTriggerRuleIds defined"
+        }
+      ],
+      "chain_validity_score": 0.8571428571428571
+    },
+    "visibility_pairing": {
+      "total_visible_rules": 14,
+      "total_invisible_rules": 14,
+      "properly_paired": 11,
+      "unpaired_visible": 0,
+      "unpaired_invisible": 0,
+      "pairing_score": 1.0
+    },
+    "mandatory_pairing": {
+      "total_mandatory_rules": 11,
+      "total_non_mandatory_rules": 11,
+      "properly_paired": 8,
+      "unpaired_mandatory": 0,
+      "unpaired_non_mandatory": 0,
+      "pairing_score": 1.0
+    },
+    "make_disabled_consolidation": {
+      "total_disabled_rules": 1,
+      "properly_consolidated": 1,
+      "consolidation_issues": [],
+      "consolidation_score": 1.0
+    }
+  },
+  "panel_evaluations": [
+    {
+      "panel_name": "Address Details",
+      "generated_field_count": 12,
+      "reference_field_count": 17,
+      "rule_comparison": {
+        "VERIFY": {
+          "generated": 1,
+          "reference": 0,
+          "difference": 1,
+          "match": false
+        },
+        "OCR": {
+          "generated": 2,
+          "reference": 1,
+          "difference": 1,
+          "match": false
+        },
+        "EXT_VALUE": {
+          "generated": 4,
+          "reference": 1,
+          "difference": 3,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "VALIDATION": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "CONCAT": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 0,
+          "reference": 3,
+          "difference": -3,
+          "match": false
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 3,
+          "reference": 2,
+          "difference": 1,
+          "match": false
+        },
+        "MAKE_NON_MANDATORY": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "CONVERT_TO": {
+          "generated": 0,
+          "reference": 3,
+          "difference": -3,
+          "match": false
+        },
+        "COPY_TO": {
+          "generated": 0,
+          "reference": 4,
+          "difference": -4,
+          "match": false
+        },
+        "MAKE_MANDATORY": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 3,
+          "reference": 3,
+          "difference": 0,
+          "match": true
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 3,
+          "reference": 2,
+          "difference": 1,
+          "match": false
+        }
+      },
+      "panel_score": 0.13333333333333333
+    },
+    {
+      "panel_name": "MSME Details",
+      "generated_field_count": 27,
+      "reference_field_count": 27,
+      "rule_comparison": {
+        "VERIFY": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "OCR": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "EXT_VALUE": {
+          "generated": 7,
+          "reference": 0,
+          "difference": 7,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "VALIDATION": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 2,
+          "reference": 2,
+          "difference": 0,
+          "match": true
+        },
+        "MAKE_NON_MANDATORY": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "CONVERT_TO": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_DISABLED": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_MANDATORY": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 2,
+          "reference": 2,
+          "difference": 0,
+          "match": true
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 2,
+          "reference": 2,
+          "difference": 0,
+          "match": true
+        }
+      },
+      "panel_score": 0.42857142857142855
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "generated_field_count": 5,
+      "reference_field_count": 9,
+      "rule_comparison": {
+        "EXT_VALUE": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 1,
+          "reference": 2,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        }
+      },
+      "panel_score": 0.25
+    },
+    {
+      "panel_name": "Bank Details",
+      "generated_field_count": 11,
+      "reference_field_count": 21,
+      "rule_comparison": {
+        "VERIFY": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "OCR": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "CONVERT_TO": {
+          "generated": 0,
+          "reference": 6,
+          "difference": -6,
+          "match": false
+        },
+        "EXT_VALUE": {
+          "generated": 3,
+          "reference": 2,
+          "difference": 1,
+          "match": false
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 2,
+          "reference": 4,
+          "difference": -2,
+          "match": false
+        },
+        "VALIDATION": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_ENABLED": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 2,
+          "reference": 5,
+          "difference": -3,
+          "match": false
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 2,
+          "reference": 6,
+          "difference": -4,
+          "match": false
+        }
+      },
+      "panel_score": 0.2222222222222222
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "generated_field_count": 10,
+      "reference_field_count": 25,
+      "rule_comparison": {
+        "MAKE_NON_MANDATORY": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "COPY_TO": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "EXT_VALUE": {
+          "generated": 5,
+          "reference": 2,
+          "difference": 3,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 3,
+          "reference": 4,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_MANDATORY": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "VALIDATION": {
+          "generated": 0,
+          "reference": 5,
+          "difference": -5,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        }
+      },
+      "panel_score": 0.0
+    },
+    {
+      "panel_name": "Payment Details",
+      "generated_field_count": 11,
+      "reference_field_count": 17,
+      "rule_comparison": {
+        "EXT_VALUE": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 3,
+          "reference": 1,
+          "difference": 2,
+          "match": false
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 3,
+          "reference": 0,
+          "difference": 3,
+          "match": false
+        },
+        "VALIDATION": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 1,
+          "reference": 0,
+          "difference": 1,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 3,
+          "reference": 2,
+          "difference": 1,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 1,
+          "reference": 0,
+          "difference": 1,
+          "match": false
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 3,
+          "reference": 0,
+          "difference": 3,
+          "match": false
+        }
+      },
+      "panel_score": 0.125
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "generated_field_count": 11,
+      "reference_field_count": 11,
+      "rule_comparison": {},
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "generated_field_count": 7,
+      "reference_field_count": 13,
+      "rule_comparison": {
+        "MAKE_NON_MANDATORY": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "EXT_VALUE": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 1,
+          "reference": 2,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_MANDATORY": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        }
+      },
+      "panel_score": 0.16666666666666666
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "generated_field_count": 26,
+      "reference_field_count": 26,
+      "rule_comparison": {
+        "VERIFY": {
+          "generated": 4,
+          "reference": 3,
+          "difference": 1,
+          "match": false
+        },
+        "OCR": {
+          "generated": 2,
+          "reference": 2,
+          "difference": 0,
+          "match": true
+        },
+        "EXT_VALUE": {
+          "generated": 5,
+          "reference": 0,
+          "difference": 5,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "VALIDATION": {
+          "generated": 1,
+          "reference": 3,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 5,
+          "reference": 6,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 5,
+          "reference": 5,
+          "difference": 0,
+          "match": true
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 3,
+          "reference": 4,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_NON_MANDATORY": {
+          "generated": 4,
+          "reference": 2,
+          "difference": 2,
+          "match": false
+        },
+        "CONVERT_TO": {
+          "generated": 5,
+          "reference": 2,
+          "difference": 3,
+          "match": false
+        },
+        "COPY_TO": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_DISABLED": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_MANDATORY": {
+          "generated": 4,
+          "reference": 2,
+          "difference": 2,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 3,
+          "reference": 3,
+          "difference": 0,
+          "match": true
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 3,
+          "reference": 4,
+          "difference": -1,
+          "match": false
+        }
+      },
+      "panel_score": 0.26666666666666666
+    },
+    {
+      "panel_name": "Basic Details",
+      "generated_field_count": 32,
+      "reference_field_count": 54,
+      "rule_comparison": {
+        "DUMMY_ACTION": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "EXT_VALUE": {
+          "generated": 5,
+          "reference": 5,
+          "difference": 0,
+          "match": true
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 8,
+          "reference": 3,
+          "difference": 5,
+          "match": false
+        },
+        "COPY_TO_GENERIC_PARTY_NAME": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "CONCAT": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 0,
+          "reference": 3,
+          "difference": -3,
+          "match": false
+        },
+        "MAKE_NON_MANDATORY": {
+          "generated": 7,
+          "reference": 0,
+          "difference": 7,
+          "match": false
+        },
+        "MAKE_DISABLED": {
+          "generated": 1,
+          "reference": 2,
+          "difference": -1,
+          "match": false
+        },
+        "EXECUTE": {
+          "generated": 3,
+          "reference": 0,
+          "difference": 3,
+          "match": false
+        },
+        "COPY_TO_GENERIC_PARTY_EMAIL": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 6,
+          "reference": 6,
+          "difference": 0,
+          "match": true
+        },
+        "VALIDATION": {
+          "generated": 1,
+          "reference": 5,
+          "difference": -4,
+          "match": false
+        },
+        "SEND_OTP": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "MAKE_VISIBLE": {
+          "generated": 8,
+          "reference": 2,
+          "difference": 6,
+          "match": false
+        },
+        "CONVERT_TO": {
+          "generated": 0,
+          "reference": 8,
+          "difference": -8,
+          "match": false
+        },
+        "COPY_TO": {
+          "generated": 3,
+          "reference": 6,
+          "difference": -3,
+          "match": false
+        },
+        "COPY_TO_TRANSACTION_ATTR3": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "SET_DATE": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "VALIDATE_OTP": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "COPY_TXNID_TO_FORM_FILL": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "MAKE_MANDATORY": {
+          "generated": 7,
+          "reference": 2,
+          "difference": 5,
+          "match": false
+        },
+        "COPY_TO_TRANSACTION_ATTR1": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 0,
+          "reference": 3,
+          "difference": -3,
+          "match": false
+        }
+      },
+      "panel_score": 0.17391304347826086
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "generated_field_count": 5,
+      "reference_field_count": 6,
+      "rule_comparison": {
+        "MAKE_NON_MANDATORY": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "VERIFY": {
+          "generated": 1,
+          "reference": 0,
+          "difference": 1,
+          "match": false
+        },
+        "OCR": {
+          "generated": 1,
+          "reference": 1,
+          "difference": 0,
+          "match": true
+        },
+        "CONVERT_TO": {
+          "generated": 0,
+          "reference": 1,
+          "difference": -1,
+          "match": false
+        },
+        "EXT_DROP_DOWN": {
+          "generated": 1,
+          "reference": 2,
+          "difference": -1,
+          "match": false
+        },
+        "DELETE_DOCUMENT": {
+          "generated": 2,
+          "reference": 0,
+          "difference": 2,
+          "match": false
+        },
+        "MAKE_MANDATORY": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "MAKE_INVISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "COPY_TO_DOCUMENT_STORAGE_ID": {
+          "generated": 2,
+          "reference": 2,
+          "difference": 0,
+          "match": true
+        },
+        "MAKE_VISIBLE": {
+          "generated": 0,
+          "reference": 2,
+          "difference": -2,
+          "match": false
+        },
+        "UNDELETE_DOCUMENT": {
+          "generated": 2,
+          "reference": 0,
+          "difference": 2,
+          "match": false
+        }
+      },
+      "panel_score": 0.18181818181818182
+    }
+  ],
+  "missing_rules": [
+    {
+      "field_id": 275633,
+      "field_name": "RuleCheck",
+      "action_type": "MAKE_DISABLED",
+      "destination_ids": [
+        275491,
+        275492,
+        275493,
+        275495,
+        276399,
+        276400,
+        276383,
+        276339,
+        275497,
+        276244,
+        276340,
+        276341,
+        276342,
+        275501,
+        275500,
+        275534,
+        275513,
+        275530,
+        275527,
+        275526,
+        275528,
+        275529,
+        275544,
+        275543,
+        275545,
+        275547,
+        275548,
+        275549,
+        275550,
+        276273,
+        276279,
+        276280,
+        276281,
+        276282,
+        276436,
+        275628,
+        275629,
+        275630,
+        276321,
+        276322,
+        276384,
+        276385
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Disable"
+      ]
+    },
+    {
+      "field_id": 280916,
+      "field_name": "Account Group Code",
+      "action_type": "MAKE_DISABLED",
+      "destination_ids": [
+        280916,
+        280914
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Invisible"
+      ]
+    },
+    {
+      "field_id": 275512,
+      "field_name": "GSTIN IMAGE",
+      "action_type": "MAKE_DISABLED",
+      "destination_ids": [
+        275513
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275586,
+      "field_name": "MSME Image",
+      "action_type": "MAKE_DISABLED",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275587,
+      "field_name": "MSME Registration Number",
+      "action_type": "MAKE_DISABLED",
+      "destination_ids": [],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "_blank_"
+      ]
+    },
+    {
+      "field_id": 275633,
+      "field_name": "RuleCheck",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275633,
+        275491,
+        275492,
+        275493,
+        275494,
+        275495,
+        275496,
+        276399,
+        276400,
+        276339,
+        276244,
+        276340,
+        276341,
+        276342,
+        276243,
+        275501,
+        275500,
+        275503,
+        275504,
+        275505,
+        275507,
+        275508,
+        276246,
+        276247,
+        276248,
+        276249,
+        276250,
+        276251,
+        276252,
+        276253,
+        276254,
+        276255,
+        276256,
+        276257,
+        276267,
+        276788,
+        282372,
+        296021,
+        276302,
+        297461,
+        297462,
+        275510,
+        275538,
+        275512,
+        275513,
+        275514,
+        275515,
+        275516,
+        275518,
+        275519,
+        275522,
+        275517,
+        275520,
+        275521,
+        275523,
+        275525,
+        275530,
+        276349,
+        276303,
+        276421,
+        276258,
+        276260,
+        276593,
+        276261,
+        276264,
+        275539,
+        275541,
+        276266,
+        276570,
+        275546,
+        275547,
+        275548,
+        275549,
+        275554,
+        275552,
+        275553,
+        275551,
+        275550,
+        275556,
+        275558,
+        275559,
+        276394,
+        275560,
+        275561,
+        275562,
+        275563,
+        275564,
+        275565,
+        275566,
+        275567,
+        275568,
+        275569,
+        275570,
+        275571,
+        275572,
+        275573,
+        275574,
+        275575,
+        275576,
+        275577,
+        275580,
+        275584,
+        275586,
+        275587,
+        275588,
+        275589,
+        275590,
+        275591,
+        275592,
+        275593,
+        275594,
+        275595,
+        275596,
+        275597,
+        275598,
+        275599,
+        275600,
+        275601,
+        275602,
+        275603,
+        275604,
+        275605,
+        275606,
+        275607,
+        275608,
+        275609,
+        275610,
+        275611,
+        275612,
+        275623,
+        276272,
+        276440,
+        276442,
+        276286,
+        275627,
+        276321,
+        276322,
+        276434,
+        276435,
+        276424,
+        276426,
+        276428,
+        276289,
+        276430,
+        276296,
+        276298,
+        276376,
+        276572
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Invisible"
+      ]
+    },
+    {
+      "field_id": 276416,
+      "field_name": "Choose the Group of Company",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275508
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "PIL",
+        "Domestic Subsidaries"
+      ]
+    },
+    {
+      "field_id": 276416,
+      "field_name": "Choose the Group of Company",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275507
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "International Subsidaries"
+      ]
+    },
+    {
+      "field_id": 275536,
+      "field_name": "PAN Type",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275578,
+        275579
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Company"
+      ]
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275512,
+        275513,
+        275514,
+        275515,
+        275516,
+        275517,
+        275518,
+        275519,
+        275520,
+        275521,
+        275522,
+        275523
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "GST Non-Registered"
+      ]
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275524,
+        275525
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "GST Registered"
+      ]
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275512,
+        275513,
+        275514,
+        275515,
+        275516,
+        275518,
+        275519,
+        275522,
+        275517,
+        275520,
+        275521,
+        275523,
+        275524,
+        275525
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "GST Registered",
+        "SEZ",
+        "Compounding",
+        "GST Non-Registered"
+      ]
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275524,
+        275525
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "SEZ"
+      ]
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275524,
+        275525
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Compounding"
+      ]
+    },
+    {
+      "field_id": 276259,
+      "field_name": "Additional Registration Number Applicable?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        276260
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 276263,
+      "field_name": "Business Registration Number Available?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        276264
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 276265,
+      "field_name": "Please Choose Address Proof",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275541
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Electricity Bill Copy"
+      ]
+    },
+    {
+      "field_id": 276265,
+      "field_name": "Please Choose Address Proof",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        276266,
+        276570
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Aadhaar Copy"
+      ]
+    },
+    {
+      "field_id": 282371,
+      "field_name": "FDA Registered?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275580
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No"
+      ]
+    },
+    {
+      "field_id": 275582,
+      "field_name": "TDS Applicable?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275583
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 275585,
+      "field_name": "Is SSI / MSME Applicable?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275611
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 275585,
+      "field_name": "Is SSI / MSME Applicable?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        275586,
+        275587,
+        275588,
+        275589,
+        275590,
+        275591,
+        275592,
+        275593,
+        275594,
+        275595,
+        275596,
+        275597,
+        275598,
+        275599,
+        275600,
+        275601,
+        275602,
+        275603,
+        275604,
+        275605,
+        275606,
+        275607,
+        275608,
+        275609,
+        275610
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No"
+      ]
+    },
+    {
+      "field_id": 276284,
+      "field_name": "Is Vendor Your Customer?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        276285
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 276603,
+      "field_name": "Is Withholding Tax applicable?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        276597,
+        276598,
+        276599,
+        276600,
+        276601,
+        276602
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 275491,
+      "field_name": "Transaction ID",
+      "action_type": "COPY_TXNID_TO_FORM_FILL",
+      "destination_ids": [
+        275491
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "TXN"
+      ]
+    },
+    {
+      "field_id": 275492,
+      "field_name": "Created On",
+      "action_type": "SET_DATE",
+      "destination_ids": [
+        275492
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275493,
+      "field_name": "Created By Name",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275493,
+        275494,
+        275495
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275506,
+      "field_name": "Company and Ownership",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        276273,
+        276436,
+        276290
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 276340,
+      "field_name": "Country",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275550
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 276342,
+      "field_name": "Country Description (Domestic)",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        276378
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275500,
+      "field_name": "Country Description",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        276378
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275507,
+      "field_name": "Mobile Number",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        297461
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275511,
+      "field_name": "Please select GST option",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275542
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "GST Registered",
+        "SEZ",
+        "Compounding"
+      ]
+    },
+    {
+      "field_id": 275546,
+      "field_name": "Postal Code",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275546
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275547,
+      "field_name": "City",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275517
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275548,
+      "field_name": "District",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275548
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275549,
+      "field_name": "State",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        275549
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 276445,
+      "field_name": "Incoterms",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        276448
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 276245,
+      "field_name": "Name/ First Name of the Organization",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        276245
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275503,
+      "field_name": "E4",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        275503
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275504,
+      "field_name": "E5",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        275504
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275505,
+      "field_name": "E6",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        275505
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275509,
+      "field_name": "Vendor Contact Email",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        275509
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 276851,
+      "field_name": "Vendor Contact Name",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        276851
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 276257,
+      "field_name": "Email 2",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        276257
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 282372,
+      "field_name": "Central Enrolment number (CEN)",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        282372
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275534,
+      "field_name": "PAN",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275513,
+      "field_name": "GSTIN",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275542,
+      "field_name": "Street",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        275542
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 275552,
+      "field_name": "City (Import)",
+      "action_type": "CONVERT_TO",
+      "destination_ids": [
+        275552
+      ],
+      "condition": null,
+      "conditional_values": null
+    }
+  ],
+  "extra_rules": [
+    {
+      "field_id": 2,
+      "field_name": "Search term / Reference Number(Transaction ID)",
+      "action_type": "COPY_TXNID_TO_FORM_FILL",
+      "destination_ids": [
+        2
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "TXN"
+      ]
+    },
+    {
+      "field_id": 3,
+      "field_name": "Created on",
+      "action_type": "SET_DATE",
+      "destination_ids": [
+        3
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 6,
+      "field_name": "Select the process type",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        11
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "no"
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        18
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes",
+        "no"
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        19,
+        20,
+        21
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        19,
+        20,
+        21
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 17,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        22,
+        23,
+        24,
+        25
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 17,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        22,
+        23,
+        24,
+        25
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 28,
+      "field_name": "Do you wish to add additional email addresses?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        29
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 30,
+      "field_name": "Concerned email addresses?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        32
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        44,
+        45
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes",
+        "no"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        105,
+        50,
+        119,
+        121,
+        124,
+        123,
+        55
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "yes"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        46,
+        47,
+        48,
+        105,
+        50,
+        119,
+        121,
+        124,
+        123,
+        55
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        56
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No",
+        "no"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        56
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "No"
+      ]
+    },
+    {
+      "field_id": 158,
+      "field_name": "Is Vendor Your Customer?",
+      "action_type": "MAKE_VISIBLE",
+      "destination_ids": [
+        159
+      ],
+      "condition": "IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 6,
+      "field_name": "Select the process type",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        11
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "no"
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        18
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes",
+        "no"
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        19,
+        20,
+        21
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        19,
+        20,
+        21
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 17,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        22,
+        23,
+        24,
+        25
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 17,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        22,
+        23,
+        24,
+        25
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 28,
+      "field_name": "Do you wish to add additional email addresses?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        29
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 30,
+      "field_name": "Concerned email addresses?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        32
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "No",
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        44,
+        45
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes",
+        "no"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        105,
+        50,
+        119,
+        121,
+        124,
+        123,
+        55
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "yes"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        46,
+        47,
+        48,
+        105,
+        50,
+        119,
+        121,
+        124,
+        123,
+        55
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        56
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "No",
+        "no"
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        56
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "No"
+      ]
+    },
+    {
+      "field_id": 158,
+      "field_name": "Is Vendor Your Customer?",
+      "action_type": "MAKE_INVISIBLE",
+      "destination_ids": [
+        159
+      ],
+      "condition": "NOT_IN",
+      "conditional_values": [
+        "Yes"
+      ]
+    },
+    {
+      "field_id": 6,
+      "field_name": "Select the process type",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 14,
+      "field_name": "Company Code",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 17,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 28,
+      "field_name": "Do you wish to add additional email addresses?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 30,
+      "field_name": "Concerned email addresses?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 67,
+      "field_name": "Business Registration Number Available?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 70,
+      "field_name": "Please Choose Address Proof",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 98,
+      "field_name": "TDS Applicable?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 101,
+      "field_name": "Is SSI / MSME Applicable?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 141,
+      "field_name": "Company Code",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 144,
+      "field_name": "Terms of Payment",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 146,
+      "field_name": "Incoterms (Part 2)",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 153,
+      "field_name": "House Bank",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 156,
+      "field_name": "Reconciliation acct",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 158,
+      "field_name": "Is Vendor Your Customer?",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 167,
+      "field_name": "Withholding Tax Code",
+      "action_type": "EXT_DROP_DOWN",
+      "destination_ids": [],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 6,
+      "field_name": "Select the process type",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        7
+      ],
+      "condition": null,
+      "conditional_values": null
+    },
+    {
+      "field_id": 8,
+      "field_name": "Account Group/Vendor Type",
+      "action_type": "COPY_TO",
+      "destination_ids": [
+        10
+      ],
+      "condition": null,
+      "conditional_values": null
+    }
+  ],
+  "schema_validation": {
+    "valid": true,
+    "issues": [],
+    "total_issues": 0,
+    "score": 1.0
+  },
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "type": "OCR_CHAIN_FIX",
+        "description": "Fix OCR rule 104 for field 'Aadhaar Back Image': No postTriggerRuleIds defined",
+        "action": "Add valid postTriggerRuleIds pointing to VERIFY rules"
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_DISABLED rule for field 'RuleCheck' (ID: 275633)",
+        "details": {
+          "destination_ids": [
+            275491,
+            275492,
+            275493,
+            275495,
+            276399,
+            276400,
+            276383,
+            276339,
+            275497,
+            276244,
+            276340,
+            276341,
+            276342,
+            275501,
+            275500,
+            275534,
+            275513,
+            275530,
+            275527,
+            275526,
+            275528,
+            275529,
+            275544,
+            275543,
+            275545,
+            275547,
+            275548,
+            275549,
+            275550,
+            276273,
+            276279,
+            276280,
+            276281,
+            276282,
+            276436,
+            275628,
+            275629,
+            275630,
+            276321,
+            276322,
+            276384,
+            276385
+          ],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Disable"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_DISABLED rule for field 'Account Group Code' (ID: 280916)",
+        "details": {
+          "destination_ids": [
+            280916,
+            280914
+          ],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Invisible"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_DISABLED rule for field 'GSTIN IMAGE' (ID: 275512)",
+        "details": {
+          "destination_ids": [
+            275513
+          ],
+          "condition": null,
+          "conditional_values": null
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_DISABLED rule for field 'MSME Image' (ID: 275586)",
+        "details": {
+          "destination_ids": [],
+          "condition": null,
+          "conditional_values": null
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_DISABLED rule for field 'MSME Registration Number' (ID: 275587)",
+        "details": {
+          "destination_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "_blank_"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_INVISIBLE rule for field 'RuleCheck' (ID: 275633)",
+        "details": {
+          "destination_ids": [
+            275633,
+            275491,
+            275492,
+            275493,
+            275494,
+            275495,
+            275496,
+            276399,
+            276400,
+            276339,
+            276244,
+            276340,
+            276341,
+            276342,
+            276243,
+            275501,
+            275500,
+            275503,
+            275504,
+            275505,
+            275507,
+            275508,
+            276246,
+            276247,
+            276248,
+            276249,
+            276250,
+            276251,
+            276252,
+            276253,
+            276254,
+            276255,
+            276256,
+            276257,
+            276267,
+            276788,
+            282372,
+            296021,
+            276302,
+            297461,
+            297462,
+            275510,
+            275538,
+            275512,
+            275513,
+            275514,
+            275515,
+            275516,
+            275518,
+            275519,
+            275522,
+            275517,
+            275520,
+            275521,
+            275523,
+            275525,
+            275530,
+            276349,
+            276303,
+            276421,
+            276258,
+            276260,
+            276593,
+            276261,
+            276264,
+            275539,
+            275541,
+            276266,
+            276570,
+            275546,
+            275547,
+            275548,
+            275549,
+            275554,
+            275552,
+            275553,
+            275551,
+            275550,
+            275556,
+            275558,
+            275559,
+            276394,
+            275560,
+            275561,
+            275562,
+            275563,
+            275564,
+            275565,
+            275566,
+            275567,
+            275568,
+            275569,
+            275570,
+            275571,
+            275572,
+            275573,
+            275574,
+            275575,
+            275576,
+            275577,
+            275580,
+            275584,
+            275586,
+            275587,
+            275588,
+            275589,
+            275590,
+            275591,
+            275592,
+            275593,
+            275594,
+            275595,
+            275596,
+            275597,
+            275598,
+            275599,
+            275600,
+            275601,
+            275602,
+            275603,
+            275604,
+            275605,
+            275606,
+            275607,
+            275608,
+            275609,
+            275610,
+            275611,
+            275612,
+            275623,
+            276272,
+            276440,
+            276442,
+            276286,
+            275627,
+            276321,
+            276322,
+            276434,
+            276435,
+            276424,
+            276426,
+            276428,
+            276289,
+            276430,
+            276296,
+            276298,
+            276376,
+            276572
+          ],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Invisible"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_INVISIBLE rule for field 'Choose the Group of Company' (ID: 276416)",
+        "details": {
+          "destination_ids": [
+            275508
+          ],
+          "condition": "IN",
+          "conditional_values": [
+            "PIL",
+            "Domestic Subsidaries"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_INVISIBLE rule for field 'Choose the Group of Company' (ID: 276416)",
+        "details": {
+          "destination_ids": [
+            275507
+          ],
+          "condition": "IN",
+          "conditional_values": [
+            "International Subsidaries"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_INVISIBLE rule for field 'PAN Type' (ID: 275536)",
+        "details": {
+          "destination_ids": [
+            275578,
+            275579
+          ],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Company"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "type": "MISSING_RULE",
+        "description": "Add missing MAKE_INVISIBLE rule for field 'Please select GST option' (ID: 275511)",
+        "details": {
+          "destination_ids": [
+            275512,
+            275513,
+            275514,
+            275515,
+            275516,
+            275517,
+            275518,
+            275519,
+            275520,
+            275521,
+            275522,
+            275523
+          ],
+          "condition": "IN",
+          "conditional_values": [
+            "GST Non-Registered"
+          ]
+        }
+      }
+    ],
+    "suggestions": [
+      {
+        "type": "EXTRA_RULES_REVIEW",
+        "description": "Review 176 extra rules not in reference - verify against BUD if they are correct"
+      }
+    ]
+  }
+}

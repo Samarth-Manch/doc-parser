@@ -1,0 +1,35 @@
+{
+  "workspace": "adws/2026-02-01_01-13-42",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-02-01T01:21:37.405651",
+      "output_file": "adws/2026-02-01_01-13-42/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-02-01_01-13-42/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-02-01_01-13-42/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-02-01_01-13-42/self_heal_instructions_v1.json",
+      "score": 0.8439,
+      "passed": false,
+      "priority_fixes_count": 2
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-02-01T01:30:38.069961",
+      "output_file": "adws/2026-02-01_01-13-42/populated_schema_v2.json",
+      "eval_report_file": "adws/2026-02-01_01-13-42/eval_report_v2.json",
+      "extraction_report_file": "adws/2026-02-01_01-13-42/extraction_report_v2.json",
+      "self_heal_file": "adws/2026-02-01_01-13-42/self_heal_instructions_v2.json",
+      "score": 0.9964,
+      "passed": true,
+      "priority_fixes_count": 4
+    }
+  ],
+  "current_iteration": 2,
+  "final_status": "passed",
+  "last_updated": "2026-02-01T01:30:38.070022",
+  "final_score": 0.9964,
+  "total_iterations": 2,
+  "completed_at": "2026-02-01T01:30:38.070640",
+  "final_output": "adws/2026-02-01_01-13-42/populated_schema_v2.json",
+  "intra_panel_path": "adws/2026-02-01_01-13-42/templates_output/Vendor Creation Sample BUD_intra_panel_references.json"
+}

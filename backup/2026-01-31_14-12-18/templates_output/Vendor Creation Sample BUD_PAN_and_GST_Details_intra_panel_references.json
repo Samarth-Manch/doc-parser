@@ -1,0 +1,287 @@
+{
+  "panel_name": "PAN and GST Details",
+  "source_document": "Vendor Creation Sample BUD.docx",
+  "analysis_timestamp": "2026-01-31T14:12:21.858718",
+  "total_fields_analyzed": 27,
+  "intra_panel_references": [
+    {
+      "source_field": "Please select GST option",
+      "source_variable": "__please_select_gst_option__",
+      "source_field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "dependent_fields": [
+        {
+          "field_name": "GSTIN IMAGE",
+          "variable_name": "__gstin_image__",
+          "dependency_type": "visibility_and_mandatory",
+          "condition": "if value is 'Yes' then visible and mandatory, otherwise invisible and non-mandatory",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible and non-mandatory. System should allow upload size up to 15 Mb. Get GSTIN from OCR rule"
+        },
+        {
+          "field_name": "GSTIN",
+          "variable_name": "__gstin__",
+          "dependency_type": "visibility_and_mandatory",
+          "condition": "if value is 'Yes' then visible and mandatory, otherwise invisible and non-mandatory",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible and non-mandatory. Data will come from GSTIN OCR rule. Perform GSTIN validation and store the data in next fields. Apply PAN with GST rule also."
+        },
+        {
+          "field_name": "Trade Name",
+          "variable_name": "__trade_name__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Legal Name",
+          "variable_name": "__legal_name__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Reg Date",
+          "variable_name": "__reg_date__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Type",
+          "variable_name": "__type__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Building Number",
+          "variable_name": "__building_number__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Street",
+          "variable_name": "__street__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "City",
+          "variable_name": "__city__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "District",
+          "variable_name": "__district__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "State",
+          "variable_name": "__state__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Pin Code",
+          "variable_name": "__pin_code__",
+          "dependency_type": "visibility",
+          "condition": "if value is 'Yes' then visible, otherwise invisible",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Upload Declaration",
+          "variable_name": "__upload_declaration__",
+          "dependency_type": "visibility_and_mandatory",
+          "condition": "if value is 'No' then visible and mandatory, otherwise invisible and non-mandatory",
+          "raw_logic": "if the field \"Please select GST option\" values is No then visible and Mandatory otherwise invisible and Non-Mandatory. File size should be up to 15 Mb."
+        }
+      ]
+    },
+    {
+      "source_field": "Upload PAN",
+      "source_variable": "__upload_pan__",
+      "source_field_type": "FILE",
+      "dependent_fields": [
+        {
+          "field_name": "PAN",
+          "variable_name": "__pan__",
+          "dependency_type": "data_population_ocr",
+          "condition": "PAN value extracted from uploaded file via OCR rule",
+          "raw_logic": "File size should be up to 15Mb, Get PAN from OCR rule"
+        }
+      ]
+    },
+    {
+      "source_field": "PAN",
+      "source_variable": "__pan__",
+      "source_field_type": "TEXT",
+      "dependent_fields": [
+        {
+          "field_name": "Pan Holder Name",
+          "variable_name": "__pan_holder_name__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from PAN validation result",
+          "raw_logic": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field_name": "PAN Type",
+          "variable_name": "__pan_type__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from PAN validation result",
+          "raw_logic": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field_name": "PAN Status",
+          "variable_name": "__pan_status__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from PAN validation result",
+          "raw_logic": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field_name": "Aadhaar PAN List Status",
+          "variable_name": "__aadhaar_pan_list_status__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from PAN validation result",
+          "raw_logic": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field_name": "ID Type",
+          "variable_name": "__id_type__",
+          "dependency_type": "conditional_default_value",
+          "condition": "If 4th character of PAN is 'C', default value is 'ZCUCIN'",
+          "raw_logic": "If the 4th Character of PAN is C then ID type default Value is ZCUCIN"
+        }
+      ]
+    },
+    {
+      "source_field": "GSTIN IMAGE",
+      "source_variable": "__gstin_image__",
+      "source_field_type": "FILE",
+      "dependent_fields": [
+        {
+          "field_name": "GSTIN",
+          "variable_name": "__gstin__",
+          "dependency_type": "data_population_ocr",
+          "condition": "GSTIN value extracted from uploaded image via OCR rule",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible and non-mandatory. Data will come from GSTIN OCR rule. Perform GSTIN validation and store the data in next fields. Apply PAN with GST rule also."
+        }
+      ]
+    },
+    {
+      "source_field": "GSTIN",
+      "source_variable": "__gstin__",
+      "source_field_type": "TEXT",
+      "dependent_fields": [
+        {
+          "field_name": "Trade Name",
+          "variable_name": "__trade_name__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Legal Name",
+          "variable_name": "__legal_name__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Reg Date",
+          "variable_name": "__reg_date__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Type",
+          "variable_name": "__type__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Building Number",
+          "variable_name": "__building_number__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Street",
+          "variable_name": "__street__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "City",
+          "variable_name": "__city__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "District",
+          "variable_name": "__district__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "State",
+          "variable_name": "__state__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "Pin Code",
+          "variable_name": "__pin_code__",
+          "dependency_type": "data_population_validation",
+          "condition": "Data populated from GSTIN verification result",
+          "raw_logic": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should be non-mandatory and non-editable. Data will come from GSTIN verification."
+        },
+        {
+          "field_name": "GST Vendor Classification",
+          "variable_name": "__gst_vendor_classification__",
+          "dependency_type": "conditional_default_value",
+          "condition": "If GSTIN is available, value is blank; otherwise default value is '0'",
+          "raw_logic": "IF GST number is available \"Blank\" else populate default value as \"0\""
+        }
+      ]
+    }
+  ],
+  "cross_field_rules": [
+    {
+      "rule_name": "PAN_GST_Consistency",
+      "description": "PAN with GST rule - ensures PAN and GSTIN are consistent",
+      "affected_fields": ["__pan__", "__gstin__"],
+      "raw_logic": "Apply PAN with GST rule also (referenced in both PAN and GSTIN field logic)"
+    }
+  ],
+  "summary": {
+    "total_source_fields": 5,
+    "total_dependent_fields": 18,
+    "dependency_types": {
+      "visibility": 10,
+      "visibility_and_mandatory": 3,
+      "data_population_ocr": 2,
+      "data_population_validation": 15,
+      "conditional_default_value": 2
+    },
+    "primary_controller_field": "Please select GST option",
+    "fields_with_no_dependencies": [
+      "PAN DETAILS",
+      "GST Details",
+      "Service Tax Registration Number",
+      "Language Key",
+      "Vendor Basic Details"
+    ]
+  }
+}

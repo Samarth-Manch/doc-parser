@@ -1,0 +1,1687 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "fix_type": "missing_verify_rules",
+      "severity": "HIGH",
+      "description": "Add 4 missing VERIFY rules",
+      "affected_fields": [
+        "MSME Registration Number",
+        "GSTIN",
+        "Bank Account Number"
+      ],
+      "source_types": [
+        "BANK_ACCOUNT_NUMBER",
+        "GSTIN",
+        "GSTIN_WITH_PAN",
+        "MSME_UDYAM_REG_NUMBER"
+      ]
+    },
+    {
+      "priority": 2,
+      "fix_type": "missing_ocr_rules",
+      "severity": "HIGH",
+      "description": "Add 4 missing OCR rules",
+      "affected_fields": [
+        "Aaadhar Back Image",
+        "Cancelled Cheque Image",
+        "CIN Certificate",
+        "MSME Image"
+      ],
+      "source_types": [
+        "CIN",
+        "MSME",
+        "CHEQUEE",
+        "AADHAR_BACK_IMAGE"
+      ]
+    },
+    {
+      "priority": 3,
+      "fix_type": "missing_visibility_rules",
+      "severity": "HIGH",
+      "description": "Add 33 missing visibility rules",
+      "affected_fields": [
+        "PAN Type",
+        "Please select GST option",
+        "Additional Registration Number Applicable?",
+        "Is Vendor Your Customer?",
+        "Business Registration Number Available?",
+        "RuleCheck",
+        "FDA Registered?",
+        "Is Withholding Tax applicable?",
+        "Please Choose Address Proof",
+        "TDS Applicable?",
+        "Choose the Group of Company"
+      ],
+      "rule_types": [
+        "MAKE_INVISIBLE",
+        "MAKE_VISIBLE"
+      ]
+    },
+    {
+      "priority": 4,
+      "fix_type": "missing_mandatory_rules",
+      "severity": "HIGH",
+      "description": "Add 20 missing mandatory rules",
+      "affected_fields": [
+        "Please select GST option",
+        "Additional Registration Number Applicable?",
+        "Is Vendor Your Customer?",
+        "Business Registration Number Available?",
+        "FDA Registered?",
+        "Please Choose Address Proof",
+        "TDS Applicable?",
+        "Choose the Group of Company"
+      ],
+      "rule_types": [
+        "MAKE_MANDATORY",
+        "MAKE_NON_MANDATORY"
+      ]
+    },
+    {
+      "priority": 5,
+      "fix_type": "under_generation",
+      "severity": "HIGH",
+      "description": "Address under-generation of rules",
+      "action_types": [
+        "MAKE_DISABLED",
+        "MAKE_INVISIBLE",
+        "COPY_TXNID_TO_FORM_FILL",
+        "SET_DATE",
+        "COPY_TO",
+        "CONVERT_TO",
+        "COPY_TO_TRANSACTION_ATTR3",
+        "DUMMY_ACTION",
+        "MAKE_MANDATORY",
+        "MAKE_VISIBLE",
+        "COPY_TO_TRANSACTION_ATTR1",
+        "VALIDATION",
+        "CONCAT",
+        "COPY_TO_GENERIC_PARTY_EMAIL",
+        "COPY_TO_GENERIC_PARTY_NAME",
+        "SEND_OTP",
+        "VALIDATE_OTP",
+        "OCR",
+        "VERIFY",
+        "MAKE_NON_MANDATORY",
+        "MAKE_ENABLED",
+        "COPY_TO_DOCUMENT_STORAGE_ID"
+      ],
+      "details": [
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_DISABLED",
+          "generated": 2,
+          "expected": 5,
+          "ratio": 0.4
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_INVISIBLE",
+          "generated": 7,
+          "expected": 19,
+          "ratio": 0.37
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TXNID_TO_FORM_FILL",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "SET_DATE",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO",
+          "generated": 0,
+          "expected": 12,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "CONVERT_TO",
+          "generated": 0,
+          "expected": 21,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_TRANSACTION_ATTR3",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "DUMMY_ACTION",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_MANDATORY",
+          "generated": 4,
+          "expected": 12,
+          "ratio": 0.33
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_VISIBLE",
+          "generated": 7,
+          "expected": 18,
+          "ratio": 0.39
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_TRANSACTION_ATTR1",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "VALIDATION",
+          "generated": 0,
+          "expected": 18,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "CONCAT",
+          "generated": 0,
+          "expected": 2,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "SEND_OTP",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "VALIDATE_OTP",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "OCR",
+          "generated": 2,
+          "expected": 6,
+          "ratio": 0.33
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "VERIFY",
+          "generated": 2,
+          "expected": 5,
+          "ratio": 0.4
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_NON_MANDATORY",
+          "generated": 4,
+          "expected": 10,
+          "ratio": 0.4
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_ENABLED",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        }
+      ]
+    }
+  ],
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 1
+    },
+    "generated": {
+      "MAKE_DISABLED": 2,
+      "MAKE_VISIBLE": 7,
+      "MAKE_INVISIBLE": 7,
+      "MAKE_MANDATORY": 4,
+      "MAKE_NON_MANDATORY": 4,
+      "OCR": 2,
+      "VERIFY": 2
+    },
+    "discrepancies": [
+      {
+        "action_type": "CONCAT",
+        "generated": 0,
+        "reference": 2,
+        "difference": -2,
+        "status": "MISSING 2"
+      },
+      {
+        "action_type": "CONVERT_TO",
+        "generated": 0,
+        "reference": 21,
+        "difference": -21,
+        "status": "MISSING 21"
+      },
+      {
+        "action_type": "COPY_TO",
+        "generated": 0,
+        "reference": 12,
+        "difference": -12,
+        "status": "MISSING 12"
+      },
+      {
+        "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR1",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR3",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "COPY_TXNID_TO_FORM_FILL",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "DUMMY_ACTION",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "MAKE_DISABLED",
+        "generated": 2,
+        "reference": 5,
+        "difference": -3,
+        "status": "MISSING 3"
+      },
+      {
+        "action_type": "MAKE_ENABLED",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "MAKE_INVISIBLE",
+        "generated": 7,
+        "reference": 19,
+        "difference": -12,
+        "status": "MISSING 12"
+      },
+      {
+        "action_type": "MAKE_MANDATORY",
+        "generated": 4,
+        "reference": 12,
+        "difference": -8,
+        "status": "MISSING 8"
+      },
+      {
+        "action_type": "MAKE_NON_MANDATORY",
+        "generated": 4,
+        "reference": 10,
+        "difference": -6,
+        "status": "MISSING 6"
+      },
+      {
+        "action_type": "MAKE_VISIBLE",
+        "generated": 7,
+        "reference": 18,
+        "difference": -11,
+        "status": "MISSING 11"
+      },
+      {
+        "action_type": "OCR",
+        "generated": 2,
+        "reference": 6,
+        "difference": -4,
+        "status": "MISSING 4"
+      },
+      {
+        "action_type": "SEND_OTP",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "SET_DATE",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "VALIDATE_OTP",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "status": "MISSING 1"
+      },
+      {
+        "action_type": "VALIDATION",
+        "generated": 0,
+        "reference": 18,
+        "difference": -18,
+        "status": "MISSING 18"
+      },
+      {
+        "action_type": "VERIFY",
+        "generated": 2,
+        "reference": 5,
+        "difference": -3,
+        "status": "MISSING 3"
+      }
+    ]
+  },
+  "missing_rules": {
+    "VERIFY": [
+      {
+        "field": "GSTIN",
+        "rule_type": "VERIFY",
+        "source_type": "GSTIN"
+      },
+      {
+        "field": "GSTIN",
+        "rule_type": "VERIFY",
+        "source_type": "GSTIN_WITH_PAN"
+      },
+      {
+        "field": "Bank Account Number",
+        "rule_type": "VERIFY",
+        "source_type": "BANK_ACCOUNT_NUMBER"
+      },
+      {
+        "field": "MSME Registration Number",
+        "rule_type": "VERIFY",
+        "source_type": "MSME_UDYAM_REG_NUMBER"
+      }
+    ],
+    "OCR": [
+      {
+        "field": "Aaadhar Back Image",
+        "rule_type": "OCR",
+        "source_type": "AADHAR_BACK_IMAGE"
+      },
+      {
+        "field": "Cancelled Cheque Image",
+        "rule_type": "OCR",
+        "source_type": "CHEQUEE"
+      },
+      {
+        "field": "CIN Certificate",
+        "rule_type": "OCR",
+        "source_type": "CIN"
+      },
+      {
+        "field": "MSME Image",
+        "rule_type": "OCR",
+        "source_type": "MSME"
+      }
+    ],
+    "VISIBILITY": [
+      {
+        "field": "RuleCheck",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "PAN Type",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "PAN Type",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Additional Registration Number Applicable?",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Additional Registration Number Applicable?",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Business Registration Number Available?",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Business Registration Number Available?",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "FDA Registered?",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "FDA Registered?",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "TDS Applicable?",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "TDS Applicable?",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Is Withholding Tax applicable?",
+        "rule_type": "MAKE_INVISIBLE",
+        "source_type": ""
+      },
+      {
+        "field": "Is Withholding Tax applicable?",
+        "rule_type": "MAKE_VISIBLE",
+        "source_type": ""
+      }
+    ],
+    "MANDATORY": [
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Additional Registration Number Applicable?",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Additional Registration Number Applicable?",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Business Registration Number Available?",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Business Registration Number Available?",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Please Choose Address Proof",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "FDA Registered?",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "FDA Registered?",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "TDS Applicable?",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "TDS Applicable?",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "rule_type": "MAKE_MANDATORY",
+        "source_type": ""
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "rule_type": "MAKE_NON_MANDATORY",
+        "source_type": ""
+      }
+    ],
+    "OTHER": [
+      {
+        "field": "RuleCheck",
+        "rule_type": "MAKE_DISABLED",
+        "source_type": ""
+      },
+      {
+        "field": "Transaction ID",
+        "rule_type": "COPY_TXNID_TO_FORM_FILL",
+        "source_type": ""
+      },
+      {
+        "field": "Created On",
+        "rule_type": "SET_DATE",
+        "source_type": ""
+      },
+      {
+        "field": "Created By Name",
+        "rule_type": "COPY_TO",
+        "source_type": "CREATED_BY"
+      },
+      {
+        "field": "Name/ First Name of the Organization",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Name/ First Name of the Organization",
+        "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Choose the Group of Company",
+        "rule_type": "DUMMY_ACTION",
+        "source_type": ""
+      },
+      {
+        "field": "Company and Ownership",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Company and Ownership",
+        "rule_type": "COPY_TO_TRANSACTION_ATTR1",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Company and Ownership",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Company Country",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Account Group/Vendor Type",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Account Group/Vendor Type",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Account Group Code",
+        "rule_type": "MAKE_DISABLED",
+        "source_type": ""
+      },
+      {
+        "field": "Process Flow Condition",
+        "rule_type": "CONCAT",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Country",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Country Description (Domestic)",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Vendor Country",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Country Description",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "E4",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "E5",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "E6",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Mobile Number",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Vendor Contact Email",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Vendor Contact Email",
+        "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Vendor Contact Name",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Vendor Contact Name",
+        "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Email 2",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Central Enrolment number (CEN)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Vendor Mobile Number ",
+        "rule_type": "SEND_OTP",
+        "source_type": "SEND_MOBILE_OTP"
+      },
+      {
+        "field": "Vendor Mobile Number OTP",
+        "rule_type": "VALIDATE_OTP",
+        "source_type": "VALIDATE_OTP"
+      },
+      {
+        "field": "PAN",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "PAN Type",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Please select GST option",
+        "rule_type": "VALIDATION",
+        "source_type": "FORM_FILL_DROP_DOWN"
+      },
+      {
+        "field": "GSTIN IMAGE",
+        "rule_type": "MAKE_DISABLED",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "GSTIN",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Street",
+        "rule_type": "CONCAT",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Street",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Postal Code",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Postal Code",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "City",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "District",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "State",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "City (Import)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "District (Import)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Please choose the option",
+        "rule_type": "MAKE_ENABLED",
+        "source_type": ""
+      },
+      {
+        "field": "IFSC Code",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "IFSC Code",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "IFSC Code / SWIFT Code / Bank Key",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Name of Account Holder (Import)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Bank Name (Import)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Bank Branch (Import)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Bank Address (Import)",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "FDA Registration Number",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "Is SSI / MSME Applicable?",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "MSME Image",
+        "rule_type": "MAKE_DISABLED",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "MSME Registration Number",
+        "rule_type": "CONVERT_TO",
+        "source_type": "UPPER_CASE"
+      },
+      {
+        "field": "MSME Registration Number",
+        "rule_type": "MAKE_DISABLED",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Order currency",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      },
+      {
+        "field": "Purchase Organization",
+        "rule_type": "VALIDATION",
+        "source_type": "FORM_FILL_DROP_DOWN"
+      },
+      {
+        "field": "Terms of Payment",
+        "rule_type": "VALIDATION",
+        "source_type": "FORM_FILL_DROP_DOWN"
+      },
+      {
+        "field": "Incoterms",
+        "rule_type": "COPY_TO",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Incoterms",
+        "rule_type": "VALIDATION",
+        "source_type": "FORM_FILL_DROP_DOWN"
+      },
+      {
+        "field": "Incoterms (Part 2)",
+        "rule_type": "VALIDATION",
+        "source_type": "FORM_FILL_DROP_DOWN"
+      },
+      {
+        "field": "Vendor Invoice",
+        "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "source_type": "FORM_FILL_METADATA"
+      },
+      {
+        "field": "Reconciliation Account",
+        "rule_type": "VALIDATION",
+        "source_type": "FORM_FILL_DROP_DOWN"
+      },
+      {
+        "field": "Currency",
+        "rule_type": "VALIDATION",
+        "source_type": "EXTERNAL_DATA_VALUE"
+      }
+    ]
+  },
+  "critical_checks": {
+    "json_structure_valid": true,
+    "json_structure_errors": [],
+    "ocr_verify_chains": {
+      "total_ocr_rules": 2,
+      "correctly_chained": 2,
+      "missing_chains": 0,
+      "details": [
+        {
+          "ocr_field": "Upload PAN",
+          "source_type": "PAN_IMAGE",
+          "status": "PASS",
+          "postTriggerRuleIds": [
+            26
+          ]
+        },
+        {
+          "ocr_field": "GSTIN IMAGE",
+          "source_type": "GSTIN_IMAGE",
+          "status": "PASS",
+          "postTriggerRuleIds": [
+            28
+          ]
+        }
+      ]
+    },
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 2,
+      "correct_ordinals": 2,
+      "incorrect_ordinals": 0,
+      "details": [
+        {
+          "field": "PAN",
+          "source_type": "PAN_NUMBER",
+          "expected_dest_count": 10,
+          "actual_dest_count": 10,
+          "status": "PASS"
+        },
+        {
+          "field": "GSTIN",
+          "source_type": "GSTIN",
+          "expected_dest_count": 21,
+          "actual_dest_count": 21,
+          "status": "PASS"
+        }
+      ]
+    },
+    "multi_source_verify_check": {
+      "issues": [],
+      "pass_rate": 1.0
+    },
+    "over_generation_check": {
+      "threshold": 1.5,
+      "issues": []
+    },
+    "under_generation_check": {
+      "threshold": 0.5,
+      "issues": [
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_DISABLED",
+          "generated": 2,
+          "expected": 5,
+          "ratio": 0.4
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_INVISIBLE",
+          "generated": 7,
+          "expected": 19,
+          "ratio": 0.37
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TXNID_TO_FORM_FILL",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "SET_DATE",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO",
+          "generated": 0,
+          "expected": 12,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "CONVERT_TO",
+          "generated": 0,
+          "expected": 21,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_TRANSACTION_ATTR3",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "DUMMY_ACTION",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_MANDATORY",
+          "generated": 4,
+          "expected": 12,
+          "ratio": 0.33
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_VISIBLE",
+          "generated": 7,
+          "expected": 18,
+          "ratio": 0.39
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_TRANSACTION_ATTR1",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "VALIDATION",
+          "generated": 0,
+          "expected": 18,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "CONCAT",
+          "generated": 0,
+          "expected": 2,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "SEND_OTP",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "VALIDATE_OTP",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "OCR",
+          "generated": 2,
+          "expected": 6,
+          "ratio": 0.33
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "VERIFY",
+          "generated": 2,
+          "expected": 5,
+          "ratio": 0.4
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_NON_MANDATORY",
+          "generated": 4,
+          "expected": 10,
+          "ratio": 0.4
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "MAKE_ENABLED",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        },
+        {
+          "type": "UNDER_GENERATION",
+          "severity": "HIGH",
+          "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+          "generated": 0,
+          "expected": 1,
+          "ratio": 0.0
+        }
+      ]
+    },
+    "skipped_rule_types": {
+      "note": "These rule types are excluded from evaluation (TEMPORARY)",
+      "types": [
+        "EXT_VALUE",
+        "EXT_DROP_DOWN"
+      ],
+      "reason": "External data value rules require complex table mapping"
+    },
+    "field_level_rule_comparison": {
+      "total_issues": 66,
+      "extra_rule_issues": [
+        {
+          "type": "EXTRA_RULES_ON_FIELD",
+          "field": "Select the process type",
+          "severity": "HIGH",
+          "extra_rules": {
+            "MAKE_DISABLED": 1
+          },
+          "fix_hint": "Remove these rules"
+        },
+        {
+          "type": "EXTRA_RULES_ON_FIELD",
+          "field": "Country",
+          "severity": "HIGH",
+          "extra_rules": {
+            "MAKE_DISABLED": 1
+          },
+          "fix_hint": "Remove these rules"
+        },
+        {
+          "type": "EXTRA_RULES_ON_FIELD",
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "severity": "HIGH",
+          "extra_rules": {
+            "MAKE_VISIBLE": 1,
+            "MAKE_INVISIBLE": 1,
+            "MAKE_MANDATORY": 1,
+            "MAKE_NON_MANDATORY": 1
+          },
+          "fix_hint": "Remove these rules"
+        },
+        {
+          "type": "EXTRA_RULES_ON_FIELD",
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "severity": "HIGH",
+          "extra_rules": {
+            "MAKE_VISIBLE": 1,
+            "MAKE_INVISIBLE": 1
+          },
+          "fix_hint": "Remove these rules"
+        },
+        {
+          "type": "EXTRA_RULES_ON_FIELD",
+          "field": "Do you wish to add additional email addresses?",
+          "severity": "HIGH",
+          "extra_rules": {
+            "MAKE_VISIBLE": 1,
+            "MAKE_INVISIBLE": 1,
+            "MAKE_MANDATORY": 1,
+            "MAKE_NON_MANDATORY": 1
+          },
+          "fix_hint": "Remove these rules"
+        },
+        {
+          "type": "EXTRA_RULES_ON_FIELD",
+          "field": "Customer Code",
+          "severity": "HIGH",
+          "extra_rules": {
+            "MAKE_VISIBLE": 1,
+            "MAKE_INVISIBLE": 1
+          },
+          "fix_hint": "Remove these rules"
+        }
+      ],
+      "missing_rule_issues": [
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Created on",
+          "severity": "HIGH",
+          "missing_rules": {
+            "SET_DATE": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Account Group/Vendor Type",
+          "severity": "HIGH",
+          "missing_rules": {
+            "VALIDATION": 2
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Vendor Contact Email",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1,
+            "COPY_TO_GENERIC_PARTY_EMAIL": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Vendor Contact Name",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1,
+            "COPY_TO_GENERIC_PARTY_NAME": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Email 2",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "PAN",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "PAN Type",
+          "severity": "HIGH",
+          "missing_rules": {
+            "MAKE_INVISIBLE": 1,
+            "MAKE_VISIBLE": 1,
+            "VALIDATION": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Please select GST option",
+          "severity": "HIGH",
+          "missing_rules": {
+            "COPY_TO": 1,
+            "MAKE_INVISIBLE": 4,
+            "MAKE_MANDATORY": 1,
+            "MAKE_NON_MANDATORY": 1,
+            "MAKE_VISIBLE": 3,
+            "VALIDATION": 2
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "GSTIN IMAGE",
+          "severity": "HIGH",
+          "missing_rules": {
+            "MAKE_DISABLED": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "GSTIN",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1,
+            "VERIFY": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Business Registration Number Available?",
+          "severity": "HIGH",
+          "missing_rules": {
+            "MAKE_INVISIBLE": 1,
+            "MAKE_MANDATORY": 1,
+            "MAKE_NON_MANDATORY": 1,
+            "MAKE_VISIBLE": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Please Choose Address Proof",
+          "severity": "HIGH",
+          "missing_rules": {
+            "MAKE_INVISIBLE": 2,
+            "MAKE_MANDATORY": 2,
+            "MAKE_NON_MANDATORY": 2,
+            "MAKE_VISIBLE": 3
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Postal Code",
+          "severity": "HIGH",
+          "missing_rules": {
+            "COPY_TO": 1,
+            "VALIDATION": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Please choose the option",
+          "severity": "HIGH",
+          "missing_rules": {
+            "MAKE_ENABLED": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Cancelled Cheque Image",
+          "severity": "HIGH",
+          "missing_rules": {
+            "OCR": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "IFSC Code",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1,
+            "VALIDATION": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "Bank Account Number",
+          "severity": "HIGH",
+          "missing_rules": {
+            "VERIFY": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "CIN Certificate",
+          "severity": "HIGH",
+          "missing_rules": {
+            "OCR": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "FDA Registration Number",
+          "severity": "HIGH",
+          "missing_rules": {
+            "CONVERT_TO": 1
+          },
+          "fix_hint": "Add these rules"
+        },
+        {
+          "type": "MISSING_RULES_ON_FIELD",
+          "field": "TDS Applicable?",
+          "severity": "HIGH",
+          "missing_rules": {
+            "MAKE_INVISIBLE": 1,
+            "MAKE_MANDATORY": 1,
+            "MAKE_NON_MANDATORY": 1,
+            "MAKE_VISIBLE": 1
+          },
+          "fix_hint": "Add these rules"
+        }
+      ]
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {
+    "generated_output": "adws/2026-02-01_14-44-47/populated_schema_v11.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-02-01T16:40:13.402849",
+    "iteration": 11,
+    "overall_score": 0.1193,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false,
+    "total_generated_fields": 168,
+    "total_reference_fields": 237,
+    "total_generated_rules": 28,
+    "total_reference_rules": 139
+  },
+  "orchestrator_error": {
+    "error_type": "AttributeError",
+    "error_message": "'str' object has no attribute 'get'",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/samart/project/doc-parser/orchestrator_self_healing.py\", line 1175, in main\n    output_path, report_path = run_rule_extraction_agent(\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/samart/project/doc-parser/orchestrator_self_healing.py\", line 618, in run_rule_extraction_agent\n    cat_name = category.get(\"category\", \"Unknown\")\n               ^^^^^^^^^^^^\nAttributeError: 'str' object has no attribute 'get'\n",
+    "iteration": 97,
+    "instruction": "The orchestrator encountered an error processing the output. Please ensure the output format is correct and all data types match expected formats (e.g., affected_fields should contain strings or dicts with 'name' keys)."
+  },
+  "previous_iteration_error": {
+    "error_type": "AttributeError",
+    "error_message": "'str' object has no attribute 'get'",
+    "instruction": "The previous iteration crashed with this error. Fix the issue and continue."
+  }
+}

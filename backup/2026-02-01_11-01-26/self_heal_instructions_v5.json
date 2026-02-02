@@ -1,0 +1,397 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "fix_type": "multi_source_verify",
+      "description": "Add missing source field IDs to BANK_ACCOUNT_NUMBER VERIFY rule",
+      "affected_fields": [
+        "Bank Account Number"
+      ],
+      "implementation": "VERIFY rule needs both IFSC Code field ID and Bank Account Number field ID in sourceIds"
+    }
+  ],
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "generated": {
+      "MAKE_DISABLED": 5,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "EXT_DROP_DOWN": 20,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "VALIDATION": 18,
+      "EXT_VALUE": 13,
+      "MAKE_VISIBLE": 18,
+      "MAKE_INVISIBLE": 19,
+      "MAKE_MANDATORY": 12,
+      "MAKE_NON_MANDATORY": 10,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "CONVERT_TO": 21,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "OCR": 6,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "VERIFY": 5,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "DUMMY_ACTION": 1,
+      "CONCAT": 2,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "MAKE_ENABLED": 1
+    },
+    "discrepancies": [],
+    "skipped_rule_types": {
+      "note": "These rule types excluded from strict comparison (TEMPORARY)",
+      "types": [
+        "EXT_VALUE",
+        "EXT_DROP_DOWN"
+      ],
+      "reason": "External data value rules require complex table mapping"
+    }
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "json_structure_valid": true,
+    "json_structure_errors": [],
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 5,
+      "correct_ordinals": 5,
+      "incorrect_ordinals": 0,
+      "pass_rate": 1.0,
+      "details": [
+        {
+          "field": "PAN",
+          "source_type": "PAN_NUMBER",
+          "dest_count": 10,
+          "expected": 10,
+          "status": "PASS"
+        },
+        {
+          "field": "GSTIN",
+          "source_type": "GSTIN",
+          "dest_count": 21,
+          "expected": 21,
+          "status": "PASS"
+        },
+        {
+          "field": "Bank Account Number",
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "dest_count": 4,
+          "expected": 4,
+          "status": "PASS"
+        },
+        {
+          "field": "CIN",
+          "source_type": "CIN_ID",
+          "dest_count": 14,
+          "expected": 14,
+          "status": "PASS"
+        },
+        {
+          "field": "MSME Registration Number",
+          "source_type": "MSME_UDYAM_REG_NUMBER",
+          "dest_count": 21,
+          "expected": 21,
+          "status": "PASS"
+        }
+      ]
+    },
+    "ocr_verify_chains": {
+      "total_ocr_rules": 6,
+      "correctly_chained": 6,
+      "missing_chains": 0,
+      "pass_rate": 1.0,
+      "details": [
+        {
+          "ocr_field": "Upload PAN",
+          "ocr_type": "PAN_IMAGE",
+          "chained": true,
+          "verify_field": "PAN"
+        },
+        {
+          "ocr_field": "GSTIN IMAGE",
+          "ocr_type": "GSTIN_IMAGE",
+          "chained": true,
+          "verify_field": "GSTIN"
+        },
+        {
+          "ocr_field": "Aadhaar Front copy",
+          "ocr_type": "AADHAR_IMAGE",
+          "chained": true,
+          "note": "No chain needed (Aadhaar)"
+        },
+        {
+          "ocr_field": "Cancelled Cheque Image",
+          "ocr_type": "CHEQUEE",
+          "chained": true,
+          "verify_field": "Bank Account Number"
+        },
+        {
+          "ocr_field": "CIN Certificate",
+          "ocr_type": "CIN",
+          "chained": true,
+          "verify_field": "CIN"
+        },
+        {
+          "ocr_field": "MSME Image",
+          "ocr_type": "MSME",
+          "chained": true,
+          "verify_field": "MSME Registration Number"
+        }
+      ]
+    },
+    "multi_source_verify_check": {
+      "note": "Check VERIFY rules have ALL required sourceIds per schema",
+      "issues": [
+        {
+          "type": "MISSING_SOURCE_FIELDS",
+          "severity": "CRITICAL",
+          "rule_id": 41,
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "expected_mandatory": 2,
+          "actual_count": 1,
+          "fix_hint": "Add missing field IDs to sourceIds. Expected 2 sources."
+        }
+      ],
+      "pass_rate": 0.0
+    },
+    "over_generation_check": {
+      "note": "Detect when generated count significantly exceeds reference",
+      "threshold": 1.5,
+      "issues": []
+    }
+  },
+  "panel_evaluation": [
+    {
+      "panel_name": "Default",
+      "total_fields": 1,
+      "fields_with_rules_expected": 0,
+      "fields_with_rules_generated": 0,
+      "coverage": 0.0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Basic Details",
+      "total_fields": 33,
+      "fields_with_rules_expected": 28,
+      "fields_with_rules_generated": 22,
+      "coverage": 0.79,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "total_fields": 27,
+      "fields_with_rules_expected": 20,
+      "fields_with_rules_generated": 18,
+      "coverage": 0.9,
+      "panel_score": 0.96,
+      "issues": [
+        {
+          "field": "GSTIN",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "total_fields": 8,
+      "fields_with_rules_expected": 2,
+      "fields_with_rules_generated": 3,
+      "coverage": 1.5,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Address Details",
+      "total_fields": 13,
+      "fields_with_rules_expected": 12,
+      "fields_with_rules_generated": 12,
+      "coverage": 1.0,
+      "panel_score": 0.38,
+      "issues": [
+        {
+          "field": "Street",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Street 1",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Street 2",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Street 3",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Postal Code",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "panel_name": "Bank Details",
+      "total_fields": 12,
+      "fields_with_rules_expected": 6,
+      "fields_with_rules_generated": 6,
+      "coverage": 1.0,
+      "panel_score": 0.83,
+      "issues": [
+        {
+          "field": "IFSC Code",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "total_fields": 6,
+      "fields_with_rules_expected": 5,
+      "fields_with_rules_generated": 4,
+      "coverage": 0.8,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "MSME Details",
+      "total_fields": 28,
+      "fields_with_rules_expected": 27,
+      "fields_with_rules_generated": 9,
+      "coverage": 0.33,
+      "panel_score": 0.18,
+      "issues": [
+        {
+          "field": "Name",
+          "issue": "Missing VERIFY/VALIDATION rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Type",
+          "issue": "Missing VERIFY/VALIDATION rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Address",
+          "issue": "Missing VERIFY/VALIDATION rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Category",
+          "issue": "Missing VERIFY/VALIDATION rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Date",
+          "issue": "Missing VERIFY/VALIDATION rule",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "total_fields": 12,
+      "fields_with_rules_expected": 1,
+      "fields_with_rules_generated": 0,
+      "coverage": 0.0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "total_fields": 11,
+      "fields_with_rules_expected": 4,
+      "fields_with_rules_generated": 5,
+      "coverage": 1.25,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Payment Details",
+      "total_fields": 12,
+      "fields_with_rules_expected": 6,
+      "fields_with_rules_generated": 7,
+      "coverage": 1.17,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "total_fields": 5,
+      "fields_with_rules_expected": 2,
+      "fields_with_rules_generated": 2,
+      "coverage": 1.0,
+      "panel_score": 1.0,
+      "issues": []
+    }
+  ],
+  "bud_logic_verification": {
+    "total_fields_with_logic": 148,
+    "fields_correctly_processed": 168,
+    "fields_with_issues": 13,
+    "logic_compliance_rate": 0.92
+  },
+  "false_positives": [],
+  "evaluation_summary": {
+    "generated_output": "adws/2026-02-01_11-01-26/populated_schema_v4.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-02-01T11:31:58.195827Z",
+    "iteration": 4,
+    "overall_score": 0.92,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false
+  },
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "rule_structure_error",
+      "status_code": 400,
+      "message": "Id is not present for the mandatory field Bank Account Number",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

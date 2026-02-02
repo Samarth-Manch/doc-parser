@@ -1,0 +1,5268 @@
+{
+  "template": {
+    "id": 3802,
+    "templateName": "Vendor Creation",
+    "documentTypes": [
+      {
+        "id": 1,
+        "formFillMetadatas": [
+          {
+            "id": 275490,
+            "formTag": {
+              "id": 275490,
+              "name": "Basic Details",
+              "type": "PANEL"
+            },
+            "variableName": "_basicDe45_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275633,
+            "formTag": {
+              "id": 275633,
+              "name": "RuleCheck",
+              "type": "TEXT"
+            },
+            "variableName": "_ruleChe74_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200013,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_INVISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275633
+                ],
+                "destinationIds": [
+                  276339,
+                  275501
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Invisible"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200037,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_DISABLED",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275633
+                ],
+                "destinationIds": [
+                  275588,
+                  275589,
+                  275590,
+                  275591,
+                  275592,
+                  275593,
+                  275594,
+                  275595,
+                  275597,
+                  275598,
+                  275599,
+                  275600,
+                  275601,
+                  275603,
+                  275604,
+                  275605,
+                  275606,
+                  275607,
+                  275608,
+                  275609,
+                  275610,
+                  275492,
+                  275514,
+                  275515,
+                  275516,
+                  275517,
+                  275518,
+                  275519,
+                  275520,
+                  275521,
+                  275522,
+                  275523,
+                  275535,
+                  275536,
+                  275537,
+                  275538,
+                  275542,
+                  275543,
+                  275544,
+                  275545,
+                  275546,
+                  275547,
+                  275548,
+                  275549,
+                  275560,
+                  275561,
+                  275562,
+                  275563,
+                  275564,
+                  275565
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Disable"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              }
+            ]
+          },
+          {
+            "id": 275491,
+            "formTag": {
+              "id": 275491,
+              "name": "Transaction ID",
+              "type": "TEXT"
+            },
+            "variableName": "_transac49_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275492,
+            "formTag": {
+              "id": 275492,
+              "name": "Created On",
+              "type": "TEXT"
+            },
+            "variableName": "_created68_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275493,
+            "formTag": {
+              "id": 275493,
+              "name": "Created By Name",
+              "type": "TEXT"
+            },
+            "variableName": "_created38_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275494,
+            "formTag": {
+              "id": 275494,
+              "name": "Created By Email",
+              "type": "TEXT"
+            },
+            "variableName": "_created42_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275495,
+            "formTag": {
+              "id": 275495,
+              "name": "Created By Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_created43_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276245,
+            "formTag": {
+              "id": 276245,
+              "name": "Name/ First Name of the Organization",
+              "type": "TEXT"
+            },
+            "variableName": "_nameFi57_",
+            "mandatory": true,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275496,
+            "formTag": {
+              "id": 275496,
+              "name": "Select the process type",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_vendorI85_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276416,
+            "formTag": {
+              "id": 276416,
+              "name": "Choose the Group of Company",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_chooset15_",
+            "mandatory": true,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275506,
+            "formTag": {
+              "id": 275506,
+              "name": "Company and Ownership",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_company38_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276399,
+            "formTag": {
+              "id": 276399,
+              "name": "Company Code",
+              "type": "TEXT"
+            },
+            "variableName": "_company26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276400,
+            "formTag": {
+              "id": 276400,
+              "name": "Company Ownership",
+              "type": "TEXT"
+            },
+            "variableName": "_company64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276383,
+            "formTag": {
+              "id": 276383,
+              "name": "Company Country",
+              "type": "TEXT"
+            },
+            "variableName": "_company15_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276339,
+            "formTag": {
+              "id": 276339,
+              "name": "Process Type",
+              "type": "TEXT"
+            },
+            "variableName": "_process30_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275498,
+            "formTag": {
+              "id": 275498,
+              "name": "Account Group/Vendor Type",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_account67_",
+            "mandatory": true,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 280916,
+            "formTag": {
+              "id": 280916,
+              "name": "Account Group Code",
+              "type": "TEXT"
+            },
+            "variableName": "_account10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 280914,
+            "formTag": {
+              "id": 280914,
+              "name": "Account Group description",
+              "type": "TEXT"
+            },
+            "variableName": "_text13_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275499,
+            "formTag": {
+              "id": 275499,
+              "name": "Group key/Corporate Group",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_groupke42_",
+            "mandatory": true,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275497,
+            "formTag": {
+              "id": 275497,
+              "name": "Vendor Domestic or Import",
+              "type": "TEXT"
+            },
+            "variableName": "_vendorD46_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276244,
+            "formTag": {
+              "id": 276244,
+              "name": "Process Flow Condition",
+              "type": "TEXT"
+            },
+            "variableName": "_process51_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276340,
+            "formTag": {
+              "id": 276340,
+              "name": "Country",
+              "type": "TEXT"
+            },
+            "variableName": "_country76_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276341,
+            "formTag": {
+              "id": 276341,
+              "name": "Country Code (Domestic)",
+              "type": "TEXT"
+            },
+            "variableName": "_country67_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276342,
+            "formTag": {
+              "id": 276342,
+              "name": "Country Description (Domestic)",
+              "type": "TEXT"
+            },
+            "variableName": "_country26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276243,
+            "formTag": {
+              "id": 276243,
+              "name": "Vendor Country",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_country37_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275501,
+            "formTag": {
+              "id": 275501,
+              "name": "Country Code",
+              "type": "TEXT"
+            },
+            "variableName": "_e261_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275500,
+            "formTag": {
+              "id": 275500,
+              "name": "Country Description",
+              "type": "TEXT"
+            },
+            "variableName": "_e111_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275503,
+            "formTag": {
+              "id": 275503,
+              "name": "E4",
+              "type": "TEXT"
+            },
+            "variableName": "_e481_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275504,
+            "formTag": {
+              "id": 275504,
+              "name": "E5",
+              "type": "TEXT"
+            },
+            "variableName": "_e516_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275505,
+            "formTag": {
+              "id": 275505,
+              "name": "E6",
+              "type": "TEXT"
+            },
+            "variableName": "_e665_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275507,
+            "formTag": {
+              "id": 275507,
+              "name": "Mobile Number",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN24_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275508,
+            "formTag": {
+              "id": 275508,
+              "name": "Mobile Number",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN12_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276246,
+            "formTag": {
+              "id": 276246,
+              "name": "Do you wish to add additional mobile numbers (India)?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_doyouwi24_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200014,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276246
+                ],
+                "destinationIds": [
+                  276248,
+                  276249,
+                  276250,
+                  276251
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200038,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276246
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276247,
+            "formTag": {
+              "id": 276247,
+              "name": "Do you wish to add additional mobile numbers (Non-India)?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_doyouwi25_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200015,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276247
+                ],
+                "destinationIds": [
+                  276252
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200016,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276247
+                ],
+                "destinationIds": [
+                  276252,
+                  276253,
+                  276254,
+                  276255
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200017,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_INVISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276247
+                ],
+                "destinationIds": [
+                  276252,
+                  276253,
+                  276254,
+                  276255
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200039,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276247
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276248,
+            "formTag": {
+              "id": 276248,
+              "name": "Mobile Number 2 (Domestic)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276249,
+            "formTag": {
+              "id": 276249,
+              "name": "Mobile Number 3 (Domestic)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN82_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276250,
+            "formTag": {
+              "id": 276250,
+              "name": "Mobile Number 4 (Domestic)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN76_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276251,
+            "formTag": {
+              "id": 276251,
+              "name": "Mobile Number 5 (Domestic)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN43_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276252,
+            "formTag": {
+              "id": 276252,
+              "name": "Mobile Number 2 (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN31_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276253,
+            "formTag": {
+              "id": 276253,
+              "name": "Mobile Number 3 (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276254,
+            "formTag": {
+              "id": 276254,
+              "name": "Mobile Number 4 (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN88_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276255,
+            "formTag": {
+              "id": 276255,
+              "name": "Mobile Number 5 (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_mobileN85_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275509,
+            "formTag": {
+              "id": 275509,
+              "name": "Vendor Contact Email",
+              "type": "TEXT"
+            },
+            "variableName": "_email68_",
+            "mandatory": true,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276851,
+            "formTag": {
+              "id": 276851,
+              "name": "Vendor Contact Name",
+              "type": "TEXT"
+            },
+            "variableName": "_text39_",
+            "mandatory": true,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276256,
+            "formTag": {
+              "id": 276256,
+              "name": "Do you wish to add additional email addresses?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_doyouwi49_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200018,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276256
+                ],
+                "destinationIds": [
+                  276257
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200029,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276256
+                ],
+                "destinationIds": [
+                  276257
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200040,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276256
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276257,
+            "formTag": {
+              "id": 276257,
+              "name": "Email 2",
+              "type": "TEXT"
+            },
+            "variableName": "_email287_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276267,
+            "formTag": {
+              "id": 276267,
+              "name": "Concerned email addresses?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_concern38_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200025,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276267
+                ],
+                "destinationIds": [
+                  276888
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200026,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_INVISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276267
+                ],
+                "destinationIds": [
+                  276888
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200041,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276267
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276788,
+            "formTag": {
+              "id": 276788,
+              "name": "Add the concerned Email Id",
+              "type": "ARRAY_HDR"
+            },
+            "variableName": "_addthec11_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200019,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276788
+                ],
+                "destinationIds": [
+                  276888
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200030,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276788
+                ],
+                "destinationIds": [
+                  276888
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              }
+            ]
+          },
+          {
+            "id": 276888,
+            "formTag": {
+              "id": 276888,
+              "name": "Email ID",
+              "type": "TEXT"
+            },
+            "variableName": "_emailId69_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276887,
+            "formTag": {
+              "id": 276887,
+              "name": "Add Concerned Email",
+              "type": "ARRAY_END"
+            },
+            "variableName": "_addthec64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 282372,
+            "formTag": {
+              "id": 282372,
+              "name": "Central Enrolment number (CEN)",
+              "type": "TEXT"
+            },
+            "variableName": "_central75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 296021,
+            "formTag": {
+              "id": 296021,
+              "name": "Central Enrollment Attachment",
+              "type": "FILE"
+            },
+            "variableName": "_centralEnrollmentAttachment19_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276302,
+            "formTag": {
+              "id": 276302,
+              "name": "Type of Industry",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_typeofI21_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200042,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276302
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "TYPE_OF_INDUSTRY"
+              }
+            ]
+          },
+          {
+            "id": 297461,
+            "formTag": {
+              "id": 297461,
+              "name": "Vendor Mobile Number ",
+              "type": "TEXT"
+            },
+            "variableName": "_vendorMobileNumber61_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 297462,
+            "formTag": {
+              "id": 297462,
+              "name": "Vendor Mobile Number OTP",
+              "type": "TEXT"
+            },
+            "variableName": "_vendorMobileNumberOTP45_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275510,
+            "formTag": {
+              "id": 275510,
+              "name": "PAN and GST Details",
+              "type": "PANEL"
+            },
+            "variableName": "_pANandG60_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276567,
+            "formTag": {
+              "id": 276567,
+              "name": "PAN DETAILS",
+              "type": "LABEL"
+            },
+            "variableName": "_pANDETAILS66_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275533,
+            "formTag": {
+              "id": 275533,
+              "name": "Upload PAN",
+              "type": "FILE"
+            },
+            "variableName": "_uploadP93_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200001,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "OCR",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275533
+                ],
+                "destinationIds": [
+                  275534
+                ],
+                "postTriggerRuleIds": [
+                  200009
+                ],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "PAN_IMAGE"
+              }
+            ]
+          },
+          {
+            "id": 275534,
+            "formTag": {
+              "id": 275534,
+              "name": "PAN",
+              "type": "TEXT"
+            },
+            "variableName": "_pAN14_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200007,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "VERIFY",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275534
+                ],
+                "destinationIds": [
+                  275536,
+                  275514,
+                  275515,
+                  -1,
+                  -1,
+                  275538,
+                  -1,
+                  -1,
+                  -1,
+                  -1
+                ],
+                "postTriggerRuleIds": [],
+                "button": "VERIFY",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "PAN_NUMBER"
+              },
+              {
+                "id": 200056,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "CONVERT_TO",
+                "processingType": "CLIENT",
+                "sourceIds": [],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "UPPER_CASE"
+              }
+            ]
+          },
+          {
+            "id": 275535,
+            "formTag": {
+              "id": 275535,
+              "name": "Pan Holder Name",
+              "type": "TEXT"
+            },
+            "variableName": "_panHold28_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275536,
+            "formTag": {
+              "id": 275536,
+              "name": "PAN Type",
+              "type": "TEXT"
+            },
+            "variableName": "_pANType80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275537,
+            "formTag": {
+              "id": 275537,
+              "name": "PAN Status",
+              "type": "TEXT"
+            },
+            "variableName": "_pANStat69_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275538,
+            "formTag": {
+              "id": 275538,
+              "name": "Aadhaar PAN List Status",
+              "type": "TEXT"
+            },
+            "variableName": "_aadhaar29_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276569,
+            "formTag": {
+              "id": 276569,
+              "name": "GST Details",
+              "type": "LABEL"
+            },
+            "variableName": "_gSTDeta46_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275511,
+            "formTag": {
+              "id": 275511,
+              "name": "Please select GST option",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_areyouG41_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200020,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275523,
+                  275512,
+                  275513,
+                  275514,
+                  275515,
+                  275516,
+                  275519
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Registered",
+                  "SEZ",
+                  "Compounding"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200021,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_INVISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275523,
+                  275512,
+                  275513,
+                  275514,
+                  275515,
+                  275516,
+                  275519
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Registered",
+                  "SEZ",
+                  "Compounding"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200022,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275525
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Non-Registered"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200023,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_INVISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275525
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Non-Registered"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200031,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275523,
+                  275512,
+                  275513,
+                  275514,
+                  275515,
+                  275516,
+                  275519
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Registered",
+                  "SEZ",
+                  "Compounding"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200032,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_NON_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275523,
+                  275512,
+                  275513,
+                  275514,
+                  275515,
+                  275516,
+                  275519
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Registered",
+                  "SEZ",
+                  "Compounding"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200033,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275525
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Non-Registered"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200034,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_NON_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [
+                  275525
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "GST Non-Registered"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200043,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275511
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "GSTVALUE"
+              }
+            ]
+          },
+          {
+            "id": 275512,
+            "formTag": {
+              "id": 275512,
+              "name": "GSTIN IMAGE",
+              "type": "FILE"
+            },
+            "variableName": "_gSTINI98_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200002,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "OCR",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275512
+                ],
+                "destinationIds": [
+                  275513
+                ],
+                "postTriggerRuleIds": [
+                  200009
+                ],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "GSTIN_IMAGE"
+              }
+            ]
+          },
+          {
+            "id": 275513,
+            "formTag": {
+              "id": 275513,
+              "name": "GSTIN",
+              "type": "TEXT"
+            },
+            "variableName": "_gSTIN26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200008,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "VERIFY",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275513
+                ],
+                "destinationIds": [
+                  275516,
+                  275519,
+                  -1,
+                  -1,
+                  275536,
+                  -1,
+                  -1,
+                  275523,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1
+                ],
+                "postTriggerRuleIds": [],
+                "button": "Verify",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "GSTIN"
+              }
+            ]
+          },
+          {
+            "id": 275514,
+            "formTag": {
+              "id": 275514,
+              "name": "Trade Name",
+              "type": "TEXT"
+            },
+            "variableName": "_tradeNa30_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275515,
+            "formTag": {
+              "id": 275515,
+              "name": "Legal Name",
+              "type": "TEXT"
+            },
+            "variableName": "_legalNa62_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275516,
+            "formTag": {
+              "id": 275516,
+              "name": "Reg Date",
+              "type": "TEXT"
+            },
+            "variableName": "_regDate80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275518,
+            "formTag": {
+              "id": 275518,
+              "name": "Type",
+              "type": "TEXT"
+            },
+            "variableName": "_type91_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275519,
+            "formTag": {
+              "id": 275519,
+              "name": "Building Number",
+              "type": "TEXT"
+            },
+            "variableName": "_buildin96_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275522,
+            "formTag": {
+              "id": 275522,
+              "name": "Street",
+              "type": "TEXT"
+            },
+            "variableName": "_street90_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275517,
+            "formTag": {
+              "id": 275517,
+              "name": "City",
+              "type": "TEXT"
+            },
+            "variableName": "_city13_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275520,
+            "formTag": {
+              "id": 275520,
+              "name": "District",
+              "type": "TEXT"
+            },
+            "variableName": "_distric64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275521,
+            "formTag": {
+              "id": 275521,
+              "name": "State",
+              "type": "TEXT"
+            },
+            "variableName": "_stateCo94_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275523,
+            "formTag": {
+              "id": 275523,
+              "name": "Pin Code",
+              "type": "TEXT"
+            },
+            "variableName": "_pinCode27_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275525,
+            "formTag": {
+              "id": 275525,
+              "name": "Upload Declaration",
+              "type": "FILE"
+            },
+            "variableName": "_uploadD79_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275530,
+            "formTag": {
+              "id": 275530,
+              "name": "GST Vendor Classification",
+              "type": "TEXT"
+            },
+            "variableName": "_gSTVend52_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276349,
+            "formTag": {
+              "id": 276349,
+              "name": "ID Type",
+              "type": "TEXT"
+            },
+            "variableName": "_iDType56_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276303,
+            "formTag": {
+              "id": 276303,
+              "name": "Service Tax Registration Number",
+              "type": "TEXT"
+            },
+            "variableName": "_service38_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276421,
+            "formTag": {
+              "id": 276421,
+              "name": "Language Key",
+              "type": "TEXT"
+            },
+            "variableName": "_languag37_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276258,
+            "formTag": {
+              "id": 276258,
+              "name": "Vendor Basic Details",
+              "type": "PANEL"
+            },
+            "variableName": "_vendorB47_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275527,
+            "formTag": {
+              "id": 275527,
+              "name": "Name/ First Name of the Organization",
+              "type": "TEXT"
+            },
+            "variableName": "_nameMi48_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275526,
+            "formTag": {
+              "id": 275526,
+              "name": "Name/ Middle Name of the Organization",
+              "type": "TEXT"
+            },
+            "variableName": "_nameFi82_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275528,
+            "formTag": {
+              "id": 275528,
+              "name": "Name/ Last Name of the Organization",
+              "type": "TEXT"
+            },
+            "variableName": "_nameLa55_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275529,
+            "formTag": {
+              "id": 275529,
+              "name": "Name 4/Alternate Name",
+              "type": "TEXT"
+            },
+            "variableName": "_name4A87_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276259,
+            "formTag": {
+              "id": 276259,
+              "name": "Additional Registration Number Applicable?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_additio86_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200024,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276259
+                ],
+                "destinationIds": [
+                  276264
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200035,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276259
+                ],
+                "destinationIds": [
+                  276264
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200036,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_NON_MANDATORY",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276259
+                ],
+                "destinationIds": [
+                  276264
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200044,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276259
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276260,
+            "formTag": {
+              "id": 276260,
+              "name": "Additional Registration Number",
+              "type": "TEXT"
+            },
+            "variableName": "_additio30_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276362,
+            "formTag": {
+              "id": 276362,
+              "name": "Tax Number Category (GST)",
+              "type": "TEXT"
+            },
+            "variableName": "_taxNumb60_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276592,
+            "formTag": {
+              "id": 276592,
+              "name": "Tax Number Category (SSI) ",
+              "type": "TEXT"
+            },
+            "variableName": "_taxNumb32_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276593,
+            "formTag": {
+              "id": 276593,
+              "name": "Tax Number Category (International)",
+              "type": "TEXT"
+            },
+            "variableName": "_taxNumb39_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276261,
+            "formTag": {
+              "id": 276261,
+              "name": "Title (Domestic)",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_title96_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276262,
+            "formTag": {
+              "id": 276262,
+              "name": "Title",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_titleN97_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276263,
+            "formTag": {
+              "id": 276263,
+              "name": "Business Registration Number Available?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_busines16_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200045,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276263
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276264,
+            "formTag": {
+              "id": 276264,
+              "name": "Business Registration Number",
+              "type": "TEXT"
+            },
+            "variableName": "_busines80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275539,
+            "formTag": {
+              "id": 275539,
+              "name": "Address Details",
+              "type": "PANEL"
+            },
+            "variableName": "_address43_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276265,
+            "formTag": {
+              "id": 276265,
+              "name": "Please Choose Address Proof",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_pleasec22_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200046,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276265
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "ADDRESS_PROOF"
+              }
+            ]
+          },
+          {
+            "id": 275541,
+            "formTag": {
+              "id": 275541,
+              "name": "Electricity bill copy",
+              "type": "FILE"
+            },
+            "variableName": "_address10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276266,
+            "formTag": {
+              "id": 276266,
+              "name": "Aadhaar  Front copy",
+              "type": "FILE"
+            },
+            "variableName": "_aadhaar26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200003,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "OCR",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  276266
+                ],
+                "destinationIds": [
+                  275538
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "AADHAR_IMAGE"
+              }
+            ]
+          },
+          {
+            "id": 276570,
+            "formTag": {
+              "id": 276570,
+              "name": "Aaadhar Back Image",
+              "type": "FILE"
+            },
+            "variableName": "_aaadhar54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275542,
+            "formTag": {
+              "id": 275542,
+              "name": "Street",
+              "type": "TEXT"
+            },
+            "variableName": "_street33_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275544,
+            "formTag": {
+              "id": 275544,
+              "name": "Street 1",
+              "type": "TEXT"
+            },
+            "variableName": "_street212_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275543,
+            "formTag": {
+              "id": 275543,
+              "name": "Street 2",
+              "type": "TEXT"
+            },
+            "variableName": "_street161_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275545,
+            "formTag": {
+              "id": 275545,
+              "name": "Street 3",
+              "type": "TEXT"
+            },
+            "variableName": "_street318_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275546,
+            "formTag": {
+              "id": 275546,
+              "name": "Postal Code",
+              "type": "TEXT"
+            },
+            "variableName": "_postalC88_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275547,
+            "formTag": {
+              "id": 275547,
+              "name": "City",
+              "type": "TEXT"
+            },
+            "variableName": "_city52_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275548,
+            "formTag": {
+              "id": 275548,
+              "name": "District",
+              "type": "TEXT"
+            },
+            "variableName": "_district41_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275549,
+            "formTag": {
+              "id": 275549,
+              "name": "State",
+              "type": "TEXT"
+            },
+            "variableName": "_region32_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275554,
+            "formTag": {
+              "id": 275554,
+              "name": "Region (Import)",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_region79_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275552,
+            "formTag": {
+              "id": 275552,
+              "name": "City (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_cityIm74_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275553,
+            "formTag": {
+              "id": 275553,
+              "name": "District (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_distric79_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275551,
+            "formTag": {
+              "id": 275551,
+              "name": "Postal Code (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_postalC42_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275550,
+            "formTag": {
+              "id": 275550,
+              "name": "Country",
+              "type": "TEXT"
+            },
+            "variableName": "_country50_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275556,
+            "formTag": {
+              "id": 275556,
+              "name": "Bank Details",
+              "type": "PANEL"
+            },
+            "variableName": "_bankDet17_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275557,
+            "formTag": {
+              "id": 275557,
+              "name": "Please choose the option",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_pleasec13_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200027,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_VISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275557
+                ],
+                "destinationIds": [
+                  275558,
+                  275559,
+                  275560,
+                  275561,
+                  276394
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "IN",
+                "conditionValueType": "TEXT"
+              },
+              {
+                "id": 200028,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "MAKE_INVISIBLE",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275557
+                ],
+                "destinationIds": [
+                  275558,
+                  275559,
+                  275560,
+                  275561,
+                  276394
+                ],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "conditionalValues": [
+                  "Yes"
+                ],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT"
+              }
+            ]
+          },
+          {
+            "id": 275558,
+            "formTag": {
+              "id": 275558,
+              "name": "Cancelled Cheque Image",
+              "type": "FILE"
+            },
+            "variableName": "_cancell97_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200004,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "OCR",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275558
+                ],
+                "destinationIds": [
+                  -1,
+                  275560,
+                  -1,
+                  276394
+                ],
+                "postTriggerRuleIds": [
+                  200012
+                ],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "CHEQUEE"
+              }
+            ]
+          },
+          {
+            "id": 275559,
+            "formTag": {
+              "id": 275559,
+              "name": "Passbook/Bank Letter",
+              "type": "FILE"
+            },
+            "variableName": "_passboo24_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276394,
+            "formTag": {
+              "id": 276394,
+              "name": "Please enter IFSC and Account Number manually",
+              "type": "LABEL"
+            },
+            "variableName": "_pleasee47_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275560,
+            "formTag": {
+              "id": 275560,
+              "name": "IFSC Code",
+              "type": "TEXT"
+            },
+            "variableName": "_iFSCCode41_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200057,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "CONVERT_TO",
+                "processingType": "CLIENT",
+                "sourceIds": [],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "UPPER_CASE"
+              }
+            ]
+          },
+          {
+            "id": 275561,
+            "formTag": {
+              "id": 275561,
+              "name": "Bank Account Number",
+              "type": "TEXT"
+            },
+            "variableName": "_bankAcc51_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200012,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "VERIFY",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275560,
+                  275561
+                ],
+                "destinationIds": [
+                  275562
+                ],
+                "postTriggerRuleIds": [],
+                "button": "VERIFY",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "BANK_ACCOUNT_NUMBER"
+              }
+            ]
+          },
+          {
+            "id": 275562,
+            "formTag": {
+              "id": 275562,
+              "name": "Name of Account Holder",
+              "type": "TEXT"
+            },
+            "variableName": "_nameofA84_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275563,
+            "formTag": {
+              "id": 275563,
+              "name": "Bank Name",
+              "type": "TEXT"
+            },
+            "variableName": "_bankName18_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275564,
+            "formTag": {
+              "id": 275564,
+              "name": "Bank Branch",
+              "type": "TEXT"
+            },
+            "variableName": "_bankBra87_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275565,
+            "formTag": {
+              "id": 275565,
+              "name": "Bank Address",
+              "type": "TEXT"
+            },
+            "variableName": "_bankAdd30_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275566,
+            "formTag": {
+              "id": 275566,
+              "name": "Bank Country",
+              "type": "TEXT"
+            },
+            "variableName": "_bankCou26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275567,
+            "formTag": {
+              "id": 275567,
+              "name": "Bank Statement/Confirmation/Passbook Image",
+              "type": "FILE"
+            },
+            "variableName": "_bankSta85_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275568,
+            "formTag": {
+              "id": 275568,
+              "name": "SWIFT Image",
+              "type": "FILE"
+            },
+            "variableName": "_sWIFTIm54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275569,
+            "formTag": {
+              "id": 275569,
+              "name": "Cheque (Import)",
+              "type": "FILE"
+            },
+            "variableName": "_cheque66_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275570,
+            "formTag": {
+              "id": 275570,
+              "name": "IFSC Code / SWIFT Code / Bank Key",
+              "type": "TEXT"
+            },
+            "variableName": "_iFSCCod27_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275571,
+            "formTag": {
+              "id": 275571,
+              "name": "Bank Account Number (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_bankAcc94_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275572,
+            "formTag": {
+              "id": 275572,
+              "name": "Name of Account Holder (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_nameofA34_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275573,
+            "formTag": {
+              "id": 275573,
+              "name": "Bank Name (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_bankNam90_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275574,
+            "formTag": {
+              "id": 275574,
+              "name": "Bank Branch (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_bankBra80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275575,
+            "formTag": {
+              "id": 275575,
+              "name": "Bank Address (Import)",
+              "type": "TEXT"
+            },
+            "variableName": "_bankAdd33_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275576,
+            "formTag": {
+              "id": 275576,
+              "name": "Bank Country (Import)",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_bankCou83_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275577,
+            "formTag": {
+              "id": 275577,
+              "name": "CIN and TDS Details",
+              "type": "PANEL"
+            },
+            "variableName": "_cINandT45_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275578,
+            "formTag": {
+              "id": 275578,
+              "name": "CIN Certificate",
+              "type": "FILE"
+            },
+            "variableName": "_cINCert25_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275579,
+            "formTag": {
+              "id": 275579,
+              "name": "CIN",
+              "type": "TEXT"
+            },
+            "variableName": "_cIN20_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200010,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "VERIFY",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275579
+                ],
+                "destinationIds": [
+                  275515,
+                  275536,
+                  -1,
+                  275538,
+                  -1,
+                  275519,
+                  -1,
+                  275516,
+                  -1,
+                  -1
+                ],
+                "postTriggerRuleIds": [],
+                "button": "VERIFY",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "CIN_ID"
+              },
+              {
+                "id": 200058,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "CONVERT_TO",
+                "processingType": "CLIENT",
+                "sourceIds": [],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "UPPER_CASE"
+              }
+            ]
+          },
+          {
+            "id": 282371,
+            "formTag": {
+              "id": 282371,
+              "name": "FDA Registered?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_fDARegi92_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200047,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  282371
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 275580,
+            "formTag": {
+              "id": 275580,
+              "name": "FDA Registration Number",
+              "type": "TEXT"
+            },
+            "variableName": "_fDARegi54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275582,
+            "formTag": {
+              "id": 275582,
+              "name": "TDS Applicable?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_tDSAppl54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200048,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275582
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 275583,
+            "formTag": {
+              "id": 275583,
+              "name": "TDS Certificate",
+              "type": "FILE"
+            },
+            "variableName": "_tDSCert10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275584,
+            "formTag": {
+              "id": 275584,
+              "name": "MSME Details",
+              "type": "PANEL"
+            },
+            "variableName": "_mSMEDet94_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275585,
+            "formTag": {
+              "id": 275585,
+              "name": "Is SSI / MSME Applicable?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_isSSIM82_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200049,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275585
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 275586,
+            "formTag": {
+              "id": 275586,
+              "name": "MSME Image",
+              "type": "FILE"
+            },
+            "variableName": "_mSMEIma83_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200005,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "OCR",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275586
+                ],
+                "destinationIds": [
+                  275587
+                ],
+                "postTriggerRuleIds": [
+                  200011
+                ],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "MSME"
+              }
+            ]
+          },
+          {
+            "id": 275587,
+            "formTag": {
+              "id": 275587,
+              "name": "MSME Registration Number",
+              "type": "TEXT"
+            },
+            "variableName": "_mSMEReg80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200011,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "VERIFY",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275587
+                ],
+                "destinationIds": [
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  275519,
+                  -1,
+                  -1,
+                  275516,
+                  275523,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  -1,
+                  275537,
+                  -1,
+                  -1,
+                  275536,
+                  -1
+                ],
+                "postTriggerRuleIds": [],
+                "button": "VERIFY",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "MSME_UDYAM_REG_NUMBER"
+              },
+              {
+                "id": 200059,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "CONVERT_TO",
+                "processingType": "CLIENT",
+                "sourceIds": [],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "UPPER_CASE"
+              }
+            ]
+          },
+          {
+            "id": 275588,
+            "formTag": {
+              "id": 275588,
+              "name": "Name",
+              "type": "TEXT"
+            },
+            "variableName": "_name32_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275589,
+            "formTag": {
+              "id": 275589,
+              "name": "Type",
+              "type": "TEXT"
+            },
+            "variableName": "_type43_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275590,
+            "formTag": {
+              "id": 275590,
+              "name": "Address",
+              "type": "TEXT"
+            },
+            "variableName": "_address89_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275591,
+            "formTag": {
+              "id": 275591,
+              "name": "Category",
+              "type": "TEXT"
+            },
+            "variableName": "_category20_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275592,
+            "formTag": {
+              "id": 275592,
+              "name": "Date",
+              "type": "TEXT"
+            },
+            "variableName": "_date72_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275593,
+            "formTag": {
+              "id": 275593,
+              "name": "Enterprise",
+              "type": "TEXT"
+            },
+            "variableName": "_enterpr10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275594,
+            "formTag": {
+              "id": 275594,
+              "name": "Major Activity",
+              "type": "TEXT"
+            },
+            "variableName": "_majorAc52_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275595,
+            "formTag": {
+              "id": 275595,
+              "name": "Date of Commencement",
+              "type": "TEXT"
+            },
+            "variableName": "_dateofC36_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275596,
+            "formTag": {
+              "id": 275596,
+              "name": "Dic Name",
+              "type": "TEXT"
+            },
+            "variableName": "_dicName44_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275597,
+            "formTag": {
+              "id": 275597,
+              "name": "State",
+              "type": "TEXT"
+            },
+            "variableName": "_state10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275598,
+            "formTag": {
+              "id": 275598,
+              "name": "Applied State",
+              "type": "TEXT"
+            },
+            "variableName": "_applied20_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275599,
+            "formTag": {
+              "id": 275599,
+              "name": "Modified Date",
+              "type": "TEXT"
+            },
+            "variableName": "_modifie64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275600,
+            "formTag": {
+              "id": 275600,
+              "name": "Expiry Date",
+              "type": "TEXT"
+            },
+            "variableName": "_expiryD25_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275601,
+            "formTag": {
+              "id": 275601,
+              "name": "Address Line1",
+              "type": "TEXT"
+            },
+            "variableName": "_address61_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275602,
+            "formTag": {
+              "id": 275602,
+              "name": "Buliding",
+              "type": "TEXT"
+            },
+            "variableName": "_buliding79_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275603,
+            "formTag": {
+              "id": 275603,
+              "name": "Street",
+              "type": "TEXT"
+            },
+            "variableName": "_street23_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275604,
+            "formTag": {
+              "id": 275604,
+              "name": "Area",
+              "type": "TEXT"
+            },
+            "variableName": "_area95_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275605,
+            "formTag": {
+              "id": 275605,
+              "name": "City",
+              "type": "TEXT"
+            },
+            "variableName": "_city90_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275606,
+            "formTag": {
+              "id": 275606,
+              "name": "Pin",
+              "type": "TEXT"
+            },
+            "variableName": "_pin99_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275607,
+            "formTag": {
+              "id": 275607,
+              "name": "State",
+              "type": "TEXT"
+            },
+            "variableName": "_state79_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275608,
+            "formTag": {
+              "id": 275608,
+              "name": "District",
+              "type": "TEXT"
+            },
+            "variableName": "_district75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275609,
+            "formTag": {
+              "id": 275609,
+              "name": "Classification Year",
+              "type": "TEXT"
+            },
+            "variableName": "_classif68_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275610,
+            "formTag": {
+              "id": 275610,
+              "name": "Classification Date",
+              "type": "TEXT"
+            },
+            "variableName": "_classif50_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275611,
+            "formTag": {
+              "id": 275611,
+              "name": "MSME Declaration",
+              "type": "FILE"
+            },
+            "variableName": "_mSMEDec75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200006,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "OCR",
+                "processingType": "SERVER",
+                "sourceIds": [
+                  275611
+                ],
+                "destinationIds": [
+                  275587
+                ],
+                "postTriggerRuleIds": [
+                  200011
+                ],
+                "button": "",
+                "searchable": false,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "MSME"
+              }
+            ]
+          },
+          {
+            "id": 275612,
+            "formTag": {
+              "id": 275612,
+              "name": "Vendor Duplicity Details",
+              "type": "PANEL"
+            },
+            "variableName": "_vendorD29_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275613,
+            "formTag": {
+              "id": 275613,
+              "name": "Exception Duplicate Vendor creation",
+              "type": "STATIC_CHECK_BOX"
+            },
+            "variableName": "_excepti43_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275614,
+            "formTag": {
+              "id": 275614,
+              "name": "Duplicate Vendor Number",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica39_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275615,
+            "formTag": {
+              "id": 275615,
+              "name": "Duplicate Vendor Description",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275616,
+            "formTag": {
+              "id": 275616,
+              "name": "Block status",
+              "type": "TEXT"
+            },
+            "variableName": "_blockst55_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275617,
+            "formTag": {
+              "id": 275617,
+              "name": "Duplicate GST Result",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica23_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275618,
+            "formTag": {
+              "id": 275618,
+              "name": "Duplicate PAN Result",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275619,
+            "formTag": {
+              "id": 275619,
+              "name": "Duplicate Email Result",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica56_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275620,
+            "formTag": {
+              "id": 275620,
+              "name": "Duplicate Mobile Result",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica91_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275621,
+            "formTag": {
+              "id": 275621,
+              "name": "Duplicate Bank Account Number Result",
+              "type": "TEXT"
+            },
+            "variableName": "_duplica21_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275622,
+            "formTag": {
+              "id": 275622,
+              "name": "Justification for Duplicate Vendor Creation",
+              "type": "TEXT"
+            },
+            "variableName": "_justifi55_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275623,
+            "formTag": {
+              "id": 275623,
+              "name": "Comments",
+              "type": "TEXT"
+            },
+            "variableName": "_comments50_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276272,
+            "formTag": {
+              "id": 276272,
+              "name": "Purchase Organization Details",
+              "type": "PANEL"
+            },
+            "variableName": "_purchas69_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276273,
+            "formTag": {
+              "id": 276273,
+              "name": "Company Code",
+              "type": "TEXT"
+            },
+            "variableName": "_company75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276279,
+            "formTag": {
+              "id": 276279,
+              "name": "GR-Based Inv. Verif.",
+              "type": "TEXT"
+            },
+            "variableName": "_gRBase65_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276280,
+            "formTag": {
+              "id": 276280,
+              "name": "Schema Grp, Supplier",
+              "type": "TEXT"
+            },
+            "variableName": "_schemaG21_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276281,
+            "formTag": {
+              "id": 276281,
+              "name": "Automatic PO",
+              "type": "TEXT"
+            },
+            "variableName": "_automat46_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276282,
+            "formTag": {
+              "id": 276282,
+              "name": "Service-Based Invoice Verification",
+              "type": "STATIC_CHECK_BOX"
+            },
+            "variableName": "_service15_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276438,
+            "formTag": {
+              "id": 276438,
+              "name": "Details",
+              "type": "ARRAY_HDR"
+            },
+            "variableName": "_table45_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276439,
+            "formTag": {
+              "id": 276439,
+              "name": "Order currency",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_ordercu73_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276440,
+            "formTag": {
+              "id": 276440,
+              "name": "Order Currency Code",
+              "type": "TEXT"
+            },
+            "variableName": "_text47_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276442,
+            "formTag": {
+              "id": 276442,
+              "name": "Order Currency Description",
+              "type": "TEXT"
+            },
+            "variableName": "_orderCu10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276443,
+            "formTag": {
+              "id": 276443,
+              "name": "Purchase Organization",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_purchas26_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276451,
+            "formTag": {
+              "id": 276451,
+              "name": "Purchase Organization Code",
+              "type": "TEXT"
+            },
+            "variableName": "_purchas63_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276444,
+            "formTag": {
+              "id": 276444,
+              "name": "Purchase Organization Description",
+              "type": "TEXT"
+            },
+            "variableName": "_purchas96_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276452,
+            "formTag": {
+              "id": 276452,
+              "name": "Terms of Payment",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_termsof98_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200050,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276452
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "TERMS_OF_PAYMENT"
+              }
+            ]
+          },
+          {
+            "id": 276453,
+            "formTag": {
+              "id": 276453,
+              "name": "Payment Terms Code",
+              "type": "TEXT"
+            },
+            "variableName": "_payment77_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276454,
+            "formTag": {
+              "id": 276454,
+              "name": "Payment Terms Description",
+              "type": "TEXT"
+            },
+            "variableName": "_payment72_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276445,
+            "formTag": {
+              "id": 276445,
+              "name": "Incoterms",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_incoter91_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200051,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276445
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "INCOTERMS"
+              }
+            ]
+          },
+          {
+            "id": 276446,
+            "formTag": {
+              "id": 276446,
+              "name": "Incoterms Code",
+              "type": "TEXT"
+            },
+            "variableName": "_incoter43_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276447,
+            "formTag": {
+              "id": 276447,
+              "name": "Incoterms Description",
+              "type": "TEXT"
+            },
+            "variableName": "_incoter80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276448,
+            "formTag": {
+              "id": 276448,
+              "name": "Incoterms (Part 2)",
+              "type": "TEXT"
+            },
+            "variableName": "_incoter68_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276449,
+            "formTag": {
+              "id": 276449,
+              "name": "Incoterms (Part 2) Code",
+              "type": "TEXT"
+            },
+            "variableName": "_incoter61_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276450,
+            "formTag": {
+              "id": 276450,
+              "name": "Incoterms (Part 2) Description",
+              "type": "TEXT"
+            },
+            "variableName": "_incoter79_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276441,
+            "formTag": {
+              "id": 276441,
+              "name": "Details",
+              "type": "ARRAY_END"
+            },
+            "variableName": "_table81_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276284,
+            "formTag": {
+              "id": 276284,
+              "name": "Is Vendor Your Customer?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_isVendo98_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200052,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276284
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276285,
+            "formTag": {
+              "id": 276285,
+              "name": "Customer Code",
+              "type": "TEXT"
+            },
+            "variableName": "_custome10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276286,
+            "formTag": {
+              "id": 276286,
+              "name": "Service Tax File",
+              "type": "FILE"
+            },
+            "variableName": "_service18_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275627,
+            "formTag": {
+              "id": 275627,
+              "name": "Payment Details",
+              "type": "PANEL"
+            },
+            "variableName": "_payment64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276436,
+            "formTag": {
+              "id": 276436,
+              "name": "Company Code",
+              "type": "TEXT"
+            },
+            "variableName": "_company10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275628,
+            "formTag": {
+              "id": 275628,
+              "name": "Payment Methods",
+              "type": "TEXT"
+            },
+            "variableName": "_payment94_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275629,
+            "formTag": {
+              "id": 275629,
+              "name": "House Bank",
+              "type": "TEXT"
+            },
+            "variableName": "_houseBa51_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276850,
+            "formTag": {
+              "id": 276850,
+              "name": "SSI Indicator",
+              "type": "TEXT"
+            },
+            "variableName": "_sSIIndi53_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275630,
+            "formTag": {
+              "id": 275630,
+              "name": "Minority Indicator",
+              "type": "TEXT"
+            },
+            "variableName": "_minorit81_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275631,
+            "formTag": {
+              "id": 275631,
+              "name": "Vendor Invoice",
+              "type": "FILE"
+            },
+            "variableName": "_vendorI59_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 275632,
+            "formTag": {
+              "id": 275632,
+              "name": "Reconciliation Account",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_reconci73_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200053,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  275632
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "RECONCILIATION_ACCOUNT"
+              }
+            ]
+          },
+          {
+            "id": 276321,
+            "formTag": {
+              "id": 276321,
+              "name": "Reconciliation Account Code",
+              "type": "TEXT"
+            },
+            "variableName": "_reconci17_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276322,
+            "formTag": {
+              "id": 276322,
+              "name": "Reconciliation Account Description",
+              "type": "TEXT"
+            },
+            "variableName": "_reconci58_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276283,
+            "formTag": {
+              "id": 276283,
+              "name": "Currency",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_currency90_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276384,
+            "formTag": {
+              "id": 276384,
+              "name": "Currency Code",
+              "type": "TEXT"
+            },
+            "variableName": "_currenc42_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276385,
+            "formTag": {
+              "id": 276385,
+              "name": "Currency Description",
+              "type": "TEXT"
+            },
+            "variableName": "_currenc17_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276287,
+            "formTag": {
+              "id": 276287,
+              "name": "Share with",
+              "type": "TEXT"
+            },
+            "variableName": "_sharewi84_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276288,
+            "formTag": {
+              "id": 276288,
+              "name": "Additional File",
+              "type": "FILE"
+            },
+            "variableName": "_additio65_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276434,
+            "formTag": {
+              "id": 276434,
+              "name": "Clerk Abbreviation",
+              "type": "TEXT"
+            },
+            "variableName": "_clerkAb58_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276435,
+            "formTag": {
+              "id": 276435,
+              "name": "Check Double Invoice",
+              "type": "TEXT"
+            },
+            "variableName": "_checkDo11_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276424,
+            "formTag": {
+              "id": 276424,
+              "name": "Requestor Comments",
+              "type": "TEXT"
+            },
+            "variableName": "_request12_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276426,
+            "formTag": {
+              "id": 276426,
+              "name": "Vertical Head Details",
+              "type": "PANEL"
+            },
+            "variableName": "_vertica61_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276427,
+            "formTag": {
+              "id": 276427,
+              "name": "Vertical Head Comments",
+              "type": "TEXT"
+            },
+            "variableName": "_vertica25_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276428,
+            "formTag": {
+              "id": 276428,
+              "name": "Functional Head Details",
+              "type": "PANEL"
+            },
+            "variableName": "_functio92_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276429,
+            "formTag": {
+              "id": 276429,
+              "name": "Functional Head Comments",
+              "type": "TEXT"
+            },
+            "variableName": "_functio20_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276289,
+            "formTag": {
+              "id": 276289,
+              "name": "Withholding Tax Details",
+              "type": "PANEL"
+            },
+            "variableName": "_withhol23_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276290,
+            "formTag": {
+              "id": 276290,
+              "name": "Company Code",
+              "type": "TEXT"
+            },
+            "variableName": "_company14_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276603,
+            "formTag": {
+              "id": 276603,
+              "name": "Is Withholding Tax applicable?",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_iswithh69_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200054,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276603
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "PIDILITE_YES_NO"
+              }
+            ]
+          },
+          {
+            "id": 276597,
+            "formTag": {
+              "id": 276597,
+              "name": "Withholding Tax Data",
+              "type": "ARRAY_HDR"
+            },
+            "variableName": "_table68_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276598,
+            "formTag": {
+              "id": 276598,
+              "name": "Withholding Tax Type ",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_withhol80_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276599,
+            "formTag": {
+              "id": 276599,
+              "name": "Subject to Withholding Tax",
+              "type": "STATIC_CHECK_BOX"
+            },
+            "variableName": "_subject55_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276600,
+            "formTag": {
+              "id": 276600,
+              "name": "Recipient Type",
+              "type": "TEXT"
+            },
+            "variableName": "_recipie75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276601,
+            "formTag": {
+              "id": 276601,
+              "name": "Withholding Tax Code",
+              "type": "EXTERNAL_DROP_DOWN_VALUE"
+            },
+            "variableName": "_withhol78_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": [
+              {
+                "id": 200055,
+                "createUser": "FIRST_PARTY",
+                "updateUser": "FIRST_PARTY",
+                "actionType": "EXT_DROP_DOWN",
+                "processingType": "CLIENT",
+                "sourceIds": [
+                  276601
+                ],
+                "destinationIds": [],
+                "postTriggerRuleIds": [],
+                "button": "",
+                "searchable": true,
+                "executeOnFill": true,
+                "executeOnRead": false,
+                "executeOnEsign": false,
+                "executePostEsign": false,
+                "runPostConditionFail": false,
+                "sourceType": "FORM_FILL_DROP_DOWN",
+                "params": "RECONCILIATION_ACCOUNT"
+              }
+            ]
+          },
+          {
+            "id": 276602,
+            "formTag": {
+              "id": 276602,
+              "name": "Table",
+              "type": "ARRAY_END"
+            },
+            "variableName": "_table53_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276604,
+            "formTag": {
+              "id": 276604,
+              "name": "All financial & bank details are verified",
+              "type": "STATIC_CHECK_BOX"
+            },
+            "variableName": "_allfina72_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276430,
+            "formTag": {
+              "id": 276430,
+              "name": "Auditor Details",
+              "type": "PANEL"
+            },
+            "variableName": "_auditor46_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276431,
+            "formTag": {
+              "id": 276431,
+              "name": "Auditor Comments",
+              "type": "TEXT"
+            },
+            "variableName": "_auditor30_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276296,
+            "formTag": {
+              "id": 276296,
+              "name": "MDC Details",
+              "type": "PANEL"
+            },
+            "variableName": "_mDCDeta65_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276297,
+            "formTag": {
+              "id": 276297,
+              "name": "Vendor Number",
+              "type": "TEXT"
+            },
+            "variableName": "_vendorN44_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276432,
+            "formTag": {
+              "id": 276432,
+              "name": "MDC Comments",
+              "type": "TEXT"
+            },
+            "variableName": "_mDCComm20_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276298,
+            "formTag": {
+              "id": 276298,
+              "name": "Approver Mapping",
+              "type": "PANEL"
+            },
+            "variableName": "_approve16_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276299,
+            "formTag": {
+              "id": 276299,
+              "name": "Approver 1 / Requestor Name",
+              "type": "TEXT"
+            },
+            "variableName": "_approve72_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276300,
+            "formTag": {
+              "id": 276300,
+              "name": "Approver 1 / Requestor Email",
+              "type": "TEXT"
+            },
+            "variableName": "_approve91_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276301,
+            "formTag": {
+              "id": 276301,
+              "name": "Approver 1 / Requestor Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_approve48_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276401,
+            "formTag": {
+              "id": 276401,
+              "name": "Approver 2 Vertical Head Name",
+              "type": "TEXT"
+            },
+            "variableName": "_approve54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276402,
+            "formTag": {
+              "id": 276402,
+              "name": "Approver 2 Vertical Head Email",
+              "type": "TEXT"
+            },
+            "variableName": "_approve33_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276403,
+            "formTag": {
+              "id": 276403,
+              "name": "Approver 2 Vertical Head Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_approve71_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276404,
+            "formTag": {
+              "id": 276404,
+              "name": "Approver 3 Functional Head Name",
+              "type": "TEXT"
+            },
+            "variableName": "_approve41_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276405,
+            "formTag": {
+              "id": 276405,
+              "name": "Approver 3 Functional Head Email",
+              "type": "TEXT"
+            },
+            "variableName": "_approve10_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276406,
+            "formTag": {
+              "id": 276406,
+              "name": "Approver 3 Functional Head Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_approve98_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276407,
+            "formTag": {
+              "id": 276407,
+              "name": "Approver 4 Accounts Team Name",
+              "type": "TEXT"
+            },
+            "variableName": "_approve75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276408,
+            "formTag": {
+              "id": 276408,
+              "name": "Approver 4 Accounts Team Email",
+              "type": "TEXT"
+            },
+            "variableName": "_approve17_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276409,
+            "formTag": {
+              "id": 276409,
+              "name": "Approver 4 Accounts Team Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_approve11_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276771,
+            "formTag": {
+              "id": 276771,
+              "name": " Country Head Name",
+              "type": "TEXT"
+            },
+            "variableName": "_Country75_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276772,
+            "formTag": {
+              "id": 276772,
+              "name": " Country Head Email",
+              "type": "TEXT"
+            },
+            "variableName": "_Country95_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276773,
+            "formTag": {
+              "id": 276773,
+              "name": "Country Head Phone Number",
+              "type": "TEXT"
+            },
+            "variableName": "_country57_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276410,
+            "formTag": {
+              "id": 276410,
+              "name": "Approver 5 Auditor Team Name",
+              "type": "TEXT"
+            },
+            "variableName": "_approve66_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276411,
+            "formTag": {
+              "id": 276411,
+              "name": "Approver 5 Auditor Team Email",
+              "type": "TEXT"
+            },
+            "variableName": "_approve99_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276412,
+            "formTag": {
+              "id": 276412,
+              "name": "Approver 5 Auditor Team Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_approve37_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276413,
+            "formTag": {
+              "id": 276413,
+              "name": "Approver 6 MDC Team Name",
+              "type": "TEXT"
+            },
+            "variableName": "_approve14_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276414,
+            "formTag": {
+              "id": 276414,
+              "name": "Approver 6 MDC Team Email",
+              "type": "TEXT"
+            },
+            "variableName": "_approve74_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276415,
+            "formTag": {
+              "id": 276415,
+              "name": "Approver 6 MDC Team Mobile",
+              "type": "TEXT"
+            },
+            "variableName": "_approve24_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276376,
+            "formTag": {
+              "id": 276376,
+              "name": "Common Fields Panel",
+              "type": "PANEL"
+            },
+            "variableName": "_commonF63_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276377,
+            "formTag": {
+              "id": 276377,
+              "name": "Common Mobile Number",
+              "type": "TEXT"
+            },
+            "variableName": "_commonM87_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276378,
+            "formTag": {
+              "id": 276378,
+              "name": "Common Country",
+              "type": "TEXT"
+            },
+            "variableName": "_commonC13_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276379,
+            "formTag": {
+              "id": 276379,
+              "name": "Common Company Code",
+              "type": "TEXT"
+            },
+            "variableName": "_commonC23_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276380,
+            "formTag": {
+              "id": 276380,
+              "name": "Common Title",
+              "type": "TEXT"
+            },
+            "variableName": "_commonT87_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276381,
+            "formTag": {
+              "id": 276381,
+              "name": "Common Bank Account Number",
+              "type": "TEXT"
+            },
+            "variableName": "_commonB77_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276382,
+            "formTag": {
+              "id": 276382,
+              "name": "Common Bank IFSC/Key",
+              "type": "TEXT"
+            },
+            "variableName": "_commonB97_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276417,
+            "formTag": {
+              "id": 276417,
+              "name": "Common Postal code",
+              "type": "TEXT"
+            },
+            "variableName": "_commonP22_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276418,
+            "formTag": {
+              "id": 276418,
+              "name": "Common City",
+              "type": "TEXT"
+            },
+            "variableName": "_commonC54_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276419,
+            "formTag": {
+              "id": 276419,
+              "name": "Common District",
+              "type": "TEXT"
+            },
+            "variableName": "_commonD64_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276420,
+            "formTag": {
+              "id": 276420,
+              "name": "Common Region",
+              "type": "TEXT"
+            },
+            "variableName": "_commonR67_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276422,
+            "formTag": {
+              "id": 276422,
+              "name": "Common Bank Country",
+              "type": "TEXT"
+            },
+            "variableName": "_commonB87_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276423,
+            "formTag": {
+              "id": 276423,
+              "name": "Common Bank Holder Name",
+              "type": "TEXT"
+            },
+            "variableName": "_commonB89_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 280912,
+            "formTag": {
+              "id": 280912,
+              "name": "Account Group Code",
+              "type": "TEXT"
+            },
+            "variableName": "_accountGroupCode29_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 280913,
+            "formTag": {
+              "id": 280913,
+              "name": "Account Group/Vendor Type Description",
+              "type": "TEXT"
+            },
+            "variableName": "_accountGroup/VendorTypeDescription99_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          },
+          {
+            "id": 276572,
+            "formTag": {
+              "id": 276572,
+              "name": "Trigger Rule One",
+              "type": "TEXT"
+            },
+            "variableName": "_trigger38_",
+            "mandatory": false,
+            "editable": true,
+            "visible": true,
+            "formFillRules": []
+          }
+        ]
+      }
+    ]
+  },
+  "extraction_info": {
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "reference_schema": "documents/json_output/vendor_creation_sample_bud.json",
+    "total_fields": 284,
+    "total_rules_generated": 59,
+    "rule_type_distribution": {
+      "OCR": 6,
+      "VERIFY": 6,
+      "MAKE_INVISIBLE": 6,
+      "MAKE_VISIBLE": 10,
+      "MAKE_MANDATORY": 5,
+      "MAKE_NON_MANDATORY": 3,
+      "MAKE_DISABLED": 1,
+      "EXT_DROP_DOWN": 18,
+      "CONVERT_TO": 4
+    }
+  }
+}

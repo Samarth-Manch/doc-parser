@@ -1,0 +1,758 @@
+{
+  "evaluation_metadata": {
+    "evaluation_date": "2026-01-31T13:24:29.199286",
+    "generated_file": "adws/2026-01-31_12-58-30/populated_schema_v2.json",
+    "reference_file": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "pass_threshold": 0.9,
+    "iteration": 2
+  },
+  "summary": {
+    "overall_score": 0.2485,
+    "passed": false,
+    "pass_threshold": 0.9,
+    "scores": {
+      "rule_coverage": 0.1326,
+      "field_coverage": 0.1515,
+      "ocr_chain_correctness": 1.0,
+      "verify_ordinal_mapping": 0.0
+    },
+    "weights": {
+      "rule_coverage": 0.4,
+      "field_coverage": 0.3,
+      "ocr_chain_correctness": 0.15,
+      "verify_ordinal_mapping": 0.15
+    }
+  },
+  "rule_statistics": {
+    "generated": {
+      "total_rules": 37,
+      "total_fields": 168,
+      "fields_with_rules": 15,
+      "rules_by_type": {
+        "MAKE_VISIBLE": 12,
+        "MAKE_INVISIBLE": 8,
+        "MAKE_NON_MANDATORY": 5,
+        "MAKE_MANDATORY": 2,
+        "OCR": 4,
+        "VERIFY": 4,
+        "MAKE_DISABLED": 2
+      }
+    },
+    "reference": {
+      "total_rules": 279,
+      "total_fields": 284,
+      "fields_with_rules": 99,
+      "rules_by_type": {
+        "MAKE_DISABLED": 5,
+        "MAKE_INVISIBLE": 19,
+        "COPY_TXNID_TO_FORM_FILL": 1,
+        "SESSION_BASED_MAKE_VISIBLE": 6,
+        "SET_DATE": 1,
+        "COPY_TO": 13,
+        "CONVERT_TO": 21,
+        "COPY_TO_TRANSACTION_ATTR3": 1,
+        "EXECUTE": 40,
+        "DUMMY_ACTION": 1,
+        "EXT_VALUE": 13,
+        "MAKE_MANDATORY": 12,
+        "MAKE_VISIBLE": 18,
+        "SESSION_BASED_MAKE_INVISIBLE": 6,
+        "SESSION_BASED_MAKE_MANDATORY": 3,
+        "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+        "COPY_TO_TRANSACTION_ATTR1": 1,
+        "VALIDATION": 18,
+        "CONCAT": 2,
+        "DELETE_DOCUMENT": 15,
+        "UNDELETE_DOCUMENT": 17,
+        "EXT_DROP_DOWN": 20,
+        "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+        "COPY_TO_GENERIC_PARTY_NAME": 1,
+        "SEND_OTP": 1,
+        "VALIDATE_OTP": 1,
+        "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+        "OCR": 6,
+        "VERIFY": 5,
+        "MAKE_NON_MANDATORY": 10,
+        "MAKE_ENABLED": 1
+      }
+    },
+    "comparison": {
+      "rules_delta": -242,
+      "fields_with_rules_delta": -84,
+      "coverage_percentage": 13.26
+    }
+  },
+  "panel_by_panel_scores": [
+    {
+      "panel_group": 0.0,
+      "generated_rules": 35,
+      "reference_rules": 267,
+      "score": 0.1311
+    },
+    {
+      "panel_group": 1.0,
+      "generated_rules": 2,
+      "reference_rules": 9,
+      "score": 0.2222
+    },
+    {
+      "panel_group": 2754.0,
+      "generated_rules": 0,
+      "reference_rules": 0,
+      "score": 1.0
+    },
+    {
+      "panel_group": 17199.0,
+      "generated_rules": 0,
+      "reference_rules": 3,
+      "score": 0.0
+    }
+  ],
+  "rule_type_comparison": [
+    {
+      "rule_type": "CONCAT",
+      "generated": 0,
+      "reference": 2,
+      "delta": -2,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "CONVERT_TO",
+      "generated": 0,
+      "reference": 21,
+      "delta": -21,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TO",
+      "generated": 0,
+      "reference": 13,
+      "delta": -13,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "generated": 0,
+      "reference": 18,
+      "delta": -18,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TO_TRANSACTION_ATTR1",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "COPY_TXNID_TO_FORM_FILL",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "DELETE_DOCUMENT",
+      "generated": 0,
+      "reference": 15,
+      "delta": -15,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "DUMMY_ACTION",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "EXECUTE",
+      "generated": 0,
+      "reference": 40,
+      "delta": -40,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "EXT_DROP_DOWN",
+      "generated": 0,
+      "reference": 20,
+      "delta": -20,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "EXT_VALUE",
+      "generated": 0,
+      "reference": 13,
+      "delta": -13,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "MAKE_DISABLED",
+      "generated": 2,
+      "reference": 5,
+      "delta": -3,
+      "coverage": 40.0
+    },
+    {
+      "rule_type": "MAKE_ENABLED",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "MAKE_INVISIBLE",
+      "generated": 8,
+      "reference": 19,
+      "delta": -11,
+      "coverage": 42.11
+    },
+    {
+      "rule_type": "MAKE_MANDATORY",
+      "generated": 2,
+      "reference": 12,
+      "delta": -10,
+      "coverage": 16.67
+    },
+    {
+      "rule_type": "MAKE_NON_MANDATORY",
+      "generated": 5,
+      "reference": 10,
+      "delta": -5,
+      "coverage": 50.0
+    },
+    {
+      "rule_type": "MAKE_VISIBLE",
+      "generated": 12,
+      "reference": 18,
+      "delta": -6,
+      "coverage": 66.67
+    },
+    {
+      "rule_type": "OCR",
+      "generated": 4,
+      "reference": 6,
+      "delta": -2,
+      "coverage": 66.67
+    },
+    {
+      "rule_type": "SEND_OTP",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_INVISIBLE",
+      "generated": 0,
+      "reference": 6,
+      "delta": -6,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_MANDATORY",
+      "generated": 0,
+      "reference": 3,
+      "delta": -3,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_NON_MANDATORY",
+      "generated": 0,
+      "reference": 2,
+      "delta": -2,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "SESSION_BASED_MAKE_VISIBLE",
+      "generated": 0,
+      "reference": 6,
+      "delta": -6,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "SET_DATE",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "UNDELETE_DOCUMENT",
+      "generated": 0,
+      "reference": 17,
+      "delta": -17,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "VALIDATE_OTP",
+      "generated": 0,
+      "reference": 1,
+      "delta": -1,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "VALIDATION",
+      "generated": 0,
+      "reference": 18,
+      "delta": -18,
+      "coverage": 0.0
+    },
+    {
+      "rule_type": "VERIFY",
+      "generated": 4,
+      "reference": 5,
+      "delta": -1,
+      "coverage": 80.0
+    }
+  ],
+  "critical_checks": {
+    "ocr_chains": {
+      "status": "PASS",
+      "total_ocr_rules": 4,
+      "correct_chains": 4,
+      "missing_chains": 0,
+      "score": 1.0,
+      "details": [
+        {
+          "field": "_uploadpan_",
+          "rule_id": 30,
+          "has_chain": true,
+          "postTriggerRuleIds": [
+            31
+          ]
+        },
+        {
+          "field": "_gstinimage_",
+          "rule_id": 32,
+          "has_chain": true,
+          "postTriggerRuleIds": [
+            33
+          ]
+        },
+        {
+          "field": "_cancelledchequeimage_",
+          "rule_id": 34,
+          "has_chain": true,
+          "postTriggerRuleIds": [
+            35
+          ]
+        },
+        {
+          "field": "_msmeimage_",
+          "rule_id": 36,
+          "has_chain": true,
+          "postTriggerRuleIds": [
+            37
+          ]
+        }
+      ]
+    },
+    "verify_ordinal_mapping": {
+      "status": "FAIL",
+      "total_verify_rules": 4,
+      "correct_mappings": 0,
+      "missing_mappings": 4,
+      "score": 0.0,
+      "details": [
+        {
+          "field": "_pan_",
+          "rule_id": 31,
+          "has_ordinal_mapping": false,
+          "destinationIds": []
+        },
+        {
+          "field": "_gstin_",
+          "rule_id": 33,
+          "has_ordinal_mapping": false,
+          "destinationIds": []
+        },
+        {
+          "field": "_ifsccode_",
+          "rule_id": 35,
+          "has_ordinal_mapping": false,
+          "destinationIds": []
+        },
+        {
+          "field": "_msmeregistrationnumber_",
+          "rule_id": 37,
+          "has_ordinal_mapping": false,
+          "destinationIds": []
+        }
+      ]
+    },
+    "visibility_pairs": {
+      "status": "FAIL",
+      "issues_count": 4,
+      "issues": [
+        {
+          "field": "_selecttheprocesstype_",
+          "issue": "MAKE_VISIBLE without matching MAKE_INVISIBLE",
+          "rule_id": 1
+        },
+        {
+          "field": "_selecttheprocesstype_",
+          "issue": "MAKE_VISIBLE without matching MAKE_INVISIBLE",
+          "rule_id": 2
+        },
+        {
+          "field": "_doyouwishtoaddadditionalemailaddresses_",
+          "issue": "MAKE_VISIBLE without matching MAKE_INVISIBLE",
+          "rule_id": 15
+        },
+        {
+          "field": "_addtheconcernedemailid_",
+          "issue": "MAKE_VISIBLE without matching MAKE_INVISIBLE",
+          "rule_id": 17
+        }
+      ]
+    },
+    "mandatory_pairs": {
+      "status": "FAIL",
+      "issues_count": 2,
+      "issues": [
+        {
+          "field": "_doyouwishtoaddadditionalemailaddresses_",
+          "issue": "MAKE_MANDATORY without matching MAKE_NON_MANDATORY",
+          "rule_id": 16
+        },
+        {
+          "field": "_addtheconcernedemailid_",
+          "issue": "MAKE_MANDATORY without matching MAKE_NON_MANDATORY",
+          "rule_id": 18
+        }
+      ]
+    },
+    "make_disabled_consolidation": {
+      "status": "CHECK_REQUIRED",
+      "generated_count": 2,
+      "reference_count": 5,
+      "note": "MAKE_DISABLED should consolidate multiple destinations, not create individual rules"
+    }
+  },
+  "missing_rules": {
+    "by_type": [
+      {
+        "type": "EXECUTE",
+        "reference_count": 40,
+        "generated_count": 0,
+        "missing": 40
+      },
+      {
+        "type": "CONVERT_TO",
+        "reference_count": 21,
+        "generated_count": 0,
+        "missing": 21
+      },
+      {
+        "type": "EXT_DROP_DOWN",
+        "reference_count": 20,
+        "generated_count": 0,
+        "missing": 20
+      },
+      {
+        "type": "VALIDATION",
+        "reference_count": 18,
+        "generated_count": 0,
+        "missing": 18
+      },
+      {
+        "type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "reference_count": 18,
+        "generated_count": 0,
+        "missing": 18
+      },
+      {
+        "type": "UNDELETE_DOCUMENT",
+        "reference_count": 17,
+        "generated_count": 0,
+        "missing": 17
+      },
+      {
+        "type": "DELETE_DOCUMENT",
+        "reference_count": 15,
+        "generated_count": 0,
+        "missing": 15
+      },
+      {
+        "type": "COPY_TO",
+        "reference_count": 13,
+        "generated_count": 0,
+        "missing": 13
+      },
+      {
+        "type": "EXT_VALUE",
+        "reference_count": 13,
+        "generated_count": 0,
+        "missing": 13
+      },
+      {
+        "type": "MAKE_INVISIBLE",
+        "reference_count": 19,
+        "generated_count": 8,
+        "missing": 11
+      },
+      {
+        "type": "MAKE_MANDATORY",
+        "reference_count": 12,
+        "generated_count": 2,
+        "missing": 10
+      },
+      {
+        "type": "SESSION_BASED_MAKE_VISIBLE",
+        "reference_count": 6,
+        "generated_count": 0,
+        "missing": 6
+      },
+      {
+        "type": "MAKE_VISIBLE",
+        "reference_count": 18,
+        "generated_count": 12,
+        "missing": 6
+      },
+      {
+        "type": "SESSION_BASED_MAKE_INVISIBLE",
+        "reference_count": 6,
+        "generated_count": 0,
+        "missing": 6
+      },
+      {
+        "type": "MAKE_NON_MANDATORY",
+        "reference_count": 10,
+        "generated_count": 5,
+        "missing": 5
+      },
+      {
+        "type": "MAKE_DISABLED",
+        "reference_count": 5,
+        "generated_count": 2,
+        "missing": 3
+      },
+      {
+        "type": "SESSION_BASED_MAKE_MANDATORY",
+        "reference_count": 3,
+        "generated_count": 0,
+        "missing": 3
+      },
+      {
+        "type": "SESSION_BASED_MAKE_NON_MANDATORY",
+        "reference_count": 2,
+        "generated_count": 0,
+        "missing": 2
+      },
+      {
+        "type": "CONCAT",
+        "reference_count": 2,
+        "generated_count": 0,
+        "missing": 2
+      },
+      {
+        "type": "OCR",
+        "reference_count": 6,
+        "generated_count": 4,
+        "missing": 2
+      },
+      {
+        "type": "COPY_TXNID_TO_FORM_FILL",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "SET_DATE",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "COPY_TO_TRANSACTION_ATTR3",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "DUMMY_ACTION",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "COPY_TO_TRANSACTION_ATTR1",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "COPY_TO_GENERIC_PARTY_NAME",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "SEND_OTP",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "VALIDATE_OTP",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      },
+      {
+        "type": "VERIFY",
+        "reference_count": 5,
+        "generated_count": 4,
+        "missing": 1
+      },
+      {
+        "type": "MAKE_ENABLED",
+        "reference_count": 1,
+        "generated_count": 0,
+        "missing": 1
+      }
+    ],
+    "total_missing": 242
+  },
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "severity": "CRITICAL",
+        "issue": "VERIFY rules missing destinationIds ordinal mapping",
+        "affected_count": 4,
+        "affected_fields": [
+          "_pan_",
+          "_gstin_",
+          "_ifsccode_",
+          "_msmeregistrationnumber_"
+        ],
+        "fix_description": "Add destinationIds array with ordinal indices matching OCR response fields",
+        "fix_steps": [
+          "For each VERIFY rule, identify the corresponding OCR field output positions",
+          "Map output positions to destination field IDs",
+          "Use -1 for positions that should be skipped",
+          "Example: destinationIds: [fieldId1, -1, fieldId2, fieldId3, -1] for 5-position OCR output"
+        ]
+      },
+      {
+        "priority": 2,
+        "severity": "HIGH",
+        "issue": "Critical rule types missing or under-represented",
+        "affected_types": [
+          {
+            "type": "EXECUTE",
+            "missing": 40
+          },
+          {
+            "type": "CONVERT_TO",
+            "missing": 21
+          },
+          {
+            "type": "EXT_DROP_DOWN",
+            "missing": 20
+          },
+          {
+            "type": "VALIDATION",
+            "missing": 18
+          },
+          {
+            "type": "COPY_TO_DOCUMENT_STORAGE_ID",
+            "missing": 18
+          }
+        ],
+        "fix_description": "Implement extraction logic for missing rule types",
+        "fix_steps": [
+          "EXECUTE: Parse complex conditional expressions from BUD logic field",
+          "EXT_DROP_DOWN: Identify fields referencing external lookup tables",
+          "CONVERT_TO: Add case conversion rules for text fields",
+          "VALIDATION: Extract length limits and pattern requirements",
+          "COPY_TO_DOCUMENT_STORAGE_ID: Add for all FILE type fields"
+        ]
+      },
+      {
+        "priority": 3,
+        "severity": "HIGH",
+        "issue": "MAKE_VISIBLE rules without corresponding MAKE_INVISIBLE pairs",
+        "affected_count": 4,
+        "affected_fields": [
+          "_addtheconcernedemailid_",
+          "_doyouwishtoaddadditionalemailaddresses_",
+          "_selecttheprocesstype_"
+        ],
+        "fix_description": "Create MAKE_INVISIBLE pair for each MAKE_VISIBLE rule",
+        "fix_steps": [
+          "For each MAKE_VISIBLE rule, create a MAKE_INVISIBLE rule",
+          "Use the same sourceIds and destinationIds",
+          "Invert the conditionalValues (e.g., \"Yes\" -> \"No\")",
+          "Use opposite condition (IN vs NOT_IN)"
+        ]
+      }
+    ],
+    "secondary_fixes": [
+      {
+        "issue": "EXT_DROP_DOWN and EXT_VALUE rules missing",
+        "missing_ext_dropdown": 20,
+        "missing_ext_value": 13,
+        "fix": "Identify EXTERNAL_DROPDOWN field types and create rules referencing lookup tables from BUD"
+      },
+      {
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rules missing for file uploads",
+        "reference_count": 18,
+        "fix": "For each FILE type field, add COPY_TO_DOCUMENT_STORAGE_ID rule to persist uploaded documents"
+      }
+    ],
+    "improvements": [
+      {
+        "area": "Rule Coverage",
+        "current": "13.3%",
+        "target": "90%",
+        "gap": "76.7%",
+        "recommendations": [
+          "Expand BUD logic parsing to extract more rule patterns",
+          "Add support for SESSION_BASED_* rule variants",
+          "Implement DELETE_DOCUMENT/UNDELETE_DOCUMENT rule pairs"
+        ]
+      },
+      {
+        "area": "Field Coverage",
+        "current": "15 of 99 fields",
+        "coverage_percentage": "15.2%",
+        "recommendations": [
+          "Review all fields with business logic in BUD",
+          "Ensure system-derived fields have appropriate rules",
+          "Add validation rules for text length limits"
+        ]
+      }
+    ]
+  }
+}

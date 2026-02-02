@@ -1,0 +1,405 @@
+{
+  "evaluation_summary": {
+    "generated_output": "adws/2026-02-01_11-01-26/populated_schema_v3.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-02-01T11:19:10.719971",
+    "iteration": 3,
+    "overall_score": 1.0,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false,
+    "critical_issues_count": 9
+  },
+  "panel_evaluation": [
+    {
+      "panel_name": "Basic Details",
+      "total_fields": 33,
+      "fields_evaluated": 33,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "total_fields": 27,
+      "fields_evaluated": 27,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "total_fields": 8,
+      "fields_evaluated": 8,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Address Details",
+      "total_fields": 13,
+      "fields_evaluated": 13,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Bank Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "total_fields": 6,
+      "fields_evaluated": 6,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "MSME Details",
+      "total_fields": 28,
+      "fields_evaluated": 28,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "total_fields": 11,
+      "fields_evaluated": 11,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Payment Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "total_fields": 5,
+      "fields_evaluated": 5,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    }
+  ],
+  "bud_logic_verification": {
+    "total_fields_with_logic": 148,
+    "total_fields_evaluated": 167,
+    "fields_with_issues": 0,
+    "compliance_rate": 1.0
+  },
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "generated": {
+      "MAKE_DISABLED": 5,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "EXT_DROP_DOWN": 20,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "VALIDATION": 18,
+      "EXT_VALUE": 13,
+      "MAKE_VISIBLE": 18,
+      "MAKE_INVISIBLE": 19,
+      "MAKE_MANDATORY": 12,
+      "MAKE_NON_MANDATORY": 10,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "CONVERT_TO": 21,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "OCR": 6,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "VERIFY": 5,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "DUMMY_ACTION": 1,
+      "CONCAT": 2,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "MAKE_ENABLED": 1
+    },
+    "discrepancies": []
+  },
+  "critical_checks": {
+    "json_structure_valid": true,
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 6,
+      "correct_ordinals": 0,
+      "incorrect_ordinals": 6,
+      "pass_rate": 0.0,
+      "details": [
+        {
+          "source_type": "GSTIN",
+          "status": "FAIL",
+          "gen_dest_count": 21,
+          "ref_dest_count": 11,
+          "gen_src_count": 1,
+          "ref_src_count": 1
+        },
+        {
+          "source_type": "CIN_ID",
+          "status": "EXTRA",
+          "note": "Exists in generated but not in reference"
+        },
+        {
+          "source_type": "PAN_NUMBER",
+          "status": "FAIL",
+          "gen_dest_count": 10,
+          "ref_dest_count": 9,
+          "gen_src_count": 1,
+          "ref_src_count": 1
+        },
+        {
+          "source_type": "MSME_UDYAM_REG_NUMBER",
+          "status": "FAIL",
+          "gen_dest_count": 21,
+          "ref_dest_count": 39,
+          "gen_src_count": 1,
+          "ref_src_count": 1
+        },
+        {
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "status": "FAIL",
+          "gen_dest_count": 4,
+          "ref_dest_count": 1,
+          "gen_src_count": 1,
+          "ref_src_count": 2
+        },
+        {
+          "source_type": "GSTIN_WITH_PAN",
+          "status": "MISSING",
+          "note": "Missing in generated"
+        }
+      ]
+    },
+    "ocr_verify_chains": {
+      "total_ocr_rules": 6,
+      "correctly_chained": 5,
+      "missing_chains": 1,
+      "pass_rate": 0.83,
+      "details": [
+        {
+          "ocr_type": "PAN_IMAGE",
+          "status": "PASS",
+          "has_chain": true,
+          "should_have_chain": true,
+          "chain_ids": [
+            40
+          ]
+        },
+        {
+          "ocr_type": "GSTIN_IMAGE",
+          "status": "PASS",
+          "has_chain": true,
+          "should_have_chain": true,
+          "chain_ids": [
+            42
+          ]
+        },
+        {
+          "ocr_type": "AADHAR_IMAGE",
+          "status": "PASS",
+          "has_chain": false,
+          "note": "AADHAR types do not need VERIFY chains"
+        },
+        {
+          "ocr_type": "CHEQUEE",
+          "status": "PASS",
+          "has_chain": true,
+          "should_have_chain": true,
+          "chain_ids": [
+            41
+          ]
+        },
+        {
+          "ocr_type": "CIN",
+          "status": "FAIL",
+          "has_chain": true,
+          "should_have_chain": false,
+          "chain_ids": [
+            44
+          ]
+        },
+        {
+          "ocr_type": "MSME",
+          "status": "PASS",
+          "has_chain": true,
+          "should_have_chain": true,
+          "chain_ids": [
+            43
+          ]
+        }
+      ]
+    },
+    "multi_source_verify_check": {
+      "rules_checked": [
+        {
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "required_sources": 2,
+          "actual_sources": 1,
+          "status": "FAIL",
+          "fix_hint": "Add IFSC Code field ID to sourceIds"
+        },
+        {
+          "source_type": "GSTIN_WITH_PAN",
+          "required_sources": 2,
+          "actual_sources": 0,
+          "status": "MISSING",
+          "fix_hint": "Add GSTIN_WITH_PAN VERIFY rule with PAN and GSTIN field IDs in sourceIds"
+        }
+      ],
+      "pass_rate": 0.0
+    },
+    "skipped_rule_types": {
+      "note": "These rule types are excluded from evaluation (TEMPORARY)",
+      "types": [
+        "EXT_VALUE",
+        "EXT_DROP_DOWN"
+      ],
+      "reason": "External data value rules require complex table mapping - to be implemented later"
+    }
+  },
+  "missing_rules": [
+    {
+      "category": "VERIFY",
+      "missing_count": 1,
+      "fields": [
+        {
+          "source_type": "GSTIN_WITH_PAN",
+          "note": "Missing in generated"
+        }
+      ]
+    },
+    {
+      "category": "OCR",
+      "missing_count": 1,
+      "fields": [
+        {
+          "source_type": "AADHAR_BACK_IMAGE"
+        }
+      ]
+    }
+  ],
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "fix_type": "missing_verify_rules",
+        "description": "Add missing VERIFY rules: GSTIN_WITH_PAN",
+        "affected_source_types": [
+          "GSTIN_WITH_PAN"
+        ]
+      },
+      {
+        "priority": 2,
+        "fix_type": "multi_source_verify",
+        "description": "Fix multi-source VERIFY rules that need multiple sourceIds",
+        "affected_rules": [
+          {
+            "source_type": "BANK_ACCOUNT_NUMBER",
+            "required_sources": 2,
+            "actual_sources": 1,
+            "status": "FAIL",
+            "fix_hint": "Add IFSC Code field ID to sourceIds"
+          },
+          {
+            "source_type": "GSTIN_WITH_PAN",
+            "required_sources": 2,
+            "actual_sources": 0,
+            "status": "MISSING",
+            "fix_hint": "Add GSTIN_WITH_PAN VERIFY rule with PAN and GSTIN field IDs in sourceIds"
+          }
+        ]
+      },
+      {
+        "priority": 3,
+        "fix_type": "verify_ordinal_mapping",
+        "description": "Fix VERIFY destinationIds ordinal mapping to match reference",
+        "affected_rules": [
+          {
+            "source_type": "GSTIN",
+            "generated_dest": 21,
+            "expected_dest": 11
+          },
+          {
+            "source_type": "PAN_NUMBER",
+            "generated_dest": 10,
+            "expected_dest": 9
+          },
+          {
+            "source_type": "MSME_UDYAM_REG_NUMBER",
+            "generated_dest": 21,
+            "expected_dest": 39
+          },
+          {
+            "source_type": "BANK_ACCOUNT_NUMBER",
+            "generated_dest": 4,
+            "expected_dest": 1
+          }
+        ]
+      },
+      {
+        "priority": 4,
+        "fix_type": "ocr_type_mismatch",
+        "description": "Change AADHAR_IMAGE to AADHAR_BACK_IMAGE to match reference schema",
+        "current_type": "AADHAR_IMAGE",
+        "expected_type": "AADHAR_BACK_IMAGE"
+      },
+      {
+        "priority": 5,
+        "fix_type": "extra_verify_rules",
+        "description": "Review extra VERIFY rules not in reference: CIN_ID",
+        "affected_source_types": [
+          "CIN_ID"
+        ],
+        "note": "These may be valid additions - verify against BUD logic"
+      }
+    ],
+    "total_fixes_needed": 5
+  }
+}

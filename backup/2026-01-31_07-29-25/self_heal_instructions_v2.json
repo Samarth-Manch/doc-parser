@@ -1,0 +1,300 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "panel": "Address Details",
+      "field": "Aaadhar Back Image",
+      "action": "add",
+      "rule_type": "OCR",
+      "specification": "Add OCR rule with postTriggerRuleIds pointing to VERIFY rule"
+    },
+    {
+      "priority": 1,
+      "panel": "CIN and TDS Details",
+      "field": "CIN Certificate",
+      "action": "add",
+      "rule_type": "OCR",
+      "specification": "Add OCR rule with postTriggerRuleIds pointing to VERIFY rule"
+    },
+    {
+      "priority": 1,
+      "panel": "ALL",
+      "field": "ALL VERIFY fields",
+      "action": "modify",
+      "rule_type": "VERIFY",
+      "specification": "Add destinationIds array with ordinal position mapping (-1 for skip, field_id for copy)"
+    },
+    {
+      "priority": 2,
+      "panel": "Unknown",
+      "field": "Source ID: 43",
+      "action": "add",
+      "rule_type": "MAKE_INVISIBLE",
+      "specification": "Add corresponding MAKE_INVISIBLE rule for visibility pair"
+    },
+    {
+      "priority": 2,
+      "panel": "Unknown",
+      "field": "Source ID: 28",
+      "action": "add",
+      "rule_type": "MAKE_INVISIBLE",
+      "specification": "Add corresponding MAKE_INVISIBLE rule for visibility pair"
+    },
+    {
+      "priority": 2,
+      "panel": "Unknown",
+      "field": "Source ID: 31",
+      "action": "add",
+      "rule_type": "MAKE_INVISIBLE",
+      "specification": "Add corresponding MAKE_INVISIBLE rule for visibility pair"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "action": "add",
+      "rule_type": "EXT_VALUE",
+      "specification": "Add EXT_VALUE rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Company and Ownership",
+      "action": "add",
+      "rule_type": "EXT_VALUE",
+      "specification": "Add EXT_VALUE rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Account Group/Vendor Type",
+      "action": "add",
+      "rule_type": "EXT_VALUE",
+      "specification": "Add EXT_VALUE rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Group key/Corporate Group",
+      "action": "add",
+      "rule_type": "EXT_VALUE",
+      "specification": "Add EXT_VALUE rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Vendor Country",
+      "action": "add",
+      "rule_type": "EXT_VALUE",
+      "specification": "Add EXT_VALUE rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Country Code",
+      "action": "add",
+      "rule_type": "EXT_DROP_DOWN",
+      "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional mobile numbers (India)?",
+      "action": "add",
+      "rule_type": "EXT_DROP_DOWN",
+      "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional mobile numbers (Non-India)?",
+      "action": "add",
+      "rule_type": "EXT_DROP_DOWN",
+      "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+    },
+    {
+      "priority": 2,
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional email addresses?",
+      "action": "add",
+      "rule_type": "EXT_DROP_DOWN",
+      "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+    }
+  ],
+  "pattern_improvements": [
+    "Implement destinationIds ordinal mapping for all VERIFY rules",
+    "Add MAKE_INVISIBLE counterpart for every MAKE_VISIBLE rule",
+    "Add EXT_VALUE rules for external dropdown value population",
+    "Add COPY_TO_DOCUMENT_STORAGE_ID for all document upload fields",
+    "Add VALIDATION rules for field format validation",
+    "Add CONVERT_TO rules for field value transformations"
+  ],
+  "rule_type_comparison": {
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "match": false
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "reference": 18,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "reference": 2,
+      "match": false
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "reference": 18,
+      "match": false
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "reference": 13,
+      "match": false
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 17,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 3,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "match": false
+    },
+    "VERIFY": {
+      "generated": 7,
+      "reference": 5,
+      "match": true
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 15,
+      "match": false
+    },
+    "MAKE_DISABLED": {
+      "generated": 2,
+      "reference": 5,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "match": false
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "reference": 19,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "CONVERT_TO": {
+      "generated": 0,
+      "reference": 21,
+      "match": false
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 2,
+      "reference": 10,
+      "match": false
+    },
+    "MAKE_MANDATORY": {
+      "generated": 2,
+      "reference": 12,
+      "match": false
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "reference": 13,
+      "match": false
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "reference": 40,
+      "match": false
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "MAKE_VISIBLE": {
+      "generated": 9,
+      "reference": 18,
+      "match": false
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 1,
+      "reference": 20,
+      "match": false
+    }
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "ocr_chains_valid": true,
+    "visibility_pairs_complete": false,
+    "disabled_consolidated": true,
+    "ordinal_mapping_correct": false
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {}
+}

@@ -1,0 +1,781 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "fix_type": "verify_ordinal_mapping",
+      "description": "CRITICAL: All VERIFY rules have empty destinationIds. Must populate ordinal mapping.",
+      "affected_rules": [
+        {
+          "field": "",
+          "sourceType": "GSTIN_WITH_PAN",
+          "status": "FAIL",
+          "expected": 1,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "PAN_NUMBER",
+          "status": "FAIL",
+          "expected": 10,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "GSTIN_WITH_PAN",
+          "status": "FAIL",
+          "expected": 1,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "GSTIN",
+          "status": "FAIL",
+          "expected": 21,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "BANK_ACCOUNT_NUMBER",
+          "status": "FAIL",
+          "expected": 4,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "MSME_UDYAM_REG_NUMBER",
+          "status": "FAIL",
+          "expected": 21,
+          "actual": 0
+        }
+      ],
+      "implementation": "For each VERIFY rule, map destination fields to ordinal positions per schema. Use -1 for unmapped positions.",
+      "schema_reference": {
+        "PAN_NUMBER": 10,
+        "GSTIN": 21,
+        "BANK_ACCOUNT_NUMBER": 4,
+        "MSME_UDYAM_REG_NUMBER": 21,
+        "GSTIN_WITH_PAN": 1,
+        "CIN_ID": 10
+      }
+    },
+    {
+      "priority": 2,
+      "fix_type": "missing_ext_dropdown_rules",
+      "description": "Add 17 missing EXT_DROP_DOWN rules",
+      "affected_count": 17,
+      "implementation": "Look for external table references, cascading dropdowns, Excel file references in field logic"
+    },
+    {
+      "priority": 3,
+      "fix_type": "missing_visibility_rules",
+      "description": "Add 14 missing MAKE_VISIBLE rules and corresponding MAKE_INVISIBLE pairs",
+      "affected_count": 14,
+      "implementation": "For each \"if X then visible otherwise invisible\" logic, create IN/NOT_IN rule pair"
+    },
+    {
+      "priority": 4,
+      "fix_type": "missing_mandatory_rules",
+      "description": "Add 12 missing MAKE_MANDATORY rules",
+      "affected_count": 12,
+      "implementation": "For each \"mandatory when X\" logic, create MAKE_MANDATORY with condition"
+    },
+    {
+      "priority": 5,
+      "fix_type": "consolidate_disabled_rules",
+      "description": "Consolidate 23 individual MAKE_DISABLED rules into ~5 consolidated rules",
+      "affected_count": 23,
+      "expected_count": 5,
+      "implementation": "Group MAKE_DISABLED rules by sourceIds and condition, merge destinationIds into single array"
+    },
+    {
+      "priority": 6,
+      "fix_type": "missing_convert_to_rules",
+      "description": "Add 20 missing CONVERT_TO rules",
+      "affected_count": 20,
+      "implementation": "For fields requiring uppercase conversion (PAN, GSTIN, etc.), add CONVERT_TO UPPER_CASE rule"
+    },
+    {
+      "priority": 7,
+      "fix_type": "missing_ocr_rules",
+      "description": "Add 2 missing OCR rules",
+      "affected_count": 2,
+      "implementation": "Look for \"from OCR\", \"OCR rule\", \"Get X from OCR\" patterns in field logic"
+    }
+  ],
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "EXECUTE": 40,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "generated": {
+      "MAKE_DISABLED": 23,
+      "EXT_DROP_DOWN": 3,
+      "VERIFY": 13,
+      "OCR": 4,
+      "CONVERT_TO": 1,
+      "MAKE_INVISIBLE": 5,
+      "MAKE_NON_MANDATORY": 5,
+      "MAKE_VISIBLE": 4
+    },
+    "discrepancies": [
+      {
+        "type": "MAKE_VISIBLE",
+        "generated": 4,
+        "expected": 18,
+        "issue": "Missing 14 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "MAKE_INVISIBLE",
+        "generated": 5,
+        "expected": 19,
+        "issue": "Missing 14 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "MAKE_DISABLED",
+        "generated": 23,
+        "expected": 5,
+        "issue": "23 vs 5 - rules not consolidated",
+        "severity": "HIGH"
+      },
+      {
+        "type": "MAKE_MANDATORY",
+        "generated": 0,
+        "expected": 12,
+        "issue": "Missing 12 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "MAKE_NON_MANDATORY",
+        "generated": 5,
+        "expected": 10,
+        "issue": "Missing 5 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "type": "EXT_DROP_DOWN",
+        "generated": 3,
+        "expected": 20,
+        "issue": "Missing 17 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "EXT_VALUE",
+        "generated": 0,
+        "expected": 13,
+        "issue": "Missing 13 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "VERIFY",
+        "generated": 13,
+        "expected": 5,
+        "issue": "Extra 8 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "OCR",
+        "generated": 4,
+        "expected": 6,
+        "issue": "Missing 2 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "type": "CONVERT_TO",
+        "generated": 1,
+        "expected": 21,
+        "issue": "Missing 20 rules",
+        "severity": "HIGH"
+      },
+      {
+        "type": "COPY_TO",
+        "generated": 0,
+        "expected": 13,
+        "issue": "Missing 13 rules",
+        "severity": "HIGH"
+      }
+    ]
+  },
+  "missing_rules": [
+    {
+      "category": "VERIFY",
+      "missing_count": 1,
+      "fields": [
+        {
+          "name": "CIN_ID",
+          "expected_type": "CIN_ID"
+        }
+      ]
+    },
+    {
+      "category": "OCR",
+      "missing_count": 2,
+      "note": "Missing OCR rules compared to reference"
+    },
+    {
+      "category": "EXT_DROP_DOWN",
+      "missing_count": 17,
+      "pattern": "Fields with external/cascading dropdown logic"
+    },
+    {
+      "category": "EXT_VALUE",
+      "missing_count": 13,
+      "pattern": "Fields that derive values from external data"
+    }
+  ],
+  "critical_checks": {
+    "json_structure_valid": true,
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 7,
+      "correct_ordinals": 1,
+      "incorrect_ordinals": 6,
+      "details": [
+        {
+          "field": "",
+          "sourceType": "PAN_NUMBER",
+          "status": "PASS",
+          "expected": 10,
+          "actual": 10
+        },
+        {
+          "field": "",
+          "sourceType": "GSTIN_WITH_PAN",
+          "status": "FAIL",
+          "expected": 1,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "PAN_NUMBER",
+          "status": "FAIL",
+          "expected": 10,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "GSTIN_WITH_PAN",
+          "status": "FAIL",
+          "expected": 1,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "GSTIN",
+          "status": "FAIL",
+          "expected": 21,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "BANK_ACCOUNT_NUMBER",
+          "status": "FAIL",
+          "expected": 4,
+          "actual": 0
+        },
+        {
+          "field": "",
+          "sourceType": "MSME_UDYAM_REG_NUMBER",
+          "status": "FAIL",
+          "expected": 21,
+          "actual": 0
+        }
+      ]
+    },
+    "ocr_verify_chains": {
+      "total_ocr_rules": 4,
+      "correctly_chained": 4,
+      "missing_chains": 0,
+      "details": [
+        {
+          "ocr_field": "",
+          "sourceType": "PAN_IMAGE",
+          "verify_field": "",
+          "chained": true
+        },
+        {
+          "ocr_field": "",
+          "sourceType": "GSTIN_IMAGE",
+          "verify_field": "",
+          "chained": true
+        },
+        {
+          "ocr_field": "",
+          "sourceType": "CHEQUEE",
+          "verify_field": "",
+          "chained": true
+        },
+        {
+          "ocr_field": "",
+          "sourceType": "MSME",
+          "verify_field": "",
+          "chained": true
+        }
+      ]
+    }
+  },
+  "panel_evaluation": [
+    {
+      "panel_name": "Default",
+      "total_fields": 1,
+      "fields_evaluated": 0,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "Basic Details",
+      "total_fields": 33,
+      "fields_evaluated": 29,
+      "fields_with_issues": 3,
+      "issues": [
+        {
+          "field": "Search term / Reference Number(Transaction ID)",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Created on",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Created By",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        }
+      ],
+      "panel_score": 0.9
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "total_fields": 27,
+      "fields_evaluated": 22,
+      "fields_with_issues": 18,
+      "issues": [
+        {
+          "field": "Upload PAN",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "PAN",
+          "issue": "Missing VERIFY rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Pan Holder Name",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "PAN Type",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "PAN Status",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Aadhaar PAN List Status",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "GSTIN",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Trade Name",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Legal Name",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Reg Date",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Type",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Building Number",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Pin Code",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        }
+      ],
+      "panel_score": 0.18
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "total_fields": 8,
+      "fields_evaluated": 7,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "Address Details",
+      "total_fields": 13,
+      "fields_evaluated": 12,
+      "fields_with_issues": 8,
+      "issues": [
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Street 1",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Street 2",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Street 3",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Postal Code",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        }
+      ],
+      "panel_score": 0.33
+    },
+    {
+      "panel_name": "Bank Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 6,
+      "issues": [
+        {
+          "field": "IFSC Code",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing OCR rule",
+          "severity": "HIGH"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Name of Account Holder",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Bank Name",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Bank Branch",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Bank Address",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        }
+      ],
+      "panel_score": 0.5
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "total_fields": 6,
+      "fields_evaluated": 6,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "MSME Details",
+      "total_fields": 28,
+      "fields_evaluated": 27,
+      "fields_with_issues": 23,
+      "issues": [
+        {
+          "field": "Name",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Type",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Address",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Category",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Date",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Enterprise",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Major Activity",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Date of Commencement",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Dice Name",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Applied State",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Modified Date",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Expiry Date",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Address Line1",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Building",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Area",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Pin",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Classification Year",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Classification Date",
+          "issue": "Missing MAKE_DISABLED",
+          "severity": "MEDIUM"
+        }
+      ],
+      "panel_score": 0.15
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "total_fields": 12,
+      "fields_evaluated": 6,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "total_fields": 11,
+      "fields_evaluated": 10,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "Payment Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "total_fields": 5,
+      "fields_evaluated": 5,
+      "fields_with_issues": 0,
+      "issues": [],
+      "panel_score": 1.0
+    }
+  ],
+  "bud_logic_verification": {
+    "total_fields_with_logic": 148,
+    "fields_correctly_processed": 90,
+    "fields_with_issues": 58,
+    "logic_compliance_rate": 0.61
+  },
+  "false_positives": [],
+  "evaluation_summary": {
+    "generated_output": "adws/2026-01-31_14-23-02/populated_schema_v2.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-01-31T14:53:52.930010Z",
+    "iteration": 2,
+    "overall_score": 0.56,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false,
+    "score_breakdown": {
+      "ocr_chain_score": 1.0,
+      "verify_ordinal_score": 0.14,
+      "rule_match_score": 0.35,
+      "panel_coverage_score": 0.76
+    }
+  },
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

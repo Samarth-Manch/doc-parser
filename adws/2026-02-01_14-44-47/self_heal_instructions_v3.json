@@ -1,0 +1,508 @@
+{
+  "total_priority_fixes": 18,
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "rule_type": "EXT_DROP_DOWN",
+      "action": "Add 20 EXT_DROP_DOWN rules",
+      "description": "Missing 20 EXT_DROP_DOWN rules (expected 20, generated 0)"
+    },
+    {
+      "priority": 1,
+      "rule_type": "EXT_VALUE",
+      "action": "Add 13 EXT_VALUE rules",
+      "description": "Missing 13 EXT_VALUE rules (expected 13, generated 0)"
+    },
+    {
+      "priority": 1,
+      "rule_type": "VALIDATION",
+      "action": "Add 18 VALIDATION rules",
+      "description": "Missing 18 VALIDATION rules (expected 18, generated 0)"
+    },
+    {
+      "priority": 1,
+      "rule_type": "CONVERT_TO",
+      "action": "Add 21 CONVERT_TO rules",
+      "description": "Missing 21 CONVERT_TO rules (expected 21, generated 0)"
+    },
+    {
+      "priority": 1,
+      "rule_type": "COPY_TO",
+      "action": "Add 12 COPY_TO rules",
+      "description": "Missing 12 COPY_TO rules (expected 12, generated 0)"
+    },
+    {
+      "priority": 2,
+      "rule_type": "OCR",
+      "action": "Add 4 OCR rules with VERIFY chains",
+      "description": "Missing 4 OCR->VERIFY chains for document verification"
+    },
+    {
+      "priority": 3,
+      "rule_type": "MAKE_VISIBLE",
+      "action": "Add 11 MAKE_VISIBLE rules",
+      "description": "Missing visibility rules for conditional field display"
+    },
+    {
+      "priority": 4,
+      "rule_type": "MAKE_MANDATORY",
+      "action": "Add 8 MAKE_MANDATORY rules",
+      "description": "Missing mandatory rules for field validation"
+    },
+    {
+      "priority": 5,
+      "panel": "Vendor Basic Details",
+      "action": "Review and complete rules for Vendor Basic Details panel",
+      "description": "Panel has 0 rules but needs 11 (score: 0.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "Address Details",
+      "action": "Review and complete rules for Address Details panel",
+      "description": "Panel has 0 rules but needs 21 (score: 0.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "Bank Details",
+      "action": "Review and complete rules for Bank Details panel",
+      "description": "Panel has 0 rules but needs 12 (score: 0.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "CIN and TDS Details",
+      "action": "Review and complete rules for CIN and TDS Details panel",
+      "description": "Panel has 0 rules but needs 12 (score: 0.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "Purchase Organization Details",
+      "action": "Review and complete rules for Purchase Organization Details panel",
+      "description": "Panel has 0 rules but needs 16 (score: 0.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "Withholding Tax Details",
+      "action": "Review and complete rules for Withholding Tax Details panel",
+      "description": "Panel has 0 rules but needs 5 (score: 0.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "Basic Details",
+      "action": "Review and complete rules for Basic Details panel",
+      "description": "Panel has 12 rules but needs 49 (score: 24.5%)"
+    },
+    {
+      "priority": 5,
+      "panel": "PAN and GST Details",
+      "action": "Review and complete rules for PAN and GST Details panel",
+      "description": "Panel has 8 rules but needs 28 (score: 28.6%)"
+    },
+    {
+      "priority": 5,
+      "panel": "Payment Details",
+      "action": "Review and complete rules for Payment Details panel",
+      "description": "Panel has 2 rules but needs 5 (score: 40.0%)"
+    },
+    {
+      "priority": 5,
+      "panel": "MSME Details",
+      "action": "Review and complete rules for MSME Details panel",
+      "description": "Panel has 6 rules but needs 13 (score: 46.2%)"
+    }
+  ],
+  "recommended_focus_panels": [
+    "Vendor Basic Details",
+    "Address Details",
+    "Bank Details",
+    "CIN and TDS Details",
+    "Purchase Organization Details"
+  ],
+  "critical_missing_rule_types": [
+    "CONVERT_TO",
+    "EXT_DROP_DOWN",
+    "VALIDATION",
+    "EXT_VALUE",
+    "MAKE_INVISIBLE"
+  ],
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_DISABLED": 2,
+      "MAKE_VISIBLE": 7,
+      "MAKE_INVISIBLE": 7,
+      "MAKE_MANDATORY": 4,
+      "MAKE_NON_MANDATORY": 4,
+      "OCR": 2,
+      "VERIFY": 2
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 1
+    },
+    "missing_by_type": [
+      {
+        "rule_type": "MAKE_DISABLED",
+        "expected": 5,
+        "generated": 2,
+        "missing_count": 3
+      },
+      {
+        "rule_type": "MAKE_INVISIBLE",
+        "expected": 19,
+        "generated": 7,
+        "missing_count": 12
+      },
+      {
+        "rule_type": "COPY_TXNID_TO_FORM_FILL",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "SET_DATE",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "COPY_TO",
+        "expected": 12,
+        "generated": 0,
+        "missing_count": 12
+      },
+      {
+        "rule_type": "CONVERT_TO",
+        "expected": 21,
+        "generated": 0,
+        "missing_count": 21
+      },
+      {
+        "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "DUMMY_ACTION",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "EXT_VALUE",
+        "expected": 13,
+        "generated": 0,
+        "missing_count": 13
+      },
+      {
+        "rule_type": "MAKE_MANDATORY",
+        "expected": 12,
+        "generated": 4,
+        "missing_count": 8
+      },
+      {
+        "rule_type": "MAKE_VISIBLE",
+        "expected": 18,
+        "generated": 7,
+        "missing_count": 11
+      },
+      {
+        "rule_type": "COPY_TO_TRANSACTION_ATTR1",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "VALIDATION",
+        "expected": 18,
+        "generated": 0,
+        "missing_count": 18
+      },
+      {
+        "rule_type": "CONCAT",
+        "expected": 2,
+        "generated": 0,
+        "missing_count": 2
+      },
+      {
+        "rule_type": "EXT_DROP_DOWN",
+        "expected": 20,
+        "generated": 0,
+        "missing_count": 20
+      },
+      {
+        "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "SEND_OTP",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "VALIDATE_OTP",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "OCR",
+        "expected": 6,
+        "generated": 2,
+        "missing_count": 4
+      },
+      {
+        "rule_type": "VERIFY",
+        "expected": 5,
+        "generated": 2,
+        "missing_count": 3
+      },
+      {
+        "rule_type": "MAKE_NON_MANDATORY",
+        "expected": 10,
+        "generated": 4,
+        "missing_count": 6
+      },
+      {
+        "rule_type": "MAKE_ENABLED",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      },
+      {
+        "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "expected": 1,
+        "generated": 0,
+        "missing_count": 1
+      }
+    ],
+    "extra_by_type": []
+  },
+  "missing_rules": [
+    {
+      "rule_type": "MAKE_DISABLED",
+      "expected": 5,
+      "generated": 2,
+      "missing_count": 3
+    },
+    {
+      "rule_type": "MAKE_INVISIBLE",
+      "expected": 19,
+      "generated": 7,
+      "missing_count": 12
+    },
+    {
+      "rule_type": "COPY_TXNID_TO_FORM_FILL",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "SET_DATE",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "COPY_TO",
+      "expected": 12,
+      "generated": 0,
+      "missing_count": 12
+    },
+    {
+      "rule_type": "CONVERT_TO",
+      "expected": 21,
+      "generated": 0,
+      "missing_count": 21
+    },
+    {
+      "rule_type": "COPY_TO_TRANSACTION_ATTR3",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "DUMMY_ACTION",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "EXT_VALUE",
+      "expected": 13,
+      "generated": 0,
+      "missing_count": 13
+    },
+    {
+      "rule_type": "MAKE_MANDATORY",
+      "expected": 12,
+      "generated": 4,
+      "missing_count": 8
+    },
+    {
+      "rule_type": "MAKE_VISIBLE",
+      "expected": 18,
+      "generated": 7,
+      "missing_count": 11
+    },
+    {
+      "rule_type": "COPY_TO_TRANSACTION_ATTR1",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "VALIDATION",
+      "expected": 18,
+      "generated": 0,
+      "missing_count": 18
+    },
+    {
+      "rule_type": "CONCAT",
+      "expected": 2,
+      "generated": 0,
+      "missing_count": 2
+    },
+    {
+      "rule_type": "EXT_DROP_DOWN",
+      "expected": 20,
+      "generated": 0,
+      "missing_count": 20
+    },
+    {
+      "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "COPY_TO_GENERIC_PARTY_NAME",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "SEND_OTP",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "VALIDATE_OTP",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "OCR",
+      "expected": 6,
+      "generated": 2,
+      "missing_count": 4
+    },
+    {
+      "rule_type": "VERIFY",
+      "expected": 5,
+      "generated": 2,
+      "missing_count": 3
+    },
+    {
+      "rule_type": "MAKE_NON_MANDATORY",
+      "expected": 10,
+      "generated": 4,
+      "missing_count": 6
+    },
+    {
+      "rule_type": "MAKE_ENABLED",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    },
+    {
+      "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "expected": 1,
+      "generated": 0,
+      "missing_count": 1
+    }
+  ],
+  "critical_checks": {
+    "ocr_verify_chains": {
+      "pass": true,
+      "generated_chains": 2,
+      "reference_chains": 6,
+      "missing_chains": 4
+    },
+    "visibility_pairs": {
+      "generated": {
+        "visible_count": 7,
+        "invisible_count": 7,
+        "matched_pairs": 7,
+        "unpaired_visible": 0,
+        "unpaired_invisible": 0
+      },
+      "reference": {
+        "visible_count": 18,
+        "invisible_count": 19,
+        "matched_pairs": 15,
+        "unpaired_visible": 1,
+        "unpaired_invisible": 2
+      },
+      "pass": true
+    },
+    "mandatory_pairs": {
+      "generated": {
+        "mandatory_count": 4,
+        "non_mandatory_count": 4,
+        "matched_pairs": 4,
+        "unpaired_mandatory": 0
+      },
+      "reference": {
+        "mandatory_count": 12,
+        "non_mandatory_count": 10,
+        "matched_pairs": 10,
+        "unpaired_mandatory": 2
+      },
+      "pass": true
+    },
+    "external_dropdown_rules": {
+      "generated_ext_dropdown": 0,
+      "generated_ext_value": 0,
+      "reference_ext_dropdown": 20,
+      "reference_ext_value": 13,
+      "pass": false
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {}
+}

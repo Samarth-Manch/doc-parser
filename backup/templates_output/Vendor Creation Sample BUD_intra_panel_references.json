@@ -1,0 +1,1456 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "file_path": "documents/Vendor Creation Sample BUD.docx",
+    "extraction_timestamp": "2026-01-30T15:32:51.564443",
+    "total_fields": 168,
+    "total_panels": 12
+  },
+  "panels_analyzed": 7,
+  "panel_results": [
+    {
+      "panel_name": "Vendor Basic Details",
+      "panel_info": {
+        "panel_name": "Vendor Basic Details",
+        "total_fields": 8,
+        "fields_with_intra_panel_refs": 3,
+        "fields_controlling_others": 1
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "Name/ First Name of the Organization",
+            "variable_name": "__name/_first_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Name/ Middle Name of the Organization",
+            "variable_name": "__name/_middle_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "Name/ First Name of the Organization",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 35,69 characters in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Name/ First Name of the Organization",
+            "variable_name": "__name/_first_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Name/ Last Name of the Organization",
+            "variable_name": "__name/_last_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "Name/ First Name of the Organization",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 70,104 characters in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Name/ First Name of the Organization",
+            "variable_name": "__name/_first_name_of_the_organization__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Name 4/Alternate Name",
+            "variable_name": "__name_4/alternate_name__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "Name/ First Name of the Organization",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 105,139 characters in this field and rest other character should go to next field. This should be divided logically such as full word should come in one field instead of division of the word."
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 0,
+        "mandatory_control": 0,
+        "value_derivation": 0,
+        "data_dependency": 3,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "Name/ First Name of the Organization",
+          "variable_name": "__name/_first_name_of_the_organization__",
+          "field_type": "TEXT",
+          "controls_count": 3,
+          "controlled_fields": [
+            "Name/ Middle Name of the Organization",
+            "Name/ Last Name of the Organization",
+            "Name 4/Alternate Name"
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "Address Details",
+      "panel_info": {
+        "panel_name": "Address Details",
+        "total_fields": 13,
+        "fields_with_intra_panel_refs": 7,
+        "fields_controlling_others": 2
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "Please Choose Address Proof",
+            "variable_name": "__please_choose_address_proof__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Electricity bill copy",
+            "variable_name": "__electricity_bill_copy__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "Address proof",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Electricity bill copy' otherwise invisible and non-mandatory. If is GST present is Yes then Non mandatory and invisible."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Please Choose Address Proof",
+            "variable_name": "__please_choose_address_proof__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Aadhaar Front copy",
+            "variable_name": "__aadhaar_front_copy__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "Address proof",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar copy' otherwise invisible and non-mandatory. If is GST present is Yes then Non mandatory and invisible."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Please Choose Address Proof",
+            "variable_name": "__please_choose_address_proof__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Aadhaar Back Image",
+            "variable_name": "__aadhaar_back_image__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "Address proof",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar copy' otherwise invisible and non-mandatory. If is GST present is Yes then Non mandatory and invisible."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Postal Code",
+            "variable_name": "__postal_code__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "City",
+            "variable_name": "__city__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "PIN code validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Perform PIN code validation for Domestic. Non editable field."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Postal Code",
+            "variable_name": "__postal_code__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "District",
+            "variable_name": "__district__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "PIN code validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Perform PIN code validation for Domestic. Non editable field."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Postal Code",
+            "variable_name": "__postal_code__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "State",
+            "variable_name": "__state__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "PIN code validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Perform PIN code validation for Domestic. Non editable field."
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 3,
+        "mandatory_control": 0,
+        "value_derivation": 0,
+        "data_dependency": 3,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "Please Choose Address Proof",
+          "variable_name": "__please_choose_address_proof__",
+          "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+          "controls_count": 3,
+          "controlled_fields": [
+            "Electricity bill copy",
+            "Aadhaar Front copy",
+            "Aadhaar Back Image"
+          ]
+        },
+        {
+          "field_name": "Postal Code",
+          "variable_name": "__postal_code__",
+          "field_type": "TEXT",
+          "controls_count": 3,
+          "controlled_fields": [
+            "City",
+            "District",
+            "State"
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "Bank Details",
+      "panel_info": {
+        "panel_name": "Bank Details",
+        "total_fields": 12,
+        "fields_with_intra_panel_refs": 5,
+        "fields_controlling_others": 1
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "Please choose the option",
+            "variable_name": "__please_choose_the_option__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Cancelled Cheque Image",
+            "variable_name": "__cancelled_cheque_image__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "Please choose the option",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visible and mandatory. The upload limit should be up to 15 Mb. Perform the Bank OCR and get IFSC code and Account Number"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Please choose the option",
+            "variable_name": "__please_choose_the_option__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Passbook/Bank Letter",
+            "variable_name": "__passbook/bank_letter__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "Please the option",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If Please the option is chosen as Passbook Front Page (India Domestic and International)then it is visible and mandatory. The upload limit should be up to 15 Mb."
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Please choose the option",
+            "variable_name": "__please_choose_the_option__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Please enter IFSC and Account Number manually",
+            "variable_name": "__please_enter_ifsc_and_account_number_manually__",
+            "field_type": "LABEL"
+          },
+          "reference_details": {
+            "matched_text": "passbook front page (India Domestic and International)",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "Show this fields if passbook front page (India Domestic and International) is selected"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Please choose the option",
+            "variable_name": "__please_choose_the_option__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "IFSC Code",
+            "variable_name": "__ifsc_code__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "cancelled cheque, Cancelled Cheque (India Domestic), Passbook Front Page (India Domestic and International)",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options. Perform IFSC code verification"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Please choose the option",
+            "variable_name": "__please_choose_the_option__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "Bank Account Number",
+            "variable_name": "__bank_account_number__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "cancelled cheque, Cancelled Cheque (India Domestic), Passbook Front Page (India Domestic and International)",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options ,Perform Bank account verification"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Cancelled Cheque Image",
+            "variable_name": "__cancelled_cheque_image__",
+            "field_type": "FILE"
+          },
+          "target_field": {
+            "field_name": "IFSC Code",
+            "variable_name": "__ifsc_code__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "cancelled cheque, OCR in case of cheque",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options. Perform IFSC code verification"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Cancelled Cheque Image",
+            "variable_name": "__cancelled_cheque_image__",
+            "field_type": "FILE"
+          },
+          "target_field": {
+            "field_name": "Bank Account Number",
+            "variable_name": "__bank_account_number__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "cancelled cheque, OCR in case of cheque",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options ,Perform Bank account verification"
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 5,
+        "mandatory_control": 0,
+        "value_derivation": 0,
+        "data_dependency": 2,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "Please choose the option",
+          "variable_name": "__please_choose_the_option__",
+          "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+          "controls_count": 5,
+          "controlled_fields": [
+            "Cancelled Cheque Image",
+            "Passbook/Bank Letter",
+            "Please enter IFSC and Account Number manually",
+            "IFSC Code",
+            "Bank Account Number"
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "panel_info": {
+        "panel_name": "CIN and TDS Details",
+        "total_fields": 6,
+        "fields_with_intra_panel_refs": 2,
+        "fields_controlling_others": 2
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "CIN",
+            "variable_name": "__cin__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "FDA Registration Number",
+            "variable_name": "__fda_registration_number__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "CIN field",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "If ID Type is ZCUCIN then its Mandatory. Duplicate of the CIN field, as the Pixilate team is using the same field in SAP to capture CIN. We will hide the CIN Panel if the criteria of ZCUCIN/C are not met"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "TDS Applicable?",
+            "variable_name": "__tds_applicable?__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "TDS Certificate",
+            "variable_name": "__tds_certificate__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "Yes/No",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If \"Yes\" then TDS certificate upload field is mandatory. If \"No\", field will be hidden. Upload size is 15 Mb"
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 1,
+        "mandatory_control": 0,
+        "value_derivation": 0,
+        "data_dependency": 1,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "CIN",
+          "variable_name": "__cin__",
+          "field_type": "TEXT",
+          "controls_count": 1,
+          "controlled_fields": [
+            "FDA Registration Number"
+          ]
+        },
+        {
+          "field_name": "TDS Applicable?",
+          "variable_name": "__tds_applicable?__",
+          "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+          "controls_count": 1,
+          "controlled_fields": [
+            "TDS Certificate"
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "MSME Details",
+      "panel_info": {
+        "panel_name": "MSME Details",
+        "total_fields": 28,
+        "fields_with_intra_panel_refs": 25,
+        "fields_controlling_others": 2
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "Is SSI / MSME Applicable?",
+            "variable_name": "__is_ssi_/_msme_applicable?__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "MSME Image",
+            "variable_name": "__msme_image__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "If yes",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If yes, Vendor will upload MSME Certificate and OCR will be performed post upload. Upload size is 15Mb"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Is SSI / MSME Applicable?",
+            "variable_name": "__is_ssi_/_msme_applicable?__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "If yes",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If yes, editable and mandatory"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Name",
+            "variable_name": "__name__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Type",
+            "variable_name": "__type__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Address",
+            "variable_name": "__address__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Category",
+            "variable_name": "__category__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Date",
+            "variable_name": "__date__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Enterprise",
+            "variable_name": "__enterprise__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Major Activity",
+            "variable_name": "__major_activity__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Date of Commencement",
+            "variable_name": "__date_of_commencement__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Dice Name",
+            "variable_name": "__dice_name__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "State",
+            "variable_name": "__state__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Applied State",
+            "variable_name": "__applied_state__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Modified Date",
+            "variable_name": "__modified_date__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Expiry Date",
+            "variable_name": "__expiry_date__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Address Line1",
+            "variable_name": "__address_line1__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Building",
+            "variable_name": "__building__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Street",
+            "variable_name": "__street__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Area",
+            "variable_name": "__area__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "City",
+            "variable_name": "__city__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Pin",
+            "variable_name": "__pin__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "District",
+            "variable_name": "__district__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Classification Year",
+            "variable_name": "__classification_year__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "MSME Registration Number",
+            "variable_name": "__msme_registration_number__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Classification Date",
+            "variable_name": "__classification_date__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "MSME Validation",
+            "location_found": "logic",
+            "relationship_type": "data_dependency",
+            "operation_type": "controlled_by",
+            "raw_expression": "Auto-derived via MSME Validation (Non-Editable)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Is SSI / MSME Applicable?",
+            "variable_name": "__is_ssi_/_msme_applicable?__",
+            "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+          },
+          "target_field": {
+            "field_name": "MSME Declaration",
+            "variable_name": "__msme_declaration__",
+            "field_type": "FILE"
+          },
+          "reference_details": {
+            "matched_text": "If no",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If no, Vendor will upload MSME Declaration (Not Mandatory)"
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 3,
+        "mandatory_control": 0,
+        "value_derivation": 0,
+        "data_dependency": 21,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "Is SSI / MSME Applicable?",
+          "variable_name": "__is_ssi_/_msme_applicable?__",
+          "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+          "controls_count": 3,
+          "controlled_fields": [
+            "MSME Image",
+            "MSME Registration Number",
+            "MSME Declaration"
+          ]
+        },
+        {
+          "field_name": "MSME Registration Number",
+          "variable_name": "__msme_registration_number__",
+          "field_type": "TEXT",
+          "controls_count": 21,
+          "controlled_fields": [
+            "Name",
+            "Type",
+            "Address",
+            "Category",
+            "Date",
+            "Enterprise",
+            "Major Activity",
+            "Date of Commencement",
+            "Dice Name",
+            "State",
+            "Applied State",
+            "Modified Date",
+            "Expiry Date",
+            "Address Line1",
+            "Building",
+            "Street",
+            "Area",
+            "City",
+            "Pin",
+            "District",
+            "Classification Year",
+            "Classification Date"
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "panel_info": {
+        "panel_name": "Vendor Duplicity Details",
+        "total_fields": 12,
+        "fields_with_intra_panel_refs": 1,
+        "fields_controlling_others": 5
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "Duplicate GST Result",
+            "variable_name": "__duplicate_gst_result__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Exception Duplicate Vendor creation",
+            "variable_name": "__exception_duplicate_vendor_creation__",
+            "field_type": "STATIC_CHECK_BOX"
+          },
+          "reference_details": {
+            "matched_text": "Duplicate GST",
+            "location_found": "logic",
+            "relationship_type": "mandatory_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If duplicate vendor found based on 1. Duplicate GST 2. PAN Card 3. Email Id 4. Mobile Number 5. Bank Account Number then Exception duplicate vendor creation field is mandatory 6. Business Registration Number (Applicable only for Import and International)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Duplicate PAN Result",
+            "variable_name": "__duplicate_pan_result__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Exception Duplicate Vendor creation",
+            "variable_name": "__exception_duplicate_vendor_creation__",
+            "field_type": "STATIC_CHECK_BOX"
+          },
+          "reference_details": {
+            "matched_text": "PAN Card",
+            "location_found": "logic",
+            "relationship_type": "mandatory_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If duplicate vendor found based on 1. Duplicate GST 2. PAN Card 3. Email Id 4. Mobile Number 5. Bank Account Number then Exception duplicate vendor creation field is mandatory 6. Business Registration Number (Applicable only for Import and International)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Duplicate Email Result",
+            "variable_name": "__duplicate_email_result__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Exception Duplicate Vendor creation",
+            "variable_name": "__exception_duplicate_vendor_creation__",
+            "field_type": "STATIC_CHECK_BOX"
+          },
+          "reference_details": {
+            "matched_text": "Email Id",
+            "location_found": "logic",
+            "relationship_type": "mandatory_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If duplicate vendor found based on 1. Duplicate GST 2. PAN Card 3. Email Id 4. Mobile Number 5. Bank Account Number then Exception duplicate vendor creation field is mandatory 6. Business Registration Number (Applicable only for Import and International)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Duplicate Mobile Result",
+            "variable_name": "__duplicate_mobile_result__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Exception Duplicate Vendor creation",
+            "variable_name": "__exception_duplicate_vendor_creation__",
+            "field_type": "STATIC_CHECK_BOX"
+          },
+          "reference_details": {
+            "matched_text": "Mobile Number",
+            "location_found": "logic",
+            "relationship_type": "mandatory_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If duplicate vendor found based on 1. Duplicate GST 2. PAN Card 3. Email Id 4. Mobile Number 5. Bank Account Number then Exception duplicate vendor creation field is mandatory 6. Business Registration Number (Applicable only for Import and International)"
+          }
+        },
+        {
+          "source_field": {
+            "field_name": "Duplicate Bank Account Number Result",
+            "variable_name": "__duplicate_bank_account_number_result__",
+            "field_type": "TEXT"
+          },
+          "target_field": {
+            "field_name": "Exception Duplicate Vendor creation",
+            "variable_name": "__exception_duplicate_vendor_creation__",
+            "field_type": "STATIC_CHECK_BOX"
+          },
+          "reference_details": {
+            "matched_text": "Bank Account Number",
+            "location_found": "logic",
+            "relationship_type": "mandatory_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If duplicate vendor found based on 1. Duplicate GST 2. PAN Card 3. Email Id 4. Mobile Number 5. Bank Account Number then Exception duplicate vendor creation field is mandatory 6. Business Registration Number (Applicable only for Import and International)"
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 0,
+        "mandatory_control": 5,
+        "value_derivation": 0,
+        "data_dependency": 0,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "Duplicate GST Result",
+          "variable_name": "__duplicate_gst_result__",
+          "field_type": "TEXT",
+          "controls_count": 1,
+          "controlled_fields": [
+            "Exception Duplicate Vendor creation"
+          ]
+        },
+        {
+          "field_name": "Duplicate PAN Result",
+          "variable_name": "__duplicate_pan_result__",
+          "field_type": "TEXT",
+          "controls_count": 1,
+          "controlled_fields": [
+            "Exception Duplicate Vendor creation"
+          ]
+        },
+        {
+          "field_name": "Duplicate Email Result",
+          "variable_name": "__duplicate_email_result__",
+          "field_type": "TEXT",
+          "controls_count": 1,
+          "controlled_fields": [
+            "Exception Duplicate Vendor creation"
+          ]
+        },
+        {
+          "field_name": "Duplicate Mobile Result",
+          "variable_name": "__duplicate_mobile_result__",
+          "field_type": "TEXT",
+          "controls_count": 1,
+          "controlled_fields": [
+            "Exception Duplicate Vendor creation"
+          ]
+        },
+        {
+          "field_name": "Duplicate Bank Account Number Result",
+          "variable_name": "__duplicate_bank_account_number_result__",
+          "field_type": "TEXT",
+          "controls_count": 1,
+          "controlled_fields": [
+            "Exception Duplicate Vendor creation"
+          ]
+        }
+      ]
+    },
+    {
+      "panel_name": "Payment Details",
+      "panel_info": {
+        "panel_name": "Payment Details",
+        "total_fields": 12,
+        "fields_with_intra_panel_refs": 1,
+        "fields_controlling_others": 1
+      },
+      "intra_panel_references": [
+        {
+          "source_field": {
+            "field_name": "Is Vendor Your Customer?",
+            "variable_name": "__is_vendor_your_customer?__",
+            "field_type": "DROPDOWN"
+          },
+          "target_field": {
+            "field_name": "Customer Code",
+            "variable_name": "__customer_code__",
+            "field_type": "TEXT"
+          },
+          "reference_details": {
+            "matched_text": "YES",
+            "location_found": "logic",
+            "relationship_type": "visibility_control",
+            "operation_type": "controlled_by",
+            "raw_expression": "If YES, then visible and mandatory, else hidden. (Need discussion on the logic. Can we derive using a dropdown field)"
+          }
+        }
+      ],
+      "relationship_summary": {
+        "visibility_control": 1,
+        "mandatory_control": 0,
+        "value_derivation": 0,
+        "data_dependency": 0,
+        "validation": 0,
+        "enable_disable": 0,
+        "conditional": 0,
+        "clear_operation": 0,
+        "other": 0
+      },
+      "controlling_fields": [
+        {
+          "field_name": "Is Vendor Your Customer?",
+          "variable_name": "__is_vendor_your_customer?__",
+          "field_type": "DROPDOWN",
+          "controls_count": 1,
+          "controlled_fields": [
+            "Customer Code"
+          ]
+        }
+      ]
+    }
+  ],
+  "total_relationship_summary": {
+    "visibility_control": 13,
+    "mandatory_control": 5,
+    "value_derivation": 0,
+    "data_dependency": 30,
+    "validation": 0,
+    "enable_disable": 0,
+    "conditional": 0,
+    "clear_operation": 0,
+    "other": 0
+  },
+  "all_controlling_fields": [
+    {
+      "field_name": "Name/ First Name of the Organization",
+      "variable_name": "__name/_first_name_of_the_organization__",
+      "field_type": "TEXT",
+      "controls_count": 3,
+      "controlled_fields": [
+        "Name/ Middle Name of the Organization",
+        "Name/ Last Name of the Organization",
+        "Name 4/Alternate Name"
+      ],
+      "panel": "Vendor Basic Details"
+    },
+    {
+      "field_name": "Please Choose Address Proof",
+      "variable_name": "__please_choose_address_proof__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "controls_count": 3,
+      "controlled_fields": [
+        "Electricity bill copy",
+        "Aadhaar Front copy",
+        "Aadhaar Back Image"
+      ],
+      "panel": "Address Details"
+    },
+    {
+      "field_name": "Postal Code",
+      "variable_name": "__postal_code__",
+      "field_type": "TEXT",
+      "controls_count": 3,
+      "controlled_fields": [
+        "City",
+        "District",
+        "State"
+      ],
+      "panel": "Address Details"
+    },
+    {
+      "field_name": "Please choose the option",
+      "variable_name": "__please_choose_the_option__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "controls_count": 5,
+      "controlled_fields": [
+        "Cancelled Cheque Image",
+        "Passbook/Bank Letter",
+        "Please enter IFSC and Account Number manually",
+        "IFSC Code",
+        "Bank Account Number"
+      ],
+      "panel": "Bank Details"
+    },
+    {
+      "field_name": "CIN",
+      "variable_name": "__cin__",
+      "field_type": "TEXT",
+      "controls_count": 1,
+      "controlled_fields": [
+        "FDA Registration Number"
+      ],
+      "panel": "CIN and TDS Details"
+    },
+    {
+      "field_name": "TDS Applicable?",
+      "variable_name": "__tds_applicable?__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "controls_count": 1,
+      "controlled_fields": [
+        "TDS Certificate"
+      ],
+      "panel": "CIN and TDS Details"
+    },
+    {
+      "field_name": "Is SSI / MSME Applicable?",
+      "variable_name": "__is_ssi_/_msme_applicable?__",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "controls_count": 3,
+      "controlled_fields": [
+        "MSME Image",
+        "MSME Registration Number",
+        "MSME Declaration"
+      ],
+      "panel": "MSME Details"
+    },
+    {
+      "field_name": "MSME Registration Number",
+      "variable_name": "__msme_registration_number__",
+      "field_type": "TEXT",
+      "controls_count": 21,
+      "controlled_fields": [
+        "Name",
+        "Type",
+        "Address",
+        "Category",
+        "Date",
+        "Enterprise",
+        "Major Activity",
+        "Date of Commencement",
+        "Dice Name",
+        "State",
+        "Applied State",
+        "Modified Date",
+        "Expiry Date",
+        "Address Line1",
+        "Building",
+        "Street",
+        "Area",
+        "City",
+        "Pin",
+        "District",
+        "Classification Year",
+        "Classification Date"
+      ],
+      "panel": "MSME Details"
+    },
+    {
+      "field_name": "Duplicate GST Result",
+      "variable_name": "__duplicate_gst_result__",
+      "field_type": "TEXT",
+      "controls_count": 1,
+      "controlled_fields": [
+        "Exception Duplicate Vendor creation"
+      ],
+      "panel": "Vendor Duplicity Details"
+    },
+    {
+      "field_name": "Duplicate PAN Result",
+      "variable_name": "__duplicate_pan_result__",
+      "field_type": "TEXT",
+      "controls_count": 1,
+      "controlled_fields": [
+        "Exception Duplicate Vendor creation"
+      ],
+      "panel": "Vendor Duplicity Details"
+    },
+    {
+      "field_name": "Duplicate Email Result",
+      "variable_name": "__duplicate_email_result__",
+      "field_type": "TEXT",
+      "controls_count": 1,
+      "controlled_fields": [
+        "Exception Duplicate Vendor creation"
+      ],
+      "panel": "Vendor Duplicity Details"
+    },
+    {
+      "field_name": "Duplicate Mobile Result",
+      "variable_name": "__duplicate_mobile_result__",
+      "field_type": "TEXT",
+      "controls_count": 1,
+      "controlled_fields": [
+        "Exception Duplicate Vendor creation"
+      ],
+      "panel": "Vendor Duplicity Details"
+    },
+    {
+      "field_name": "Duplicate Bank Account Number Result",
+      "variable_name": "__duplicate_bank_account_number_result__",
+      "field_type": "TEXT",
+      "controls_count": 1,
+      "controlled_fields": [
+        "Exception Duplicate Vendor creation"
+      ],
+      "panel": "Vendor Duplicity Details"
+    },
+    {
+      "field_name": "Is Vendor Your Customer?",
+      "variable_name": "__is_vendor_your_customer?__",
+      "field_type": "DROPDOWN",
+      "controls_count": 1,
+      "controlled_fields": [
+        "Customer Code"
+      ],
+      "panel": "Payment Details"
+    }
+  ]
+}

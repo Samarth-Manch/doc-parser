@@ -1,0 +1,295 @@
+{
+  "priority_fixes": [
+    {
+      "priority": "HIGH",
+      "category": "missing_rule_type",
+      "rule_type": "EXECUTE",
+      "action": "Add 40 missing EXECUTE rules",
+      "expected": 40,
+      "actual": 0
+    },
+    {
+      "priority": "HIGH",
+      "category": "missing_rule_type",
+      "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "action": "Add 18 missing COPY_TO_DOCUMENT_STORAGE_ID rules",
+      "expected": 18,
+      "actual": 0
+    },
+    {
+      "priority": "HIGH",
+      "category": "missing_rule_type",
+      "rule_type": "VALIDATION",
+      "action": "Add 18 missing VALIDATION rules",
+      "expected": 18,
+      "actual": 0
+    },
+    {
+      "priority": "HIGH",
+      "category": "missing_rule_type",
+      "rule_type": "UNDELETE_DOCUMENT",
+      "action": "Add 17 missing UNDELETE_DOCUMENT rules",
+      "expected": 17,
+      "actual": 0
+    },
+    {
+      "priority": "HIGH",
+      "category": "missing_rule_type",
+      "rule_type": "CONVERT_TO",
+      "action": "Add 16 missing CONVERT_TO rules",
+      "expected": 21,
+      "actual": 5
+    },
+    {
+      "priority": "HIGH",
+      "category": "verify_ordinal_mapping",
+      "action": "Ensure VERIFY rules have destinationIds with ordinal mapping for extracted values",
+      "details": [
+        "VERIFY rules with ordinal destinationIds: 4/6 (66.7%)"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "Vendor Basic Details",
+      "action": "Improve rules for panel 'Vendor Basic Details'",
+      "current_score": 0.27,
+      "missing_fields": [
+        "Additional Registration Number Applicable?",
+        "Additional Registration Number",
+        "Tax Number Category (International)",
+        "Tax Number Category (SSI) ",
+        "Title (Domestic)"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "CIN and TDS Details",
+      "action": "Improve rules for panel 'CIN and TDS Details'",
+      "current_score": 0.419,
+      "missing_fields": [
+        "FDA Registered?"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "MSME Details",
+      "action": "Improve rules for panel 'MSME Details'",
+      "current_score": 0.459,
+      "missing_fields": [
+        "Buliding",
+        "Dic Name"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "Basic Details",
+      "action": "Improve rules for panel 'Basic Details'",
+      "current_score": 0.389,
+      "missing_fields": [
+        "Company Country",
+        "Country Code (Domestic)",
+        "Country Description (Domestic)",
+        "Account Group Code",
+        "Created By Name"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "Purchase Organization Details",
+      "action": "Improve rules for panel 'Purchase Organization Details'",
+      "current_score": 0.347,
+      "missing_fields": [
+        "Order Currency Description",
+        "Details",
+        "Is Vendor Your Customer?",
+        "Incoterms Code",
+        "Purchase Organization Description"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "Bank Details",
+      "action": "Improve rules for panel 'Bank Details'",
+      "current_score": 0.272,
+      "missing_fields": [
+        "Bank Account Number (Import)",
+        "Bank Branch (Import)",
+        "Bank Address (Import)",
+        "Cheque (Import)",
+        "Bank Name (Import)"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "Address Details",
+      "action": "Improve rules for panel 'Address Details'",
+      "current_score": 0.295,
+      "missing_fields": [
+        "Postal Code (Import)",
+        "Aadhaar  Front copy",
+        "Country",
+        "Region (Import)",
+        "Aaadhar Back Image"
+      ]
+    },
+    {
+      "priority": "MEDIUM",
+      "category": "low_panel_score",
+      "panel": "Withholding Tax Details",
+      "action": "Improve rules for panel 'Withholding Tax Details'",
+      "current_score": 0.283,
+      "missing_fields": [
+        "Withholding Tax Type ",
+        "Table",
+        "Is Withholding Tax applicable?",
+        "Subject to Withholding Tax",
+        "Company Code"
+      ]
+    }
+  ],
+  "recommendations": [
+    "Add EXECUTE rules for API integrations and external validations",
+    "Add COPY_TO rules for data propagation between fields",
+    "Add DELETE_DOCUMENT/UNDELETE_DOCUMENT rules for conditional document requirements",
+    "Add VALIDATION rules for business logic checks",
+    "Ensure all visibility rules have corresponding inverse rules",
+    "Add SESSION_BASED rules for multi-actor workflow scenarios",
+    "Review BUD document for conditional logic in Description/Rules columns"
+  ],
+  "rule_type_comparison": {
+    "generated": {
+      "EXT_DROP_DOWN": 20,
+      "EXT_VALUE": 9,
+      "MAKE_DISABLED": 1,
+      "MAKE_VISIBLE": 11,
+      "MAKE_INVISIBLE": 11,
+      "MAKE_MANDATORY": 5,
+      "MAKE_NON_MANDATORY": 5,
+      "OCR": 7,
+      "VERIFY": 6,
+      "CONVERT_TO": 5
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "EXECUTE": 40,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "missing_by_type": {
+      "EXECUTE": 40,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "VALIDATION": 18,
+      "UNDELETE_DOCUMENT": 17,
+      "CONVERT_TO": 16,
+      "DELETE_DOCUMENT": 15,
+      "COPY_TO": 13,
+      "MAKE_INVISIBLE": 8,
+      "MAKE_MANDATORY": 7,
+      "MAKE_VISIBLE": 7,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "MAKE_NON_MANDATORY": 5,
+      "MAKE_DISABLED": 4,
+      "EXT_VALUE": 4,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "CONCAT": 2,
+      "SEND_OTP": 1,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "VALIDATE_OTP": 1,
+      "DUMMY_ACTION": 1,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "MAKE_ENABLED": 1,
+      "SET_DATE": 1
+    }
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "ocr_chains": {
+      "status": "PASS",
+      "details": [
+        "OCR rules with VERIFY chains: 4/7 (57.1%)"
+      ]
+    },
+    "verify_ordinal_mapping": {
+      "status": "FAIL",
+      "details": [
+        "VERIFY rules with ordinal destinationIds: 4/6 (66.7%)"
+      ]
+    },
+    "visibility_pairs": {
+      "status": "PASS",
+      "details": [
+        "MAKE_VISIBLE: 11, MAKE_INVISIBLE: 11, Balanced: True"
+      ]
+    },
+    "make_disabled_consolidated": {
+      "status": "PASS",
+      "details": [
+        "MAKE_DISABLED rules: 1, max destinations: 21"
+      ]
+    },
+    "mandatory_pairs": {
+      "status": "PASS",
+      "details": [
+        "MAKE_MANDATORY: 5, MAKE_NON_MANDATORY: 5"
+      ]
+    },
+    "ext_dropdown_coverage": {
+      "status": "PASS",
+      "details": [
+        "EXT_DROP_DOWN coverage: 20/20 (100.0%)"
+      ]
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {},
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "rule_structure_error",
+      "status_code": 400,
+      "message": "Id is not present for the mandatory field Bank Account Number",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

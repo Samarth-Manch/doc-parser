@@ -1,0 +1,857 @@
+{
+  "eval_metadata": {
+    "iteration": 1,
+    "pass_threshold": 0.9,
+    "generated_file": "/home/samart/project/doc-parser/adws/2026-01-31_14-23-02/populated_schema_v1.json",
+    "reference_file": "/home/samart/project/doc-parser/documents/json_output/vendor_creation_sample_bud.json",
+    "bud_file": "/home/samart/project/doc-parser/documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-01-31T14:44:11.335550"
+  },
+  "overall_score": 0.0,
+  "pass": false,
+  "panel_scores": {
+    "Default": {
+      "score": 0.0,
+      "fields_checked": 168,
+      "rules_generated": 72,
+      "rules_in_reference": 0,
+      "rules_matched": 0,
+      "rules_missing": 0
+    }
+  },
+  "rule_type_comparison": {
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 12,
+      "difference": -12,
+      "matched": 0
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 3,
+      "reference": 20,
+      "difference": -17,
+      "matched": 3
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "reference": 40,
+      "difference": -40,
+      "matched": 0
+    },
+    "CONVERT_TO": {
+      "generated": 1,
+      "reference": 21,
+      "difference": -20,
+      "matched": 1
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 3,
+      "difference": -3,
+      "matched": 0
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "reference": 18,
+      "difference": -18,
+      "matched": 0
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 5,
+      "reference": 10,
+      "difference": -5,
+      "matched": 5
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "difference": -6,
+      "matched": 0
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 17,
+      "difference": -17,
+      "matched": 0
+    },
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "reference": 18,
+      "difference": -18,
+      "matched": 0
+    },
+    "MAKE_VISIBLE": {
+      "generated": 4,
+      "reference": 18,
+      "difference": -14,
+      "matched": 4
+    },
+    "VERIFY": {
+      "generated": 14,
+      "reference": 5,
+      "difference": 9,
+      "matched": 5
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "difference": -2,
+      "matched": 4
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 15,
+      "difference": -15,
+      "matched": 0
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "difference": -2,
+      "matched": 0
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "reference": 13,
+      "difference": -13,
+      "matched": 0
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "reference": 13,
+      "difference": -13,
+      "matched": 0
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "reference": 2,
+      "difference": -2,
+      "matched": 0
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "difference": -6,
+      "matched": 0
+    },
+    "MAKE_DISABLED": {
+      "generated": 25,
+      "reference": 5,
+      "difference": 20,
+      "matched": 5
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "reference": 19,
+      "difference": -14,
+      "matched": 5
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "difference": -1,
+      "matched": 0
+    }
+  },
+  "critical_checks": {
+    "ocr_chains_valid": true,
+    "ordinal_mapping_correct": true,
+    "visibility_pairs_complete": false,
+    "mandatory_pairs_complete": true
+  },
+  "critical_check_details": {
+    "ocr_chains": {
+      "total_ocr_rules": 4,
+      "valid_chains": 4,
+      "issues": [],
+      "is_valid": true
+    },
+    "ordinal_mapping": {
+      "total_verify_rules": 14,
+      "valid_mappings": 0,
+      "issues": [],
+      "is_valid": true
+    },
+    "visibility_pairs": {
+      "total_visible_rules": 4,
+      "total_invisible_rules": 5,
+      "missing_invisible_pairs": [
+        {
+          "destination_id": 84,
+          "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing"
+        },
+        {
+          "destination_id": 85,
+          "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing"
+        },
+        {
+          "destination_id": 86,
+          "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing"
+        },
+        {
+          "destination_id": 159,
+          "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing"
+        }
+      ],
+      "missing_visible_pairs": [
+        {
+          "destination_id": 72,
+          "issue": "MAKE_INVISIBLE exists but MAKE_VISIBLE missing"
+        },
+        {
+          "destination_id": 73,
+          "issue": "MAKE_INVISIBLE exists but MAKE_VISIBLE missing"
+        },
+        {
+          "destination_id": 71,
+          "issue": "MAKE_INVISIBLE exists but MAKE_VISIBLE missing"
+        }
+      ],
+      "is_complete": false
+    },
+    "mandatory_pairs": {
+      "total_mandatory_rules": 0,
+      "total_non_mandatory_rules": 5,
+      "missing_pairs": [],
+      "is_complete": true
+    }
+  },
+  "missing_rules": [
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "field_id": 2,
+      "expected_rule_type": "MAKE_DISABLED",
+      "bud_logic": "System-generated transaction ID from Manch (Non-Editable)",
+      "source": "disable logic"
+    },
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "field_id": 2,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "System-generated transaction ID from Manch (Non-Editable)",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Created on",
+      "field_id": 3,
+      "expected_rule_type": "MAKE_DISABLED",
+      "bud_logic": "The request creation date will be auto-derived (Non-editable)",
+      "source": "disable logic"
+    },
+    {
+      "field": "Created By",
+      "field_id": 4,
+      "expected_rule_type": "MAKE_DISABLED",
+      "bud_logic": "Requester's email address will be auto-derived (Non-editable)",
+      "source": "disable logic"
+    },
+    {
+      "field": "Created By",
+      "field_id": 4,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Requester's email address will be auto-derived (Non-editable)",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Name/ First Name of the Organization",
+      "field_id": 62,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 0,34 character in this field and rest other character should go to next field. This should be divided ",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Name/ First Name of the Organization",
+      "field_id": 62,
+      "expected_rule_type": "COPY",
+      "bud_logic": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 0,34 character in this field and rest other character should go to next field. This should be divided ",
+      "source": "copy logic"
+    },
+    {
+      "field": "Vendor Domestic or Import",
+      "field_id": 10,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Default behaviour is Invisible, If account group/vendor type is selected as ZDES, ZDOM, ZRPV, ZONE (any one) then derived it as Domestic. If Account group/vendor type is selected as ZIMP, ZSTV, ZDAS (",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Country",
+      "field_id": 11,
+      "expected_rule_type": "MAKE_DISABLED",
+      "bud_logic": "If the Select the process type field value is India then country is India and Noneditable, If Select the process type field value is international then country is selectable dropdown. For dropdown val",
+      "source": "disable logic"
+    },
+    {
+      "field": "Country Name",
+      "field_id": 12,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Not visible, If Country code is selected then derive the country name as column 5 on table 1.1",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Country Code",
+      "field_id": 13,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Not visible, If Country code is selected then derive the country name as column 2 on table 1.1",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Company Code",
+      "field_id": 141,
+      "expected_rule_type": "COPY",
+      "bud_logic": "Copy from 'Basic Details' panel",
+      "source": "copy logic"
+    },
+    {
+      "field": "Do you wish to add additional mobile numbers (India)?",
+      "field_id": 16,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Dropdown values are Yes / No.",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Do you wish to add additional mobile numbers (Non-India)?",
+      "field_id": 17,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Dropdown values are Yes / No",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 2 (Domestic)",
+      "field_id": 18,
+      "expected_rule_type": "MAKE_MANDATORY",
+      "bud_logic": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible and non-mandatory.",
+      "source": "mandatory logic"
+    },
+    {
+      "field": "Mobile Number 2 (Domestic)",
+      "field_id": 18,
+      "expected_rule_type": "MAKE_NON_MANDATORY",
+      "bud_logic": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible and non-mandatory.",
+      "source": "mandatory pair"
+    },
+    {
+      "field": "Mobile Number 2 (Domestic)",
+      "field_id": 18,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible and non-mandatory.",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 2 (Domestic)",
+      "field_id": 18,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible and non-mandatory.",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 3 (Domestic)",
+      "field_id": 19,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 3 (Domestic)",
+      "field_id": 19,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 3 (Domestic)",
+      "field_id": 19,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 3 (Domestic)",
+      "field_id": 19,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 4 (Domestic)",
+      "field_id": 20,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 4 (Domestic)",
+      "field_id": 20,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 4 (Domestic)",
+      "field_id": 20,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 4 (Domestic)",
+      "field_id": 20,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 5 (Domestic)",
+      "field_id": 21,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 5 (Domestic)",
+      "field_id": 21,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 5 (Domestic)",
+      "field_id": 21,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 5 (Domestic)",
+      "field_id": 21,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 2 (Import)",
+      "field_id": 22,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 2 (Import)",
+      "field_id": 22,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 2 (Import)",
+      "field_id": 22,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 2 (Import)",
+      "field_id": 22,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 3 (Import)",
+      "field_id": 23,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 3 (Import)",
+      "field_id": 23,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 3 (Import)",
+      "field_id": 23,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 3 (Import)",
+      "field_id": 23,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 4 (Import)",
+      "field_id": 24,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 4 (Import)",
+      "field_id": 24,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 4 (Import)",
+      "field_id": 24,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 4 (Import)",
+      "field_id": 24,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Mobile Number 5 (Import)",
+      "field_id": 25,
+      "expected_rule_type": "MAKE_VISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility logic"
+    },
+    {
+      "field": "Mobile Number 5 (Import)",
+      "field_id": 25,
+      "expected_rule_type": "MAKE_INVISIBLE",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "visibility pair"
+    },
+    {
+      "field": "Mobile Number 5 (Import)",
+      "field_id": 25,
+      "expected_rule_type": "VERIFY",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "verify logic"
+    },
+    {
+      "field": "Mobile Number 5 (Import)",
+      "field_id": 25,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it should be invisible. This field should be non-mandatory in all the cases",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Vendor Contact Email",
+      "field_id": 26,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Email ID validation, Maximum length of 256",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Do you wish to add additional email addresses?",
+      "field_id": 28,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Dropdown values are Yes/No",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Email 2",
+      "field_id": 29,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "If the field \"Do you wish to add additional email addresses?\" value is Yes then it is visible and mandatory",
+      "source": "external dropdown type"
+    },
+    {
+      "field": "Concerned email addresses?",
+      "field_id": 30,
+      "expected_rule_type": "EXT_DROP_DOWN",
+      "bud_logic": "Dropdown values are Yes/No",
+      "source": "external dropdown type"
+    }
+  ],
+  "extra_rules": [
+    {
+      "field": "Country Code",
+      "field_id": 13,
+      "rule_type": "VERIFY",
+      "rule_id": 19,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "PAN",
+      "field_id": 37,
+      "rule_type": "CONVERT_TO",
+      "rule_id": 21,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_INVISIBLE",
+      "rule_id": 1,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_INVISIBLE",
+      "rule_id": 2,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_NON_MANDATORY",
+      "rule_id": 3,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_NON_MANDATORY",
+      "rule_id": 4,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_VISIBLE",
+      "rule_id": 5,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_INVISIBLE",
+      "rule_id": 6,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_NON_MANDATORY",
+      "rule_id": 7,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please select GST option",
+      "field_id": 43,
+      "rule_type": "MAKE_VISIBLE",
+      "rule_id": 8,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "GSTIN",
+      "field_id": 45,
+      "rule_type": "VERIFY",
+      "rule_id": 22,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "GSTIN",
+      "field_id": 45,
+      "rule_type": "VERIFY",
+      "rule_id": 58,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "ID Type",
+      "field_id": 58,
+      "rule_type": "VERIFY",
+      "rule_id": 35,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please Choose Address Proof",
+      "field_id": 70,
+      "rule_type": "MAKE_INVISIBLE",
+      "rule_id": 9,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please Choose Address Proof",
+      "field_id": 70,
+      "rule_type": "MAKE_INVISIBLE",
+      "rule_id": 10,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Please choose the option",
+      "field_id": 83,
+      "rule_type": "MAKE_VISIBLE",
+      "rule_id": 13,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "IFSC Code",
+      "field_id": 87,
+      "rule_type": "VERIFY",
+      "rule_id": 60,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "MSME Registration Number",
+      "field_id": 103,
+      "rule_type": "VERIFY",
+      "rule_id": 62,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Exception Duplicate Vendor creation",
+      "field_id": 129,
+      "rule_type": "VERIFY",
+      "rule_id": 54,
+      "reason": "Rule type not indicated in BUD logic"
+    },
+    {
+      "field": "Is Vendor Your Customer?",
+      "field_id": 158,
+      "rule_type": "MAKE_VISIBLE",
+      "rule_id": 14,
+      "reason": "Rule type not indicated in BUD logic"
+    }
+  ],
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "field": "Search term / Reference Number(Transaction ID)",
+        "issue": "Missing MAKE_DISABLED rule",
+        "fix": "Add MAKE_DISABLED rule",
+        "bud_reference": "System-generated transaction ID from Manch (Non-Editable)"
+      },
+      {
+        "field": "Search term / Reference Number(Transaction ID)",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "fix": "Add EXT_DROP_DOWN rule",
+        "bud_reference": "System-generated transaction ID from Manch (Non-Editable)"
+      },
+      {
+        "field": "Created on",
+        "issue": "Missing MAKE_DISABLED rule",
+        "fix": "Add MAKE_DISABLED rule",
+        "bud_reference": "The request creation date will be auto-derived (Non-editable)"
+      },
+      {
+        "field": "Created By",
+        "issue": "Missing MAKE_DISABLED rule",
+        "fix": "Add MAKE_DISABLED rule",
+        "bud_reference": "Requester's email address will be auto-derived (Non-editable)"
+      },
+      {
+        "field": "Created By",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "fix": "Add EXT_DROP_DOWN rule",
+        "bud_reference": "Requester's email address will be auto-derived (Non-editable)"
+      },
+      {
+        "field": "Name/ First Name of the Organization",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "fix": "Add EXT_DROP_DOWN rule",
+        "bud_reference": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 0,"
+      },
+      {
+        "field": "Name/ First Name of the Organization",
+        "issue": "Missing COPY rule",
+        "fix": "Add COPY rule",
+        "bud_reference": "Copy from Name/ First Name of the Organization field of basic detail panel. This should be having 0,"
+      },
+      {
+        "field": "Vendor Domestic or Import",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "fix": "Add EXT_DROP_DOWN rule",
+        "bud_reference": "Default behaviour is Invisible, If account group/vendor type is selected as ZDES, ZDOM, ZRPV, ZONE ("
+      },
+      {
+        "field": "Country",
+        "issue": "Missing MAKE_DISABLED rule",
+        "fix": "Add MAKE_DISABLED rule",
+        "bud_reference": "If the Select the process type field value is India then country is India and Noneditable, If Select"
+      },
+      {
+        "field": "Country Name",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "fix": "Add EXT_DROP_DOWN rule",
+        "bud_reference": "Not visible, If Country code is selected then derive the country name as column 5 on table 1.1"
+      },
+      {
+        "destination_id": 84,
+        "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing",
+        "fix": "Add MAKE_INVISIBLE rule for complete visibility pair",
+        "priority": "high"
+      },
+      {
+        "destination_id": 85,
+        "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing",
+        "fix": "Add MAKE_INVISIBLE rule for complete visibility pair",
+        "priority": "high"
+      },
+      {
+        "destination_id": 86,
+        "issue": "MAKE_VISIBLE exists but MAKE_INVISIBLE missing",
+        "fix": "Add MAKE_INVISIBLE rule for complete visibility pair",
+        "priority": "high"
+      }
+    ],
+    "total_fixes_needed": 186
+  },
+  "summary": {
+    "total_fields_generated": 168,
+    "total_fields_reference": 284,
+    "total_rules_generated": 61,
+    "total_rules_reference": 279,
+    "bud_fields_with_logic": 136
+  }
+}

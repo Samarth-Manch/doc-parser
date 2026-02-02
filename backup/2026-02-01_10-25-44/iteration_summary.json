@@ -1,0 +1,24 @@
+{
+  "workspace": "adws/2026-02-01_10-25-44",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-02-01T10:36:24.993841",
+      "output_file": "adws/2026-02-01_10-25-44/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-02-01_10-25-44/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-02-01_10-25-44/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-02-01_10-25-44/self_heal_instructions_v1.json",
+      "score": 1.0,
+      "passed": true,
+      "priority_fixes_count": 0
+    }
+  ],
+  "current_iteration": 1,
+  "final_status": "passed",
+  "last_updated": "2026-02-01T10:36:24.993902",
+  "final_score": 1.0,
+  "total_iterations": 1,
+  "completed_at": "2026-02-01T10:36:24.994515",
+  "final_output": "adws/2026-02-01_10-25-44/populated_schema_v1.json",
+  "intra_panel_path": "adws/2026-02-01_10-25-44/templates_output/Vendor Creation Sample BUD_intra_panel_references.json"
+}

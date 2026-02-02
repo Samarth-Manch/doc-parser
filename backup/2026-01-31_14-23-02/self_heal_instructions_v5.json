@@ -1,0 +1,380 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "issue": "Missing EXT_DROP_DOWN rules for external dropdown fields",
+      "fix": "Add EXT_DROP_DOWN rules with sourceType=FORM_FILL_DROP_DOWN and searchable=true for all EXTERNAL_DROP_DOWN_VALUE type fields",
+      "affected_fields": [
+        "Group key/Corporate Group",
+        "Country",
+        "Company Code",
+        "Do you wish to add additional mobile numbers (India)?",
+        "Do you wish to add additional mobile numbers (Non-India)?",
+        "Do you wish to add additional email addresses?",
+        "Concerned email addresses?",
+        "Please select GST option",
+        "Title",
+        "Business Registration Number Available?",
+        "Please Choose Address Proof",
+        "Please choose the option",
+        "TDS Applicable?",
+        "Is SSI / MSME Applicable?",
+        "Company Code",
+        "Order currency",
+        "Terms of Payment",
+        "Incoterms",
+        "Incoterms (Part 2)",
+        "House Bank",
+        "Reconciliation acct",
+        "Currency",
+        "Is Vendor Your Customer?",
+        "Withholding Tax Type",
+        "Withholding Tax Code"
+      ]
+    },
+    {
+      "priority": 2,
+      "issue": "Missing EXT_VALUE rules for dependent field updates",
+      "fix": "Add EXT_VALUE rules for fields that derive values from dropdown selections (e.g., Country -> Country Name, Country Code)",
+      "affected_fields": [
+        "Country Name",
+        "Country Code",
+        "Process Type",
+        "Vendor Domestic or Import"
+      ]
+    },
+    {
+      "priority": 3,
+      "issue": "Excessive MAKE_DISABLED rules - many fields marked as disabled unnecessarily",
+      "fix": "Review MAKE_DISABLED rules. Non-editable fields should use editable=false in formFillMetadata, not MAKE_DISABLED rules. Only use MAKE_DISABLED for conditional disabling.",
+      "affected_fields": [
+        "Select the process type",
+        "Pan Holder Name",
+        "PAN Type",
+        "PAN Status",
+        "Aadhaar PAN List Status",
+        "Trade Name",
+        "Legal Name",
+        "Reg Date",
+        "Building Number",
+        "Pin Code",
+        "ID Type",
+        "Name/ Middle Name of the Organization",
+        "Name/ Last Name of the Organization",
+        "Name 4/Alternate Name",
+        "Street 1",
+        "Street 2",
+        "Street 3",
+        "Postal Code",
+        "IFSC Code",
+        "Bank Account Number",
+        "Type",
+        "Street",
+        "City",
+        "State",
+        "District"
+      ]
+    },
+    {
+      "priority": 4,
+      "issue": "Incomplete visibility rule pairs",
+      "fix": "Ensure each MAKE_VISIBLE rule has a corresponding MAKE_INVISIBLE rule for the opposite condition",
+      "affected_fields": [
+        "Please Choose Address Proof",
+        "Please choose the option",
+        "Is Vendor Your Customer?"
+      ]
+    },
+    {
+      "priority": 5,
+      "issue": "Missing MAKE_MANDATORY rules for conditional mandatory fields",
+      "fix": "Add MAKE_MANDATORY rules paired with MAKE_NON_MANDATORY for fields that become mandatory based on conditions",
+      "affected_fields": [
+        "GSTIN IMAGE",
+        "GSTIN",
+        "Mobile Number 2 (Domestic)",
+        "Upload Declaration"
+      ]
+    },
+    {
+      "priority": 6,
+      "issue": "GSTIN VERIFY rule missing proper destination mappings",
+      "fix": "Add ordinal destinationIds mapping to GSTIN VERIFY rule to populate: Trade Name, Legal Name, Reg Date, City, Type, Building Number, District, State, Street, Pin Code",
+      "affected_fields": [
+        "GSTIN",
+        "Trade Name",
+        "Legal Name",
+        "Reg Date",
+        "Type",
+        "Building Number",
+        "Street",
+        "City",
+        "District",
+        "State",
+        "Pin Code"
+      ]
+    },
+    {
+      "priority": 7,
+      "issue": "Missing OCR rules",
+      "fix": "Add OCR rules for: Aadhaar Back Image (AADHAR_BACK_IMAGE), CIN Certificate (CIN)",
+      "affected_fields": [
+        "Aadhaar Back Image",
+        "CIN Certificate"
+      ]
+    }
+  ],
+  "general_improvements": [
+    "Add EXECUTE rules for server-side business logic execution",
+    "Add VALIDATION rules for field validation (email, mobile, PIN code)",
+    "Add COPY_TO rules for copying values between fields",
+    "Add CONVERT_TO rules for uppercase conversion where specified in BUD",
+    "Add SESSION_BASED rules for role-specific visibility/mandatory controls",
+    "Add DELETE_DOCUMENT and UNDELETE_DOCUMENT rules for conditional document handling",
+    "Review and add missing CONCAT rules for combining field values"
+  ],
+  "rule_type_comparison": {
+    "MAKE_VISIBLE": {
+      "generated": 4,
+      "expected": 18,
+      "match": false
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "expected": 40,
+      "match": false
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "expected": 18,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "expected": 19,
+      "match": false
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "MAKE_DISABLED": {
+      "generated": 25,
+      "expected": 5,
+      "match": false
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "expected": 13,
+      "match": false
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "MAKE_MANDATORY": {
+      "generated": 0,
+      "expected": 12,
+      "match": false
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 5,
+      "expected": 10,
+      "match": false
+    },
+    "OCR": {
+      "generated": 4,
+      "expected": 6,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "expected": 17,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "expected": 2,
+      "match": false
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "expected": 3,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "expected": 13,
+      "match": false
+    },
+    "VERIFY": {
+      "generated": 13,
+      "expected": 5,
+      "match": false
+    },
+    "CONVERT_TO": {
+      "generated": 1,
+      "expected": 21,
+      "match": false
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 3,
+      "expected": 20,
+      "match": false
+    },
+    "CONCAT": {
+      "generated": 0,
+      "expected": 2,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "expected": 6,
+      "match": false
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "expected": 18,
+      "match": false
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "expected": 1,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "expected": 6,
+      "match": false
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "expected": 15,
+      "match": false
+    }
+  },
+  "missing_rules": [
+    {
+      "field": "Various",
+      "rule_type": "OCR",
+      "reason": "Generated 4 but expected 6 OCR rules"
+    },
+    {
+      "field": "Multiple external dropdown fields",
+      "rule_type": "EXT_DROP_DOWN",
+      "reason": "Generated 3 but expected 20 EXT_DROP_DOWN rules"
+    },
+    {
+      "field": "Fields with external value dependencies",
+      "rule_type": "EXT_VALUE",
+      "reason": "Generated 0 but expected 13 EXT_VALUE rules"
+    },
+    {
+      "field": "Fields requiring server execution",
+      "rule_type": "EXECUTE",
+      "reason": "Generated 0 but expected 40 EXECUTE rules (business logic)"
+    },
+    {
+      "field": "Fields requiring validation",
+      "rule_type": "VALIDATION",
+      "reason": "Generated 0 but expected 18 VALIDATION rules"
+    },
+    {
+      "field": "Conditional mandatory fields",
+      "rule_type": "MAKE_MANDATORY",
+      "reason": "Generated 0 but expected 12 MAKE_MANDATORY rules"
+    }
+  ],
+  "critical_checks": {
+    "ocr_verify_chains": {
+      "pass": true,
+      "details": [
+        "Upload PAN: OCR -> post_triggers=[55]",
+        "GSTIN IMAGE: OCR -> post_triggers=[57]",
+        "Cancelled Cheque Image: OCR -> post_triggers=[59]",
+        "MSME Image: OCR -> post_triggers=[61]"
+      ]
+    },
+    "ordinal_mapping": {
+      "pass": true,
+      "details": [
+        "PAN: VERIFY uses ordinal mapping with 10 positions"
+      ]
+    },
+    "visibility_pairs": {
+      "pass": false,
+      "details": [
+        "Please select GST option: Has both MAKE_VISIBLE and MAKE_INVISIBLE (paired)",
+        "Please Choose Address Proof: Has only MAKE_INVISIBLE (missing MAKE_VISIBLE pair)",
+        "Please choose the option: Has only MAKE_VISIBLE (missing MAKE_INVISIBLE pair)",
+        "Is Vendor Your Customer?: Has only MAKE_VISIBLE (missing MAKE_INVISIBLE pair)"
+      ]
+    },
+    "mandatory_pairs": {
+      "pass": false,
+      "details": [
+        "Please select GST option: Has only MAKE_NON_MANDATORY (missing MAKE_MANDATORY pair)",
+        "Please Choose Address Proof: Has only MAKE_NON_MANDATORY (missing MAKE_MANDATORY pair)"
+      ]
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {
+    "overall_score": 0.765,
+    "pass": false,
+    "pass_threshold": 0.9,
+    "iteration": 4,
+    "timestamp": "2026-01-31T15:10:25.216151",
+    "generated_rules_count": 60,
+    "expected_rules_count": 279,
+    "rule_coverage": 21.5
+  },
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

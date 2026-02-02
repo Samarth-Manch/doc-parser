@@ -1,0 +1,315 @@
+{
+  "priority_fixes": [
+    {
+      "type": "missing_rules",
+      "rule_type": "OCR",
+      "generated_count": 4,
+      "reference_count": 6,
+      "deficit": 2,
+      "severity": "high"
+    },
+    {
+      "type": "missing_panels",
+      "panels": [
+        "Functional Head Details",
+        "MDC Details",
+        "Approver Mapping",
+        "Auditor Details",
+        "Common Fields Panel",
+        "Vertical Head Details"
+      ],
+      "count": 6,
+      "severity": "high"
+    },
+    {
+      "type": "missing_fields",
+      "count": 122,
+      "sample": [
+        "Common Bank Holder Name",
+        "Aadhaar  Front copy",
+        "Name of Account Holder (Import)",
+        "Tax Number Category (GST)",
+        "Common Bank Account Number",
+        "Created By Name",
+        "Tax Number Category (SSI) ",
+        "MDC Details",
+        "Title (Domestic)",
+        "Requestor Comments"
+      ],
+      "severity": "high"
+    },
+    {
+      "type": "missing_rules",
+      "rule_type": "EXT_VALUE",
+      "generated_count": 2,
+      "reference_count": 13,
+      "deficit": 11,
+      "severity": "medium"
+    },
+    {
+      "type": "missing_rules",
+      "rule_type": "MAKE_VISIBLE",
+      "generated_count": 12,
+      "reference_count": 18,
+      "deficit": 6,
+      "severity": "medium"
+    },
+    {
+      "type": "missing_rules",
+      "rule_type": "MAKE_INVISIBLE",
+      "generated_count": 13,
+      "reference_count": 19,
+      "deficit": 6,
+      "severity": "medium"
+    },
+    {
+      "type": "missing_rules",
+      "rule_type": "MAKE_MANDATORY",
+      "generated_count": 5,
+      "reference_count": 12,
+      "deficit": 7,
+      "severity": "medium"
+    }
+  ],
+  "recommendations": [
+    "Add missing panels: Functional Head Details, MDC Details, Approver Mapping, Auditor Details, Common Fields Panel, Vertical Head Details",
+    "Add 122 missing fields from reference",
+    "Generate 2 more OCR rules",
+    "Ensure all OCR rules have postTriggerRuleIds linking to VERIFY rules",
+    "Add EXECUTE rules (40 in reference, 0 in generated)",
+    "Add VALIDATION rules (18 in reference, 0 in generated)",
+    "Add SESSION_BASED rules for multi-step workflows",
+    "Add COPY_TO and COPY_TO_DOCUMENT_STORAGE_ID rules"
+  ],
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_DISABLED": 22,
+      "EXT_DROP_DOWN": 29,
+      "VERIFY": 13,
+      "MAKE_VISIBLE": 12,
+      "MAKE_INVISIBLE": 13,
+      "MAKE_MANDATORY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "OCR": 4,
+      "EXT_VALUE": 2,
+      "CONVERT_TO": 1
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "EXECUTE": 40,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "missing_types": [
+      "VALIDATE_OTP",
+      "VALIDATION",
+      "EXECUTE",
+      "COPY_TO_GENERIC_PARTY_NAME",
+      "COPY_TO_GENERIC_PARTY_EMAIL",
+      "UNDELETE_DOCUMENT",
+      "SESSION_BASED_MAKE_INVISIBLE",
+      "SESSION_BASED_MAKE_MANDATORY",
+      "COPY_TO_TRANSACTION_ATTR3",
+      "SESSION_BASED_MAKE_NON_MANDATORY",
+      "COPY_TO_TRANSACTION_ATTR1",
+      "DUMMY_ACTION",
+      "SET_DATE",
+      "SEND_OTP",
+      "COPY_TXNID_TO_FORM_FILL",
+      "DELETE_DOCUMENT",
+      "CONCAT",
+      "MAKE_ENABLED",
+      "COPY_TO",
+      "SESSION_BASED_MAKE_VISIBLE",
+      "COPY_TO_DOCUMENT_STORAGE_ID"
+    ],
+    "extra_types": []
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "ocr_chains": {
+      "generated": {
+        "total": 4,
+        "with_chains": 4,
+        "details": [
+          {
+            "field": "Upload PAN",
+            "has_chain": true,
+            "postTriggerRuleIds": [
+              135
+            ]
+          },
+          {
+            "field": "GSTIN IMAGE",
+            "has_chain": true,
+            "postTriggerRuleIds": [
+              137
+            ]
+          },
+          {
+            "field": "Cancelled Cheque Image",
+            "has_chain": true,
+            "postTriggerRuleIds": [
+              139
+            ]
+          },
+          {
+            "field": "MSME Image",
+            "has_chain": true,
+            "postTriggerRuleIds": [
+              141
+            ]
+          }
+        ]
+      },
+      "reference": {
+        "total": 6,
+        "with_chains": 4
+      }
+    },
+    "verify_ordinal": {
+      "generated": {
+        "total": 13,
+        "with_destinations": 1,
+        "details": [
+          {
+            "field": "Country Code",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "PAN",
+            "has_destinationIds": true,
+            "destinationIds": [
+              -1,
+              -1,
+              -1,
+              38,
+              -1,
+              40,
+              -1,
+              39,
+              41,
+              -1
+            ]
+          },
+          {
+            "field": "PAN",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "GSTIN",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "GSTIN",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "ID Type",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "Name/ First Name of the Organization",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "Name/ Middle Name of the Organization",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "Name/ Last Name of the Organization",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "Name 4/Alternate Name",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "IFSC Code",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "MSME Registration Number",
+            "has_destinationIds": false,
+            "destinationIds": []
+          },
+          {
+            "field": "Exception Duplicate Vendor creation",
+            "has_destinationIds": false,
+            "destinationIds": []
+          }
+        ]
+      },
+      "reference": {
+        "total": 5,
+        "with_destinations": 4
+      }
+    },
+    "visibility_pairs": {
+      "generated": {
+        "visible_count": 7,
+        "invisible_count": 6,
+        "unpaired_visible": 2,
+        "unpaired_invisible": 1,
+        "paired_percentage": 71.4
+      },
+      "reference": {
+        "visible_count": 11,
+        "invisible_count": 12,
+        "unpaired_visible": 0,
+        "unpaired_invisible": 1,
+        "paired_percentage": 100.0
+      }
+    }
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {},
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

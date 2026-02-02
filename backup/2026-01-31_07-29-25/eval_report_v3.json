@@ -1,0 +1,1733 @@
+{
+  "evaluation_summary": {
+    "generated_output": "/home/samart/project/doc-parser/adws/2026-01-31_07-29-25/populated_schema_v3.json",
+    "reference_output": "/home/samart/project/doc-parser/documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "/home/samart/project/doc-parser/documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-01-31T08:12:46.497495",
+    "iteration": 3,
+    "overall_score": 0.65,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false
+  },
+  "panel_evaluation": [
+    {
+      "panel_name": "Default",
+      "total_fields": 1,
+      "fields_evaluated": 1,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Basic Details",
+      "total_fields": 33,
+      "fields_evaluated": 33,
+      "fields_with_issues": 17,
+      "panel_score": 0.48,
+      "issues": [
+        {
+          "field": "Search term / Reference Number(Transaction ID)",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "System-generated transaction ID from Manch (Non-Editable)"
+        },
+        {
+          "field": "Created on",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "The request creation date will be auto-derived (Non-editable)"
+        },
+        {
+          "field": "Created By",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Requester's email address will be auto-derived (Non-editable)"
+        },
+        {
+          "field": "Account Group/Vendor Type",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "logic_snippet": "Dropdown values are first and second columns of reference table 1.3."
+        },
+        {
+          "field": "Group key/Corporate Group",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "logic_snippet": "Dropdown values will come based on the account group/vendor type selection field as 2nd column of re"
+        },
+        {
+          "field": "Country",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the Select the process type field value is India then country is India and Noneditable, If Select"
+        },
+        {
+          "field": "Company Code",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "logic_snippet": "Dropdown values will come from column 3 based on process type filter (DOM IN or INT) as column 1 of "
+        },
+        {
+          "field": "Mobile Number 2 (Domestic)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwi"
+        },
+        {
+          "field": "Mobile Number 2 (Domestic)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible and Mandatory if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwi"
+        },
+        {
+          "field": "Mobile Number 3 (Domestic)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should b"
+        },
+        {
+          "field": "Mobile Number 3 (Domestic)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should b"
+        },
+        {
+          "field": "Mobile Number 4 (Domestic)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should b"
+        },
+        {
+          "field": "Mobile Number 4 (Domestic)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should b"
+        },
+        {
+          "field": "Mobile Number 5 (Domestic)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should b"
+        },
+        {
+          "field": "Mobile Number 5 (Domestic)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (India)?\" is Yes otherwise it should b"
+        },
+        {
+          "field": "Mobile Number 2 (Import)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it sho"
+        },
+        {
+          "field": "Mobile Number 2 (Import)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (Non -India)?\" is Yes otherwise it sho"
+        },
+        {
+          "field": "Mobile Number 3 (Import)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it shou"
+        },
+        {
+          "field": "Mobile Number 3 (Import)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it shou"
+        },
+        {
+          "field": "Mobile Number 4 (Import)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it shou"
+        },
+        {
+          "field": "Mobile Number 4 (Import)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it shou"
+        },
+        {
+          "field": "Mobile Number 5 (Import)",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it shou"
+        },
+        {
+          "field": "Mobile Number 5 (Import)",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Make visible if \"Do you wish to add additional mobile numbers (non-India)?\" is Yes otherwise it shou"
+        },
+        {
+          "field": "Email 2",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the field \"Do you wish to add additional email addresses?\" value is Yes then it is visible and ma"
+        },
+        {
+          "field": "Email 2",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the field \"Do you wish to add additional email addresses?\" value is Yes then it is visible and ma"
+        },
+        {
+          "field": "Email ID",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the field \"Add the concerned Email Id\" value is Yes then it is visible and mandatory"
+        },
+        {
+          "field": "Email ID",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the field \"Add the concerned Email Id\" value is Yes then it is visible and mandatory"
+        }
+      ]
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "total_fields": 27,
+      "fields_evaluated": 27,
+      "fields_with_issues": 18,
+      "panel_score": 0.33,
+      "issues": [
+        {
+          "field": "PAN",
+          "issue": "Missing VERIFY rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "Perform PAN Validation, It should be upper case field. Apply PAN with GST rule also."
+        },
+        {
+          "field": "PAN",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "logic_snippet": "Perform PAN Validation, It should be upper case field. Apply PAN with GST rule also."
+        },
+        {
+          "field": "Pan Holder Name",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "Pan Holder Name",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "PAN Type",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "PAN Type",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "PAN Status",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "PAN Status",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "Aadhaar PAN List Status",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "Aadhaar PAN List Status",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "logic_snippet": "It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable"
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible"
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible"
+        },
+        {
+          "field": "GSTIN",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible"
+        },
+        {
+          "field": "GSTIN",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible and mandatory otherwise invisible"
+        },
+        {
+          "field": "Trade Name",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Trade Name",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Trade Name",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Legal Name",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Legal Name",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Legal Name",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Reg Date",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Reg Date",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Reg Date",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Type",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Type",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Type",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Building Number",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Building Number",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Building Number",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Pin Code",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Pin Code",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Pin Code",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is yes then visible otherwise invisible. This should "
+        },
+        {
+          "field": "Upload Declaration",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is No then visible and Mandatory otherwise invisible "
+        },
+        {
+          "field": "Upload Declaration",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "if the field \"Please select GST option\" values is No then visible and Mandatory otherwise invisible "
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "total_fields": 8,
+      "fields_evaluated": 8,
+      "fields_with_issues": 1,
+      "panel_score": 0.88,
+      "issues": [
+        {
+          "field": "Business Registration Number",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the field \"Additional Registration Number Applicable?\" value is YES then Visible, mandatory and e"
+        },
+        {
+          "field": "Business Registration Number",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If the field \"Additional Registration Number Applicable?\" value is YES then Visible, mandatory and e"
+        }
+      ]
+    },
+    {
+      "panel_name": "Address Details",
+      "total_fields": 13,
+      "fields_evaluated": 13,
+      "fields_with_issues": 11,
+      "panel_score": 0.15,
+      "issues": [
+        {
+          "field": "Electricity bill copy",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Electricit"
+        },
+        {
+          "field": "Electricity bill copy",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Electricit"
+        },
+        {
+          "field": "Aadhaar Front copy",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar co"
+        },
+        {
+          "field": "Aadhaar Front copy",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar co"
+        },
+        {
+          "field": "Aadhaar Back Image",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar co"
+        },
+        {
+          "field": "Aadhaar Back Image",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Visible and Mandatory if Is GST present is selected as No and Address proof is chosen as 'Aadhaar co"
+        },
+        {
+          "field": "Street",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street 1",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street 1",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street 2",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street 2",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street 3",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Street 3",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Postal Code",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "Postal Code",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "If GST uploaded then copy the data from GST field and Non-Mandatory, Non-Editable. If GST is not upl"
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Perform PIN code validation for Domestic. Non editable field."
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Perform PIN code validation for Domestic. Non editable field."
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Perform PIN code validation for Domestic. Non editable field."
+        }
+      ]
+    },
+    {
+      "panel_name": "Bank Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 9,
+      "panel_score": 0.25,
+      "issues": [
+        {
+          "field": "Please choose the option",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "Vendor will choose any one from the options and chosen option will be visible and mandatory: 1. Canc"
+        },
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visib"
+        },
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visib"
+        },
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visib"
+        },
+        {
+          "field": "Passbook/Bank Letter",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If Please the option is chosen as Passbook Front Page (India Domestic and International)then it is v"
+        },
+        {
+          "field": "Passbook/Bank Letter",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If Please the option is chosen as Passbook Front Page (India Domestic and International)then it is v"
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "Bank Account Number",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for C"
+        },
+        {
+          "field": "Name of Account Holder",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable"
+        },
+        {
+          "field": "Bank Name",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable"
+        },
+        {
+          "field": "Bank Branch",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable"
+        },
+        {
+          "field": "Bank Address",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Non editable"
+        }
+      ]
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "total_fields": 6,
+      "fields_evaluated": 6,
+      "fields_with_issues": 1,
+      "panel_score": 0.83,
+      "issues": [
+        {
+          "field": "CIN Certificate",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If 4 chars of PAN are C then CIN certificate mandatory, Upload size is 15 Mb"
+        }
+      ]
+    },
+    {
+      "panel_name": "MSME Details",
+      "total_fields": 28,
+      "fields_evaluated": 28,
+      "fields_with_issues": 24,
+      "panel_score": 0.14,
+      "issues": [
+        {
+          "field": "MSME Image",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If yes, Vendor will upload MSME Certificate and OCR will be performed post upload. Upload size is 15"
+        },
+        {
+          "field": "Name",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Type",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Address",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Category",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Date",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Enterprise",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Major Activity",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Date of Commencement",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Dice Name",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Applied State",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Modified Date",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Expiry Date",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Address Line1",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Building",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Street",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Area",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "City",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Pin",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "State",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "District",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Classification Year",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "Classification Date",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "logic_snippet": "Auto-derived via MSME Validation (Non-Editable)"
+        },
+        {
+          "field": "MSME Declaration",
+          "issue": "Missing OCR rule",
+          "severity": "CRITICAL",
+          "logic_snippet": "If no, Vendor will upload MSME Declaration (Not Mandatory)"
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "total_fields": 11,
+      "fields_evaluated": 11,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Payment Details",
+      "total_fields": 12,
+      "fields_evaluated": 12,
+      "fields_with_issues": 1,
+      "panel_score": 0.92,
+      "issues": [
+        {
+          "field": "Customer Code",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If YES, then visible and mandatory, else hidden. (Need discussion on the logic. Can we derive using "
+        },
+        {
+          "field": "Customer Code",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "logic_snippet": "If YES, then visible and mandatory, else hidden. (Need discussion on the logic. Can we derive using "
+        }
+      ]
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "total_fields": 5,
+      "fields_evaluated": 5,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    }
+  ],
+  "bud_logic_verification": {
+    "total_fields": 168,
+    "panels_count": 12,
+    "fields_by_panel": {
+      "Default": 1,
+      "Basic Details": 33,
+      "PAN and GST Details": 27,
+      "Vendor Basic Details": 8,
+      "Address Details": 13,
+      "Bank Details": 12,
+      "CIN and TDS Details": 6,
+      "MSME Details": 28,
+      "Vendor Duplicity Details": 12,
+      "Purchase Organization Details": 11,
+      "Payment Details": 12,
+      "Withholding Tax Details": 5
+    }
+  },
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "EXECUTE": 40,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "generated": {
+      "VERIFY": 7,
+      "MAKE_DISABLED": 1,
+      "MAKE_VISIBLE": 9,
+      "MAKE_INVISIBLE": 5,
+      "MAKE_NON_MANDATORY": 2,
+      "MAKE_MANDATORY": 2,
+      "OCR": 4,
+      "EXT_DROP_DOWN": 1
+    },
+    "discrepancies": [
+      {
+        "action_type": "CONCAT",
+        "generated": 0,
+        "reference": 2,
+        "issue": "Missing: 2 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "CONVERT_TO",
+        "generated": 0,
+        "reference": 21,
+        "issue": "Missing: 21 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO",
+        "generated": 0,
+        "reference": 13,
+        "issue": "Missing: 13 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "generated": 0,
+        "reference": 18,
+        "issue": "Missing: 18 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR1",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR3",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TXNID_TO_FORM_FILL",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "DELETE_DOCUMENT",
+        "generated": 0,
+        "reference": 15,
+        "issue": "Missing: 15 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "DUMMY_ACTION",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "EXECUTE",
+        "generated": 0,
+        "reference": 40,
+        "issue": "Missing: 40 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "EXT_DROP_DOWN",
+        "generated": 1,
+        "reference": 20,
+        "issue": "Missing: 19 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "EXT_VALUE",
+        "generated": 0,
+        "reference": 13,
+        "issue": "Missing: 13 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_DISABLED",
+        "generated": 1,
+        "reference": 5,
+        "issue": "Missing: 4 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_ENABLED",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_INVISIBLE",
+        "generated": 5,
+        "reference": 19,
+        "issue": "Missing: 14 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_MANDATORY",
+        "generated": 2,
+        "reference": 12,
+        "issue": "Missing: 10 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_NON_MANDATORY",
+        "generated": 2,
+        "reference": 10,
+        "issue": "Missing: 8 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_VISIBLE",
+        "generated": 9,
+        "reference": 18,
+        "issue": "Missing: 9 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "OCR",
+        "generated": 4,
+        "reference": 6,
+        "issue": "Missing: 2 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SEND_OTP",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_INVISIBLE",
+        "generated": 0,
+        "reference": 6,
+        "issue": "Missing: 6 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_MANDATORY",
+        "generated": 0,
+        "reference": 3,
+        "issue": "Missing: 3 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_NON_MANDATORY",
+        "generated": 0,
+        "reference": 2,
+        "issue": "Missing: 2 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SESSION_BASED_MAKE_VISIBLE",
+        "generated": 0,
+        "reference": 6,
+        "issue": "Missing: 6 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "SET_DATE",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "UNDELETE_DOCUMENT",
+        "generated": 0,
+        "reference": 17,
+        "issue": "Missing: 17 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "VALIDATE_OTP",
+        "generated": 0,
+        "reference": 1,
+        "issue": "Missing: 1 rules",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "VALIDATION",
+        "generated": 0,
+        "reference": 18,
+        "issue": "Missing: 18 rules",
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "VERIFY",
+        "generated": 7,
+        "reference": 5,
+        "issue": "Over-generated: 2 extra rules",
+        "severity": "MEDIUM"
+      }
+    ]
+  },
+  "critical_checks": {
+    "json_structure_valid": true,
+    "json_structure_errors": [],
+    "ocr_verify_chains": {
+      "total_ocr_rules": 4,
+      "correctly_chained": 4,
+      "missing_chains": 0,
+      "details": [
+        {
+          "ocr_field": "",
+          "ocr_source_type": "PAN_IMAGE",
+          "destination_ids": [
+            37
+          ],
+          "verify_field": 37,
+          "chained": true,
+          "post_trigger_rule_ids": [
+            26
+          ]
+        },
+        {
+          "ocr_field": "",
+          "ocr_source_type": "GSTIN_IMAGE",
+          "destination_ids": [
+            45
+          ],
+          "verify_field": 45,
+          "chained": true,
+          "post_trigger_rule_ids": [
+            28
+          ]
+        },
+        {
+          "ocr_field": "",
+          "ocr_source_type": "CHEQUEE",
+          "destination_ids": [
+            87
+          ],
+          "verify_field": 87,
+          "chained": true,
+          "post_trigger_rule_ids": [
+            30
+          ]
+        },
+        {
+          "ocr_field": "",
+          "ocr_source_type": "MSME",
+          "destination_ids": [
+            103
+          ],
+          "verify_field": 103,
+          "chained": true,
+          "post_trigger_rule_ids": [
+            32
+          ]
+        }
+      ]
+    },
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 7,
+      "correct_ordinals": 3,
+      "incorrect_ordinals": 4,
+      "details": [
+        {
+          "field": "",
+          "source_type": "optional",
+          "status": "PASS",
+          "expected": 0,
+          "actual": 0,
+          "dest_ids": []
+        },
+        {
+          "field": "",
+          "source_type": "conditional",
+          "status": "PASS",
+          "expected": 0,
+          "actual": 0,
+          "dest_ids": []
+        },
+        {
+          "field": "",
+          "source_type": "conditional",
+          "status": "PASS",
+          "expected": 0,
+          "actual": 0,
+          "dest_ids": []
+        },
+        {
+          "field": "",
+          "source_type": "PAN_NUMBER",
+          "status": "FAIL",
+          "expected": 10,
+          "actual": 0,
+          "dest_ids": []
+        },
+        {
+          "field": "",
+          "source_type": "GSTIN",
+          "status": "FAIL",
+          "expected": 21,
+          "actual": 0,
+          "dest_ids": []
+        },
+        {
+          "field": "",
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "status": "FAIL",
+          "expected": 4,
+          "actual": 0,
+          "dest_ids": []
+        },
+        {
+          "field": "",
+          "source_type": "MSME_UDYAM_REG_NUMBER",
+          "status": "FAIL",
+          "expected": 21,
+          "actual": 0,
+          "dest_ids": []
+        }
+      ]
+    },
+    "rule_type_comparison": {
+      "reference": {
+        "MAKE_DISABLED": 5,
+        "MAKE_INVISIBLE": 19,
+        "COPY_TXNID_TO_FORM_FILL": 1,
+        "SESSION_BASED_MAKE_VISIBLE": 6,
+        "SET_DATE": 1,
+        "COPY_TO": 13,
+        "CONVERT_TO": 21,
+        "COPY_TO_TRANSACTION_ATTR3": 1,
+        "EXECUTE": 40,
+        "DUMMY_ACTION": 1,
+        "EXT_VALUE": 13,
+        "MAKE_MANDATORY": 12,
+        "MAKE_VISIBLE": 18,
+        "SESSION_BASED_MAKE_INVISIBLE": 6,
+        "SESSION_BASED_MAKE_MANDATORY": 3,
+        "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+        "COPY_TO_TRANSACTION_ATTR1": 1,
+        "VALIDATION": 18,
+        "CONCAT": 2,
+        "DELETE_DOCUMENT": 15,
+        "UNDELETE_DOCUMENT": 17,
+        "EXT_DROP_DOWN": 20,
+        "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+        "COPY_TO_GENERIC_PARTY_NAME": 1,
+        "SEND_OTP": 1,
+        "VALIDATE_OTP": 1,
+        "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+        "OCR": 6,
+        "VERIFY": 5,
+        "MAKE_NON_MANDATORY": 10,
+        "MAKE_ENABLED": 1
+      },
+      "generated": {
+        "VERIFY": 7,
+        "MAKE_DISABLED": 1,
+        "MAKE_VISIBLE": 9,
+        "MAKE_INVISIBLE": 5,
+        "MAKE_NON_MANDATORY": 2,
+        "MAKE_MANDATORY": 2,
+        "OCR": 4,
+        "EXT_DROP_DOWN": 1
+      },
+      "discrepancies": [
+        {
+          "action_type": "CONCAT",
+          "generated": 0,
+          "reference": 2,
+          "issue": "Missing: 2 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "CONVERT_TO",
+          "generated": 0,
+          "reference": 21,
+          "issue": "Missing: 21 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "COPY_TO",
+          "generated": 0,
+          "reference": 13,
+          "issue": "Missing: 13 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+          "generated": 0,
+          "reference": 18,
+          "issue": "Missing: 18 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "COPY_TO_TRANSACTION_ATTR1",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "COPY_TO_TRANSACTION_ATTR3",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "COPY_TXNID_TO_FORM_FILL",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "DELETE_DOCUMENT",
+          "generated": 0,
+          "reference": 15,
+          "issue": "Missing: 15 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "DUMMY_ACTION",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "EXECUTE",
+          "generated": 0,
+          "reference": 40,
+          "issue": "Missing: 40 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "EXT_DROP_DOWN",
+          "generated": 1,
+          "reference": 20,
+          "issue": "Missing: 19 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "EXT_VALUE",
+          "generated": 0,
+          "reference": 13,
+          "issue": "Missing: 13 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "MAKE_DISABLED",
+          "generated": 1,
+          "reference": 5,
+          "issue": "Missing: 4 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "MAKE_ENABLED",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "MAKE_INVISIBLE",
+          "generated": 5,
+          "reference": 19,
+          "issue": "Missing: 14 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "MAKE_MANDATORY",
+          "generated": 2,
+          "reference": 12,
+          "issue": "Missing: 10 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "MAKE_NON_MANDATORY",
+          "generated": 2,
+          "reference": 10,
+          "issue": "Missing: 8 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "MAKE_VISIBLE",
+          "generated": 9,
+          "reference": 18,
+          "issue": "Missing: 9 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "OCR",
+          "generated": 4,
+          "reference": 6,
+          "issue": "Missing: 2 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "SEND_OTP",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "SESSION_BASED_MAKE_INVISIBLE",
+          "generated": 0,
+          "reference": 6,
+          "issue": "Missing: 6 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "SESSION_BASED_MAKE_MANDATORY",
+          "generated": 0,
+          "reference": 3,
+          "issue": "Missing: 3 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "SESSION_BASED_MAKE_NON_MANDATORY",
+          "generated": 0,
+          "reference": 2,
+          "issue": "Missing: 2 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "SESSION_BASED_MAKE_VISIBLE",
+          "generated": 0,
+          "reference": 6,
+          "issue": "Missing: 6 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "SET_DATE",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "UNDELETE_DOCUMENT",
+          "generated": 0,
+          "reference": 17,
+          "issue": "Missing: 17 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "VALIDATE_OTP",
+          "generated": 0,
+          "reference": 1,
+          "issue": "Missing: 1 rules",
+          "severity": "MEDIUM"
+        },
+        {
+          "action_type": "VALIDATION",
+          "generated": 0,
+          "reference": 18,
+          "issue": "Missing: 18 rules",
+          "severity": "HIGH"
+        },
+        {
+          "action_type": "VERIFY",
+          "generated": 7,
+          "reference": 5,
+          "issue": "Over-generated: 2 extra rules",
+          "severity": "MEDIUM"
+        }
+      ]
+    }
+  },
+  "missing_rules": [
+    {
+      "category": "VERIFY",
+      "missing_count": 1,
+      "types": [
+        "GSTIN_WITH_PAN"
+      ],
+      "fields": [
+        ""
+      ]
+    },
+    {
+      "category": "OCR",
+      "missing_count": 2,
+      "types": [
+        "AADHAR_BACK_IMAGE",
+        "CIN"
+      ],
+      "fields": [
+        "",
+        ""
+      ]
+    },
+    {
+      "category": "EXT_DROP_DOWN",
+      "missing_count": 19,
+      "pattern": "Fields with external/cascading dropdown logic"
+    }
+  ],
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "fix_type": "verify_ordinal_mapping",
+        "description": "Fix VERIFY destinationIds to match schema requirements",
+        "affected_fields": [
+          "",
+          "",
+          "",
+          ""
+        ],
+        "details": [
+          {
+            "field": "",
+            "source_type": "PAN_NUMBER",
+            "expected": 10,
+            "actual": 0
+          },
+          {
+            "field": "",
+            "source_type": "GSTIN",
+            "expected": 21,
+            "actual": 0
+          },
+          {
+            "field": "",
+            "source_type": "BANK_ACCOUNT_NUMBER",
+            "expected": 4,
+            "actual": 0
+          },
+          {
+            "field": "",
+            "source_type": "MSME_UDYAM_REG_NUMBER",
+            "expected": 21,
+            "actual": 0
+          }
+        ]
+      },
+      {
+        "priority": 2,
+        "fix_type": "missing_verify_rules",
+        "description": "Add missing VERIFY rules",
+        "affected_types": [
+          "GSTIN_WITH_PAN"
+        ],
+        "affected_fields": [
+          ""
+        ],
+        "schema_ids": {
+          "GSTIN_WITH_PAN": 0
+        }
+      },
+      {
+        "priority": 3,
+        "fix_type": "missing_ocr_rules",
+        "description": "Add missing OCR rules",
+        "affected_types": [
+          "AADHAR_BACK_IMAGE",
+          "CIN"
+        ],
+        "affected_fields": [
+          "",
+          ""
+        ],
+        "schema_ids": {
+          "AADHAR_BACK_IMAGE": 348,
+          "CIN": 0
+        }
+      },
+      {
+        "priority": 4,
+        "fix_type": "ext_dropdown_rules",
+        "description": "Add EXT_DROP_DOWN for 19 external dropdown fields",
+        "pattern": "Look for fields with external table references, Excel files, cascading dropdown pattern"
+      }
+    ]
+  }
+}

@@ -1,0 +1,696 @@
+{
+  "timestamp": "2026-02-01T16:14:07.890836",
+  "input_schema": "output/complete_format/6421-schema.json",
+  "input_intra_panel": "adws/2026-02-01_14-44-47/templates_output/Vendor Creation Sample BUD_intra_panel_references.json",
+  "output": "adws/2026-02-01_14-44-47/populated_schema_v8.json",
+  "statistics": {
+    "total_fields": 168,
+    "fields_with_rules": 12,
+    "total_rules_generated": 28,
+    "rules_by_type": {
+      "MAKE_DISABLED": 2,
+      "MAKE_VISIBLE": 7,
+      "MAKE_INVISIBLE": 7,
+      "MAKE_MANDATORY": 4,
+      "MAKE_NON_MANDATORY": 4,
+      "OCR": 2,
+      "VERIFY": 2
+    },
+    "llm_fallback_used": 0,
+    "validation_errors": 0
+  },
+  "detailed_rules_by_field": [
+    {
+      "field_id": 6,
+      "field_name": "Select the process type",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 1,
+          "action_type": "MAKE_DISABLED",
+          "source_type": null,
+          "source_ids": [
+            6
+          ],
+          "destination_ids": [
+            6
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Disable"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 11,
+      "field_name": "Country",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 2,
+          "action_type": "MAKE_DISABLED",
+          "source_type": null,
+          "source_ids": [
+            11
+          ],
+          "destination_ids": [
+            11
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Disable"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 16,
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 3,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            16
+          ],
+          "destination_ids": [
+            18,
+            19,
+            20,
+            21
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 4,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            16
+          ],
+          "destination_ids": [
+            18,
+            19,
+            20,
+            21
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 5,
+          "action_type": "MAKE_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            16
+          ],
+          "destination_ids": [
+            18
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 6,
+          "action_type": "MAKE_NON_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            16
+          ],
+          "destination_ids": [
+            18
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 17,
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 7,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            17
+          ],
+          "destination_ids": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 8,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            17
+          ],
+          "destination_ids": [
+            22,
+            23,
+            24,
+            25
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 28,
+      "field_name": "Do you wish to add additional email addresses?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 9,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            28
+          ],
+          "destination_ids": [
+            29
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 10,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            28
+          ],
+          "destination_ids": [
+            29
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 11,
+          "action_type": "MAKE_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            28
+          ],
+          "destination_ids": [
+            29
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 12,
+          "action_type": "MAKE_NON_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            28
+          ],
+          "destination_ids": [
+            29
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 36,
+      "field_name": "Upload PAN",
+      "field_type": "FILE",
+      "rules": [
+        {
+          "rule_id": 25,
+          "action_type": "OCR",
+          "source_type": "PAN_IMAGE",
+          "source_ids": [
+            36
+          ],
+          "destination_ids": [
+            37
+          ],
+          "post_trigger_rule_ids": [
+            26
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 37,
+      "field_name": "PAN",
+      "field_type": "TEXT",
+      "rules": [
+        {
+          "rule_id": 26,
+          "action_type": "VERIFY",
+          "source_type": "PAN_NUMBER",
+          "source_ids": [
+            37
+          ],
+          "destination_ids": [
+            -1,
+            -1,
+            -1,
+            38,
+            -1,
+            40,
+            -1,
+            39,
+            41,
+            -1
+          ],
+          "post_trigger_rule_ids": []
+        }
+      ]
+    },
+    {
+      "field_id": 43,
+      "field_name": "Please select GST option",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 13,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            43
+          ],
+          "destination_ids": [
+            44,
+            45,
+            46,
+            47,
+            48,
+            50,
+            55,
+            56,
+            105,
+            119,
+            121,
+            123,
+            124
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 14,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            43
+          ],
+          "destination_ids": [
+            44,
+            45,
+            46,
+            47,
+            48,
+            50,
+            55,
+            56,
+            105,
+            119,
+            121,
+            123,
+            124
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 15,
+          "action_type": "MAKE_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            43
+          ],
+          "destination_ids": [
+            44,
+            45,
+            56
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 16,
+          "action_type": "MAKE_NON_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            43
+          ],
+          "destination_ids": [
+            44,
+            45,
+            56
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 44,
+      "field_name": "GSTIN IMAGE",
+      "field_type": "FILE",
+      "rules": [
+        {
+          "rule_id": 27,
+          "action_type": "OCR",
+          "source_type": "GSTIN_IMAGE",
+          "source_ids": [
+            44
+          ],
+          "destination_ids": [
+            45
+          ],
+          "post_trigger_rule_ids": [
+            28
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 45,
+      "field_name": "GSTIN",
+      "field_type": "TEXT",
+      "rules": [
+        {
+          "rule_id": 28,
+          "action_type": "VERIFY",
+          "source_type": "GSTIN",
+          "source_ids": [
+            45
+          ],
+          "destination_ids": [
+            46,
+            47,
+            48,
+            121,
+            105,
+            50,
+            -1,
+            55,
+            123,
+            119,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          "post_trigger_rule_ids": []
+        }
+      ]
+    },
+    {
+      "field_id": 101,
+      "field_name": "Is SSI / MSME Applicable?",
+      "field_type": "EXTERNAL_DROP_DOWN_VALUE",
+      "rules": [
+        {
+          "rule_id": 17,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            101
+          ],
+          "destination_ids": [
+            102,
+            103
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 18,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            101
+          ],
+          "destination_ids": [
+            102,
+            103
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 19,
+          "action_type": "MAKE_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            101
+          ],
+          "destination_ids": [
+            103
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 20,
+          "action_type": "MAKE_NON_MANDATORY",
+          "source_type": null,
+          "source_ids": [
+            101
+          ],
+          "destination_ids": [
+            103
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 21,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            101
+          ],
+          "destination_ids": [
+            127
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "No"
+          ]
+        },
+        {
+          "rule_id": 22,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            101
+          ],
+          "destination_ids": [
+            127
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "field_id": 159,
+      "field_name": "Customer Code",
+      "field_type": "TEXT",
+      "rules": [
+        {
+          "rule_id": 23,
+          "action_type": "MAKE_VISIBLE",
+          "source_type": null,
+          "source_ids": [
+            159
+          ],
+          "destination_ids": [
+            158
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        },
+        {
+          "rule_id": 24,
+          "action_type": "MAKE_INVISIBLE",
+          "source_type": null,
+          "source_ids": [
+            159
+          ],
+          "destination_ids": [
+            158
+          ],
+          "post_trigger_rule_ids": [],
+          "condition": "NOT_IN",
+          "conditional_values": [
+            "Yes"
+          ]
+        }
+      ]
+    }
+  ],
+  "ocr_verify_chains": [
+    {
+      "ocr_field": "Upload PAN",
+      "ocr_field_id": 36,
+      "source_type": "PAN_IMAGE",
+      "destination_ids": [
+        37
+      ],
+      "verify_rule_ids": [
+        26
+      ]
+    },
+    {
+      "ocr_field": "GSTIN IMAGE",
+      "ocr_field_id": 44,
+      "source_type": "GSTIN_IMAGE",
+      "destination_ids": [
+        45
+      ],
+      "verify_rule_ids": [
+        28
+      ]
+    }
+  ],
+  "verify_rules_summary": [
+    {
+      "verify_field": "PAN",
+      "verify_field_id": 37,
+      "source_type": "PAN_NUMBER",
+      "source_ids": [
+        37
+      ],
+      "destination_ids": [
+        -1,
+        -1,
+        -1,
+        38,
+        -1,
+        40,
+        -1,
+        39,
+        41,
+        -1
+      ],
+      "mapped_destinations": 4,
+      "total_destinations": 10
+    },
+    {
+      "verify_field": "GSTIN",
+      "verify_field_id": 45,
+      "source_type": "GSTIN",
+      "source_ids": [
+        45
+      ],
+      "destination_ids": [
+        46,
+        47,
+        48,
+        121,
+        105,
+        50,
+        -1,
+        55,
+        123,
+        119,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "mapped_destinations": 9,
+      "total_destinations": 21
+    }
+  ]
+}

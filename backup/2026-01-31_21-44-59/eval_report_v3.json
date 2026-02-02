@@ -1,0 +1,3040 @@
+{
+  "evaluation_summary": {
+    "generated_output": "/home/samart/project/doc-parser/adws/2026-01-31_21-44-59/populated_schema_v3.json",
+    "reference_output": "/home/samart/project/doc-parser/documents/json_output/vendor_creation_sample_bud.json",
+    "evaluation_timestamp": "2026-01-31T22:15:12.505341",
+    "overall_score": 0.38,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false,
+    "common_fields_evaluated": 34,
+    "total_generated_rules": 116,
+    "total_reference_rules": 221,
+    "generated_fields_with_rules": 44,
+    "reference_fields_with_rules": 91,
+    "field_coverage": 0.374
+  },
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_DISABLED": 1,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 1,
+      "MAKE_VISIBLE": 11,
+      "MAKE_INVISIBLE": 11,
+      "EXT_DROP_DOWN": 9,
+      "EXT_VALUE": 2,
+      "MAKE_MANDATORY": 7,
+      "MAKE_NON_MANDATORY": 7,
+      "OCR": 7,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 15,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 15,
+      "VERIFY": 7,
+      "CONVERT_TO": 5,
+      "VALIDATION": 1
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "discrepancies": [
+      {
+        "action_type": "CONCAT",
+        "generated": 0,
+        "reference": 2,
+        "difference": -2,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "CONVERT_TO",
+        "generated": 5,
+        "reference": 21,
+        "difference": -16,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO",
+        "generated": 1,
+        "reference": 12,
+        "difference": -11,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+        "generated": 15,
+        "reference": 18,
+        "difference": -3,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_EMAIL",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_GENERIC_PARTY_NAME",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR1",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "COPY_TO_TRANSACTION_ATTR3",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "DUMMY_ACTION",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "EXT_DROP_DOWN",
+        "generated": 9,
+        "reference": 20,
+        "difference": -11,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "EXT_VALUE",
+        "generated": 2,
+        "reference": 13,
+        "difference": -11,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_DISABLED",
+        "generated": 1,
+        "reference": 5,
+        "difference": -4,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_ENABLED",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_INVISIBLE",
+        "generated": 11,
+        "reference": 19,
+        "difference": -8,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "MAKE_MANDATORY",
+        "generated": 7,
+        "reference": 12,
+        "difference": -5,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_NON_MANDATORY",
+        "generated": 7,
+        "reference": 10,
+        "difference": -3,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "MAKE_VISIBLE",
+        "generated": 11,
+        "reference": 18,
+        "difference": -7,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "OCR",
+        "generated": 7,
+        "reference": 6,
+        "difference": 1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "SEND_OTP",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "UNDELETE_DOCUMENT",
+        "generated": 15,
+        "reference": 17,
+        "difference": -2,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "VALIDATE_OTP",
+        "generated": 0,
+        "reference": 1,
+        "difference": -1,
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "VALIDATION",
+        "generated": 1,
+        "reference": 18,
+        "difference": -17,
+        "severity": "HIGH"
+      },
+      {
+        "action_type": "VERIFY",
+        "generated": 7,
+        "reference": 5,
+        "difference": 2,
+        "severity": "MEDIUM"
+      }
+    ]
+  },
+  "issues_by_severity": {
+    "critical": [],
+    "high": [
+      {
+        "field": "Created on",
+        "issue": "SET_DATE rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": "CURRENT_DATE",
+            "ref": null,
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Account Group/Vendor Type",
+        "issue": "Missing EXT_VALUE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Account Group/Vendor Type",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 2
+      },
+      {
+        "field": "Country Code",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (India)?",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (Non-India)?",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Do you wish to add additional email addresses?",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Concerned email addresses?",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Upload PAN",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "PAN Type",
+        "issue": "Missing MAKE_INVISIBLE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "PAN Type",
+        "issue": "Missing MAKE_VISIBLE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "PAN Type",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing COPY_TO rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing DELETE_DOCUMENT rule",
+        "severity": "HIGH",
+        "expected_count": 4
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_INVISIBLE rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "condition",
+            "gen": "NOT_IN",
+            "ref": "IN",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "Yes"
+            ],
+            "ref": [
+              "GST Non-Registered"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 13,
+            "ref": 12,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_INVISIBLE rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "condition",
+            "gen": "NOT_IN",
+            "ref": "IN",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "yes"
+            ],
+            "ref": [
+              "GST Registered"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 12,
+            "ref": 2,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_NON_MANDATORY rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "condition",
+            "gen": "NOT_IN",
+            "ref": "IN",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "Yes"
+            ],
+            "ref": [
+              "GST Non-Registered"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 13,
+            "ref": 2,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing UNDELETE_DOCUMENT rule",
+        "severity": "HIGH",
+        "expected_count": 4
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 2
+      },
+      {
+        "field": "GSTIN IMAGE",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "GSTIN IMAGE",
+        "issue": "Missing MAKE_DISABLED rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "GSTIN",
+        "issue": "Missing CONVERT_TO rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "GSTIN",
+        "issue": "VERIFY rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "destinationIds_count",
+            "gen": 21,
+            "ref": 11,
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "postTriggerRuleIds",
+            "gen": "missing",
+            "ref": "present",
+            "severity": "CRITICAL"
+          }
+        ]
+      },
+      {
+        "field": "Upload Declaration",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Electricity bill copy",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Aadhaar Front copy",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Cancelled Cheque Image",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Passbook/Bank Letter",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "IFSC Code",
+        "issue": "Missing CONVERT_TO rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "IFSC Code",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "CIN Certificate",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "TDS Certificate",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "MSME Image",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "MSME Image",
+        "issue": "Missing MAKE_DISABLED rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "MSME Registration Number",
+        "issue": "Missing CONVERT_TO rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "MSME Registration Number",
+        "issue": "Missing MAKE_DISABLED rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "MSME Registration Number",
+        "issue": "VERIFY rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "destinationIds_count",
+            "gen": 21,
+            "ref": 39,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "MSME Declaration",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Order currency",
+        "issue": "Missing EXT_VALUE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Order currency",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Purchase Organization",
+        "issue": "Missing EXT_VALUE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Purchase Organization",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Incoterms",
+        "issue": "Missing COPY_TO rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Incoterms",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Incoterms (Part 2)",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "VENDOR INVOICE",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Currency",
+        "issue": "Missing EXT_VALUE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Currency",
+        "issue": "Missing VALIDATION rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "issue": "Missing EXT_DROP_DOWN rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "issue": "Missing MAKE_MANDATORY rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Is Vendor Your Customer?",
+        "issue": "Missing MAKE_NON_MANDATORY rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      },
+      {
+        "field": "Service Tax File",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Additional File",
+        "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+        "severity": "HIGH",
+        "differences": [
+          {
+            "aspect": "sourceType",
+            "gen": null,
+            "ref": "FORM_FILL_METADATA",
+            "severity": "HIGH"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 0,
+            "ref": 1,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Withholding Tax Type",
+        "issue": "Missing EXT_VALUE rule",
+        "severity": "HIGH",
+        "expected_count": 1
+      }
+    ],
+    "medium": [
+      {
+        "field": "PAN",
+        "issue": "VERIFY rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "destinationIds_count",
+            "gen": 10,
+            "ref": 9,
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "postTriggerRuleIds",
+            "gen": "missing",
+            "ref": "present",
+            "severity": "CRITICAL"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_INVISIBLE rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "No"
+            ],
+            "ref": [
+              "SEZ",
+              "GST Registered",
+              "GST Non-Registered",
+              "Compounding"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 1,
+            "ref": 14,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing additional MAKE_INVISIBLE rule #4",
+        "severity": "MEDIUM"
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing additional MAKE_INVISIBLE rule #5",
+        "severity": "MEDIUM"
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_MANDATORY rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "Yes"
+            ],
+            "ref": [
+              "SEZ",
+              "GST Registered",
+              "Compounding"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 13,
+            "ref": 2,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_MANDATORY rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "yes"
+            ],
+            "ref": [
+              "GST Non-Registered"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 12,
+            "ref": 1,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_NON_MANDATORY rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "yes"
+            ],
+            "ref": [
+              "GST Non-Registered"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 12,
+            "ref": 1,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_VISIBLE rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "Yes"
+            ],
+            "ref": [
+              "GST Non-Registered"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 13,
+            "ref": 2,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_VISIBLE rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "yes"
+            ],
+            "ref": [
+              "GST Registered"
+            ],
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "MAKE_VISIBLE rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "conditionalValues",
+            "gen": [
+              "No"
+            ],
+            "ref": [
+              "SEZ"
+            ],
+            "severity": "MEDIUM"
+          },
+          {
+            "aspect": "destinationIds_count",
+            "gen": 1,
+            "ref": 12,
+            "severity": "HIGH"
+          }
+        ]
+      },
+      {
+        "field": "Please select GST option",
+        "issue": "Missing additional MAKE_VISIBLE rule #4",
+        "severity": "MEDIUM"
+      },
+      {
+        "field": "Cancelled Cheque Image",
+        "issue": "OCR rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "destinationIds_count",
+            "gen": 1,
+            "ref": 4,
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "CIN Certificate",
+        "issue": "OCR rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "postTriggerRuleIds",
+            "gen": "present",
+            "ref": "missing",
+            "severity": "MEDIUM"
+          }
+        ]
+      },
+      {
+        "field": "MSME Image",
+        "issue": "OCR rule differences",
+        "severity": "MEDIUM",
+        "differences": [
+          {
+            "aspect": "destinationIds_count",
+            "gen": 1,
+            "ref": 3,
+            "severity": "MEDIUM"
+          }
+        ]
+      }
+    ],
+    "low": [
+      {
+        "field": "Account Group/Vendor Type",
+        "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Country Code",
+        "issue": "Extra EXT_VALUE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (India)?",
+        "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (India)?",
+        "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (India)?",
+        "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (India)?",
+        "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (Non-India)?",
+        "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (Non-India)?",
+        "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (Non-India)?",
+        "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional mobile numbers (Non-India)?",
+        "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional email addresses?",
+        "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional email addresses?",
+        "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional email addresses?",
+        "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Do you wish to add additional email addresses?",
+        "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Concerned email addresses?",
+        "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Concerned email addresses?",
+        "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Concerned email addresses?",
+        "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Concerned email addresses?",
+        "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Upload PAN",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Upload PAN",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "PAN",
+        "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "PAN",
+        "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "PAN Type",
+        "issue": "Extra CONVERT_TO rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "GSTIN IMAGE",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "GSTIN IMAGE",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "GSTIN",
+        "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "GSTIN",
+        "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Upload Declaration",
+        "issue": "Extra VALIDATION rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Upload Declaration",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Upload Declaration",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Electricity bill copy",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Electricity bill copy",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Aadhaar Front copy",
+        "issue": "Extra OCR rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Aadhaar Front copy",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Aadhaar Front copy",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Cancelled Cheque Image",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Cancelled Cheque Image",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Passbook/Bank Letter",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Passbook/Bank Letter",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "IFSC Code",
+        "issue": "Extra VERIFY rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "CIN Certificate",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "CIN Certificate",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "TDS Certificate",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "TDS Certificate",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "MSME Image",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "MSME Image",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "MSME Declaration",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "MSME Declaration",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Order currency",
+        "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Purchase Organization",
+        "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "VENDOR INVOICE",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "VENDOR INVOICE",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Currency",
+        "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Service Tax File",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Service Tax File",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Additional File",
+        "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Additional File",
+        "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      },
+      {
+        "field": "Withholding Tax Type",
+        "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+        "severity": "LOW",
+        "count": 1
+      }
+    ],
+    "summary": {
+      "critical_count": 0,
+      "high_count": 55,
+      "medium_count": 14,
+      "low_count": 58
+    }
+  },
+  "field_evaluations": [
+    {
+      "field_name": "Created on",
+      "reference_field": "Created On",
+      "score": 0.636,
+      "generated_rules": 1,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Created on",
+          "issue": "SET_DATE rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": "CURRENT_DATE",
+              "ref": null,
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "field_name": "Account Group/Vendor Type",
+      "reference_field": "Account Group/Vendor Type",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "Account Group/Vendor Type",
+          "issue": "Missing EXT_VALUE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Account Group/Vendor Type",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 2
+        },
+        {
+          "field": "Account Group/Vendor Type",
+          "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Country Code",
+      "reference_field": "Country Code",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Country Code",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Country Code",
+          "issue": "Extra EXT_VALUE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Do you wish to add additional mobile numbers (India)?",
+      "reference_field": "Do you wish to add additional mobile numbers (India)?",
+      "score": 0.0,
+      "generated_rules": 4,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Do you wish to add additional mobile numbers (Non-India)?",
+      "reference_field": "Do you wish to add additional mobile numbers (Non-India)?",
+      "score": 0.0,
+      "generated_rules": 4,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Do you wish to add additional email addresses?",
+      "reference_field": "Do you wish to add additional email addresses?",
+      "score": 0.0,
+      "generated_rules": 4,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Do you wish to add additional email addresses?",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Do you wish to add additional email addresses?",
+          "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional email addresses?",
+          "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional email addresses?",
+          "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Do you wish to add additional email addresses?",
+          "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Concerned email addresses?",
+      "reference_field": "Concerned email addresses?",
+      "score": 0.0,
+      "generated_rules": 4,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Concerned email addresses?",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Concerned email addresses?",
+          "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Concerned email addresses?",
+          "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Concerned email addresses?",
+          "issue": "Extra MAKE_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Concerned email addresses?",
+          "issue": "Extra MAKE_NON_MANDATORY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Upload PAN",
+      "reference_field": "Upload PAN",
+      "score": 0.818,
+      "generated_rules": 4,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "Upload PAN",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Upload PAN",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Upload PAN",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "PAN",
+      "reference_field": "PAN",
+      "score": 0.864,
+      "generated_rules": 5,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "PAN",
+          "issue": "VERIFY rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "destinationIds_count",
+              "gen": 10,
+              "ref": 9,
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "postTriggerRuleIds",
+              "gen": "missing",
+              "ref": "present",
+              "severity": "CRITICAL"
+            }
+          ]
+        },
+        {
+          "field": "PAN",
+          "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "PAN",
+          "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "PAN Type",
+      "reference_field": "PAN Type",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "PAN Type",
+          "issue": "Missing MAKE_INVISIBLE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "PAN Type",
+          "issue": "Missing MAKE_VISIBLE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "PAN Type",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "PAN Type",
+          "issue": "Extra CONVERT_TO rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Please select GST option",
+      "reference_field": "Please select GST option",
+      "score": 0.276,
+      "generated_rules": 12,
+      "reference_rules": 25,
+      "issues": [
+        {
+          "field": "Please select GST option",
+          "issue": "Missing COPY_TO rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing DELETE_DOCUMENT rule",
+          "severity": "HIGH",
+          "expected_count": 4
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_INVISIBLE rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "condition",
+              "gen": "NOT_IN",
+              "ref": "IN",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "Yes"
+              ],
+              "ref": [
+                "GST Non-Registered"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 13,
+              "ref": 12,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_INVISIBLE rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "condition",
+              "gen": "NOT_IN",
+              "ref": "IN",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "yes"
+              ],
+              "ref": [
+                "GST Registered"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 12,
+              "ref": 2,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_INVISIBLE rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "No"
+              ],
+              "ref": [
+                "SEZ",
+                "GST Registered",
+                "GST Non-Registered",
+                "Compounding"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 1,
+              "ref": 14,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing additional MAKE_INVISIBLE rule #4",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing additional MAKE_INVISIBLE rule #5",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_MANDATORY rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "Yes"
+              ],
+              "ref": [
+                "SEZ",
+                "GST Registered",
+                "Compounding"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 13,
+              "ref": 2,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_MANDATORY rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "yes"
+              ],
+              "ref": [
+                "GST Non-Registered"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 12,
+              "ref": 1,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_NON_MANDATORY rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "condition",
+              "gen": "NOT_IN",
+              "ref": "IN",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "Yes"
+              ],
+              "ref": [
+                "GST Non-Registered"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 13,
+              "ref": 2,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_NON_MANDATORY rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "yes"
+              ],
+              "ref": [
+                "GST Non-Registered"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 12,
+              "ref": 1,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_VISIBLE rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "Yes"
+              ],
+              "ref": [
+                "GST Non-Registered"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 13,
+              "ref": 2,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_VISIBLE rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "yes"
+              ],
+              "ref": [
+                "GST Registered"
+              ],
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "MAKE_VISIBLE rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "conditionalValues",
+              "gen": [
+                "No"
+              ],
+              "ref": [
+                "SEZ"
+              ],
+              "severity": "MEDIUM"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 1,
+              "ref": 12,
+              "severity": "HIGH"
+            }
+          ]
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing additional MAKE_VISIBLE rule #4",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing UNDELETE_DOCUMENT rule",
+          "severity": "HIGH",
+          "expected_count": 4
+        },
+        {
+          "field": "Please select GST option",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 2
+        }
+      ]
+    },
+    {
+      "field_name": "GSTIN IMAGE",
+      "reference_field": "GSTIN IMAGE",
+      "score": 0.545,
+      "generated_rules": 4,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "GSTIN",
+      "reference_field": "GSTIN",
+      "score": 0.576,
+      "generated_rules": 4,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "GSTIN",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "GSTIN",
+          "issue": "VERIFY rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "destinationIds_count",
+              "gen": 21,
+              "ref": 11,
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "postTriggerRuleIds",
+              "gen": "missing",
+              "ref": "present",
+              "severity": "CRITICAL"
+            }
+          ]
+        },
+        {
+          "field": "GSTIN",
+          "issue": "Extra MAKE_VISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "GSTIN",
+          "issue": "Extra MAKE_INVISIBLE rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Upload Declaration",
+      "reference_field": "Upload Declaration",
+      "score": 0.636,
+      "generated_rules": 4,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Upload Declaration",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Upload Declaration",
+          "issue": "Extra VALIDATION rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Upload Declaration",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Upload Declaration",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Electricity bill copy",
+      "reference_field": "Electricity bill copy",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Electricity bill copy",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Electricity bill copy",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Electricity bill copy",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Aadhaar Front copy",
+      "reference_field": "Aadhaar  Front copy",
+      "score": 0.636,
+      "generated_rules": 4,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Aadhaar Front copy",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Aadhaar Front copy",
+          "issue": "Extra OCR rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Aadhaar Front copy",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Aadhaar Front copy",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Cancelled Cheque Image",
+      "reference_field": "Cancelled Cheque Image",
+      "score": 0.727,
+      "generated_rules": 4,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "OCR rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "destinationIds_count",
+              "gen": 1,
+              "ref": 4,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Cancelled Cheque Image",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Passbook/Bank Letter",
+      "reference_field": "Passbook/Bank Letter",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Passbook/Bank Letter",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Passbook/Bank Letter",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Passbook/Bank Letter",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "IFSC Code",
+      "reference_field": "IFSC Code",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "IFSC Code",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "IFSC Code",
+          "issue": "Extra VERIFY rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "CIN Certificate",
+      "reference_field": "CIN Certificate",
+      "score": 0.773,
+      "generated_rules": 4,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "CIN Certificate",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "CIN Certificate",
+          "issue": "OCR rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "postTriggerRuleIds",
+              "gen": "present",
+              "ref": "missing",
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "CIN Certificate",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "CIN Certificate",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "TDS Certificate",
+      "reference_field": "TDS Certificate",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "TDS Certificate",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "TDS Certificate",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "TDS Certificate",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "MSME Image",
+      "reference_field": "MSME Image",
+      "score": 0.485,
+      "generated_rules": 4,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "MSME Image",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "MSME Image",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "MSME Image",
+          "issue": "OCR rule differences",
+          "severity": "MEDIUM",
+          "differences": [
+            {
+              "aspect": "destinationIds_count",
+              "gen": 1,
+              "ref": 3,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "MSME Image",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "MSME Image",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "MSME Registration Number",
+      "reference_field": "MSME Registration Number",
+      "score": 0.273,
+      "generated_rules": 1,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "MSME Registration Number",
+          "issue": "Missing CONVERT_TO rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "MSME Registration Number",
+          "issue": "Missing MAKE_DISABLED rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "MSME Registration Number",
+          "issue": "VERIFY rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "destinationIds_count",
+              "gen": 21,
+              "ref": 39,
+              "severity": "HIGH"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "field_name": "MSME Declaration",
+      "reference_field": "MSME Declaration",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "MSME Declaration",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "MSME Declaration",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "MSME Declaration",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Order currency",
+      "reference_field": "Order currency",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "Order currency",
+          "issue": "Missing EXT_VALUE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Order currency",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Order currency",
+          "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Purchase Organization",
+      "reference_field": "Purchase Organization",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "Purchase Organization",
+          "issue": "Missing EXT_VALUE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Purchase Organization",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Purchase Organization",
+          "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Incoterms",
+      "reference_field": "Incoterms",
+      "score": 0.333,
+      "generated_rules": 1,
+      "reference_rules": 3,
+      "issues": [
+        {
+          "field": "Incoterms",
+          "issue": "Missing COPY_TO rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Incoterms",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Incoterms (Part 2)",
+      "reference_field": "Incoterms (Part 2)",
+      "score": 0.5,
+      "generated_rules": 1,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "Incoterms (Part 2)",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "VENDOR INVOICE",
+      "reference_field": "Vendor Invoice",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "VENDOR INVOICE",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "VENDOR INVOICE",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "VENDOR INVOICE",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Currency",
+      "reference_field": "Currency",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 2,
+      "issues": [
+        {
+          "field": "Currency",
+          "issue": "Missing EXT_VALUE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Currency",
+          "issue": "Missing VALIDATION rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Currency",
+          "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Is Vendor Your Customer?",
+      "reference_field": "Is Vendor Your Customer?",
+      "score": 0.4,
+      "generated_rules": 2,
+      "reference_rules": 5,
+      "issues": [
+        {
+          "field": "Is Vendor Your Customer?",
+          "issue": "Missing EXT_DROP_DOWN rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Is Vendor Your Customer?",
+          "issue": "Missing MAKE_MANDATORY rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Is Vendor Your Customer?",
+          "issue": "Missing MAKE_NON_MANDATORY rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Service Tax File",
+      "reference_field": "Service Tax File",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Service Tax File",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Service Tax File",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Service Tax File",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Additional File",
+      "reference_field": "Additional File",
+      "score": 0.636,
+      "generated_rules": 3,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Additional File",
+          "issue": "COPY_TO_DOCUMENT_STORAGE_ID rule differences",
+          "severity": "HIGH",
+          "differences": [
+            {
+              "aspect": "sourceType",
+              "gen": null,
+              "ref": "FORM_FILL_METADATA",
+              "severity": "HIGH"
+            },
+            {
+              "aspect": "destinationIds_count",
+              "gen": 0,
+              "ref": 1,
+              "severity": "MEDIUM"
+            }
+          ]
+        },
+        {
+          "field": "Additional File",
+          "issue": "Extra DELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        },
+        {
+          "field": "Additional File",
+          "issue": "Extra UNDELETE_DOCUMENT rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "field_name": "Withholding Tax Type",
+      "reference_field": "Withholding Tax Type ",
+      "score": 0.0,
+      "generated_rules": 1,
+      "reference_rules": 1,
+      "issues": [
+        {
+          "field": "Withholding Tax Type",
+          "issue": "Missing EXT_VALUE rule",
+          "severity": "HIGH",
+          "expected_count": 1
+        },
+        {
+          "field": "Withholding Tax Type",
+          "issue": "Extra EXT_DROP_DOWN rule (not in reference)",
+          "severity": "LOW",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "self_heal_instructions": {
+    "total_fixes_needed": 8,
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "fix_type": "missing_validation_rules",
+        "description": "Add 17 missing VALIDATION rules for field-level validations",
+        "expected": 18,
+        "current": 1,
+        "severity": "HIGH",
+        "guidance": "Check BUD logic for fields with validation requirements (email, phone, regex patterns)"
+      },
+      {
+        "priority": 2,
+        "fix_type": "missing_convert_to_rules",
+        "description": "Add 16 missing CONVERT_TO rules for case conversion",
+        "expected": 21,
+        "current": 5,
+        "severity": "HIGH",
+        "guidance": "Check for \"upper case\", \"uppercase\", \"UPPER_CASE\" in BUD logic"
+      },
+      {
+        "priority": 3,
+        "fix_type": "missing_ext_dropdown_rules",
+        "description": "Add 11 missing EXT_DROP_DOWN rules for external dropdowns",
+        "expected": 20,
+        "current": 9,
+        "severity": "HIGH",
+        "guidance": "Check for EXTERNAL_DROP_DOWN field types and cascading dropdown logic"
+      },
+      {
+        "priority": 4,
+        "fix_type": "missing_ext_value_rules",
+        "description": "Add 11 missing EXT_VALUE rules for external value population",
+        "expected": 13,
+        "current": 2,
+        "severity": "HIGH",
+        "guidance": "Check for fields that get values from external data sources based on dropdown selection"
+      },
+      {
+        "priority": 5,
+        "fix_type": "missing_copy_to_rules",
+        "description": "Add 11 missing COPY_TO rules for field value copying",
+        "expected": 12,
+        "current": 1,
+        "severity": "HIGH",
+        "guidance": "Check for \"copy from\", \"CREATED_BY\", \"CURRENT_DATE\" patterns in logic"
+      },
+      {
+        "priority": 6,
+        "fix_type": "missing_visibility_rules",
+        "description": "Add 7 MAKE_VISIBLE and 8 MAKE_INVISIBLE rules",
+        "expected_visible": 18,
+        "expected_invisible": 19,
+        "current_visible": 11,
+        "current_invisible": 11,
+        "severity": "HIGH",
+        "guidance": "Ensure visibility rules come in pairs (IN + NOT_IN conditions)"
+      },
+      {
+        "priority": 7,
+        "fix_type": "missing_mandatory_rules",
+        "description": "Add 5 missing MAKE_MANDATORY rules",
+        "expected": 12,
+        "current": 7,
+        "severity": "MEDIUM",
+        "guidance": "Check for \"mandatory when\", \"required if\" patterns in logic"
+      },
+      {
+        "priority": 8,
+        "fix_type": "missing_disabled_rules",
+        "description": "Add 4 missing MAKE_DISABLED rules",
+        "expected": 5,
+        "current": 1,
+        "severity": "MEDIUM",
+        "guidance": "Check for \"Non-Editable\", \"disabled\", \"read-only\" patterns. Consolidate multiple disabled fields into single rule with multiple destinationIds."
+      }
+    ],
+    "general_guidance": [
+      "Focus on fields present in BOTH outputs first",
+      "For missing rule types, analyze the BUD logic patterns",
+      "Ensure visibility rules always come in pairs (IN + NOT_IN)",
+      "VERIFY rules must have correct destinationIds count matching schema",
+      "OCR rules should have postTriggerRuleIds linking to VERIFY rules",
+      "MAKE_DISABLED rules should be consolidated (one rule, multiple destinationIds)"
+    ]
+  },
+  "console_summary": {
+    "headline": "Overall Score: 38.0% (Threshold: 90%) - FAILED",
+    "rules_comparison": "Generated: 116 rules | Reference: 221 rules | Gap: 105",
+    "fields_comparison": "Common fields: 34 | Gen only: 10 | Ref only: 57",
+    "top_gaps": [
+      "VALIDATION: 1 vs 18 (missing 17)",
+      "CONVERT_TO: 5 vs 21 (missing 16)",
+      "EXT_DROP_DOWN: 9 vs 20 (missing 11)",
+      "EXT_VALUE: 2 vs 13 (missing 11)",
+      "COPY_TO: 1 vs 12 (missing 11)"
+    ]
+  }
+}

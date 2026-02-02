@@ -1,0 +1,514 @@
+{
+  "priority_fixes": [
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Choose the Group of Company",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Company and Ownership",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Account Group/Vendor Type",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Group key/Corporate Group",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Vendor Country",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "Country Code",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "Type of Industry",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "Additional Registration Number Applicable?",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "OCR",
+      "field": "Aaadhar Back Image",
+      "conditionalValues": [
+        "GST Non-Registered"
+      ],
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Region (Import)",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Please choose the option",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Bank Country (Import)",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "FDA Registered?",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Order currency",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Purchase Organization",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "Is Vendor Your Customer?",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "Reconciliation Account",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Currency",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_DROP_DOWN",
+      "field": "Is Withholding Tax applicable?",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    },
+    {
+      "action": "ADD_RULE",
+      "rule_type": "EXT_VALUE",
+      "field": "Withholding Tax Type ",
+      "conditionalValues": null,
+      "priority": "HIGH"
+    }
+  ],
+  "suggested_additions": [
+    {
+      "field": "RuleCheck",
+      "rule_type": "MAKE_DISABLED"
+    },
+    {
+      "field": "RuleCheck",
+      "rule_type": "MAKE_INVISIBLE"
+    },
+    {
+      "field": "Transaction ID",
+      "rule_type": "COPY_TXNID_TO_FORM_FILL"
+    },
+    {
+      "field": "Created On",
+      "rule_type": "SET_DATE"
+    },
+    {
+      "field": "Created By Name",
+      "rule_type": "COPY_TO"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "DUMMY_ACTION"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "MAKE_INVISIBLE"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "MAKE_INVISIBLE"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "MAKE_MANDATORY"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "MAKE_MANDATORY"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "MAKE_VISIBLE"
+    },
+    {
+      "field": "Choose the Group of Company",
+      "rule_type": "MAKE_VISIBLE"
+    },
+    {
+      "field": "Company and Ownership",
+      "rule_type": "COPY_TO"
+    },
+    {
+      "field": "Company and Ownership",
+      "rule_type": "COPY_TO_TRANSACTION_ATTR1"
+    },
+    {
+      "field": "Company and Ownership",
+      "rule_type": "VALIDATION"
+    },
+    {
+      "field": "Company Country",
+      "rule_type": "VALIDATION"
+    },
+    {
+      "field": "Account Group Code",
+      "rule_type": "MAKE_DISABLED"
+    },
+    {
+      "field": "Process Flow Condition",
+      "rule_type": "CONCAT"
+    },
+    {
+      "field": "Process Flow Condition",
+      "rule_type": "DELETE_DOCUMENT"
+    },
+    {
+      "field": "Process Flow Condition",
+      "rule_type": "DELETE_DOCUMENT"
+    }
+  ],
+  "suggested_removals": [
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "rule_type": "MAKE_DISABLED",
+      "id": 137
+    },
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "rule_type": "MAKE_DISABLED",
+      "id": 138
+    },
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "rule_type": "MAKE_DISABLED",
+      "id": 139
+    },
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "rule_type": "MAKE_DISABLED",
+      "id": 140
+    },
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "rule_type": "MAKE_DISABLED",
+      "id": 141
+    },
+    {
+      "field": "Search term / Reference Number(Transaction ID)",
+      "rule_type": "COPY_TXNID_TO_FORM_FILL",
+      "id": 221
+    },
+    {
+      "field": "Created on",
+      "rule_type": "SET_DATE",
+      "id": 222
+    },
+    {
+      "field": "Created By",
+      "rule_type": "COPY_TO",
+      "id": 225
+    },
+    {
+      "field": "Select the process type",
+      "rule_type": "EXT_DROP_DOWN",
+      "id": 1
+    },
+    {
+      "field": "Select the process type",
+      "rule_type": "DELETE_DOCUMENT",
+      "id": 134
+    },
+    {
+      "field": "Select the process type",
+      "rule_type": "UNDELETE_DOCUMENT",
+      "id": 135
+    },
+    {
+      "field": "Select the process type",
+      "rule_type": "UNDELETE_DOCUMENT",
+      "id": 136
+    },
+    {
+      "field": "Select the process type",
+      "rule_type": "VALIDATION",
+      "id": 163
+    },
+    {
+      "field": "Select the process type",
+      "rule_type": "COPY_TO",
+      "id": 182
+    },
+    {
+      "field": "Process Type",
+      "rule_type": "EXT_VALUE",
+      "id": 21
+    },
+    {
+      "field": "Account Group/Vendor Type",
+      "rule_type": "EXT_DROP_DOWN",
+      "id": 2
+    },
+    {
+      "field": "Account Group/Vendor Type",
+      "rule_type": "MAKE_VISIBLE",
+      "id": 119
+    },
+    {
+      "field": "Account Group/Vendor Type",
+      "rule_type": "MAKE_INVISIBLE",
+      "id": 120
+    },
+    {
+      "field": "Account Group/Vendor Type",
+      "rule_type": "DELETE_DOCUMENT",
+      "id": 121
+    },
+    {
+      "field": "Account Group/Vendor Type",
+      "rule_type": "UNDELETE_DOCUMENT",
+      "id": 122
+    }
+  ],
+  "rule_type_comparison": {
+    "CONVERT_TO": {
+      "generated": 21,
+      "reference": 21,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TO": {
+      "generated": 12,
+      "reference": 12,
+      "difference": 0,
+      "match": true
+    },
+    "SEND_OTP": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "VALIDATE_OTP": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 20,
+      "reference": 20,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "OCR": {
+      "generated": 6,
+      "reference": 6,
+      "difference": 0,
+      "match": true
+    },
+    "VERIFY": {
+      "generated": 5,
+      "reference": 5,
+      "difference": 0,
+      "match": true
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 17,
+      "reference": 17,
+      "difference": 0,
+      "match": true
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 15,
+      "reference": 15,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_VISIBLE": {
+      "generated": 18,
+      "reference": 18,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 18,
+      "reference": 18,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_ENABLED": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "EXT_VALUE": {
+      "generated": 13,
+      "reference": 13,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 19,
+      "reference": 19,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_MANDATORY": {
+      "generated": 12,
+      "reference": 12,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_DISABLED": {
+      "generated": 5,
+      "reference": 5,
+      "difference": 0,
+      "match": true
+    },
+    "VALIDATION": {
+      "generated": 18,
+      "reference": 18,
+      "difference": 0,
+      "match": true
+    },
+    "CONCAT": {
+      "generated": 2,
+      "reference": 2,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "SET_DATE": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 10,
+      "reference": 10,
+      "difference": 0,
+      "match": true
+    },
+    "DUMMY_ACTION": {
+      "generated": 1,
+      "reference": 1,
+      "difference": 0,
+      "match": true
+    }
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "ocr_chains_valid": false,
+    "ocr_issues": [
+      "OCR rule 36 has no postTriggerRuleIds"
+    ],
+    "ordinal_mapping_correct": true,
+    "ordinal_issues": [],
+    "visibility_pairs_complete": true,
+    "visibility_issues": [],
+    "disabled_rules_consolidated": true,
+    "disabled_issues": []
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {},
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "rule_structure_error",
+      "status_code": 400,
+      "message": "Id is not present for the mandatory field Bank Account Number",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}

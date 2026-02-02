@@ -1,0 +1,81 @@
+{
+  "panel_name": "CIN and TDS Details",
+  "analysis_timestamp": "2026-02-01T14:45:00.000000",
+  "source_file": "adws/2026-02-01_14-44-47/templates_output/input_CIN_and_TDS_Details.json",
+  "total_fields_analyzed": 6,
+  "intra_panel_references": [
+    {
+      "dependent_field": {
+        "field_name": "TDS Certificate",
+        "variable_name": "__tds_certificate__"
+      },
+      "references_field": {
+        "field_name": "TDS Applicable?",
+        "variable_name": "__tds_applicable?__"
+      },
+      "reference_type": "visibility_dependency",
+      "condition": "TDS Applicable? == 'Yes'",
+      "effect": "TDS Certificate is mandatory and visible when TDS Applicable? is 'Yes'; hidden when 'No'",
+      "extracted_from_logic": "If \"Yes\" then TDS certificate upload field is mandatory. If "No", field will be hidden. Upload size is 15 Mb"
+    }
+  ],
+  "cross_panel_references_detected": [
+    {
+      "field": {
+        "field_name": "CIN Certificate",
+        "variable_name": "__cin_certificate__"
+      },
+      "references_external_field": "PAN",
+      "condition": "4th character of PAN == 'C'",
+      "effect": "CIN Certificate becomes mandatory",
+      "note": "PAN field is likely in a different panel (e.g., Basic Details or Tax Information)"
+    },
+    {
+      "field": {
+        "field_name": "CIN",
+        "variable_name": "__cin__"
+      },
+      "references_external_field": "PAN",
+      "condition": "4th character of PAN == 'C'",
+      "effect": "CIN number becomes mandatory",
+      "note": "PAN field is likely in a different panel (e.g., Basic Details or Tax Information)"
+    },
+    {
+      "field": {
+        "field_name": "FDA Registration Number",
+        "variable_name": "__fda_registration_number__"
+      },
+      "references_external_field": "ID Type",
+      "condition": "ID Type == 'ZCUCIN'",
+      "effect": "FDA Registration Number becomes mandatory",
+      "note": "ID Type field is likely in a different panel"
+    },
+    {
+      "field": {
+        "field_name": "MSME Details",
+        "variable_name": "__msme_details__"
+      },
+      "references_external_field": "Process Type",
+      "condition": "Process Type == 'India-Domestic'",
+      "effect": "Panel is visible only for India-Domestic; hidden for other process types",
+      "note": "Process Type field is likely in a different panel or system-level configuration"
+    }
+  ],
+  "summary": {
+    "total_intra_panel_references": 1,
+    "total_cross_panel_references_detected": 4,
+    "fields_with_no_dependencies": [
+      {
+        "field_name": "TDS Applicable?",
+        "variable_name": "__tds_applicable?__",
+        "note": "This field drives other fields but has no dependencies itself within this panel"
+      }
+    ],
+    "dependency_chain": [
+      {
+        "driver_field": "TDS Applicable?",
+        "dependent_fields": ["TDS Certificate"]
+      }
+    ]
+  }
+}

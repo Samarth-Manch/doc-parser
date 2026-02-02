@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-02-01T15:08:05.407283",
+  "input_schema": "output/complete_format/6421-schema.json",
+  "input_intra_panel": "adws/2026-02-01_14-44-47/templates_output/Vendor Creation Sample BUD_intra_panel_references.json",
+  "output": "adws/2026-02-01_14-44-47/populated_schema_v1.json",
+  "statistics": {
+    "total_fields": 168,
+    "fields_with_rules": 9,
+    "total_rules_generated": 16,
+    "rules_by_type": {
+      "MAKE_DISABLED": 2,
+      "MAKE_VISIBLE": 3,
+      "MAKE_INVISIBLE": 3,
+      "MAKE_MANDATORY": 2,
+      "MAKE_NON_MANDATORY": 2,
+      "OCR": 2,
+      "VERIFY": 2
+    },
+    "llm_fallback_used": 0,
+    "validation_errors": 0
+  }
+}

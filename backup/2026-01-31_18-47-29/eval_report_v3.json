@@ -1,0 +1,608 @@
+{
+  "evaluation_metadata": {
+    "generated_file": "adws/2026-01-31_18-47-29/populated_schema_v3.json",
+    "reference_file": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "evaluation_time": "2026-01-31T19:23:10.188812",
+    "pass_threshold": 0.9,
+    "iteration": 3
+  },
+  "summary": {
+    "overall_score": 0.525,
+    "pass_status": "FAIL",
+    "total_generated_rules": 101,
+    "total_reference_rules": 279,
+    "rule_coverage_ratio": 0.362,
+    "bud_fields_with_logic": 148,
+    "total_bud_fields": 168
+  },
+  "score_breakdown": {
+    "type_coverage": {
+      "score": 0.29,
+      "weight": 0.15
+    },
+    "ocr_chain_completeness": {
+      "score": 0.571,
+      "weight": 0.2
+    },
+    "visibility_pair_completeness": {
+      "score": 1.0,
+      "weight": 0.15
+    },
+    "panel_match_average": {
+      "score": 0.482,
+      "weight": 0.3
+    },
+    "rule_coverage": {
+      "score": 0.362,
+      "weight": 0.2
+    }
+  },
+  "rule_type_comparison": {
+    "generated": {
+      "MAKE_VISIBLE": 18,
+      "MAKE_INVISIBLE": 18,
+      "EXT_DROP_DOWN": 28,
+      "MAKE_DISABLED": 1,
+      "MAKE_MANDATORY": 9,
+      "MAKE_NON_MANDATORY": 9,
+      "OCR": 7,
+      "VERIFY": 6,
+      "CONVERT_TO": 5
+    },
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SESSION_BASED_MAKE_VISIBLE": 6,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "EXECUTE": 40,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "SESSION_BASED_MAKE_INVISIBLE": 6,
+      "SESSION_BASED_MAKE_MANDATORY": 3,
+      "SESSION_BASED_MAKE_NON_MANDATORY": 2,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "missing_in_generated": [
+      "COPY_TXNID_TO_FORM_FILL",
+      "SESSION_BASED_MAKE_VISIBLE",
+      "SET_DATE",
+      "COPY_TO",
+      "COPY_TO_TRANSACTION_ATTR3",
+      "EXECUTE",
+      "DUMMY_ACTION",
+      "EXT_VALUE",
+      "SESSION_BASED_MAKE_INVISIBLE",
+      "SESSION_BASED_MAKE_MANDATORY",
+      "SESSION_BASED_MAKE_NON_MANDATORY",
+      "COPY_TO_TRANSACTION_ATTR1",
+      "VALIDATION",
+      "CONCAT",
+      "DELETE_DOCUMENT",
+      "UNDELETE_DOCUMENT",
+      "COPY_TO_GENERIC_PARTY_EMAIL",
+      "COPY_TO_GENERIC_PARTY_NAME",
+      "SEND_OTP",
+      "VALIDATE_OTP",
+      "COPY_TO_DOCUMENT_STORAGE_ID",
+      "MAKE_ENABLED"
+    ],
+    "extra_in_generated": []
+  },
+  "panel_scores": {
+    "Basic Details": {
+      "field_match": 0.593,
+      "rule_match": 0.396,
+      "overall": 0.474,
+      "gen_fields": 32,
+      "ref_fields": 54,
+      "gen_rules": 36,
+      "ref_rules": 91,
+      "status": "fail"
+    },
+    "Address Details": {
+      "field_match": 0.706,
+      "rule_match": 0.1,
+      "overall": 0.342,
+      "gen_fields": 12,
+      "ref_fields": 17,
+      "gen_rules": 3,
+      "ref_rules": 30,
+      "status": "fail"
+    },
+    "MSME Details": {
+      "field_match": 1.0,
+      "rule_match": 0.55,
+      "overall": 0.73,
+      "gen_fields": 27,
+      "ref_fields": 27,
+      "gen_rules": 11,
+      "ref_rules": 20,
+      "status": "warning"
+    },
+    "Auditor Details": {
+      "field_match": 0.0,
+      "rule_match": 1.0,
+      "overall": 0.6,
+      "gen_fields": 0,
+      "ref_fields": 1,
+      "gen_rules": 0,
+      "ref_rules": 0,
+      "status": "fail"
+    },
+    "Functional Head Details": {
+      "field_match": 0.0,
+      "rule_match": 1.0,
+      "overall": 0.6,
+      "gen_fields": 0,
+      "ref_fields": 1,
+      "gen_rules": 0,
+      "ref_rules": 0,
+      "status": "fail"
+    },
+    "Approver Mapping": {
+      "field_match": 0.0,
+      "rule_match": 0.0,
+      "overall": 0.0,
+      "gen_fields": 0,
+      "ref_fields": 21,
+      "gen_rules": 0,
+      "ref_rules": 1,
+      "status": "fail"
+    },
+    "MDC Details": {
+      "field_match": 0.0,
+      "rule_match": 1.0,
+      "overall": 0.6,
+      "gen_fields": 0,
+      "ref_fields": 2,
+      "gen_rules": 0,
+      "ref_rules": 0,
+      "status": "fail"
+    },
+    "Vendor Duplicity Details": {
+      "field_match": 1.0,
+      "rule_match": 1.0,
+      "overall": 1.0,
+      "gen_fields": 11,
+      "ref_fields": 11,
+      "gen_rules": 0,
+      "ref_rules": 0,
+      "status": "pass"
+    },
+    "Vertical Head Details": {
+      "field_match": 0.0,
+      "rule_match": 1.0,
+      "overall": 0.6,
+      "gen_fields": 0,
+      "ref_fields": 1,
+      "gen_rules": 0,
+      "ref_rules": 0,
+      "status": "fail"
+    },
+    "PAN and GST Details": {
+      "field_match": 1.0,
+      "rule_match": 0.682,
+      "overall": 0.809,
+      "gen_fields": 26,
+      "ref_fields": 26,
+      "gen_rules": 30,
+      "ref_rules": 44,
+      "status": "warning"
+    },
+    "Purchase Organization Details": {
+      "field_match": 0.4,
+      "rule_match": 0.3,
+      "overall": 0.34,
+      "gen_fields": 10,
+      "ref_fields": 25,
+      "gen_rules": 6,
+      "ref_rules": 20,
+      "status": "fail"
+    },
+    "CIN and TDS Details": {
+      "field_match": 0.833,
+      "rule_match": 0.143,
+      "overall": 0.419,
+      "gen_fields": 5,
+      "ref_fields": 6,
+      "gen_rules": 2,
+      "ref_rules": 14,
+      "status": "fail"
+    },
+    "Payment Details": {
+      "field_match": 0.647,
+      "rule_match": 0.75,
+      "overall": 0.709,
+      "gen_fields": 11,
+      "ref_fields": 17,
+      "gen_rules": 6,
+      "ref_rules": 8,
+      "status": "warning"
+    },
+    "Withholding Tax Details": {
+      "field_match": 0.556,
+      "rule_match": 0.25,
+      "overall": 0.372,
+      "gen_fields": 5,
+      "ref_fields": 9,
+      "gen_rules": 2,
+      "ref_rules": 8,
+      "status": "fail"
+    },
+    "Common Fields Panel": {
+      "field_match": 0.0,
+      "rule_match": 0.0,
+      "overall": 0.0,
+      "gen_fields": 0,
+      "ref_fields": 15,
+      "gen_rules": 0,
+      "ref_rules": 3,
+      "status": "fail"
+    },
+    "Vendor Basic Details": {
+      "field_match": 0.538,
+      "rule_match": 0.182,
+      "overall": 0.324,
+      "gen_fields": 7,
+      "ref_fields": 13,
+      "gen_rules": 2,
+      "ref_rules": 11,
+      "status": "fail"
+    },
+    "Bank Details": {
+      "field_match": 0.524,
+      "rule_match": 0.103,
+      "overall": 0.272,
+      "gen_fields": 11,
+      "ref_fields": 21,
+      "gen_rules": 3,
+      "ref_rules": 29,
+      "status": "fail"
+    }
+  },
+  "critical_checks": {
+    "ocr_verify_chains": {
+      "status": "warning",
+      "complete_chains": 4,
+      "total_ocr": 7,
+      "score": 0.571,
+      "missing_chains": [
+        {
+          "ocr_id": 57,
+          "field_name": "Aadhaar Front copy",
+          "status": "missing",
+          "linked_verify": null
+        },
+        {
+          "ocr_id": 58,
+          "field_name": "Aadhaar Back Image",
+          "status": "missing",
+          "linked_verify": null
+        },
+        {
+          "ocr_id": 60,
+          "field_name": "CIN Certificate",
+          "status": "missing",
+          "linked_verify": null
+        }
+      ]
+    },
+    "visibility_pairs": {
+      "status": "pass",
+      "paired": 18,
+      "total": 18,
+      "score": 1.0
+    },
+    "ext_dropdown_coverage": {
+      "status": "pass",
+      "generated": 28,
+      "reference": 20
+    },
+    "ext_value_presence": {
+      "status": "fail",
+      "generated": 0,
+      "reference": 13
+    }
+  },
+  "missing_rules": [
+    {
+      "type": "MAKE_DISABLED",
+      "expected_count": 5,
+      "actual_count": 1,
+      "severity": "medium"
+    },
+    {
+      "type": "MAKE_INVISIBLE",
+      "expected_count": 19,
+      "actual_count": 18,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TXNID_TO_FORM_FILL",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "SESSION_BASED_MAKE_VISIBLE",
+      "expected_count": 6,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "SET_DATE",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TO",
+      "expected_count": 13,
+      "actual_count": 0,
+      "severity": "high"
+    },
+    {
+      "type": "CONVERT_TO",
+      "expected_count": 21,
+      "actual_count": 5,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TO_TRANSACTION_ATTR3",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "EXECUTE",
+      "expected_count": 40,
+      "actual_count": 0,
+      "severity": "high"
+    },
+    {
+      "type": "DUMMY_ACTION",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "EXT_VALUE",
+      "expected_count": 13,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "MAKE_MANDATORY",
+      "expected_count": 12,
+      "actual_count": 9,
+      "severity": "medium"
+    },
+    {
+      "type": "SESSION_BASED_MAKE_INVISIBLE",
+      "expected_count": 6,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "SESSION_BASED_MAKE_MANDATORY",
+      "expected_count": 3,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "SESSION_BASED_MAKE_NON_MANDATORY",
+      "expected_count": 2,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TO_TRANSACTION_ATTR1",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "VALIDATION",
+      "expected_count": 18,
+      "actual_count": 0,
+      "severity": "high"
+    },
+    {
+      "type": "CONCAT",
+      "expected_count": 2,
+      "actual_count": 0,
+      "severity": "high"
+    },
+    {
+      "type": "DELETE_DOCUMENT",
+      "expected_count": 15,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "UNDELETE_DOCUMENT",
+      "expected_count": 17,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TO_GENERIC_PARTY_EMAIL",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TO_GENERIC_PARTY_NAME",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "SEND_OTP",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "VALIDATE_OTP",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "expected_count": 18,
+      "actual_count": 0,
+      "severity": "medium"
+    },
+    {
+      "type": "MAKE_NON_MANDATORY",
+      "expected_count": 10,
+      "actual_count": 9,
+      "severity": "medium"
+    },
+    {
+      "type": "MAKE_ENABLED",
+      "expected_count": 1,
+      "actual_count": 0,
+      "severity": "medium"
+    }
+  ],
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "type": "ocr_chain",
+        "field": "Aadhaar Front copy",
+        "action": "Add postTriggerRuleIds to OCR rule on 'Aadhaar Front copy' to chain to VERIFY rule"
+      },
+      {
+        "priority": 1,
+        "type": "ocr_chain",
+        "field": "Aadhaar Back Image",
+        "action": "Add postTriggerRuleIds to OCR rule on 'Aadhaar Back Image' to chain to VERIFY rule"
+      },
+      {
+        "priority": 1,
+        "type": "ocr_chain",
+        "field": "CIN Certificate",
+        "action": "Add postTriggerRuleIds to OCR rule on 'CIN Certificate' to chain to VERIFY rule"
+      },
+      {
+        "priority": 1,
+        "type": "missing_rule_type",
+        "action": "Add EXT_VALUE rules for external dropdown value dependencies (13 expected)"
+      },
+      {
+        "priority": 2,
+        "type": "missing_rule_type",
+        "action": "Add EXECUTE rules (40 expected from reference)"
+      },
+      {
+        "priority": 2,
+        "type": "missing_rule_type",
+        "action": "Add VALIDATION rules (18 expected from reference)"
+      },
+      {
+        "priority": 2,
+        "type": "missing_rule_type",
+        "action": "Add COPY_TO rules (13 expected from reference)"
+      },
+      {
+        "priority": 2,
+        "type": "missing_rule_type",
+        "action": "Add CONCAT rules (2 expected from reference)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Basic Details",
+        "action": "Add more rules to 'Basic Details' panel (generated: 36, expected: 91)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Address Details",
+        "action": "Add more rules to 'Address Details' panel (generated: 3, expected: 30)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Approver Mapping",
+        "action": "Add more rules to 'Approver Mapping' panel (generated: 0, expected: 1)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Purchase Organization Details",
+        "action": "Add more rules to 'Purchase Organization Details' panel (generated: 6, expected: 20)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "CIN and TDS Details",
+        "action": "Add more rules to 'CIN and TDS Details' panel (generated: 2, expected: 14)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Withholding Tax Details",
+        "action": "Add more rules to 'Withholding Tax Details' panel (generated: 2, expected: 8)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Common Fields Panel",
+        "action": "Add more rules to 'Common Fields Panel' panel (generated: 0, expected: 3)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Vendor Basic Details",
+        "action": "Add more rules to 'Vendor Basic Details' panel (generated: 2, expected: 11)"
+      },
+      {
+        "priority": 2,
+        "type": "panel_rules_deficit",
+        "panel": "Bank Details",
+        "action": "Add more rules to 'Bank Details' panel (generated: 3, expected: 29)"
+      }
+    ],
+    "recommended_actions": [
+      "Review BUD logic sections for conditional visibility rules",
+      "Ensure all EXT_DROP_DOWN fields have corresponding EXT_VALUE rules where cascading is needed",
+      "Verify OCR rules have proper postTriggerRuleIds chains to VERIFY rules",
+      "Add EXECUTE rules for server-side validation triggers",
+      "Add VALIDATION rules for field format validation",
+      "Check MAKE_DISABLED rules are consolidated with all affected fields"
+    ]
+  },
+  "bud_verification": {
+    "fields_with_visibility_logic": 45,
+    "fields_with_mandatory_logic": 49,
+    "fields_with_ocr_logic": 12,
+    "fields_with_validation_logic": 34,
+    "fields_with_dropdown_logic": 25
+  }
+}

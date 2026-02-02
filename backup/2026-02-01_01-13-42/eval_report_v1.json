@@ -1,0 +1,599 @@
+{
+  "evaluation_summary": {
+    "generated_output": "adws/2026-02-01_01-13-42/populated_schema_v1.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_document": "documents/Vendor Creation Sample BUD.docx",
+    "evaluation_timestamp": "2026-02-01T01:21:07.179571",
+    "iteration": 1,
+    "overall_score": 0.8439,
+    "pass_threshold": 0.9,
+    "evaluation_passed": false,
+    "component_scores": {
+      "ocr_chain_rate": 0.6,
+      "verify_ordinal_rate": 1.0,
+      "rule_count_accuracy": 0.9864,
+      "panel_coverage": 0.7891
+    }
+  },
+  "panel_evaluation": [
+    {
+      "panel_name": "Basic Details",
+      "total_fields": 32,
+      "fields_with_issues": 11,
+      "panel_score": 0.66,
+      "issues": [
+        {
+          "field": "Name/ First Name of the Organization",
+          "field_id": 5,
+          "issue": "Missing rule types: COPY_TO_TRANSACTION_ATTR3, CONVERT_TO",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Account Group/Vendor Type",
+          "field_id": 8,
+          "issue": "Missing rule types: EXT_VALUE",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Account Group/Vendor Type",
+          "field_id": 8,
+          "issue": "Extra rule types: COPY_TO, MAKE_VISIBLE, UNDELETE_DOCUMENT, DELETE_DOCUMENT, MAKE_INVISIBLE, EXT_DROP_DOWN",
+          "severity": "LOW"
+        },
+        {
+          "field": "Group key/Corporate Group",
+          "field_id": 9,
+          "issue": "Missing rule types: EXT_VALUE",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Group key/Corporate Group",
+          "field_id": 9,
+          "issue": "Extra rule types: EXT_DROP_DOWN",
+          "severity": "LOW"
+        },
+        {
+          "field": "Country",
+          "field_id": 11,
+          "issue": "Extra rule types: VALIDATION, UNDELETE_DOCUMENT, DELETE_DOCUMENT, MAKE_MANDATORY, EXT_DROP_DOWN, MAKE_NON_MANDATORY, MAKE_INVISIBLE, MAKE_VISIBLE",
+          "severity": "LOW"
+        },
+        {
+          "field": "Country Code",
+          "field_id": 13,
+          "issue": "Missing rule types: EXT_DROP_DOWN",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Country Code",
+          "field_id": 13,
+          "issue": "Extra rule types: EXT_VALUE",
+          "severity": "LOW"
+        },
+        {
+          "field": "Mobile Number",
+          "field_id": 15,
+          "issue": "Extra rule types: VALIDATION, SEND_OTP, VALIDATE_OTP",
+          "severity": "LOW"
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "field_id": 16,
+          "issue": "Extra rule types: MAKE_NON_MANDATORY, MAKE_INVISIBLE, MAKE_MANDATORY, MAKE_VISIBLE",
+          "severity": "LOW"
+        },
+        {
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "field_id": 17,
+          "issue": "Extra rule types: MAKE_INVISIBLE, MAKE_VISIBLE",
+          "severity": "LOW"
+        },
+        {
+          "field": "Vendor Contact Email",
+          "field_id": 26,
+          "issue": "Extra rule types: VALIDATION",
+          "severity": "LOW"
+        },
+        {
+          "field": "Do you wish to add additional email addresses?",
+          "field_id": 28,
+          "issue": "Extra rule types: MAKE_INVISIBLE, MAKE_VISIBLE",
+          "severity": "LOW"
+        },
+        {
+          "field": "Concerned email addresses?",
+          "field_id": 30,
+          "issue": "Extra rule types: MAKE_INVISIBLE, MAKE_VISIBLE",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "PAN and GST Details",
+      "total_fields": 26,
+      "fields_with_issues": 4,
+      "panel_score": 0.85,
+      "issues": [
+        {
+          "field": "PAN",
+          "field_id": 37,
+          "issue": "Extra rule types: VALIDATION, COPY_TO, COPY_TO_TRANSACTION_ATTR1, DUMMY_ACTION",
+          "severity": "LOW"
+        },
+        {
+          "field": "PAN Type",
+          "field_id": 39,
+          "issue": "Missing rule types: VALIDATION, MAKE_INVISIBLE, MAKE_VISIBLE",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "PAN Type",
+          "field_id": 39,
+          "issue": "Extra rule types: EXT_VALUE",
+          "severity": "LOW"
+        },
+        {
+          "field": "GSTIN IMAGE",
+          "field_id": 44,
+          "issue": "Missing rule types: MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "GSTIN",
+          "field_id": 45,
+          "issue": "Extra rule types: VALIDATION, COPY_TO",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Basic Details",
+      "total_fields": 7,
+      "fields_with_issues": 2,
+      "panel_score": 0.71,
+      "issues": [
+        {
+          "field": "Name/ First Name of the Organization",
+          "field_id": 62,
+          "issue": "Extra rule types: CONCAT",
+          "severity": "LOW"
+        },
+        {
+          "field": "Title",
+          "field_id": 66,
+          "issue": "Extra rule types: EXT_DROP_DOWN",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "Address Details",
+      "total_fields": 12,
+      "fields_with_issues": 1,
+      "panel_score": 0.92,
+      "issues": [
+        {
+          "field": "Please Choose Address Proof",
+          "field_id": 70,
+          "issue": "Extra rule types: COPY_TO_DOCUMENT_STORAGE_ID",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "Bank Details",
+      "total_fields": 11,
+      "fields_with_issues": 3,
+      "panel_score": 0.73,
+      "issues": [
+        {
+          "field": "Please choose the option",
+          "field_id": 83,
+          "issue": "Missing rule types: EXT_VALUE",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Please choose the option",
+          "field_id": 83,
+          "issue": "Extra rule types: MAKE_INVISIBLE, MAKE_VISIBLE, EXT_DROP_DOWN",
+          "severity": "LOW"
+        },
+        {
+          "field": "IFSC Code",
+          "field_id": 87,
+          "issue": "Extra rule types: COPY_TO",
+          "severity": "LOW"
+        },
+        {
+          "field": "Bank Account Number",
+          "field_id": 88,
+          "issue": "Extra rule types: VALIDATION, CONVERT_TO",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "CIN and TDS Details",
+      "total_fields": 5,
+      "fields_with_issues": 2,
+      "panel_score": 0.6,
+      "issues": [
+        {
+          "field": "FDA Registration Number",
+          "field_id": 97,
+          "issue": "Missing rule types: CONVERT_TO",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "TDS Applicable?",
+          "field_id": 98,
+          "issue": "Extra rule types: DELETE_DOCUMENT, UNDELETE_DOCUMENT",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "MSME Details",
+      "total_fields": 27,
+      "fields_with_issues": 3,
+      "panel_score": 0.89,
+      "issues": [
+        {
+          "field": "Is SSI / MSME Applicable?",
+          "field_id": 101,
+          "issue": "Missing rule types: VALIDATION",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "MSME Image",
+          "field_id": 102,
+          "issue": "Missing rule types: MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "MSME Registration Number",
+          "field_id": 103,
+          "issue": "Missing rule types: MAKE_DISABLED",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "MSME Registration Number",
+          "field_id": 103,
+          "issue": "Extra rule types: MAKE_MANDATORY",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "Vendor Duplicity Details",
+      "total_fields": 11,
+      "fields_with_issues": 0,
+      "panel_score": 1.0,
+      "issues": []
+    },
+    {
+      "panel_name": "Purchase Organization Details",
+      "total_fields": 10,
+      "fields_with_issues": 3,
+      "panel_score": 0.7,
+      "issues": [
+        {
+          "field": "Order currency",
+          "field_id": 142,
+          "issue": "Missing rule types: EXT_VALUE",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Order currency",
+          "field_id": 142,
+          "issue": "Extra rule types: EXT_DROP_DOWN",
+          "severity": "LOW"
+        },
+        {
+          "field": "Purchase Organization",
+          "field_id": 143,
+          "issue": "Missing rule types: EXT_VALUE, VALIDATION",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Incoterms (Part 2)",
+          "field_id": 146,
+          "issue": "Missing rule types: VALIDATION",
+          "severity": "MEDIUM"
+        }
+      ]
+    },
+    {
+      "panel_name": "Payment Details",
+      "total_fields": 11,
+      "fields_with_issues": 2,
+      "panel_score": 0.82,
+      "issues": [
+        {
+          "field": "Currency",
+          "field_id": 157,
+          "issue": "Missing rule types: EXT_VALUE",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Is Vendor Your Customer?",
+          "field_id": 158,
+          "issue": "Missing rule types: EXT_DROP_DOWN",
+          "severity": "MEDIUM"
+        },
+        {
+          "field": "Is Vendor Your Customer?",
+          "field_id": 158,
+          "issue": "Extra rule types: VALIDATION, COPY_TO",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "panel_name": "Withholding Tax Details",
+      "total_fields": 5,
+      "fields_with_issues": 1,
+      "panel_score": 0.8,
+      "issues": [
+        {
+          "field": "Withholding Tax Code",
+          "field_id": 167,
+          "issue": "Missing rule types: EXT_DROP_DOWN",
+          "severity": "MEDIUM"
+        }
+      ]
+    }
+  ],
+  "bud_logic_verification": {
+    "total_bud_fields": 168,
+    "note": "BUD verification requires parsing field logic text"
+  },
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_DISABLED": 5,
+      "MAKE_INVISIBLE": 19,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 12,
+      "CONVERT_TO": 21,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "DUMMY_ACTION": 1,
+      "EXT_VALUE": 13,
+      "MAKE_MANDATORY": 12,
+      "MAKE_VISIBLE": 18,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "VALIDATION": 18,
+      "CONCAT": 2,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "EXT_DROP_DOWN": 20,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "OCR": 6,
+      "VERIFY": 5,
+      "MAKE_NON_MANDATORY": 10,
+      "MAKE_ENABLED": 1
+    },
+    "generated": {
+      "MAKE_DISABLED": 5,
+      "COPY_TXNID_TO_FORM_FILL": 1,
+      "SET_DATE": 1,
+      "COPY_TO": 13,
+      "EXT_DROP_DOWN": 20,
+      "DELETE_DOCUMENT": 15,
+      "UNDELETE_DOCUMENT": 17,
+      "VALIDATION": 18,
+      "EXT_VALUE": 13,
+      "MAKE_VISIBLE": 18,
+      "MAKE_INVISIBLE": 19,
+      "MAKE_MANDATORY": 12,
+      "MAKE_NON_MANDATORY": 10,
+      "SEND_OTP": 1,
+      "VALIDATE_OTP": 1,
+      "CONVERT_TO": 21,
+      "COPY_TO_GENERIC_PARTY_EMAIL": 1,
+      "COPY_TO_GENERIC_PARTY_NAME": 1,
+      "OCR": 7,
+      "COPY_TO_DOCUMENT_STORAGE_ID": 18,
+      "VERIFY": 6,
+      "COPY_TO_TRANSACTION_ATTR1": 1,
+      "DUMMY_ACTION": 1,
+      "CONCAT": 2,
+      "COPY_TO_TRANSACTION_ATTR3": 1,
+      "MAKE_ENABLED": 1
+    },
+    "discrepancies": [
+      {
+        "action_type": "COPY_TO",
+        "generated": 13,
+        "reference": 12,
+        "difference": 1,
+        "issue": "Over-generated by 1",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "OCR",
+        "generated": 7,
+        "reference": 6,
+        "difference": 1,
+        "issue": "Over-generated by 1",
+        "severity": "MEDIUM"
+      },
+      {
+        "action_type": "VERIFY",
+        "generated": 6,
+        "reference": 5,
+        "difference": 1,
+        "issue": "Over-generated by 1",
+        "severity": "MEDIUM"
+      }
+    ]
+  },
+  "critical_checks": {
+    "json_structure_valid": true,
+    "json_structure_errors": [],
+    "verify_ordinal_mapping": {
+      "total_verify_rules": 6,
+      "checkable_rules": 5,
+      "correct_ordinals": 5,
+      "ordinal_rate": 1.0,
+      "details": [
+        {
+          "rule_id": 41,
+          "source_type": "PAN_NUMBER",
+          "expected_ordinals": 10,
+          "actual_ordinals": 10,
+          "status": "PASS"
+        },
+        {
+          "rule_id": 46,
+          "source_type": "GSTIN_WITH_PAN",
+          "status": "UNKNOWN_TYPE",
+          "actual_ordinals": 0
+        },
+        {
+          "rule_id": 43,
+          "source_type": "GSTIN",
+          "expected_ordinals": 21,
+          "actual_ordinals": 21,
+          "status": "PASS"
+        },
+        {
+          "rule_id": 42,
+          "source_type": "BANK_ACCOUNT_NUMBER",
+          "expected_ordinals": 4,
+          "actual_ordinals": 4,
+          "status": "PASS"
+        },
+        {
+          "rule_id": 45,
+          "source_type": "CIN_ID",
+          "expected_ordinals": 14,
+          "actual_ordinals": 14,
+          "status": "PASS"
+        },
+        {
+          "rule_id": 44,
+          "source_type": "MSME_UDYAM_REG_NUMBER",
+          "expected_ordinals": 21,
+          "actual_ordinals": 21,
+          "status": "PASS"
+        }
+      ]
+    },
+    "ocr_verify_chains": {
+      "total_ocr_rules": 7,
+      "requiring_chain": 5,
+      "correctly_chained": 3,
+      "chain_rate": 0.6,
+      "details": [
+        {
+          "ocr_rule_id": 34,
+          "source_type": "PAN_IMAGE",
+          "status": "FAIL",
+          "reason": "Missing postTriggerRuleIds to VERIFY",
+          "chained": false
+        },
+        {
+          "ocr_rule_id": 35,
+          "source_type": "GSTIN_IMAGE",
+          "verify_rule_id": 43,
+          "status": "PASS",
+          "chained": true
+        },
+        {
+          "ocr_rule_id": 36,
+          "source_type": "AADHAR_IMAGE",
+          "status": "SKIP",
+          "reason": "AADHAR types do not require VERIFY chains"
+        },
+        {
+          "ocr_rule_id": 37,
+          "source_type": "AADHAR_BACK_IMAGE",
+          "status": "SKIP",
+          "reason": "AADHAR types do not require VERIFY chains"
+        },
+        {
+          "ocr_rule_id": 38,
+          "source_type": "CHEQUEE",
+          "status": "FAIL",
+          "reason": "No VERIFY rule for destination",
+          "chained": false
+        },
+        {
+          "ocr_rule_id": 39,
+          "source_type": "CIN",
+          "verify_rule_id": 45,
+          "status": "PASS",
+          "chained": true
+        },
+        {
+          "ocr_rule_id": 40,
+          "source_type": "MSME",
+          "verify_rule_id": 44,
+          "status": "PASS",
+          "chained": true
+        }
+      ]
+    },
+    "make_disabled_consolidation": {
+      "total_disabled_rules": 5,
+      "unique_patterns": 1,
+      "is_consolidated": false,
+      "expected_max": 1,
+      "status": "FAIL"
+    }
+  },
+  "missing_rules": [],
+  "over_generated_rules": [
+    {
+      "action_type": "COPY_TO",
+      "generated": 13,
+      "reference": 12,
+      "difference": 1,
+      "issue": "Over-generated by 1",
+      "severity": "MEDIUM"
+    },
+    {
+      "action_type": "OCR",
+      "generated": 7,
+      "reference": 6,
+      "difference": 1,
+      "issue": "Over-generated by 1",
+      "severity": "MEDIUM"
+    },
+    {
+      "action_type": "VERIFY",
+      "generated": 6,
+      "reference": 5,
+      "difference": 1,
+      "issue": "Over-generated by 1",
+      "severity": "MEDIUM"
+    }
+  ],
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "fix_type": "ocr_verify_chains",
+        "description": "Add postTriggerRuleIds to link OCR \u2192 VERIFY rules",
+        "affected_rules": [
+          34,
+          38
+        ],
+        "severity": "CRITICAL",
+        "implementation": "ocr_rule['postTriggerRuleIds'] = [verify_rule_id]"
+      },
+      {
+        "priority": 2,
+        "fix_type": "consolidate_disabled_rules",
+        "description": "Merge 5 MAKE_DISABLED into ~1 consolidated rules",
+        "severity": "HIGH",
+        "implementation": "Group by sourceIds + condition + conditionalValues, merge destinationIds"
+      }
+    ]
+  }
+}

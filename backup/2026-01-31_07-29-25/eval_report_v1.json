@@ -1,0 +1,1970 @@
+{
+  "evaluation_metadata": {
+    "timestamp": "2026-01-31T07:57:08.975876",
+    "iteration": 1,
+    "pass_threshold": 0.9,
+    "generated_file": "adws/2026-01-31_07-29-25/populated_schema.json",
+    "reference_file": "documents/json_output/vendor_creation_sample_bud.json",
+    "bud_file": "documents/Vendor Creation Sample BUD.docx"
+  },
+  "overall_score": 0.65,
+  "pass": false,
+  "panel_scores": {
+    "Basic Details": {
+      "score": 0.36,
+      "total_fields": 55,
+      "fields_with_correct_rules": 20,
+      "missing_rules": [
+        {
+          "panel": "Basic Details",
+          "field": "RuleCheck",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "RuleCheck",
+          "rule_type": "MAKE_DISABLED"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Transaction ID",
+          "rule_type": "SESSION_BASED_MAKE_VISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Transaction ID",
+          "rule_type": "COPY_TXNID_TO_FORM_FILL"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Created On",
+          "rule_type": "SET_DATE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Created By Name",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Created By Mobile",
+          "rule_type": "SESSION_BASED_MAKE_VISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Select the process type",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "SESSION_BASED_MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "DUMMY_ACTION"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "SESSION_BASED_MAKE_MANDATORY"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "SESSION_BASED_MAKE_VISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Choose the Group of Company",
+          "rule_type": "SESSION_BASED_MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company and Ownership",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company and Ownership",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company and Ownership",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company and Ownership",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company and Ownership",
+          "rule_type": "COPY_TO_TRANSACTION_ATTR1"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company Country",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Company Country",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Type",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Account Group/Vendor Type",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Account Group/Vendor Type",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Account Group/Vendor Type",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Group key/Corporate Group",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Flow Condition",
+          "rule_type": "SESSION_BASED_MAKE_VISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Flow Condition",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Flow Condition",
+          "rule_type": "CONCAT"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Flow Condition",
+          "rule_type": "DELETE_DOCUMENT"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Flow Condition",
+          "rule_type": "UNDELETE_DOCUMENT"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Process Flow Condition",
+          "rule_type": "SESSION_BASED_MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Country Description (Domestic)",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Country",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Country",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Country Code",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Country Description",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "E4",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "E5",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "E6",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Do you wish to add additional mobile numbers (India)?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Do you wish to add additional mobile numbers (Non-India)?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Contact Email",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Contact Email",
+          "rule_type": "COPY_TO_GENERIC_PARTY_EMAIL"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Contact Name",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Contact Name",
+          "rule_type": "COPY_TO_GENERIC_PARTY_NAME"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Do you wish to add additional email addresses?",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Do you wish to add additional email addresses?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Email 2",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Concerned email addresses?",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Concerned email addresses?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Central Enrolment number (CEN)",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Type of Industry",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Mobile Number ",
+          "rule_type": "SEND_OTP"
+        },
+        {
+          "panel": "Basic Details",
+          "field": "Vendor Mobile Number OTP",
+          "rule_type": "VALIDATE_OTP"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "PAN and GST Details": {
+      "score": 0.67,
+      "total_fields": 27,
+      "fields_with_correct_rules": 18,
+      "missing_rules": [
+        {
+          "panel": "PAN and GST Details",
+          "field": "Upload PAN",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "PAN",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "PAN Type",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "PAN Type",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "PAN Type",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "PAN Type",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "UNDELETE_DOCUMENT"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "DELETE_DOCUMENT"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Please select GST option",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "GSTIN IMAGE",
+          "rule_type": "MAKE_DISABLED"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "GSTIN IMAGE",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "GSTIN",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "PAN and GST Details",
+          "field": "Upload Declaration",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Vendor Basic Details": {
+      "score": 0.79,
+      "total_fields": 14,
+      "fields_with_correct_rules": 11,
+      "missing_rules": [
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Additional Registration Number Applicable?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Additional Registration Number Applicable?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Additional Registration Number Applicable?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Additional Registration Number Applicable?",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Additional Registration Number Applicable?",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Title",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Business Registration Number Available?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Business Registration Number Available?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Business Registration Number Available?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Business Registration Number Available?",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "Vendor Basic Details",
+          "field": "Business Registration Number Available?",
+          "rule_type": "MAKE_MANDATORY"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Address Details": {
+      "score": 0.56,
+      "total_fields": 18,
+      "fields_with_correct_rules": 10,
+      "missing_rules": [
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "UNDELETE_DOCUMENT"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "SESSION_BASED_MAKE_MANDATORY"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "DELETE_DOCUMENT"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Please Choose Address Proof",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Electricity bill copy",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Aadhaar  Front copy",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Aaadhar Back Image",
+          "rule_type": "OCR"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Aaadhar Back Image",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Postal Code",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Postal Code",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Address Details",
+          "field": "Region (Import)",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Address Details",
+          "field": "City (Import)",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Address Details",
+          "field": "District (Import)",
+          "rule_type": "CONVERT_TO"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Bank Details": {
+      "score": 0.36,
+      "total_fields": 22,
+      "fields_with_correct_rules": 8,
+      "missing_rules": [
+        {
+          "panel": "Bank Details",
+          "field": "Please choose the option",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Please choose the option",
+          "rule_type": "MAKE_ENABLED"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Please choose the option",
+          "rule_type": "DELETE_DOCUMENT"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Please choose the option",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Please choose the option",
+          "rule_type": "UNDELETE_DOCUMENT"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Cancelled Cheque Image",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Passbook/Bank Letter",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "IFSC Code",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "IFSC Code",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Bank Account Number",
+          "rule_type": "VERIFY"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Bank Statement/Confirmation/Passbook Image",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "SWIFT Image",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Cheque (Import)",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "IFSC Code / SWIFT Code / Bank Key",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Name of Account Holder (Import)",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Bank Name (Import)",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Bank Branch (Import)",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Bank Address (Import)",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "Bank Details",
+          "field": "Bank Country (Import)",
+          "rule_type": "EXT_VALUE"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "CIN and TDS Details": {
+      "score": 0.29,
+      "total_fields": 7,
+      "fields_with_correct_rules": 2,
+      "missing_rules": [
+        {
+          "panel": "CIN and TDS Details",
+          "field": "CIN Certificate",
+          "rule_type": "OCR"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "CIN Certificate",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "FDA Registered?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "FDA Registered?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "FDA Registered?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "FDA Registered?",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "FDA Registered?",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "FDA Registration Number",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "TDS Applicable?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "TDS Applicable?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "TDS Applicable?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "TDS Applicable?",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "TDS Applicable?",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "CIN and TDS Details",
+          "field": "TDS Certificate",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "MSME Details": {
+      "score": 0.86,
+      "total_fields": 28,
+      "fields_with_correct_rules": 24,
+      "missing_rules": [
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "UNDELETE_DOCUMENT"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "DELETE_DOCUMENT"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "Is SSI / MSME Applicable?",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "MSME Image",
+          "rule_type": "MAKE_DISABLED"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "MSME Image",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "MSME Registration Number",
+          "rule_type": "CONVERT_TO"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "MSME Registration Number",
+          "rule_type": "MAKE_DISABLED"
+        },
+        {
+          "panel": "MSME Details",
+          "field": "MSME Declaration",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Vendor Duplicity Details": {
+      "score": 1.0,
+      "total_fields": 12,
+      "fields_with_correct_rules": 12,
+      "missing_rules": [],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Purchase Organization Details": {
+      "score": 0.69,
+      "total_fields": 26,
+      "fields_with_correct_rules": 18,
+      "missing_rules": [
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Order currency",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Order currency",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Order currency",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Purchase Organization",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Purchase Organization",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Terms of Payment",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Terms of Payment",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Incoterms",
+          "rule_type": "COPY_TO"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Incoterms",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Incoterms",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Incoterms (Part 2)",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Incoterms (Part 2)",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Is Vendor Your Customer?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Is Vendor Your Customer?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Is Vendor Your Customer?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Is Vendor Your Customer?",
+          "rule_type": "MAKE_NON_MANDATORY"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Is Vendor Your Customer?",
+          "rule_type": "MAKE_MANDATORY"
+        },
+        {
+          "panel": "Purchase Organization Details",
+          "field": "Service Tax File",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Payment Details": {
+      "score": 0.61,
+      "total_fields": 18,
+      "fields_with_correct_rules": 11,
+      "missing_rules": [
+        {
+          "panel": "Payment Details",
+          "field": "SSI Indicator",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Minority Indicator",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Vendor Invoice",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Reconciliation Account",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Reconciliation Account",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Currency",
+          "rule_type": "VALIDATION"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Currency",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Payment Details",
+          "field": "Additional File",
+          "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Vertical Head Details": {
+      "score": 1.0,
+      "total_fields": 2,
+      "fields_with_correct_rules": 2,
+      "missing_rules": [],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Functional Head Details": {
+      "score": 1.0,
+      "total_fields": 2,
+      "fields_with_correct_rules": 2,
+      "missing_rules": [],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Withholding Tax Details": {
+      "score": 0.5,
+      "total_fields": 10,
+      "fields_with_correct_rules": 5,
+      "missing_rules": [
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Is Withholding Tax applicable?",
+          "rule_type": "MAKE_INVISIBLE"
+        },
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Is Withholding Tax applicable?",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Is Withholding Tax applicable?",
+          "rule_type": "MAKE_VISIBLE"
+        },
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Is Withholding Tax applicable?",
+          "rule_type": "EXT_DROP_DOWN"
+        },
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Withholding Tax Type ",
+          "rule_type": "EXT_VALUE"
+        },
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Recipient Type",
+          "rule_type": "EXECUTE"
+        },
+        {
+          "panel": "Withholding Tax Details",
+          "field": "Withholding Tax Code",
+          "rule_type": "EXT_DROP_DOWN"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Auditor Details": {
+      "score": 1.0,
+      "total_fields": 2,
+      "fields_with_correct_rules": 2,
+      "missing_rules": [],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "MDC Details": {
+      "score": 1.0,
+      "total_fields": 3,
+      "fields_with_correct_rules": 3,
+      "missing_rules": [],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Approver Mapping": {
+      "score": 0.95,
+      "total_fields": 22,
+      "fields_with_correct_rules": 21,
+      "missing_rules": [
+        {
+          "panel": "Approver Mapping",
+          "field": "Approver 1 / Requestor Name",
+          "rule_type": "COPY_TO"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    },
+    "Common Fields Panel": {
+      "score": 0.94,
+      "total_fields": 16,
+      "fields_with_correct_rules": 15,
+      "missing_rules": [
+        {
+          "panel": "Common Fields Panel",
+          "field": "Trigger Rule One",
+          "rule_type": "EXECUTE"
+        }
+      ],
+      "extra_rules": [],
+      "incorrect_rules": []
+    }
+  },
+  "rule_type_comparison": {
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "match": false
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "reference": 18,
+      "match": false
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "reference": 2,
+      "match": false
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "reference": 18,
+      "match": false
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "reference": 13,
+      "match": false
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 17,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 3,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "match": false
+    },
+    "VERIFY": {
+      "generated": 7,
+      "reference": 5,
+      "match": true
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 15,
+      "match": false
+    },
+    "MAKE_DISABLED": {
+      "generated": 2,
+      "reference": 5,
+      "match": false
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "match": false
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "reference": 19,
+      "match": false
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "CONVERT_TO": {
+      "generated": 0,
+      "reference": 21,
+      "match": false
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 2,
+      "reference": 10,
+      "match": false
+    },
+    "MAKE_MANDATORY": {
+      "generated": 2,
+      "reference": 12,
+      "match": false
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "reference": 13,
+      "match": false
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "reference": 40,
+      "match": false
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "reference": 1,
+      "match": false
+    },
+    "MAKE_VISIBLE": {
+      "generated": 9,
+      "reference": 18,
+      "match": false
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 1,
+      "reference": 20,
+      "match": false
+    }
+  },
+  "critical_checks": {
+    "ocr_chains_valid": true,
+    "visibility_pairs_complete": false,
+    "disabled_consolidated": true,
+    "ordinal_mapping_correct": false
+  },
+  "discrepancies": [
+    {
+      "panel": "Basic Details",
+      "field": "RuleCheck",
+      "issue": "Missing MAKE_INVISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "MAKE_INVISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "MAKE_INVISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "RuleCheck",
+      "issue": "Missing MAKE_DISABLED rule",
+      "severity": "minor",
+      "bud_requirement": "MAKE_DISABLED rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "MAKE_DISABLED"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Transaction ID",
+      "issue": "Missing SESSION_BASED_MAKE_VISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_VISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_VISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Transaction ID",
+      "issue": "Missing COPY_TXNID_TO_FORM_FILL rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TXNID_TO_FORM_FILL rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TXNID_TO_FORM_FILL"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Created On",
+      "issue": "Missing SET_DATE rule",
+      "severity": "minor",
+      "bud_requirement": "SET_DATE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SET_DATE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Created By Name",
+      "issue": "Missing COPY_TO rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Created By Mobile",
+      "issue": "Missing SESSION_BASED_MAKE_VISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_VISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_VISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Select the process type",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing MAKE_INVISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "MAKE_INVISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "MAKE_INVISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing SESSION_BASED_MAKE_NON_MANDATORY rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_NON_MANDATORY rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_NON_MANDATORY"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing EXT_VALUE rule",
+      "severity": "major",
+      "bud_requirement": "EXT_VALUE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_VALUE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing DUMMY_ACTION rule",
+      "severity": "minor",
+      "bud_requirement": "DUMMY_ACTION rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "DUMMY_ACTION"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing SESSION_BASED_MAKE_MANDATORY rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_MANDATORY rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_MANDATORY"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing SESSION_BASED_MAKE_VISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_VISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_VISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing MAKE_VISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "MAKE_VISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "MAKE_VISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing MAKE_MANDATORY rule",
+      "severity": "minor",
+      "bud_requirement": "MAKE_MANDATORY rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "MAKE_MANDATORY"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Choose the Group of Company",
+      "issue": "Missing SESSION_BASED_MAKE_INVISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_INVISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_INVISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company and Ownership",
+      "issue": "Missing COPY_TO rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company and Ownership",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company and Ownership",
+      "issue": "Missing VALIDATION rule",
+      "severity": "minor",
+      "bud_requirement": "VALIDATION rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "VALIDATION"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company and Ownership",
+      "issue": "Missing EXT_VALUE rule",
+      "severity": "major",
+      "bud_requirement": "EXT_VALUE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_VALUE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company and Ownership",
+      "issue": "Missing COPY_TO_TRANSACTION_ATTR1 rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TO_TRANSACTION_ATTR1 rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TO_TRANSACTION_ATTR1"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company Country",
+      "issue": "Missing VALIDATION rule",
+      "severity": "minor",
+      "bud_requirement": "VALIDATION rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "VALIDATION"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Company Country",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Type",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Account Group/Vendor Type",
+      "issue": "Missing VALIDATION rule",
+      "severity": "minor",
+      "bud_requirement": "VALIDATION rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "VALIDATION"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Account Group/Vendor Type",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Account Group/Vendor Type",
+      "issue": "Missing EXT_VALUE rule",
+      "severity": "major",
+      "bud_requirement": "EXT_VALUE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_VALUE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Group key/Corporate Group",
+      "issue": "Missing EXT_VALUE rule",
+      "severity": "major",
+      "bud_requirement": "EXT_VALUE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_VALUE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Flow Condition",
+      "issue": "Missing SESSION_BASED_MAKE_VISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_VISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_VISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Flow Condition",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Flow Condition",
+      "issue": "Missing CONCAT rule",
+      "severity": "minor",
+      "bud_requirement": "CONCAT rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "CONCAT"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Flow Condition",
+      "issue": "Missing DELETE_DOCUMENT rule",
+      "severity": "minor",
+      "bud_requirement": "DELETE_DOCUMENT rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "DELETE_DOCUMENT"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Flow Condition",
+      "issue": "Missing UNDELETE_DOCUMENT rule",
+      "severity": "minor",
+      "bud_requirement": "UNDELETE_DOCUMENT rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "UNDELETE_DOCUMENT"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Process Flow Condition",
+      "issue": "Missing SESSION_BASED_MAKE_INVISIBLE rule",
+      "severity": "minor",
+      "bud_requirement": "SESSION_BASED_MAKE_INVISIBLE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "SESSION_BASED_MAKE_INVISIBLE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Country Description (Domestic)",
+      "issue": "Missing COPY_TO rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Vendor Country",
+      "issue": "Missing VALIDATION rule",
+      "severity": "minor",
+      "bud_requirement": "VALIDATION rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "VALIDATION"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Vendor Country",
+      "issue": "Missing EXT_VALUE rule",
+      "severity": "major",
+      "bud_requirement": "EXT_VALUE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_VALUE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Country Code",
+      "issue": "Missing EXT_DROP_DOWN rule",
+      "severity": "major",
+      "bud_requirement": "EXT_DROP_DOWN rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_DROP_DOWN"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Country Description",
+      "issue": "Missing COPY_TO rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "E4",
+      "issue": "Missing CONVERT_TO rule",
+      "severity": "minor",
+      "bud_requirement": "CONVERT_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "CONVERT_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "E5",
+      "issue": "Missing CONVERT_TO rule",
+      "severity": "minor",
+      "bud_requirement": "CONVERT_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "CONVERT_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "E6",
+      "issue": "Missing CONVERT_TO rule",
+      "severity": "minor",
+      "bud_requirement": "CONVERT_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "CONVERT_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional mobile numbers (India)?",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional mobile numbers (India)?",
+      "issue": "Missing EXT_DROP_DOWN rule",
+      "severity": "major",
+      "bud_requirement": "EXT_DROP_DOWN rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_DROP_DOWN"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional mobile numbers (Non-India)?",
+      "issue": "Missing EXECUTE rule",
+      "severity": "minor",
+      "bud_requirement": "EXECUTE rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXECUTE"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Do you wish to add additional mobile numbers (Non-India)?",
+      "issue": "Missing EXT_DROP_DOWN rule",
+      "severity": "major",
+      "bud_requirement": "EXT_DROP_DOWN rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "EXT_DROP_DOWN"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Vendor Contact Email",
+      "issue": "Missing CONVERT_TO rule",
+      "severity": "minor",
+      "bud_requirement": "CONVERT_TO rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "CONVERT_TO"
+      }
+    },
+    {
+      "panel": "Basic Details",
+      "field": "Vendor Contact Email",
+      "issue": "Missing COPY_TO_GENERIC_PARTY_EMAIL rule",
+      "severity": "minor",
+      "bud_requirement": "COPY_TO_GENERIC_PARTY_EMAIL rule required",
+      "generated_rule": null,
+      "expected_rule": {
+        "actionType": "COPY_TO_GENERIC_PARTY_EMAIL"
+      }
+    }
+  ],
+  "summary": {
+    "total_fields_evaluated": 284,
+    "fields_with_correct_rules": 184,
+    "total_missing_rules": 190,
+    "critical_rule_types_missing": [
+      "OCR",
+      "EXT_VALUE",
+      "EXT_DROP_DOWN",
+      "VALIDATION"
+    ]
+  },
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "priority": 1,
+        "panel": "Address Details",
+        "field": "Aaadhar Back Image",
+        "action": "add",
+        "rule_type": "OCR",
+        "specification": "Add OCR rule with postTriggerRuleIds pointing to VERIFY rule"
+      },
+      {
+        "priority": 1,
+        "panel": "CIN and TDS Details",
+        "field": "CIN Certificate",
+        "action": "add",
+        "rule_type": "OCR",
+        "specification": "Add OCR rule with postTriggerRuleIds pointing to VERIFY rule"
+      },
+      {
+        "priority": 1,
+        "panel": "ALL",
+        "field": "ALL VERIFY fields",
+        "action": "modify",
+        "rule_type": "VERIFY",
+        "specification": "Add destinationIds array with ordinal position mapping (-1 for skip, field_id for copy)"
+      },
+      {
+        "priority": 2,
+        "panel": "Unknown",
+        "field": "Source ID: 43",
+        "action": "add",
+        "rule_type": "MAKE_INVISIBLE",
+        "specification": "Add corresponding MAKE_INVISIBLE rule for visibility pair"
+      },
+      {
+        "priority": 2,
+        "panel": "Unknown",
+        "field": "Source ID: 28",
+        "action": "add",
+        "rule_type": "MAKE_INVISIBLE",
+        "specification": "Add corresponding MAKE_INVISIBLE rule for visibility pair"
+      },
+      {
+        "priority": 2,
+        "panel": "Unknown",
+        "field": "Source ID: 31",
+        "action": "add",
+        "rule_type": "MAKE_INVISIBLE",
+        "specification": "Add corresponding MAKE_INVISIBLE rule for visibility pair"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Choose the Group of Company",
+        "action": "add",
+        "rule_type": "EXT_VALUE",
+        "specification": "Add EXT_VALUE rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Company and Ownership",
+        "action": "add",
+        "rule_type": "EXT_VALUE",
+        "specification": "Add EXT_VALUE rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Account Group/Vendor Type",
+        "action": "add",
+        "rule_type": "EXT_VALUE",
+        "specification": "Add EXT_VALUE rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Group key/Corporate Group",
+        "action": "add",
+        "rule_type": "EXT_VALUE",
+        "specification": "Add EXT_VALUE rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Vendor Country",
+        "action": "add",
+        "rule_type": "EXT_VALUE",
+        "specification": "Add EXT_VALUE rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Country Code",
+        "action": "add",
+        "rule_type": "EXT_DROP_DOWN",
+        "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Do you wish to add additional mobile numbers (India)?",
+        "action": "add",
+        "rule_type": "EXT_DROP_DOWN",
+        "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Do you wish to add additional mobile numbers (Non-India)?",
+        "action": "add",
+        "rule_type": "EXT_DROP_DOWN",
+        "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+      },
+      {
+        "priority": 2,
+        "panel": "Basic Details",
+        "field": "Do you wish to add additional email addresses?",
+        "action": "add",
+        "rule_type": "EXT_DROP_DOWN",
+        "specification": "Add EXT_DROP_DOWN rule for external dropdown population"
+      }
+    ],
+    "pattern_improvements": [
+      "Implement destinationIds ordinal mapping for all VERIFY rules",
+      "Add MAKE_INVISIBLE counterpart for every MAKE_VISIBLE rule",
+      "Add EXT_VALUE rules for external dropdown value population",
+      "Add COPY_TO_DOCUMENT_STORAGE_ID for all document upload fields",
+      "Add VALIDATION rules for field format validation",
+      "Add CONVERT_TO rules for field value transformations"
+    ]
+  }
+}

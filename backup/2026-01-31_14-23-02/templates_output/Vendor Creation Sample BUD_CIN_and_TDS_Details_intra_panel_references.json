@@ -1,0 +1,70 @@
+{
+  "document_info": {
+    "file_name": "Vendor Creation Sample BUD.docx",
+    "file_path": "documents/Vendor Creation Sample BUD.docx",
+    "analysis_timestamp": "2026-01-31T14:23:06.920454",
+    "analysis_type": "intra_panel_field_references"
+  },
+  "panel_name": "CIN and TDS Details",
+  "total_fields_analyzed": 6,
+  "intra_panel_references": [
+    {
+      "dependent_field": {
+        "field_name": "TDS Certificate",
+        "variable_name": "__tds_certificate__",
+        "field_type": "FILE"
+      },
+      "source_field": {
+        "field_name": "TDS Applicable?",
+        "variable_name": "__tds_applicable?__",
+        "field_type": "EXTERNAL_DROP_DOWN_VALUE"
+      },
+      "dependency_type": "visibility_and_mandatory",
+      "conditions": [
+        {
+          "when": "TDS Applicable? = 'Yes'",
+          "effect": "TDS Certificate is visible and mandatory"
+        },
+        {
+          "when": "TDS Applicable? = 'No'",
+          "effect": "TDS Certificate is hidden"
+        }
+      ],
+      "logic_source": "If \"Yes\" then TDS certificate upload field is mandatory. If "No", field will be hidden. Upload size is 15 Mb",
+      "confidence": "high"
+    }
+  ],
+  "cross_panel_references_noted": [
+    {
+      "field_name": "CIN Certificate",
+      "references_field": "PAN",
+      "logic": "If 4 chars of PAN are C then CIN certificate mandatory",
+      "note": "PAN field is in a different panel (likely Vendor Details or similar)"
+    },
+    {
+      "field_name": "CIN",
+      "references_field": "PAN",
+      "logic": "If 4 chars of PAN are C then CIN number is mandatory",
+      "note": "PAN field is in a different panel (likely Vendor Details or similar)"
+    },
+    {
+      "field_name": "FDA Registration Number",
+      "references_field": "ID Type",
+      "logic": "If ID Type is ZCUCIN then its Mandatory",
+      "note": "ID Type field is in a different panel"
+    },
+    {
+      "field_name": "MSME Details",
+      "references_field": "Process Type",
+      "logic": "Panel applicable only for India-Domestic, Hidden for other process types",
+      "note": "Process type is typically determined at form/workflow level"
+    }
+  ],
+  "summary": {
+    "total_intra_panel_dependencies": 1,
+    "total_cross_panel_references_noted": 4,
+    "dependency_graph": {
+      "__tds_applicable?__": ["__tds_certificate__"]
+    }
+  }
+}

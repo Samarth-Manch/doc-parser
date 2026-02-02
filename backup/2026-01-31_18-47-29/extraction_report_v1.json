@@ -1,0 +1,116 @@
+{
+  "extraction_metadata": {
+    "timestamp": "2026-01-31T18:53:45.445342",
+    "schema_path": "output/complete_format/6421-schema.json",
+    "intra_panel_path": "adws/2026-01-31_18-47-29/templates_output/Vendor Creation Sample BUD_intra_panel_references.json",
+    "output_path": "adws/2026-01-31_18-47-29/populated_schema_v1.json"
+  },
+  "summary": {
+    "total_fields": 168,
+    "total_rules_generated": 65,
+    "ocr_verify_chains": 2,
+    "visibility_rules": 18,
+    "mandatory_rules": 6,
+    "ext_dropdown_rules": 27
+  },
+  "rules_by_type": {
+    "MAKE_VISIBLE": 9,
+    "MAKE_INVISIBLE": 9,
+    "MAKE_MANDATORY": 3,
+    "MAKE_NON_MANDATORY": 3,
+    "VERIFY": 3,
+    "OCR": 4,
+    "EXT_DROP_DOWN": 27,
+    "CONVERT_TO": 7
+  },
+  "comparison_with_reference": {
+    "MAKE_VISIBLE": {
+      "generated": 9,
+      "reference": 18,
+      "difference": -9
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 9,
+      "reference": 19,
+      "difference": -10
+    },
+    "MAKE_MANDATORY": {
+      "generated": 3,
+      "reference": 12,
+      "difference": -9
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 3,
+      "reference": 10,
+      "difference": -7
+    },
+    "VERIFY": {
+      "generated": 3,
+      "reference": 5,
+      "difference": -2
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "difference": -2
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 27,
+      "reference": 20,
+      "difference": 7
+    },
+    "CONVERT_TO": {
+      "generated": 7,
+      "reference": 21,
+      "difference": -14
+    }
+  },
+  "coverage_analysis": {
+    "fully_covered": [
+      "EXT_DROP_DOWN"
+    ],
+    "partially_covered": [
+      "MAKE_NON_MANDATORY",
+      "CONVERT_TO",
+      "OCR",
+      "MAKE_INVISIBLE",
+      "MAKE_MANDATORY",
+      "MAKE_VISIBLE",
+      "VERIFY"
+    ],
+    "not_covered": [
+      "COPY_TO_TRANSACTION_ATTR3",
+      "SESSION_BASED_MAKE_INVISIBLE",
+      "COPY_TO_DOCUMENT_STORAGE_ID",
+      "MAKE_ENABLED",
+      "SET_DATE",
+      "COPY_TO",
+      "SEND_OTP",
+      "SESSION_BASED_MAKE_MANDATORY",
+      "CONCAT",
+      "DELETE_DOCUMENT",
+      "UNDELETE_DOCUMENT",
+      "COPY_TO_TRANSACTION_ATTR1",
+      "SESSION_BASED_MAKE_NON_MANDATORY",
+      "DUMMY_ACTION",
+      "COPY_TXNID_TO_FORM_FILL",
+      "VALIDATE_OTP",
+      "MAKE_DISABLED",
+      "COPY_TO_GENERIC_PARTY_NAME",
+      "SESSION_BASED_MAKE_VISIBLE",
+      "EXT_VALUE",
+      "COPY_TO_GENERIC_PARTY_EMAIL",
+      "EXECUTE",
+      "VALIDATION"
+    ]
+  },
+  "key_improvements": [
+    "OCR -> VERIFY rule chaining implemented via postTriggerRuleIds",
+    "Sequential ID generation starting from 1",
+    "Ordinal-based destinationIds mapping for VERIFY rules",
+    "Consolidated visibility rules per source field",
+    "EXT_DROP_DOWN rules for EXTERNAL_DROP_DOWN_VALUE fields"
+  ],
+  "warnings": [],
+  "errors": []
+}

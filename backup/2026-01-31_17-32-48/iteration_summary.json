@@ -1,0 +1,1404 @@
+{
+  "workspace": "adws/2026-01-31_17-32-48",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-01-31T17:40:02.821367",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v1.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v1.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v1.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v1.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 7
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-01-31T17:56:10.024657",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v2.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v2.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v2.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v2.json",
+      "score": 0,
+      "passed": false,
+      "priority_fixes_count": 14
+    },
+    {
+      "iteration": 3,
+      "timestamp": "2026-01-31T18:00:49.911569",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v3.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v3.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v3.json",
+      "score": 0.446,
+      "passed": false,
+      "priority_fixes_count": 2
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-01-31T18:00:57.651067",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v4.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v4.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v4.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 5,
+      "timestamp": "2026-01-31T18:00:57.654607",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v5.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v5.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v5.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 6,
+      "timestamp": "2026-01-31T18:00:57.658055",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v6.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v6.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v6.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 7,
+      "timestamp": "2026-01-31T18:00:57.661290",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v7.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v7.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v7.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 8,
+      "timestamp": "2026-01-31T18:00:57.664950",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v8.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v8.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v8.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 9,
+      "timestamp": "2026-01-31T18:00:57.668657",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v9.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v9.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v9.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 10,
+      "timestamp": "2026-01-31T18:00:57.671907",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v10.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v10.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v10.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 11,
+      "timestamp": "2026-01-31T18:00:57.675190",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v11.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v11.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v11.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 12,
+      "timestamp": "2026-01-31T18:00:57.678574",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v12.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v12.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v12.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 13,
+      "timestamp": "2026-01-31T18:00:57.682179",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v13.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v13.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v13.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 14,
+      "timestamp": "2026-01-31T18:00:57.685713",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v14.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v14.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v14.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 15,
+      "timestamp": "2026-01-31T18:00:57.689115",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v15.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v15.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v15.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 16,
+      "timestamp": "2026-01-31T18:00:57.692528",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v16.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v16.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v16.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 17,
+      "timestamp": "2026-01-31T18:00:57.696100",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v17.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v17.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v17.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 18,
+      "timestamp": "2026-01-31T18:00:57.699533",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v18.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v18.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v18.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 19,
+      "timestamp": "2026-01-31T18:00:57.702898",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v19.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v19.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v19.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 20,
+      "timestamp": "2026-01-31T18:00:57.706468",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v20.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v20.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v20.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 21,
+      "timestamp": "2026-01-31T18:00:57.710037",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v21.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v21.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v21.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 22,
+      "timestamp": "2026-01-31T18:00:57.713511",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v22.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v22.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v22.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 23,
+      "timestamp": "2026-01-31T18:00:57.716954",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v23.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v23.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v23.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 24,
+      "timestamp": "2026-01-31T18:00:57.720475",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v24.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v24.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v24.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 25,
+      "timestamp": "2026-01-31T18:00:57.724425",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v25.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v25.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v25.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 26,
+      "timestamp": "2026-01-31T18:00:57.728966",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v26.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v26.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v26.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 27,
+      "timestamp": "2026-01-31T18:00:57.732629",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v27.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v27.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v27.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 28,
+      "timestamp": "2026-01-31T18:00:57.736398",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v28.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v28.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v28.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 29,
+      "timestamp": "2026-01-31T18:00:57.740128",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v29.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v29.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v29.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 30,
+      "timestamp": "2026-01-31T18:00:57.743887",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v30.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v30.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v30.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 31,
+      "timestamp": "2026-01-31T18:00:57.747736",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v31.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v31.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v31.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 32,
+      "timestamp": "2026-01-31T18:00:57.751458",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v32.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v32.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v32.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 33,
+      "timestamp": "2026-01-31T18:00:57.755201",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v33.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v33.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v33.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 34,
+      "timestamp": "2026-01-31T18:00:57.758881",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v34.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v34.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v34.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 35,
+      "timestamp": "2026-01-31T18:00:57.764094",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v35.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v35.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v35.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 36,
+      "timestamp": "2026-01-31T18:00:57.768171",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v36.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v36.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v36.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 37,
+      "timestamp": "2026-01-31T18:00:57.774233",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v37.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v37.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v37.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 38,
+      "timestamp": "2026-01-31T18:00:57.778660",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v38.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v38.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v38.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 39,
+      "timestamp": "2026-01-31T18:00:57.784379",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v39.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v39.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v39.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 40,
+      "timestamp": "2026-01-31T18:00:57.788472",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v40.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v40.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v40.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 41,
+      "timestamp": "2026-01-31T18:00:57.792524",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v41.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v41.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v41.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 42,
+      "timestamp": "2026-01-31T18:00:57.796743",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v42.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v42.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v42.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 43,
+      "timestamp": "2026-01-31T18:00:57.801071",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v43.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v43.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v43.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 44,
+      "timestamp": "2026-01-31T18:00:57.805076",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v44.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v44.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v44.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 45,
+      "timestamp": "2026-01-31T18:00:57.809401",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v45.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v45.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v45.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 46,
+      "timestamp": "2026-01-31T18:00:57.813939",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v46.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v46.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v46.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 47,
+      "timestamp": "2026-01-31T18:00:57.818067",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v47.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v47.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v47.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 48,
+      "timestamp": "2026-01-31T18:00:57.822088",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v48.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v48.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v48.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 49,
+      "timestamp": "2026-01-31T18:00:57.826872",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v49.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v49.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v49.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 50,
+      "timestamp": "2026-01-31T18:00:57.831162",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v50.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v50.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v50.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 51,
+      "timestamp": "2026-01-31T18:00:57.835293",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v51.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v51.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v51.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 52,
+      "timestamp": "2026-01-31T18:00:57.839311",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v52.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v52.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v52.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 53,
+      "timestamp": "2026-01-31T18:00:57.844455",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v53.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v53.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v53.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 54,
+      "timestamp": "2026-01-31T18:00:57.848897",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v54.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v54.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v54.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 55,
+      "timestamp": "2026-01-31T18:00:57.853116",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v55.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v55.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v55.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 56,
+      "timestamp": "2026-01-31T18:00:57.857398",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v56.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v56.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v56.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 57,
+      "timestamp": "2026-01-31T18:00:57.862402",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v57.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v57.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v57.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 58,
+      "timestamp": "2026-01-31T18:00:57.866751",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v58.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v58.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v58.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 59,
+      "timestamp": "2026-01-31T18:00:57.870940",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v59.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v59.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v59.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 60,
+      "timestamp": "2026-01-31T18:00:57.875748",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v60.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v60.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v60.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 61,
+      "timestamp": "2026-01-31T18:00:57.881207",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v61.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v61.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v61.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 62,
+      "timestamp": "2026-01-31T18:00:57.885597",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v62.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v62.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v62.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 63,
+      "timestamp": "2026-01-31T18:00:57.889896",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v63.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v63.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v63.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 64,
+      "timestamp": "2026-01-31T18:00:57.894398",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v64.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v64.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v64.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 65,
+      "timestamp": "2026-01-31T18:00:57.899059",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v65.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v65.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v65.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 66,
+      "timestamp": "2026-01-31T18:00:57.903496",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v66.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v66.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v66.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 67,
+      "timestamp": "2026-01-31T18:00:57.907831",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v67.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v67.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v67.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 68,
+      "timestamp": "2026-01-31T18:00:57.912551",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v68.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v68.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v68.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 69,
+      "timestamp": "2026-01-31T18:00:57.917124",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v69.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v69.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v69.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 70,
+      "timestamp": "2026-01-31T18:00:57.921661",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v70.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v70.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v70.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 71,
+      "timestamp": "2026-01-31T18:00:57.926156",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v71.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v71.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v71.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 72,
+      "timestamp": "2026-01-31T18:00:57.930857",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v72.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v72.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v72.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 73,
+      "timestamp": "2026-01-31T18:00:57.935362",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v73.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v73.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v73.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 74,
+      "timestamp": "2026-01-31T18:00:57.939821",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v74.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v74.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v74.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 75,
+      "timestamp": "2026-01-31T18:00:57.944441",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v75.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v75.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v75.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 76,
+      "timestamp": "2026-01-31T18:00:57.949147",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v76.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v76.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v76.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 77,
+      "timestamp": "2026-01-31T18:00:57.953692",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v77.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v77.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v77.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 78,
+      "timestamp": "2026-01-31T18:00:57.958203",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v78.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v78.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v78.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 79,
+      "timestamp": "2026-01-31T18:00:57.962981",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v79.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v79.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v79.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 80,
+      "timestamp": "2026-01-31T18:00:57.967637",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v80.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v80.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v80.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 81,
+      "timestamp": "2026-01-31T18:00:57.972771",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v81.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v81.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v81.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 82,
+      "timestamp": "2026-01-31T18:00:57.977829",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v82.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v82.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v82.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 83,
+      "timestamp": "2026-01-31T18:00:57.982817",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v83.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v83.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v83.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 84,
+      "timestamp": "2026-01-31T18:00:57.987638",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v84.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v84.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v84.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 85,
+      "timestamp": "2026-01-31T18:00:57.992562",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v85.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v85.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v85.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 86,
+      "timestamp": "2026-01-31T18:00:57.997753",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v86.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v86.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v86.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 87,
+      "timestamp": "2026-01-31T18:00:58.002691",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v87.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v87.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v87.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 88,
+      "timestamp": "2026-01-31T18:00:58.007583",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v88.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v88.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v88.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 89,
+      "timestamp": "2026-01-31T18:00:58.012765",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v89.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v89.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v89.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 90,
+      "timestamp": "2026-01-31T18:00:58.017857",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v90.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v90.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v90.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 91,
+      "timestamp": "2026-01-31T18:00:58.022944",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v91.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v91.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v91.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 92,
+      "timestamp": "2026-01-31T18:00:58.028078",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v92.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v92.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v92.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 93,
+      "timestamp": "2026-01-31T18:00:58.033142",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v93.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v93.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v93.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 94,
+      "timestamp": "2026-01-31T18:00:58.038315",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v94.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v94.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v94.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 95,
+      "timestamp": "2026-01-31T18:00:58.043409",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v95.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v95.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v95.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 96,
+      "timestamp": "2026-01-31T18:00:58.048610",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v96.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v96.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v96.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 97,
+      "timestamp": "2026-01-31T18:00:58.053593",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v97.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v97.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v97.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 98,
+      "timestamp": "2026-01-31T18:00:58.058528",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v98.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v98.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v98.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 99,
+      "timestamp": "2026-01-31T18:00:58.063829",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v99.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v99.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v99.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    },
+    {
+      "iteration": 100,
+      "timestamp": "2026-01-31T18:00:58.069045",
+      "output_file": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+      "eval_report_file": "adws/2026-01-31_17-32-48/eval_report_v100.json",
+      "extraction_report_file": "adws/2026-01-31_17-32-48/extraction_report_v100.json",
+      "self_heal_file": "adws/2026-01-31_17-32-48/self_heal_instructions_v100.json",
+      "score": null,
+      "passed": false,
+      "error": {
+        "type": "AttributeError",
+        "message": "'str' object has no attribute 'get'"
+      }
+    }
+  ],
+  "current_iteration": 100,
+  "final_status": "failed",
+  "last_updated": "2026-01-31T18:00:58.069078",
+  "final_score": 0.446,
+  "total_iterations": 101,
+  "completed_at": "2026-01-31T18:00:58.071193",
+  "final_output": "adws/2026-01-31_17-32-48/populated_schema_v3.json",
+  "intra_panel_path": "adws/2026-01-31_17-32-48/templates_output/Vendor Creation Sample BUD_intra_panel_references.json"
+}

@@ -1,0 +1,473 @@
+{
+  "evaluation_summary": {
+    "generated_output": "adws/2026-01-30_18-34-03/populated_schema.json",
+    "reference_output": "documents/json_output/vendor_creation_sample_bud.json",
+    "evaluation_timestamp": "2026-01-30T19:15:00Z",
+    "overall_score": 0.42,
+    "pass_threshold": 0.90,
+    "evaluation_passed": false
+  },
+  "coverage_metrics": {
+    "total_fields_in_reference": 284,
+    "total_fields_in_generated": 284,
+    "fields_with_rules_reference": 279,
+    "fields_with_rules_generated": 97,
+    "rule_coverage": 0.35,
+    "total_rules_in_reference": 279,
+    "total_rules_in_generated": 97
+  },
+  "accuracy_metrics": {
+    "exact_match_rate": 0.25,
+    "semantic_match_rate": 0.45,
+    "false_positive_rate": 0.15,
+    "skip_pattern_compliance": 1.0,
+    "source_destination_correctness": 0.60,
+    "condition_correctness": 0.85,
+    "action_type_correctness": 0.90,
+    "ordinal_mapping_correctness": 0.50,
+    "rule_chaining_correctness": 0.0,
+    "visibility_pair_completeness": 1.0
+  },
+  "rule_type_comparison": {
+    "reference": {
+      "MAKE_VISIBLE": 18,
+      "MAKE_INVISIBLE": 19,
+      "MAKE_DISABLED": 5,
+      "MAKE_MANDATORY": 12,
+      "MAKE_NON_MANDATORY": 12,
+      "EXT_DROP_DOWN": 20,
+      "VERIFY": 5,
+      "OCR": 6,
+      "CONVERT_TO": 10,
+      "COPY_TO": 15,
+      "OTHER": 157
+    },
+    "generated": {
+      "MAKE_VISIBLE": 8,
+      "MAKE_INVISIBLE": 8,
+      "MAKE_DISABLED": 53,
+      "MAKE_MANDATORY": 4,
+      "MAKE_NON_MANDATORY": 4,
+      "EXT_DROP_DOWN": 3,
+      "VERIFY": 2,
+      "OCR": 2,
+      "CONVERT_TO": 5,
+      "COPY_TO": 0
+    }
+  },
+  "discrepancies": [
+    {
+      "severity": "high",
+      "category": "missing_rule_chain",
+      "field_name": "Upload PAN",
+      "field_id": 275533,
+      "issue": "OCR rule missing postTriggerRuleIds to chain to VERIFY rule",
+      "reference_rule": {
+        "actionType": "OCR",
+        "sourceType": "PAN_IMAGE",
+        "sourceIds": [275533],
+        "destinationIds": [275534],
+        "postTriggerRuleIds": [119970]
+      },
+      "generated_rule": {
+        "actionType": "OCR",
+        "sourceType": "PAN_IMAGE",
+        "sourceIds": [275533],
+        "destinationIds": [275534],
+        "postTriggerRuleIds": []
+      },
+      "recommendation": "Add VERIFY rule ID to postTriggerRuleIds to chain OCR → VERIFY. Reference links to PAN VERIFY rule 119970."
+    },
+    {
+      "severity": "high",
+      "category": "missing_rule_chain",
+      "field_name": "GSTIN IMAGE",
+      "field_id": 275512,
+      "issue": "OCR rule missing postTriggerRuleIds to chain to VERIFY rule",
+      "reference_rule": {
+        "actionType": "OCR",
+        "sourceType": "GSTIN_IMAGE",
+        "sourceIds": [275512],
+        "destinationIds": [275513],
+        "postTriggerRuleIds": [119608]
+      },
+      "generated_rule": {
+        "actionType": "OCR",
+        "sourceType": "GSTIN_IMAGE",
+        "sourceIds": [275512],
+        "destinationIds": [275513],
+        "postTriggerRuleIds": []
+      },
+      "recommendation": "Add GSTIN VERIFY rule ID to postTriggerRuleIds to chain OCR → VERIFY."
+    },
+    {
+      "severity": "medium",
+      "category": "incorrect_destination_ordinals",
+      "field_name": "GSTIN",
+      "field_id": 275513,
+      "issue": "GSTIN VERIFY rule has different destinationIds mapping than reference",
+      "reference_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "GSTIN",
+        "destinationIds": [275514, 275515, 275516, 275517, 275518, 275519, -1, 275520, 275521, 275522, 275523],
+        "destinationIds_count": 11
+      },
+      "generated_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "GSTIN",
+        "destinationIds": [275514, 275515, 275516, 275605, 275589, 275519, -1, 275608, 275607, 275603, 275523],
+        "destinationIds_count": 11
+      },
+      "recommendation": "Verify field ID mappings for GSTIN validation. Reference uses different field IDs at positions 4,5,8,9,10. Field IDs 275517, 275518, 275520, 275521, 275522 in reference vs 275605, 275589, 275608, 275607, 275603 in generated. This may be due to different field naming/matching."
+    },
+    {
+      "severity": "low",
+      "category": "semantic_equivalent",
+      "field_name": "PAN",
+      "field_id": 275534,
+      "issue": "PAN VERIFY rule destinationIds matches reference (9 elements)",
+      "reference_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "PAN_NUMBER",
+        "destinationIds": [-1, -1, -1, 275535, -1, 275537, -1, 275536, 275538],
+        "postTriggerRuleIds": [120188, 120233, 120232]
+      },
+      "generated_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "PAN_NUMBER",
+        "destinationIds": [-1, -1, -1, 275535, -1, 275537, -1, 275536, 275538],
+        "postTriggerRuleIds": []
+      },
+      "recommendation": "PAN VERIFY destinationIds array is correct. However, missing postTriggerRuleIds for rule chaining (GSTIN_WITH_PAN validation)."
+    },
+    {
+      "severity": "high",
+      "category": "missing_rule",
+      "field_name": "Bank Account Number",
+      "field_id": 275561,
+      "issue": "Missing BANK_ACCOUNT_NUMBER VERIFY rule",
+      "reference_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "BANK_ACCOUNT_NUMBER",
+        "sourceIds": [275560, 275561],
+        "destinationIds": [275562],
+        "button": "VERIFY"
+      },
+      "generated_rule": null,
+      "recommendation": "Add BANK_ACCOUNT_NUMBER verification rule using schema ID 361 from Rule-Schemas.json."
+    },
+    {
+      "severity": "high",
+      "category": "missing_rule",
+      "field_name": "MSME Number",
+      "field_id": 275587,
+      "issue": "Missing MSME_UDYAM_REG_NUMBER VERIFY rule",
+      "reference_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "MSME_UDYAM_REG_NUMBER",
+        "sourceIds": [275587],
+        "destinationIds": [275588, 275589, 275591, 275593, 275595, 275596, 275597, 275598, 275599, 275600, 275601, 275602, 275603, 275604, 275605, 275606, 275607, 275608, 275609, 275610]
+      },
+      "generated_rule": null,
+      "recommendation": "Add MSME validation rule using schema ID 337 from Rule-Schemas.json."
+    },
+    {
+      "severity": "high",
+      "category": "missing_rule",
+      "field_name": "GSTIN_WITH_PAN",
+      "field_id": 275513,
+      "issue": "Missing GSTIN_WITH_PAN cross-validation rule",
+      "reference_rule": {
+        "actionType": "VERIFY",
+        "sourceType": "GSTIN_WITH_PAN",
+        "sourceIds": [275534, 275513],
+        "destinationIds": [],
+        "params": "{ \"paramMap\": {\"errorMessage\": \"GSTIN and PAN doesn't match.\"}}"
+      },
+      "generated_rule": null,
+      "recommendation": "Add GSTIN_WITH_PAN cross-validation rule to ensure PAN and GSTIN consistency."
+    },
+    {
+      "severity": "medium",
+      "category": "missing_rule",
+      "field_name": "Cheque Upload",
+      "field_id": 275558,
+      "issue": "Missing CHEQUEE OCR rule",
+      "reference_rule": {
+        "actionType": "OCR",
+        "sourceType": "CHEQUEE",
+        "sourceIds": [275558],
+        "destinationIds": [-1, 275560, -1, 275561],
+        "postTriggerRuleIds": [120067]
+      },
+      "generated_rule": null,
+      "recommendation": "Add CHEQUEE OCR rule using schema ID 269 from Rule-Schemas.json."
+    },
+    {
+      "severity": "medium",
+      "category": "missing_rule",
+      "field_name": "Aadhaar Back Upload",
+      "field_id": 276570,
+      "issue": "Missing AADHAR_BACK_IMAGE OCR rule",
+      "reference_rule": {
+        "actionType": "OCR",
+        "sourceType": "AADHAR_BACK_IMAGE",
+        "sourceIds": [276570],
+        "destinationIds": [-1, -1, 275546, 275547, 275548, 275549, -1, -1]
+      },
+      "generated_rule": null,
+      "recommendation": "Add AADHAR_BACK_IMAGE OCR rule using schema ID 348 from Rule-Schemas.json."
+    },
+    {
+      "severity": "medium",
+      "category": "missing_rule",
+      "field_name": "CIN Upload",
+      "field_id": 275578,
+      "issue": "Missing CIN OCR rule",
+      "reference_rule": {
+        "actionType": "OCR",
+        "sourceType": "CIN",
+        "sourceIds": [275578],
+        "destinationIds": [275579]
+      },
+      "generated_rule": null,
+      "recommendation": "Add CIN OCR rule from Rule-Schemas.json."
+    },
+    {
+      "severity": "medium",
+      "category": "missing_rule",
+      "field_name": "MSME Upload",
+      "field_id": 275586,
+      "issue": "Missing MSME OCR rule",
+      "reference_rule": {
+        "actionType": "OCR",
+        "sourceType": "MSME",
+        "sourceIds": [275586],
+        "destinationIds": [275587, 275590, 275591],
+        "postTriggerRuleIds": [119612]
+      },
+      "generated_rule": null,
+      "recommendation": "Add MSME OCR rule with postTriggerRuleIds linking to MSME VERIFY rule."
+    },
+    {
+      "severity": "high",
+      "category": "incorrect_rule_count",
+      "field_name": "EXT_DROP_DOWN rules",
+      "issue": "Generated has only 3 EXT_DROP_DOWN rules vs 20 in reference",
+      "reference_count": 20,
+      "generated_count": 3,
+      "recommendation": "Many external dropdown rules are missing. Check BUD logic for external dropdown patterns (Country, State, Bank codes, etc.)."
+    },
+    {
+      "severity": "medium",
+      "category": "excessive_disabled_rules",
+      "field_name": "MAKE_DISABLED rules",
+      "issue": "Generated has 53 MAKE_DISABLED rules vs only 5 in reference",
+      "reference_count": 5,
+      "generated_count": 53,
+      "recommendation": "The generated output has many more MAKE_DISABLED rules than reference. Verify that these are correct - some may be false positives or duplicates. Reference uses bulk disable rules with multiple destinationIds in a single rule."
+    },
+    {
+      "severity": "medium",
+      "category": "duplicate_rules",
+      "field_name": "Type, Street, City, District, State",
+      "issue": "Several fields have duplicate MAKE_DISABLED rules",
+      "affected_fields": [
+        {"field_id": 275589, "field_name": "Type", "duplicate_count": 2},
+        {"field_id": 275603, "field_name": "Street", "duplicate_count": 3},
+        {"field_id": 275605, "field_name": "City", "duplicate_count": 3},
+        {"field_id": 275608, "field_name": "District", "duplicate_count": 3},
+        {"field_id": 275607, "field_name": "State", "duplicate_count": 4}
+      ],
+      "recommendation": "Remove duplicate rules. Each field should have only one MAKE_DISABLED rule."
+    }
+  ],
+  "missing_patterns": [
+    {
+      "pattern": "OCR → VERIFY rule chaining",
+      "count": 6,
+      "affected_fields": ["Upload PAN", "GSTIN IMAGE", "Cheque Upload", "Aadhaar Back Upload", "CIN Upload", "MSME Upload"],
+      "recommendation": "Set postTriggerRuleIds on OCR rules to link to corresponding VERIFY rules. This is critical for document validation workflows.",
+      "schema_references": {
+        "PAN_IMAGE": {"schema_id": 344, "chains_to": "VERIFY PAN_NUMBER (schema 360)"},
+        "GSTIN_IMAGE": {"schema_id": 347, "chains_to": "VERIFY GSTIN (schema 355)"},
+        "CHEQUEE": {"schema_id": 269, "chains_to": "VERIFY BANK_ACCOUNT_NUMBER (schema 361)"},
+        "MSME": {"chains_to": "VERIFY MSME_UDYAM_REG_NUMBER (schema 337)"}
+      }
+    },
+    {
+      "pattern": "Cross-validation rules",
+      "count": 1,
+      "affected_fields": ["GSTIN_WITH_PAN"],
+      "recommendation": "Add GSTIN_WITH_PAN validation to ensure PAN extracted from GSTIN matches the entered PAN."
+    },
+    {
+      "pattern": "External dropdown cascading rules",
+      "count": 17,
+      "affected_fields": ["Country → State", "State → District", "Bank → Branch"],
+      "recommendation": "Add EXT_DROP_DOWN rules for cascading dropdowns. Reference has 20 such rules."
+    },
+    {
+      "pattern": "Bulk disable rule optimization",
+      "count": 1,
+      "recommendation": "Reference uses single MAKE_DISABLED rules with multiple destinationIds. Current generated output has separate rules per field, causing duplication."
+    }
+  ],
+  "false_positives": [
+    {
+      "field_name": "Type",
+      "field_id": 275589,
+      "issue": "Duplicate MAKE_DISABLED rule - same rule appears twice",
+      "recommendation": "Remove duplicate rules for this field."
+    },
+    {
+      "field_name": "Street",
+      "field_id": 275603,
+      "issue": "Triplicate MAKE_DISABLED rule - same rule appears 3 times",
+      "recommendation": "Remove duplicate rules for this field."
+    },
+    {
+      "field_name": "City",
+      "field_id": 275605,
+      "issue": "Triplicate MAKE_DISABLED rule - same rule appears 3 times",
+      "recommendation": "Remove duplicate rules for this field."
+    },
+    {
+      "field_name": "District",
+      "field_id": 275608,
+      "issue": "Triplicate MAKE_DISABLED rule - same rule appears 3 times",
+      "recommendation": "Remove duplicate rules for this field."
+    },
+    {
+      "field_name": "State",
+      "field_id": 275607,
+      "issue": "Quadruple MAKE_DISABLED rule - same rule appears 4 times",
+      "recommendation": "Remove duplicate rules for this field."
+    }
+  ],
+  "positive_findings": [
+    {
+      "category": "visibility_rule_pairs",
+      "description": "All visibility rules correctly generate MAKE_VISIBLE/MAKE_INVISIBLE pairs with IN/NOT_IN conditions",
+      "affected_rules": 8,
+      "score_contribution": "+10%"
+    },
+    {
+      "category": "mandatory_rule_pairs",
+      "description": "Mandatory rules correctly generate MAKE_MANDATORY/MAKE_NON_MANDATORY pairs",
+      "affected_rules": 4,
+      "score_contribution": "+5%"
+    },
+    {
+      "category": "pan_verify_ordinals",
+      "description": "PAN VERIFY rule has correct ordinal-indexed destinationIds array matching reference exactly",
+      "affected_rules": 1,
+      "score_contribution": "+5%"
+    },
+    {
+      "category": "ocr_rules_present",
+      "description": "PAN and GSTIN OCR rules are present with correct sourceType and destinationIds",
+      "affected_rules": 2,
+      "score_contribution": "+5%"
+    },
+    {
+      "category": "convert_rules",
+      "description": "CONVERT_TO UPPER_CASE rules are correctly generated for PAN-related fields",
+      "affected_rules": 5,
+      "score_contribution": "+3%"
+    }
+  ],
+  "suggestions_for_improvement": [
+    "Implement postTriggerRuleIds for OCR rules to chain to VERIFY rules",
+    "Add missing VERIFY rules: BANK_ACCOUNT_NUMBER, MSME_UDYAM_REG_NUMBER, GSTIN_WITH_PAN",
+    "Add missing OCR rules: CHEQUEE, AADHAR_BACK_IMAGE, CIN, MSME",
+    "Add missing EXT_DROP_DOWN rules for cascading dropdowns (17 missing)",
+    "Consolidate MAKE_DISABLED rules - use single rule with multiple destinationIds like reference",
+    "Remove duplicate rules (Type, Street, City, District, State have duplicates)",
+    "Verify GSTIN destinationIds mapping - some field IDs differ from reference"
+  ],
+  "self_heal_instructions": {
+    "priority_fixes": [
+      {
+        "fix_type": "add_rule_chaining",
+        "priority": 1,
+        "description": "Add postTriggerRuleIds for OCR → VERIFY chains",
+        "fields": ["Upload PAN", "GSTIN IMAGE"],
+        "implementation": "After generating OCR rule, find corresponding VERIFY rule and set its ID in postTriggerRuleIds",
+        "code_example": "ocr_rule['postTriggerRuleIds'] = [verify_rule_id]"
+      },
+      {
+        "fix_type": "add_missing_verify_rules",
+        "priority": 2,
+        "description": "Add missing VERIFY rules",
+        "fields": ["Bank Account Number", "MSME Number", "GSTIN_WITH_PAN"],
+        "implementation": "Detect VERIFY patterns in BUD logic and generate rules using Rule-Schemas.json",
+        "schema_ids": {
+          "BANK_ACCOUNT_NUMBER": 361,
+          "MSME_UDYAM_REG_NUMBER": 337,
+          "GSTIN_WITH_PAN": "custom"
+        }
+      },
+      {
+        "fix_type": "add_missing_ocr_rules",
+        "priority": 3,
+        "description": "Add missing OCR rules",
+        "fields": ["Cheque Upload", "Aadhaar Back Upload", "CIN Upload", "MSME Upload"],
+        "implementation": "Detect OCR patterns in BUD logic (file upload fields)",
+        "schema_ids": {
+          "CHEQUEE": 269,
+          "AADHAR_BACK_IMAGE": 348,
+          "CIN": "N/A",
+          "MSME": "N/A"
+        }
+      },
+      {
+        "fix_type": "add_ext_dropdown_rules",
+        "priority": 4,
+        "description": "Add missing EXT_DROP_DOWN rules",
+        "count_missing": 17,
+        "implementation": "Detect external dropdown patterns in BUD - look for 'external dropdown' or cascading logic"
+      },
+      {
+        "fix_type": "remove_duplicate_rules",
+        "priority": 5,
+        "description": "Remove duplicate MAKE_DISABLED rules",
+        "affected_fields": ["Type", "Street", "City", "District", "State"],
+        "implementation": "Add deduplication logic before adding rules to output"
+      },
+      {
+        "fix_type": "consolidate_disabled_rules",
+        "priority": 6,
+        "description": "Consolidate multiple MAKE_DISABLED rules into single rule with multiple destinationIds",
+        "current_count": 53,
+        "expected_count": 5,
+        "implementation": "Group fields by sourceId and condition, merge destinationIds"
+      }
+    ],
+    "code_changes_needed": [
+      "rule_extraction_agent.py: Add postTriggerRuleIds linking logic for OCR → VERIFY",
+      "rule_extraction_agent.py: Add BANK_ACCOUNT_NUMBER, MSME_UDYAM_REG_NUMBER VERIFY detection",
+      "rule_extraction_agent.py: Add cross-validation rule detection (GSTIN_WITH_PAN)",
+      "rule_extraction_agent.py: Add OCR detection for CHEQUEE, AADHAR_BACK_IMAGE, CIN, MSME",
+      "rule_extraction_agent.py: Add EXT_DROP_DOWN cascading rule detection",
+      "rule_extraction_agent.py: Add rule deduplication before output",
+      "rule_extraction_agent.py: Add rule consolidation for MAKE_DISABLED with same source"
+    ],
+    "schema_reference": {
+      "verify_schemas": {
+        "PAN_NUMBER": {"id": 360, "dest_count": 10},
+        "GSTIN": {"id": 355, "dest_count": 11},
+        "BANK_ACCOUNT_NUMBER": {"id": 361},
+        "MSME_UDYAM_REG_NUMBER": {"id": 337},
+        "CIN_ID": {"id": 349}
+      },
+      "ocr_schemas": {
+        "PAN_IMAGE": {"id": 344},
+        "GSTIN_IMAGE": {"id": 347},
+        "AADHAR_IMAGE": {"id": 359},
+        "AADHAR_BACK_IMAGE": {"id": 348},
+        "CHEQUEE": {"id": 269}
+      }
+    }
+  }
+}

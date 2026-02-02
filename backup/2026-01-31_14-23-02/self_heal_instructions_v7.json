@@ -1,0 +1,341 @@
+{
+  "priority_fixes": [
+    {
+      "priority": 1,
+      "panel": "Approver Mapping",
+      "field": "Approver 1 / Requestor Name",
+      "action": "add_rule",
+      "rule_type": "COPY_TO",
+      "details": "Add COPY_TO rule based on BUD logic: Not found in BUD..."
+    },
+    {
+      "priority": 2,
+      "panel": "PAN and GST Details",
+      "field": "Upload PAN",
+      "action": "add_rule",
+      "rule_type": "COPY_TO_DOCUMENT_STORAGE_ID",
+      "details": "Add COPY_TO_DOCUMENT_STORAGE_ID rule based on BUD logic: File size should be up to 15Mb, Get PAN from OCR rule..."
+    },
+    {
+      "priority": 3,
+      "panel": "PAN and GST Details",
+      "field": "PAN Type",
+      "action": "add_rule",
+      "rule_type": "EXECUTE",
+      "details": "Add EXECUTE rule based on BUD logic: It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable..."
+    },
+    {
+      "priority": 4,
+      "panel": "PAN and GST Details",
+      "field": "PAN Type",
+      "action": "add_rule",
+      "rule_type": "EXECUTE",
+      "details": "Add EXECUTE rule based on BUD logic: It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable..."
+    },
+    {
+      "priority": 5,
+      "panel": "PAN and GST Details",
+      "field": "PAN Type",
+      "action": "add_rule",
+      "rule_type": "EXECUTE",
+      "details": "Add EXECUTE rule based on BUD logic: It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable..."
+    },
+    {
+      "priority": 6,
+      "panel": "PAN and GST Details",
+      "field": "PAN Type",
+      "action": "add_rule",
+      "rule_type": "MAKE_INVISIBLE",
+      "details": "Add MAKE_INVISIBLE rule based on BUD logic: It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable..."
+    },
+    {
+      "priority": 7,
+      "panel": "PAN and GST Details",
+      "field": "PAN Type",
+      "action": "add_rule",
+      "rule_type": "MAKE_VISIBLE",
+      "details": "Add MAKE_VISIBLE rule based on BUD logic: It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable..."
+    },
+    {
+      "priority": 8,
+      "panel": "PAN and GST Details",
+      "field": "PAN Type",
+      "action": "add_rule",
+      "rule_type": "VALIDATION",
+      "details": "Add VALIDATION rule based on BUD logic: It should be upper case field and non-editable, Data will come from PAN validation. Non-Editable..."
+    },
+    {
+      "priority": 9,
+      "panel": "PAN and GST Details",
+      "field": "Please select GST option",
+      "action": "add_rule",
+      "rule_type": "COPY_TO",
+      "details": "Add COPY_TO rule based on BUD logic: Dropdown values are Yes/No..."
+    },
+    {
+      "priority": 10,
+      "panel": "PAN and GST Details",
+      "field": "Please select GST option",
+      "action": "add_rule",
+      "rule_type": "DELETE_DOCUMENT",
+      "details": "Add DELETE_DOCUMENT rule based on BUD logic: Dropdown values are Yes/No..."
+    },
+    {
+      "priority": 11,
+      "panel": "PAN and GST Details",
+      "field": "Upload PAN",
+      "action": "fix_ocr_chain",
+      "details": "postTriggerRuleId 52 does not point to a VERIFY rule"
+    },
+    {
+      "priority": 12,
+      "panel": "Unknown",
+      "field": "Multiple",
+      "action": "add_visibility_pair",
+      "details": "MAKE_VISIBLE for fields (159,) has no corresponding MAKE_INVISIBLE"
+    },
+    {
+      "priority": 13,
+      "panel": "Unknown",
+      "field": "Multiple",
+      "action": "add_visibility_pair",
+      "details": "MAKE_VISIBLE for fields (84, 85, 86) has no corresponding MAKE_INVISIBLE"
+    },
+    {
+      "priority": 14,
+      "panel": "Unknown",
+      "field": "Multiple",
+      "action": "add_visibility_pair",
+      "details": "MAKE_INVISIBLE for fields (56, 44, 45) has no corresponding MAKE_VISIBLE"
+    },
+    {
+      "priority": 15,
+      "panel": "Unknown",
+      "field": "Multiple",
+      "action": "add_visibility_pair",
+      "details": "MAKE_INVISIBLE for fields (72, 73, 71) has no corresponding MAKE_VISIBLE"
+    }
+  ],
+  "total_issues": 15,
+  "rule_type_comparison": {
+    "CONCAT": {
+      "generated": 0,
+      "reference": 2,
+      "matched": 0
+    },
+    "CONVERT_TO": {
+      "generated": 1,
+      "reference": 21,
+      "matched": 1
+    },
+    "COPY_TO": {
+      "generated": 0,
+      "reference": 13,
+      "matched": 0
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "generated": 0,
+      "reference": 18,
+      "matched": 0
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "DELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 15,
+      "matched": 0
+    },
+    "DUMMY_ACTION": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "EXECUTE": {
+      "generated": 0,
+      "reference": 40,
+      "matched": 0
+    },
+    "EXT_DROP_DOWN": {
+      "generated": 3,
+      "reference": 20,
+      "matched": 3
+    },
+    "EXT_VALUE": {
+      "generated": 0,
+      "reference": 13,
+      "matched": 0
+    },
+    "MAKE_DISABLED": {
+      "generated": 22,
+      "reference": 5,
+      "matched": 5
+    },
+    "MAKE_ENABLED": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "MAKE_INVISIBLE": {
+      "generated": 5,
+      "reference": 19,
+      "matched": 5
+    },
+    "MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 12,
+      "matched": 0
+    },
+    "MAKE_NON_MANDATORY": {
+      "generated": 5,
+      "reference": 10,
+      "matched": 5
+    },
+    "MAKE_VISIBLE": {
+      "generated": 4,
+      "reference": 18,
+      "matched": 4
+    },
+    "OCR": {
+      "generated": 4,
+      "reference": 6,
+      "matched": 4
+    },
+    "SEND_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "matched": 0
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "generated": 0,
+      "reference": 3,
+      "matched": 0
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "generated": 0,
+      "reference": 2,
+      "matched": 0
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "generated": 0,
+      "reference": 6,
+      "matched": 0
+    },
+    "SET_DATE": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "UNDELETE_DOCUMENT": {
+      "generated": 0,
+      "reference": 17,
+      "matched": 0
+    },
+    "VALIDATE_OTP": {
+      "generated": 0,
+      "reference": 1,
+      "matched": 0
+    },
+    "VALIDATION": {
+      "generated": 0,
+      "reference": 18,
+      "matched": 0
+    },
+    "VERIFY": {
+      "generated": 12,
+      "reference": 5,
+      "matched": 5
+    }
+  },
+  "missing_rules": [],
+  "critical_checks": {
+    "ocr_chains_valid": false,
+    "ocr_chain_issues": [
+      {
+        "field": "Upload PAN",
+        "issue": "postTriggerRuleId 52 does not point to a VERIFY rule",
+        "rule_id": 51
+      }
+    ],
+    "ordinal_mapping_correct": false,
+    "ordinal_mapping_issues": [
+      {
+        "field": "PAN",
+        "issue": "VERIFY rule has non-ordinal destinationId: 38",
+        "rule_id": 20
+      },
+      {
+        "field": "PAN",
+        "issue": "VERIFY rule has non-ordinal destinationId: 40",
+        "rule_id": 20
+      },
+      {
+        "field": "PAN",
+        "issue": "VERIFY rule has non-ordinal destinationId: 39",
+        "rule_id": 20
+      },
+      {
+        "field": "PAN",
+        "issue": "VERIFY rule has non-ordinal destinationId: 41",
+        "rule_id": 20
+      }
+    ],
+    "visibility_pairs_complete": false,
+    "visibility_pair_issues": [
+      {
+        "issue": "MAKE_VISIBLE for fields (159,) has no corresponding MAKE_INVISIBLE"
+      },
+      {
+        "issue": "MAKE_VISIBLE for fields (84, 85, 86) has no corresponding MAKE_INVISIBLE"
+      },
+      {
+        "issue": "MAKE_INVISIBLE for fields (56, 44, 45) has no corresponding MAKE_VISIBLE"
+      },
+      {
+        "issue": "MAKE_INVISIBLE for fields (72, 73, 71) has no corresponding MAKE_VISIBLE"
+      }
+    ],
+    "no_duplicate_rules": true,
+    "duplicate_issues": []
+  },
+  "panel_evaluation": [],
+  "bud_logic_verification": {},
+  "false_positives": [],
+  "evaluation_summary": {},
+  "api_errors": [
+    {
+      "source": "api",
+      "error_type": "unknown_error",
+      "status_code": 400,
+      "message": "{'raw_response': ''}",
+      "instruction": "Fix the schema/rules based on this API error"
+    }
+  ]
+}
