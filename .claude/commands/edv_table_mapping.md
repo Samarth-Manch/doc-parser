@@ -5,15 +5,15 @@ description: Maps BUD reference tables to EDV (External Data Value) configuratio
 ---
 
 
-# EDV (External Data Value) Table Mapping (Claude Code Prompt)
+# EDV (External Data Value) Table Mapping
 
 ## Objective
 
-Extract **EDV table mappings** from a Business Understanding Document (BUD) by analyzing:
-1. Reference tables embedded in the document (e.g., "Reference Table 1.3")
-2. Fields that reference these tables for dropdown values
-3. Parent-child dropdown relationships (cascading dropdowns)
-4. EDV table naming conventions
+Extract **EDV table mappings** from reference tables and field logic:
+1. **Analyze table structure** - Extract column metadata, sample data, and EDV configuration
+2. **Map fields to tables** - Identify which fields use which reference tables
+3. **Detect cascading dropdowns** - Identify parent-child relationships from field logic
+4. **Generate EDV metadata** - Create EDV-compatible table and field mappings
 
 This output is **implementation-critical** for generating correct `EXT_VALUE` and `EXT_DROP_DOWN` rules with proper `params` structure.
 
@@ -50,27 +50,39 @@ You will be provided with:
 
 ---
 
+## Input
+
+You will receive:
+1. **Reference table data** - Table structure, headers, rows
+2. **Field data** - Field name, type, logic, panel name
+3. **Output file path** - Where to write the result
+
+## Task
+
+Analyze the provided reference table or field set and extract EDV metadata.
+
+### For Reference Tables:
+1. Generate appropriate EDV table name (UPPERCASE, underscores)
+2. Map columns to EDV attributes (a1, a2, a3...)
+3. Identify table purpose (dropdown_values, validation, lookup)
+4. Convert sample data to EDV format
+
+### For Field Mappings:
+1. Analyze field logic to identify table references
+2. Detect cascading relationships (keywords: "based on", "depends on", "filtered by")
+3. Determine rule type (EXT_DROP_DOWN vs EXT_VALUE)
+4. Identify parent field for cascading dropdowns
+5. Specify filter columns and display columns
+
 ## Hard Constraints (Mandatory)
 
 * Do **not** create permanent scripts
-* Do **not** reimplement document parsing beyond what's needed
-* Use **only** `DocumentParser` from `doc_parser` for parsing
-* Parse the document **exactly once**
-* Output **exactly two JSON files**: table mapping and field-EDV mapping
-* Abort immediately if any prerequisite fails
+* Use only provided input data
+* Output **exactly one JSON file** per invocation
+* Follow exact output format specified below
+* Abort immediately if input is invalid
 
 Any deviation = incorrect behavior.
-
----
-
-## Variables
-
-```text
-DOCUMENT_PATH = <provided_document_path>
-OUTPUT_DIR    = extraction/edv_mapping_output/<date_time>/
-```
-
-`<date_time>` format: `YYYY-MM-DD_HH-MM-SS`
 
 ---
 
@@ -145,32 +157,47 @@ EDV uses `a1`, `a2`, `a3`, etc. for columns:
 
 ---
 
-## Step 1: Parse Document and Extract Reference Tables
+## Step 1: Read Input Data
 
-```python
-from doc_parser import DocumentParser
+Read the input JSON file containing either:
+- **Table data**: table_id, headers, rows, sample_data
+- **Field data**: panel_name, fields array, reference_tables
 
-parser = DocumentParser()
-parsed = parser.parse(DOCUMENT_PATH)
+### For Table Metadata Extraction
 
-# Get reference tables and all fields
-reference_tables = parsed.reference_tables
-all_fields = parsed.all_fields
+Input structure:
+```json
+{
+  "table_id": "table_1",
+  "reference_id": "1",
+  "rows": 246,
+  "columns": 6,
+  "headers": ["Language Key", "Country/Region Key", ...],
+  "sample_data": [["EN", "AD", "Andorran", ...], ...]
+}
 ```
 
-### Reference Table Detection
+### For Field Mapping
 
-Look for tables titled or referenced as:
-- "Reference Table X.Y"
-- "Table X.Y"
-- "Master Data Table"
-- "Lookup Table"
-
-Extract from each reference table:
-- Table identifier (e.g., "1.3", "2.1")
-- Column headers
-- Sample data (first 3-5 rows)
-- Table purpose/description if available
+Input structure:
+```json
+{
+  "panel_name": "Basic Details",
+  "fields": [
+    {
+      "field_name": "Country",
+      "type": "EXTERNAL_DROP_DOWN_VALUE",
+      "logic": "Dropdown values from table 1.1..."
+    }
+  ],
+  "reference_tables": [
+    {
+      "edv_name": "COUNTRY",
+      "columns": [{"index": 1, "attribute": "a1", ...}]
+    }
+  ]
+}
+```
 
 ---
 
@@ -199,19 +226,19 @@ Extract from each reference table:
 
 ---
 
-## Step 3: Detect Parent-Child Dropdown Relationships
+## Step 3: Detect Cascading Relationships (For Field Mapping)
 
 ### Pattern Detection in Field Logic
 
-Look for these patterns indicating parent-child relationships:
+Identify cascading dropdowns by detecting these keywords:
 
 ```text
-"Dropdown values will come based on the {parent_field} selection field"
-"Based on {parent_field}, this dropdown shows..."
-"Cascading dropdown from {parent_field}"
-"Filtered by {parent_field} value"
-"Values from column X based on {parent_field} column Y"
-"second column of reference table X.Y based on first column selection"
+"based on"           → parent dependency
+"depends on"         → parent dependency
+"filtered by"        → parent filtering
+"selection"          → parent selection
+"if [field] then"    → conditional cascading
+"column X based on column Y" → cascading lookup
 ```
 
 ### Parent-Child Relationship Structure
@@ -239,46 +266,71 @@ When BUD says:
 
 ---
 
-## Step 4: Field-to-EDV Mapping
+## Step 4: Generate Output
 
-For each field with dropdown/external data reference:
+### For Table Metadata (Single Table)
+
+Write JSON to output file:
 
 ```json
 {
-  "field_name": "Account Group/Vendor Type",
-  "field_id": 275496,
-  "field_type": "DROPDOWN",
-  "edv_table": "VC_VENDOR_TYPES",
-  "rule_type": "EXT_DROP_DOWN",
-  "is_parent": true,
-  "children": ["Group key/Corporate Group"],
-  "params_structure": {
-    "ddType": "VC_VENDOR_TYPES",
-    "da": ["a1"],
-    "criterias": []
-  },
-  "logic_reference": "Dropdown values are first and second columns of reference table 1.3"
+  "table_id": "table_1",
+  "reference_id": "1",
+  "edv_name": "COUNTRY_REGION",
+  "purpose": "dropdown_values",
+  "columns": [
+    {
+      "index": 1,
+      "attribute": "a1",
+      "header": "Country/Region Key",
+      "data_type": "string"
+    },
+    {
+      "index": 2,
+      "attribute": "a2",
+      "header": "Country/Region Name",
+      "data_type": "string"
+    }
+  ],
+  "row_count": 246,
+  "sample_data": [
+    {"a1": "AD", "a2": "Andorra"},
+    {"a1": "AE", "a2": "United Arab Emirates"}
+  ]
 }
 ```
 
-For child field:
+### For Field Mappings (Single Panel)
+
+Write JSON array to output file:
+
 ```json
-{
-  "field_name": "Group key/Corporate Group",
-  "field_id": 275498,
-  "field_type": "DROPDOWN",
-  "edv_table": "VC_VENDOR_TYPES",
-  "rule_type": "EXT_VALUE",
-  "is_child": true,
-  "parent_field": "Account Group/Vendor Type",
-  "parent_field_id": 275496,
-  "params_structure": {
-    "ddType": "VC_VENDOR_TYPES",
-    "criterias": [{"a1": 275496}],
-    "da": ["a2"]
+[
+  {
+    "field_name": "Account Group/Vendor Type",
+    "type": "EXTERNAL_DROP_DOWN_VALUE",
+    "panel_name": "Basic Details",
+    "edv_table": "VC_VENDOR_TYPES",
+    "rule_type": "EXT_DROP_DOWN",
+    "is_cascading": false,
+    "parent_field": null,
+    "filter_column": null,
+    "display_columns": ["a1"],
+    "logic_reference": "Dropdown values are first and second columns of reference table 1.3"
   },
-  "logic_reference": "Dropdown values will come based on the account group/vendor type selection field as 2nd column of reference table 1.3"
-}
+  {
+    "field_name": "Group key/Corporate Group",
+    "type": "EXTERNAL_DROP_DOWN_VALUE",
+    "panel_name": "Basic Details",
+    "edv_table": "VC_VENDOR_TYPES",
+    "rule_type": "EXT_VALUE",
+    "is_cascading": true,
+    "parent_field": "Account Group/Vendor Type",
+    "filter_column": "a1",
+    "display_columns": ["a2"],
+    "logic_reference": "Dropdown values will come based on the account group/vendor type selection"
+  }
+]
 ```
 
 ---
@@ -337,64 +389,6 @@ For child field:
   "params": "COMPANY_CODE"  // Simple string = EDV table name
 }
 ```
-
----
-
-### VERIFY Rules (API-Based - NOT EDV!)
-
-**IMPORTANT**: VERIFY rules call external APIs, NOT EDV tables!
-
-```json
-// PAN Verification - API call to PAN database
-{
-  "actionType": "VERIFY",
-  "sourceType": "PAN_NUMBER",
-  "processingType": "SERVER",
-  "sourceIds": [275534],
-  "destinationIds": [-1, -1, -1, 275535, -1, 275537, -1, 275536, 275538],
-  "button": "VERIFY"
-}
-
-// GSTIN Verification - API call to GST database
-{
-  "actionType": "VERIFY",
-  "sourceType": "GSTIN",
-  "processingType": "SERVER",
-  "sourceIds": [275513],
-  "destinationIds": [275514, 275515, 275516, 275517, 275518, 275519, -1, 275520, 275521, 275522, 275523],
-  "button": "Verify"
-}
-
-// Bank Account Verification - Requires TWO sourceIds
-{
-  "actionType": "VERIFY",
-  "sourceType": "BANK_ACCOUNT_NUMBER",
-  "processingType": "SERVER",
-  "sourceIds": [275560, 275561],  // [IFSC_Code_ID, Bank_Account_ID]
-  "destinationIds": [275562],
-  "button": "VERIFY"
-}
-
-// MSME Udyam Verification
-{
-  "actionType": "VERIFY",
-  "sourceType": "MSME_UDYAM_REG_NUMBER",
-  "processingType": "SERVER",
-  "sourceIds": [275587],
-  "destinationIds": [275588, 275589, ...],  // 21+ destination fields
-  "button": "VERIFY"
-}
-```
-
-**VERIFY sourceType values** (API-based, NOT EDV):
-- `PAN_NUMBER` - PAN verification
-- `GSTIN` - GSTIN verification
-- `GSTIN_WITH_PAN` - Cross-validate GSTIN against PAN
-- `BANK_ACCOUNT_NUMBER` - Bank account verification (requires 2 sourceIds)
-- `MSME_UDYAM_REG_NUMBER` - MSME Udyam verification
-- `CIN_ID` - Corporate Identity Number verification
-- `TAN_NUMBER` - TAN verification
-- `FSSAI` - FSSAI verification
 
 ---
 

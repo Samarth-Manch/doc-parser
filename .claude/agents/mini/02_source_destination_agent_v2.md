@@ -22,6 +22,8 @@ A schema with the field name, type, logic and a list of object of rules with rul
 ## Instructions
 1) **ALL** the fields which will be extracted for populating source and destination fields, after analysis of logic and the rule schema, should exist in the field list. **NO** extra fields should be invented to satisfy the RULES_SCHEMA or logic section of that particular field. Even if logic section mentions some other field, it is possible that it is another PANEL altogether which you **SHOULD** ignore.(**STRICTLY** follow this)
 2) If some logic section mention another panel or field that doesn't exist in the given list for logic (input or output), then you may ignore those fields after analysis of the logic section.
+3) When you analyze the schema, you may notice that not all of fields might be required that the rule is offering, in that case those fields, which are not required, you will have to put "-1", in that to let the system know that this output doesn't need to be populated in any field. The destination fields output need to be serially as per the destination fields in the schema.
+4) Analyze in that panel what all fields can be populated using that rule, most of the times this will not be mentioned in the logic section of that field.
 
 ---
 
@@ -30,7 +32,7 @@ A schema with the field name, type, logic and a list of object of rules with rul
 <field_loop>
 
 ### 1. Read the logic section of the particular field
-Understand the logic of the current field from $FIELDS_WITH_LOGIC.
+Understand the logic of the current field from $FIELDS_WITH_RULES.
 
 ### 2. Read the logic section of the particular field
 Understand what all fields are given to you as input from $FIELDS_WITH_RULES, as this will be used later to populate the source and destination ids of each rule.

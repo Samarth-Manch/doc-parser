@@ -1,7 +1,7 @@
 ---
 name: Post Trigger Chain Agent
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
-description: Stage 4 - Links rules via postTriggerRuleIds (OCR→VERIFY chains, etc.)
+description: Links rules via postTriggerRuleIds (OCR→VERIFY chains, etc.)
 ---
 
 # Post Trigger Chain Agent (Stage 4)
@@ -68,18 +68,6 @@ MSME OCR (119610) → MSME VERIFY (119612)
 ## Logging Requirements
 
 All generated code MUST include proper logging:
-
-```python
-import logging
-
-logger = logging.getLogger(__name__)
-
-# Log levels:
-logger.debug("Detailed debug info")      # For tracing execution
-logger.info("Linking OCR to VERIFY")     # For key operations
-logger.warning("No VERIFY for OCR: X")   # For recoverable issues
-logger.error("Failed to link: X")        # For errors
-```
 
 **Required logging points:**
 - Log when processing starts with input file paths

@@ -173,6 +173,10 @@ For each field in fields_with_logic:
 4. Multiple rules can apply to a single field
 5. If no specific rules apply, use empty array
 
+## Instructions
+1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
+2) There will be logic, where it mentions it will be Auto Derived from some rule, no rule is required in that case **unless** other rules are specified.
+
 ## Output
 Write a JSON array to: {output_file}
 

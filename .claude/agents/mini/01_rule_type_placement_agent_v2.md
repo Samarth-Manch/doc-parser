@@ -21,7 +21,7 @@ A schema with the field name, type, logic, variableName and a list of rules that
 ---
 
 ## Instructions
-1) For ALL **dropdown types** always use **EDV Dropdown (Client)** rule.
+1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
 2) There will be logic, where it mentions it will be Auto Derived from some rule, no rule is required in that case **unless** other rules are specified.
 
 ---
