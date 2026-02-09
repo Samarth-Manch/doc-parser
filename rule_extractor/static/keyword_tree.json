@@ -1,0 +1,666 @@
+{
+  "_meta": {
+    "description": "Keyword tree for rule type detection via traversal - built from actual BUD analysis",
+    "version": "1.0",
+    "source_bud": "Vendor Creation Sample BUD.docx",
+    "source_reference": "vendor_master_create_without_workflow.json",
+    "usage": "Traverse L1 (action) then L2 (source) using keywords from BUD logic. If L2 ambiguous, use LLM on narrowed candidates only."
+  },
+  "tree": {
+    "VERIFY": {
+      "keywords": ["validate", "verify", "verification", "validation", "perform"],
+      "bud_phrases": [
+        "perform pan validation",
+        "perform gstin validation",
+        "bank account verification",
+        "verify bank",
+        "msme validation",
+        "cin validation",
+        "ifsc code verification"
+      ],
+      "negative_phrases": ["data will come from", "auto-derived via", "comes from validation"],
+      "children": {
+        "PAN_NUMBER": {
+          "schema_id": 360,
+          "keywords": ["pan"],
+          "bud_phrases": ["perform pan validation", "pan validation"],
+          "exclude_phrases": ["pan with gst", "gstin with pan"],
+          "processing_type": "SERVER",
+          "source_fields": {"count": 3, "ordinals": {"PAN": 1, "Name": 2, "DOB": 3}},
+          "destination_fields": {"count": 10, "ordinals": {
+            "Panholder title": 1, "Firstname": 2, "Lastname": 3, "Fullname": 4,
+            "Last updated": 5, "Pan retrieval status": 6, "Fullname without title": 7,
+            "Pan type": 8, "Aadhaar seeding status": 9, "Middle name": 10
+          }}
+        },
+        "GSTIN": {
+          "schema_id": 355,
+          "keywords": ["gstin", "gst"],
+          "bud_phrases": ["perform gstin validation", "gstin validation", "gst validation"],
+          "exclude_phrases": ["pan with gst", "gstin with pan", "gst option"],
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 21}
+        },
+        "GSTIN_WITH_PAN": {
+          "schema_id": 296,
+          "keywords": ["pan with gst", "gst with pan", "gstin with pan", "pan gstin"],
+          "bud_phrases": ["apply pan with gst rule", "pan with gst rule also"],
+          "processing_type": "SERVER",
+          "note": "Cross-validation rule triggered after both PAN and GSTIN verified",
+          "requires_params": true,
+          "params_template": "{ \"paramMap\": {\"errorMessage\": \"GSTIN and PAN doesn't match.\"}}",
+          "source_ids_note": "Requires [PAN_field_id, GSTIN_field_id]"
+        },
+        "BANK_ACCOUNT_NUMBER": {
+          "schema_id": 361,
+          "keywords": ["bank", "bank account", "account number", "account verification"],
+          "bud_phrases": ["bank account verification", "verify bank account", "perform bank account"],
+          "processing_type": "SERVER",
+          "source_fields": {"count": 2, "note": "Requires [IFSC_Code_ID, Bank_Account_ID]"},
+          "destination_fields": {"count": 4, "ordinals": {
+            "Bank Beneficiary Name": 1, "Bank Reference": 2, "Verification Status": 3, "Message": 4
+          }}
+        },
+        "MSME_UDYAM_REG_NUMBER": {
+          "schema_id": 337,
+          "keywords": ["msme", "udyam", "udyog"],
+          "bud_phrases": ["msme validation", "auto-derived via msme validation"],
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 21}
+        },
+        "CIN_ID": {
+          "schema_id": 349,
+          "keywords": ["cin", "company identification"],
+          "bud_phrases": ["cin validation"],
+          "processing_type": "SERVER"
+        },
+        "TAN_NUMBER": {
+          "schema_id": 322,
+          "keywords": ["tan"],
+          "bud_phrases": ["tan validation"],
+          "processing_type": "SERVER"
+        },
+        "FSSAI": {
+          "schema_id": 356,
+          "keywords": ["fssai", "food license"],
+          "bud_phrases": ["fssai validation"],
+          "processing_type": "SERVER"
+        },
+        "DRIVING_LICENCE_NUMBER": {
+          "schema_id": 261,
+          "keywords": ["driving", "licence", "license", "dl"],
+          "bud_phrases": ["driving licence validation"],
+          "processing_type": "SERVER"
+        }
+      }
+    },
+    "OCR": {
+      "keywords": ["ocr", "from ocr", "ocr rule"],
+      "bud_phrases": [
+        "get pan from ocr rule",
+        "get gstin from ocr rule",
+        "perform the bank ocr",
+        "ocr will be performed",
+        "from ocr rule",
+        "get ifsc code and account number"
+      ],
+      "children": {
+        "PAN_IMAGE": {
+          "schema_id": 344,
+          "keywords": ["pan"],
+          "bud_phrases": ["get pan from ocr", "pan ocr"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 4, "ordinals": {"panNo": 1, "name": 2, "fatherName": 3, "dob": 4}},
+          "chains_to": "PAN_NUMBER"
+        },
+        "GSTIN_IMAGE": {
+          "schema_id": 347,
+          "keywords": ["gstin", "gst"],
+          "bud_phrases": ["get gstin from ocr", "gstin ocr", "data will come from gstin ocr"],
+          "exclude_phrases": ["gst option"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 11},
+          "chains_to": "GSTIN"
+        },
+        "CHEQUEE": {
+          "schema_id": 269,
+          "keywords": ["cheque", "bank", "ifsc", "cancelled cheque"],
+          "bud_phrases": ["perform the bank ocr", "get ifsc code and account number", "cheque ocr"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 7, "ordinals": {
+            "bankName": 1, "ifscCode": 2, "beneficiaryName": 3, "accountNumber": 4,
+            "address": 5, "micrCode": 6, "branch": 7
+          }},
+          "chains_to": "BANK_ACCOUNT_NUMBER"
+        },
+        "AADHAR_IMAGE": {
+          "schema_id": 359,
+          "keywords": ["aadhaar", "aadhar", "aadhaar front"],
+          "bud_phrases": ["aadhaar ocr", "get data from aadhaar"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 13},
+          "chains_to": null,
+          "note": "No VERIFY chain available for Aadhaar"
+        },
+        "AADHAR_BACK_IMAGE": {
+          "schema_id": 348,
+          "keywords": ["aadhaar back", "aadhar back"],
+          "bud_phrases": ["aadhaar back ocr", "get address from aadhaar"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 9},
+          "chains_to": null
+        },
+        "MSME": {
+          "schema_id": 214,
+          "keywords": ["msme", "udyam"],
+          "bud_phrases": ["msme ocr", "ocr will be performed post upload"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "destination_fields": {"count": 6},
+          "chains_to": "MSME_UDYAM_REG_NUMBER"
+        },
+        "CIN": {
+          "schema_id": 357,
+          "keywords": ["cin"],
+          "bud_phrases": ["cin ocr"],
+          "field_type_hint": "FILE",
+          "processing_type": "SERVER",
+          "chains_to": "CIN_ID"
+        }
+      }
+    },
+    "EXT_DROP_DOWN": {
+      "keywords": ["dropdown", "yes/no", "yes / no"],
+      "bud_phrases": [
+        "dropdown values are yes / no",
+        "dropdown values are yes/no",
+        "yes/no dropdown",
+        "dropdown values refer table",
+        "dropdown values are india, international"
+      ],
+      "note": "Simple dropdown from EDV table. params is TABLE_NAME string.",
+      "children": {
+        "FORM_FILL_DROP_DOWN": {
+          "schema_id": 192,
+          "keywords": ["dropdown", "yes/no", "yes no"],
+          "bud_phrases": [
+            "dropdown values are yes / no",
+            "dropdown values are yes/no",
+            "yes/no dropdown",
+            "dropdown values refer table"
+          ],
+          "processing_type": "CLIENT",
+          "requires_params": true,
+          "params_type": "string",
+          "common_params": {
+            "yes_no": ["PIDILITE_YES_NO", "YES_NO", "CB_YES_NO"],
+            "country": ["COUNTRY"],
+            "company": ["COMPANY_CODE"],
+            "currency": ["CURRENCY_COUNTRY"],
+            "title": ["TITLE"]
+          }
+        }
+      }
+    },
+    "EXT_VALUE": {
+      "keywords": ["based on", "selection", "cascading", "dependent", "parent"],
+      "bud_phrases": [
+        "dropdown values will come based on",
+        "based on the account group/vendor type selection",
+        "based on process type filter",
+        "first and second columns of reference table",
+        "column 2 - column 5 of reference table"
+      ],
+      "note": "Cascading/dependent dropdown. params is JSON with conditionList.",
+      "children": {
+        "EXTERNAL_DATA_VALUE": {
+          "schema_id": 295,
+          "keywords": ["based on", "selection", "cascading", "reference table columns"],
+          "bud_phrases": [
+            "will come based on",
+            "based on.*selection field",
+            "first and second columns of reference table",
+            "filter.*as column"
+          ],
+          "processing_type": "CLIENT",
+          "requires_params": true,
+          "params_type": "json",
+          "params_structure_example": {
+            "conditionList": [{
+              "ddType": ["TABLE_NAME"],
+              "criterias": [{"a1": "parent_field_id"}],
+              "da": ["a2"],
+              "criteriaSearchAttr": [],
+              "additionalOptions": null,
+              "emptyAddOptionCheck": null,
+              "ddProperties": null
+            }]
+          }
+        }
+      }
+    },
+    "VALIDATION": {
+      "keywords": ["validate edv", "validate against", "edv validation", "fetch from table", "populate from table"],
+      "bud_phrases": [
+        "validate against table",
+        "edv validation",
+        "populate fields from edv",
+        "validation will populate",
+        "fetch data from table"
+      ],
+      "note": "VALIDATION with EXTERNAL_DATA_VALUE sourceType - validates against EDV table AND populates destination fields with column values. Table names come from BUD/reference, not hardcoded.",
+      "children": {
+        "EXTERNAL_DATA_VALUE": {
+          "schema_id": 346,
+          "keywords": ["edv", "external data value"],
+          "bud_phrases": ["validate edv", "fetch from edv table"],
+          "processing_type": "SERVER",
+          "requires_params": true,
+          "params_type": "string_or_json",
+          "params_notes": {
+            "simple": "String table name when single source, simple validation",
+            "complex": "JSON with conditionList when multiple sources, conditional validation"
+          },
+          "params_structure": {
+            "simple": "TABLE_NAME_FROM_BUD",
+            "complex": {
+              "param": "TABLE_NAME_FROM_BUD",
+              "conditionList": [{
+                "conditionNumber": "int",
+                "conditionType": "IN|NOT_IN",
+                "conditionValueType": "TEXT",
+                "conditionAttributes": ["attribute values"],
+                "continueOnFailure": "boolean",
+                "errorMessage": "string"
+              }]
+            }
+          },
+          "destination_mapping": {
+            "note": "destinationIds array maps to table columns by ordinal. Use -1 for unmapped ordinals.",
+            "example": "[-1, -1, field1_id, field2_id, ...] where -1 skips that ordinal"
+          }
+        }
+      }
+    },
+    "MAKE_VISIBLE": {
+      "keywords": ["visible", "show"],
+      "bud_phrases": [
+        "then visible",
+        "visible and mandatory",
+        "visible and editable"
+      ],
+      "schema_id": 343,
+      "processing_type": "CLIENT",
+      "children": {},
+      "placement_rule": "Place on CONTROLLING field (the dropdown/checkbox mentioned in 'if field X'), NOT on the destination field where logic appears",
+      "requires_condition": true,
+      "condition_type": "IN",
+      "aggregation_note": "Aggregate all fields controlled by same source into one rule with multiple destinationIds"
+    },
+    "MAKE_INVISIBLE": {
+      "keywords": ["invisible", "hidden", "hide"],
+      "bud_phrases": [
+        "otherwise invisible",
+        "invisible and non-mandatory",
+        "hidden for other"
+      ],
+      "schema_id": 336,
+      "processing_type": "CLIENT",
+      "children": {},
+      "placement_rule": "Paired with MAKE_VISIBLE. Place on same CONTROLLING field.",
+      "requires_condition": true,
+      "condition_type": "NOT_IN"
+    },
+    "MAKE_MANDATORY": {
+      "keywords": ["mandatory", "required"],
+      "bud_phrases": [
+        "visible and mandatory",
+        "mandatory if",
+        "then mandatory"
+      ],
+      "schema_id": 325,
+      "processing_type": "CLIENT",
+      "children": {},
+      "placement_rule": "Often paired with MAKE_VISIBLE",
+      "requires_condition": true,
+      "condition_type": "IN"
+    },
+    "MAKE_NON_MANDATORY": {
+      "keywords": ["non-mandatory", "non mandatory", "optional"],
+      "bud_phrases": [
+        "otherwise non-mandatory",
+        "invisible and non-mandatory",
+        "non-mandatory in all"
+      ],
+      "schema_id": 288,
+      "processing_type": "CLIENT",
+      "children": {},
+      "placement_rule": "Paired with MAKE_MANDATORY",
+      "requires_condition": true,
+      "condition_type": "NOT_IN"
+    },
+    "MAKE_DISABLED": {
+      "keywords": ["disabled", "non-editable", "non editable", "read only"],
+      "bud_phrases": [
+        "non-editable",
+        "non editable",
+        "(non-editable)",
+        "non editable if cancelled cheque"
+      ],
+      "schema_id": 314,
+      "processing_type": "CLIENT",
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": 314,
+          "keywords": ["disable", "non-editable"],
+          "processing_type": "CLIENT"
+        }
+      },
+      "placement_rule": "Apply to destination fields that receive data from VERIFY/OCR",
+      "destination_field_indicator": "Data will come from"
+    },
+    "MAKE_ENABLED": {
+      "keywords": ["enabled", "editable"],
+      "bud_phrases": ["editable for other option"],
+      "schema_id": 185,
+      "processing_type": "CLIENT",
+      "children": {}
+    },
+    "CONVERT_TO": {
+      "keywords": ["upper case", "lower case", "uppercase", "lowercase"],
+      "bud_phrases": [
+        "should be upper case field",
+        "it should be upper case",
+        "upper case field"
+      ],
+      "children": {
+        "UPPER_CASE": {
+          "schema_id": 345,
+          "keywords": ["upper", "uppercase", "upper case"],
+          "bud_phrases": ["upper case field", "should be upper case"],
+          "processing_type": "CLIENT"
+        },
+        "LOWER_CASE": {
+          "schema_id": 298,
+          "keywords": ["lower", "lowercase", "lower case"],
+          "bud_phrases": ["lower case field", "should be lower case"],
+          "processing_type": "CLIENT"
+        }
+      }
+    },
+    "SET_DATE": {
+      "keywords": ["current date", "today", "default date"],
+      "bud_phrases": ["default value will be current date", "auto-derived date"],
+      "children": {
+        "EXTERNAL_DATA_VALUE": {
+          "schema_id": 207,
+          "keywords": ["current date"],
+          "processing_type": "CLIENT"
+        }
+      }
+    },
+    "COPY_TO": {
+      "keywords": ["copy", "derive", "copy from"],
+      "bud_phrases": [
+        "copy from.*panel",
+        "copy from.*field",
+        "derive the country name"
+      ],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": 270,
+          "keywords": ["copy", "copy field"],
+          "bud_phrases": ["copy from", "derive from"],
+          "processing_type": "CLIENT"
+        }
+      }
+    },
+    "DELETE_DOCUMENT": {
+      "keywords": ["delete document"],
+      "bud_phrases": [],
+      "schema_id": 229,
+      "processing_type": "CLIENT",
+      "children": {},
+      "strict_rule": true,
+      "note": "STRICT - Only generate when reference explicitly has it. Used with UNDELETE_DOCUMENT pair."
+    },
+    "UNDELETE_DOCUMENT": {
+      "keywords": ["undelete", "restore document"],
+      "bud_phrases": [],
+      "schema_id": 238,
+      "processing_type": "CLIENT",
+      "children": {},
+      "strict_rule": true,
+      "note": "STRICT - Only generate when reference explicitly has it"
+    },
+    "COPY_TO_DOCUMENT_STORAGE_ID": {
+      "keywords": [],
+      "bud_phrases": [],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": null,
+          "keywords": [],
+          "processing_type": "CLIENT",
+          "note": "Auto-generated for FILE fields. Links to document storage."
+        }
+      },
+      "auto_generate_for": "FILE",
+      "note": "Auto-applied to all FILE type fields"
+    },
+    "SESSION_BASED_MAKE_VISIBLE": {
+      "keywords": ["session", "second party visible", "first party visible"],
+      "bud_phrases": ["visible for second party", "visible for first party"],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Session-specific visibility. Used when visibility differs between FIRST_PARTY and SECOND_PARTY."
+    },
+    "SESSION_BASED_MAKE_INVISIBLE": {
+      "keywords": ["session", "second party invisible", "first party invisible"],
+      "bud_phrases": ["invisible for second party", "hidden for first party"],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Session-specific invisibility. Paired with SESSION_BASED_MAKE_VISIBLE."
+    },
+    "SESSION_BASED_MAKE_MANDATORY": {
+      "keywords": ["session mandatory", "second party mandatory"],
+      "bud_phrases": ["mandatory for second party"],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Session-specific mandatory rule."
+    },
+    "SESSION_BASED_MAKE_NON_MANDATORY": {
+      "keywords": ["session non-mandatory", "second party non-mandatory"],
+      "bud_phrases": ["non-mandatory for second party"],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Session-specific non-mandatory rule."
+    },
+    "CONCAT": {
+      "keywords": ["concat", "concatenate", "combine"],
+      "bud_phrases": ["concatenate", "combine fields"],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": null,
+          "keywords": ["concat"],
+          "processing_type": "CLIENT"
+        }
+      }
+    },
+    "EXECUTE": {
+      "keywords": ["execute", "script", "expression"],
+      "bud_phrases": [],
+      "children": {},
+      "skip_rule": true,
+      "note": "SKIP - Expression/script rules. Do not auto-generate."
+    },
+    "DUMMY_ACTION": {
+      "keywords": ["dummy", "trigger"],
+      "bud_phrases": [],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Placeholder action used to trigger postTriggerRuleIds. Rarely auto-generated."
+    },
+    "SEND_OTP": {
+      "keywords": ["send otp", "otp"],
+      "bud_phrases": ["send otp", "otp verification"],
+      "children": {
+        "SEND_MOBILE_OTP": {
+          "schema_id": null,
+          "keywords": ["mobile otp", "sms otp"],
+          "processing_type": "SERVER"
+        }
+      }
+    },
+    "VALIDATE_OTP": {
+      "keywords": ["validate otp", "verify otp"],
+      "bud_phrases": ["validate otp", "verify otp"],
+      "children": {
+        "VALIDATE_OTP": {
+          "schema_id": null,
+          "keywords": ["validate otp"],
+          "processing_type": "SERVER"
+        }
+      }
+    },
+    "COPY_TO_GENERIC_PARTY_EMAIL": {
+      "keywords": ["copy email", "generic party email"],
+      "bud_phrases": ["copy to generic party email"],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": null,
+          "keywords": ["email"],
+          "processing_type": "CLIENT"
+        }
+      },
+      "note": "Copies field value to generic party email"
+    },
+    "COPY_TO_GENERIC_PARTY_NAME": {
+      "keywords": ["copy name", "generic party name"],
+      "bud_phrases": ["copy to generic party name"],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": null,
+          "keywords": ["name"],
+          "processing_type": "CLIENT"
+        }
+      },
+      "note": "Copies field value to generic party name"
+    },
+    "COPY_TO_TRANSACTION_ATTR1": {
+      "keywords": ["transaction attr1", "transaction attribute"],
+      "bud_phrases": [],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": null,
+          "processing_type": "CLIENT"
+        }
+      },
+      "note": "Copies to transaction attribute 1"
+    },
+    "COPY_TO_TRANSACTION_ATTR3": {
+      "keywords": ["transaction attr3"],
+      "bud_phrases": [],
+      "children": {
+        "FORM_FILL_METADATA": {
+          "schema_id": null,
+          "processing_type": "CLIENT"
+        }
+      },
+      "note": "Copies to transaction attribute 3"
+    },
+    "COPY_TXNID_TO_FORM_FILL": {
+      "keywords": ["transaction id", "txn id"],
+      "bud_phrases": ["copy transaction id"],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Copies transaction ID to form field"
+    }
+  },
+  "skip_patterns": {
+    "description": "Regex patterns - if matched, skip rule generation for this logic",
+    "patterns": [
+      "mvi\\s*\\(",
+      "mm\\s*\\(",
+      "expr-eval",
+      "expr\\s*:",
+      "\\$\\{.*\\}",
+      "\\bEXECUTE\\b",
+      "execute\\s+rule"
+    ]
+  },
+  "destination_field_patterns": {
+    "description": "If logic matches these, the field is a DESTINATION - only add MAKE_DISABLED if non-editable",
+    "patterns": [
+      "data will come from",
+      "auto-derived via",
+      "auto.?derived from",
+      "will be populated from",
+      "comes from.*validation",
+      "comes from.*ocr"
+    ]
+  },
+  "visibility_source_extraction": {
+    "description": "Regex patterns to extract the CONTROLLING field name from destination field's logic",
+    "patterns": [
+      "if.*field\\s*[\"'](.+?)[\"'].*then\\s*(visible|invisible|mandatory)",
+      "if.*[\"'](.+?)[\"'].*is.*then\\s*(visible|invisible|mandatory)",
+      "based\\s+on\\s+[\"']?(.+?)[\"']?\\s+selection"
+    ],
+    "example": {
+      "logic": "if the field \"Please select GST option\" values is yes then visible",
+      "extracts": "Please select GST option"
+    }
+  },
+  "conditional_value_extraction": {
+    "description": "Regex patterns to extract conditional values from logic",
+    "patterns": [
+      "values?\\s+is\\s+[\"']?(.+?)[\"']?\\s+then",
+      "is\\s+selected\\s+as\\s+[\"']?(.+?)[\"']?",
+      "=\\s*[\"']?(.+?)[\"']?"
+    ],
+    "example": {
+      "logic": "if field 'X' values is yes then visible",
+      "extracts": "yes"
+    }
+  },
+  "edv_table_mapping": {
+    "description": "Maps BUD reference table mentions to EDV table names. Table names are extracted from BUD document, not hardcoded.",
+    "extraction_patterns": {
+      "reference_table": "reference table (\\d+\\.\\d+)",
+      "table_number": "table (\\d+\\.\\d+)",
+      "yes_no": "yes\\s*/\\s*no|yes/no"
+    },
+    "common_mappings": {
+      "yes/no": "Look for YES_NO variant in reference",
+      "yes / no": "Look for YES_NO variant in reference"
+    },
+    "table_type_detection": {
+      "dropdown": "Simple EXT_DROP_DOWN - extract table name from BUD 'dropdown values refer table X'",
+      "cascading": "EXT_VALUE - extract from 'based on X selection' with parent-child relationship",
+      "validation": "VALIDATION/EXTERNAL_DATA_VALUE - extract from 'validate against' or 'fetch from table'"
+    }
+  },
+  "ocr_verify_chains": {
+    "description": "Maps OCR sourceType to VERIFY sourceType for postTriggerRuleIds",
+    "chains": {
+      "PAN_IMAGE": "PAN_NUMBER",
+      "GSTIN_IMAGE": "GSTIN",
+      "CHEQUEE": "BANK_ACCOUNT_NUMBER",
+      "MSME": "MSME_UDYAM_REG_NUMBER",
+      "CIN": "CIN_ID",
+      "AADHAR_IMAGE": null,
+      "AADHAR_BACK_IMAGE": null
+    }
+  }
+}
