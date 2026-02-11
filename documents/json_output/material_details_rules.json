@@ -1,0 +1,228 @@
+[
+    {
+        "field_name": "Noun",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": true,
+        "logic": "Dropdown values come from the NOUN_MODIFIER reference table. If the Noun changes, the system clears and refreshes dependent fields: Modifier, Extended attributes, Column values, and Generated Material Description. Rules applied: Disable Rule: Disables fields such as Mandatory, Attributes, ATR Code, Dropdown Type, UOM Description, HSN Description, Segment, Family, Class, UNSPSC Code/Description. Invisible Rule: Hides fields like Duplicate checks, Generated Material Description, UNSPSC hierarchy, Segment/Family/Class details, UNSPSC Substring, Dummy UNSPSC, etc. Mandatory Rule: Noun must be selected. Dashboard: Noun is copied to Attribute 1.",
+        "rules": [
+            "EDV Dropdown (Client)",
+            "Make Mandatory (Client)",
+            "Copy Value"
+        ],
+        "variableName": "__noun__"
+    },
+    {
+        "field_name": "Modifiers",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": true,
+        "logic": "Dropdown values depend on the selected Noun (from NOUN_MODIFIER reference table). If Modifier changes, UNSPSC Code, Extended attributes, and Generated Material Description are refreshed. Mandatory Rule applied. Dashboard: Modifier is copied to Attribute 2.",
+        "rules": [
+            "EDV Dropdown (Client)",
+            "Make Mandatory (Client)",
+            "Copy Value"
+        ],
+        "variableName": "__modifiers__"
+    },
+    {
+        "field_name": "Generated Material Description",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Built by concatenating Noun + Modifier. Duplicity check logic ensures uniqueness. Exact Duplicate logic is applied at transaction, approval, and saved status levels.",
+        "rules": [
+            "Validate External Data Value (Client)"
+        ],
+        "variableName": "__generated_material_description__"
+    },
+    {
+        "field_name": "Is mat des Duplicate ?",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Always Invisible",
+        "rules": [
+            "Make Invisible (Client)"
+        ],
+        "variableName": "__is_mat_des_duplicate__"
+    },
+    {
+        "field_name": "extra Concat",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Always Invisible",
+        "rules": [
+            "Make Invisible (Client)"
+        ],
+        "variableName": "__extra_concat__"
+    },
+    {
+        "field_name": "Mandatory",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Mandatory field values are based on Attributes which are coming from the reference Table-NOUN_MODIFIER",
+        "rules": [
+            "Get Data From EDV"
+        ],
+        "variableName": "__mandatory__"
+    },
+    {
+        "field_name": "Attribute",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Attribute values depend on Noun + Modifier (from NOUN_MODIFIER reference table).",
+        "rules": [
+            "Get Data From EDV"
+        ],
+        "variableName": "__attribute__"
+    },
+    {
+        "field_name": "Atr Code",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "ATR Code is derived from Attributes.",
+        "rules": [],
+        "variableName": "__atr_code__"
+    },
+    {
+        "field_name": "Dropdown Type",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Dropdown Type determines available values in Select Value. Reference data is created for different attributes. Reference table names are mentioned in the section - Material, Type, Speed, Series, Style data files",
+        "rules": [
+            "Get Data From EDV"
+        ],
+        "variableName": "__dropdown_type__"
+    },
+    {
+        "field_name": "Select Value",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": false,
+        "logic": "Dropdown values populate based on Dropdown Type. If changed, system clears, refreshes, and autosaves. When filled, it concatenates with ATR Code -> stored in Value 3, validated, and auto-submitted if Value 3 is not empty.",
+        "rules": [
+            "EDV Dropdown (Client)",
+            "Copy Value"
+        ],
+        "variableName": "__select_value__"
+    },
+    {
+        "field_name": "Enter Value",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Free text field (activated if Dropdown Type is not set). On blur, if filled, concatenates with ATR Code -> stored in Value 3, validated, and auto-submitted if Value 3 is not empty. Value 3 is then copied into Generated Material Description.",
+        "rules": [
+            "Copy Value"
+        ],
+        "variableName": "__enter_value__"
+    },
+    {
+        "field_name": "Value3",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Copy or transfer the contents of Value 3 into Generated Material Description",
+        "rules": [
+            "Copy Value"
+        ],
+        "variableName": "__value3__"
+    },
+    {
+        "field_name": "old Generated Material Description",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Built by concatenating Noun + Modifier. Final concatenated data is copied into another Generated Material Description field.",
+        "rules": [
+            "Copy Value"
+        ],
+        "variableName": "__old_generated_material_description__"
+    },
+    {
+        "field_name": "Manufacturer Name",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": false,
+        "logic": "Manufacturer Name dropdown values come from MANUFACTURE_DETAILS reference table.",
+        "rules": [
+            "EDV Dropdown (Client)"
+        ],
+        "variableName": "__manufacturer_name__"
+    },
+    {
+        "field_name": "Manufacturer Part Number",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Manufacturer Part Number is free text. Duplicate check logic is applied on the combination of Manufacturer Name + Part Number at transaction, approval, and saved status levels.",
+        "rules": [
+            "Validate External Data Value (Client)"
+        ],
+        "variableName": "__manufacturer_part_number__"
+    },
+    {
+        "field_name": "UNSPSC",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": true,
+        "logic": "Dropdown values depend on Noun + Modifier (from UNSPSC_FROM_NOUN_MODIFIER reference table). If no match is found -> marked as 'Not Found'. Mandatory Rule applied. Dashboard: UNSPSC copied to Attribute 3.",
+        "rules": [
+            "EDV Dropdown (Client)",
+            "Make Mandatory (Client)",
+            "Copy Value"
+        ],
+        "variableName": "__unspsc__"
+    },
+    {
+        "field_name": "is duplicate name ?",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Always Invisible",
+        "rules": [
+            "Make Invisible (Client)"
+        ],
+        "variableName": "__is_duplicate_name__"
+    },
+    {
+        "field_name": "duplicate trans id name",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Always Invisible",
+        "rules": [
+            "Make Invisible (Client)"
+        ],
+        "variableName": "__duplicate_trans_id_name__"
+    },
+    {
+        "field_name": "Unit of Measure",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": false,
+        "logic": "Dropdown values come from UOM reference table.",
+        "rules": [
+            "EDV Dropdown (Client)"
+        ],
+        "variableName": "__unit_of_measure__"
+    },
+    {
+        "field_name": "UOM Description",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "UOM Description auto-populates after validation.",
+        "rules": [
+            "Get Data From EDV"
+        ],
+        "variableName": "__uom_description__"
+    },
+    {
+        "field_name": "HSN Code",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": true,
+        "logic": "Dropdown values come from HSN_CODES reference table. Mandatory Rule applied.",
+        "rules": [
+            "EDV Dropdown (Client)",
+            "Make Mandatory (Client)"
+        ],
+        "variableName": "__hsn_code__"
+    },
+    {
+        "field_name": "HSN Code Description",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "HSN Description auto-populates after validation.",
+        "rules": [
+            "Get Data From EDV"
+        ],
+        "variableName": "__hsn_code_description__"
+    }
+]

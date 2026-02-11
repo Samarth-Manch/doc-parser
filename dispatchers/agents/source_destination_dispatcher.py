@@ -127,9 +127,9 @@ For each field in fields_with_rules:
 - A field can be both a source and destination
 - Multiple fields can be sources or destinations for a single rule
 
-## Instructions
-1) **ALL** the fields which will be extracted for populating source and destination fields, after analysis of logic and the rule schema, should exist in the field list. **NO** extra fields should be invented to satisfy the RULES_SCHEMA or logic section of that particular field. Even if logic section mentions some other field, it is possible that it is another PANEL altogether which you **SHOULD** ignore.(**STRICTLY** follow this)
-2) If some logic section mention another panel or field that doesn't exist in the given list for logic (input or output), then you may ignore those fields after analysis of the logic section.
+## RULES (FOLLOW THESE RULES VERY STRICTLY)
+1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
+2) There will be logic, where it mentions it will be Auto Derived OR based on table/dropdown from some rule, **NO** rule is required in that case **unless** other rules are specified.
 
 ## Output
 Write a JSON array to: {output_file}

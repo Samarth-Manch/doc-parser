@@ -8,7 +8,7 @@ description: Populates params for EDV-related rules (EXT_DROP_DOWN, EXT_VALUE). 
 
 ## Objective
 
-Populate params for all EDV-related rules (EXT_DROP_DOWN, EXT_VALUE) by analyzing field logic and rule schemas. For each EDV rule, determine the correct table mappings, column selections, and cascading relationships. Identify parent-child dependencies for cascading dropdowns by detecting keywords in logic text and verify parent fields exist in source_fields. Map table references from logic (e.g., "table 1.3") to actual reference tables. Generate params JSON that specifies which EDV table to use, which columns to display/filter, and any cascading filter criteria. This agent ensures all dropdown fields, validations, and data lookups are correctly configured to connect form fields with external reference data.
+Populate params for all EDV-related rules (EXT_DROP_DOWN, EXT_VALUE, Validate EDV) by analyzing field logic and rule schemas. For each EDV rule, determine the correct table mappings, column selections, and cascading relationships. Identify parent-child dependencies for cascading dropdowns by detecting keywords in logic text and verify parent fields exist in source_fields. Map table references from logic (e.g., "table 1.3") to actual reference tables. Generate params JSON that specifies which EDV table to use, which columns to display/filter, and any cascading filter criteria. This agent ensures all dropdown fields, validations, and data lookups are correctly configured to connect form fields with external reference data.
 
 ## Input
 FIELDS_JSON: $FIELDS_JSON
@@ -238,6 +238,7 @@ This is the raw output from doc_parser's `reference_tables` attribute. The dispa
 ```
 
 ## Output JSON Structure
+If the rule is EDV Dropdown, then field called `_dropdown_type` should be added. This field can have 3 values: `Independent`, `Parent`, `Child`.
 ```json
 [
     {
@@ -269,6 +270,7 @@ This is the raw output from doc_parser's `reference_tables` attribute. The dispa
                     ],
                     "__reasoning": "Reasoning based on the analysis of the logic and the reference table, on why this structure is generated."
                 },
+                "_dropdown_type": "Parent",
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             },
             {   
@@ -300,6 +302,7 @@ This is the raw output from doc_parser's `reference_tables` attribute. The dispa
                 "destination_fields": [
                     "__fieldname2__"
                 ],
+                "_dropdown_type": "Child",
                 "params": {
                     "conditionList": [
                     {

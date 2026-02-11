@@ -1,0 +1,34 @@
+Step 1: Read logic for field "Please choose the option"
+Step 2 complete: Extracted rules for field "Please choose the option": EDV Dropdown (Client), Make Visible (Client), Make Mandatory (Client), Make Invisible (Client), Make Non Mandatory (Client)
+
+Step 1: Read logic for field "Cancelled Cheque Image"
+Step 2 complete: Extracted rules for field "Cancelled Cheque Image": Make Visible (Client), Make Mandatory (Client), Cheque OCR
+
+Step 1: Read logic for field "Passbook/Bank Letter"
+Step 2 complete: Extracted rules for field "Passbook/Bank Letter": Make Visible (Client), Make Mandatory (Client)
+
+Step 1: Read logic for field "Please enter IFSC and Account Number manually"
+Step 2 complete: Extracted rules for field "Please enter IFSC and Account Number manually": Make Visible (Client)
+
+Step 1: Read logic for field "IFSC Code"
+Step 2 complete: Extracted rules for field "IFSC Code": Make Visible (Client), Make Mandatory (Client), Make Invisible (Client), Make Non Mandatory (Client), Disable Field (Client), Enable Field (Client), Get Data From EDV
+
+Step 1: Read logic for field "Bank Account Number"
+Step 2 complete: Extracted rules for field "Bank Account Number": Make Visible (Client), Make Mandatory (Client), Make Invisible (Client), Make Non Mandatory (Client), Disable Field (Client), Enable Field (Client), Validate Bank Account
+
+Step 1: Read logic for field "Name of Account Holder"
+Step 2 complete: Extracted rules for field "Name of Account Holder": Disable Field (Client)
+
+Step 1: Read logic for field "Bank Name"
+Step 2 complete: Extracted rules for field "Bank Name": Disable Field (Client)
+
+Step 1: Read logic for field "Bank Branch"
+Step 2 complete: Extracted rules for field "Bank Branch": Disable Field (Client)
+
+Step 1: Read logic for field "Bank Address"
+Step 2 complete: Extracted rules for field "Bank Address": Disable Field (Client)
+
+Step 1: Read logic for field "Bank Country"
+Step 2 complete: Extracted rules for field "Bank Country": EDV Dropdown (Client)
+
+Step 3 complete: Created skeleton rule structure for all fields

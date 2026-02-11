@@ -1,0 +1,131 @@
+[
+    {
+        "field_name": "Please choose the option",
+        "type": "EXTERNAL_DROP_DOWN_VALUE",
+        "mandatory": false,
+        "logic": "Vendor will choose any one from the options and chosen option will be visible and mandatory: 1. Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International) 3. Cancelled Cheque (India Import and International) 4. SWIFT Image (India Import and International) 5. Bank Statement/Confirmation (India Import and International) Vendor will choose and upload any one option",
+        "rules": [
+            "EDV Dropdown (Client)",
+            "Make Visible (Client)",
+            "Make Mandatory (Client)",
+            "Make Invisible (Client)",
+            "Make Non Mandatory (Client)"
+        ],
+        "variableName": "__please_choose_the_option__"
+    },
+    {
+        "field_name": "Cancelled Cheque Image",
+        "type": "FILE",
+        "mandatory": false,
+        "logic": "If process type is India and Please choose the option is choose as Cancelled Cheque then it is visible and mandatory. The upload limit should be up to 15 Mb. Perform the Bank OCR and get IFSC code and Account Number",
+        "rules": [
+            "Make Visible (Client)",
+            "Make Mandatory (Client)",
+            "Cheque OCR"
+        ],
+        "variableName": "__cancelled_cheque_image__"
+    },
+    {
+        "field_name": "Passbook/Bank Letter",
+        "type": "FILE",
+        "mandatory": false,
+        "logic": "If Please the option is chosen as Passbook Front Page (India Domestic and International)then it is visible and mandatory. The upload limit should be up to 15 Mb.",
+        "rules": [
+            "Make Visible (Client)",
+            "Make Mandatory (Client)"
+        ],
+        "variableName": "__passbook_bank_letter__"
+    },
+    {
+        "field_name": "Please enter IFSC and Account Number manually",
+        "type": "LABEL",
+        "mandatory": false,
+        "logic": "Show this fields if passbook front page (India Domestic and International) is selected",
+        "rules": [
+            "Make Visible (Client)"
+        ],
+        "variableName": "__please_enter_ifsc_and_account_number_manually__"
+    },
+    {
+        "field_name": "IFSC Code",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options. Perform IFSC code verification",
+        "rules": [
+            "Make Visible (Client)",
+            "Make Mandatory (Client)",
+            "Make Invisible (Client)",
+            "Make Non Mandatory (Client)",
+            "Disable Field (Client)",
+            "Enable Field (Client)",
+            "Get Data From EDV"
+        ],
+        "variableName": "__ifsc_code__"
+    },
+    {
+        "field_name": "Bank Account Number",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Non editable if cancelled cheque is selected. Editable for other option. Visible and mandatory for Cancelled Cheque (India Domestic) 2. Passbook Front Page (India Domestic and International). Otherwise invisible and non-mandatory. Auto-derived from OCR in case of cheque, manual entry in case of other options ,Perform Bank account verification",
+        "rules": [
+            "Make Visible (Client)",
+            "Make Mandatory (Client)",
+            "Make Invisible (Client)",
+            "Make Non Mandatory (Client)",
+            "Disable Field (Client)",
+            "Enable Field (Client)",
+            "Validate Bank Account"
+        ],
+        "variableName": "__bank_account_number__"
+    },
+    {
+        "field_name": "Name of Account Holder",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Non editable",
+        "rules": [
+            "Disable Field (Client)"
+        ],
+        "variableName": "__name_of_account_holder__"
+    },
+    {
+        "field_name": "Bank Name",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Non editable",
+        "rules": [
+            "Disable Field (Client)"
+        ],
+        "variableName": "__bank_name__"
+    },
+    {
+        "field_name": "Bank Branch",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Non editable",
+        "rules": [
+            "Disable Field (Client)"
+        ],
+        "variableName": "__bank_branch__"
+    },
+    {
+        "field_name": "Bank Address",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Non editable",
+        "rules": [
+            "Disable Field (Client)"
+        ],
+        "variableName": "__bank_address__"
+    },
+    {
+        "field_name": "Bank Country",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "India (By default) for process type India-Domestic. Vendor can choose from dropdown for other process types.",
+        "rules": [
+            "EDV Dropdown (Client)"
+        ],
+        "variableName": "__bank_country__"
+    }
+]

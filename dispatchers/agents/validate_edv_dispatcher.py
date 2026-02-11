@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-EDV Rule Mini Agent Dispatcher
+Validate EDV Mini Agent Dispatcher
 
 This script:
 1. Reads BUD document using doc_parser to extract reference tables
-2. Reads output from source_destination_agent (panel-by-panel)
-3. For each panel, filters only reference tables mentioned in fields' logic
-4. Converts reference tables to EDV agent's expected format
-5. Calls mini agent with panel fields and filtered reference tables
-6. Outputs single JSON file containing all panels with EDV params populated
+2. Reads output from EDV Rule agent (panel-by-panel)
+3. For each panel, checks if any fields have Validate EDV rules
+4. Filters reference tables mentioned in fields' logic
+5. Calls Validate EDV mini agent with panel fields and filtered reference tables
+6. Panels with no Validate EDV rules are passed through unchanged
+7. Outputs single JSON file containing all panels with Validate EDV params populated
 """
 
 import argparse
@@ -18,11 +19,16 @@ import sys
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Set
-from collections import defaultdict
 
 # Import doc_parser
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from doc_parser import DocumentParser
+
+
+VALIDATE_EDV_RULE_NAMES = {
+    "Validate EDV (Server)",
+    "Validate External Data Value (Client)",
+}
 
 
 def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
@@ -33,7 +39,7 @@ def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
         parsed_doc: ParsedDocument from DocumentParser
 
     Returns:
-        List of reference tables in EDV agent format
+        List of reference tables in agent format
     """
     reference_tables = []
 
@@ -45,10 +51,10 @@ def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
                 for idx, header in enumerate(table.headers, start=1):
                     attributes[f"a{idx}"] = header
 
-            # Get sample data (limit to first 3-4 rows)
+            # Get sample data (limit to first 4 rows)
             sample_data = []
             if hasattr(table, 'rows') and table.rows:
-                sample_data = table.rows[:4]  # Take first 4 rows
+                sample_data = table.rows[:4]
 
             # Determine source file and sheet name
             source_file = "unknown"
@@ -57,7 +63,6 @@ def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
             if hasattr(table, 'source_file') and table.source_file:
                 source_file = table.source_file
             elif hasattr(table, 'title') and table.title:
-                # Try to extract filename from title
                 source_file = f"{table.title}.xlsx"
 
             if hasattr(table, 'sheet_name') and table.sheet_name:
@@ -76,7 +81,6 @@ def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
             # Add table ID if available
             if hasattr(table, 'title') and table.title:
                 table_data["title"] = table.title
-                # Try to extract reference ID from title
                 match = re.search(r'(?:reference\s+)?table\s+(\d+\.?\d*)', table.title, re.I)
                 if match:
                     table_data["reference_id"] = match.group(1)
@@ -105,7 +109,6 @@ def detect_table_references_in_logic(logic: str) -> List[str]:
 
     references = []
 
-    # Pattern: "reference table X.Y" or "table X.Y"
     patterns = [
         r'reference\s+table\s+(\d+\.?\d*)',
         r'table\s+(\d+\.?\d*)',
@@ -116,7 +119,6 @@ def detect_table_references_in_logic(logic: str) -> List[str]:
         matches = re.findall(pattern, logic, re.I)
         references.extend(matches)
 
-    # Remove duplicates and return
     return list(set(references))
 
 
@@ -131,7 +133,6 @@ def get_referenced_tables_for_panel(panel_fields: List[Dict], all_reference_tabl
     Returns:
         Filtered list of reference tables mentioned in this panel
     """
-    # Collect all table references from all fields in this panel
     referenced_ids = set()
 
     for field in panel_fields:
@@ -143,7 +144,6 @@ def get_referenced_tables_for_panel(panel_fields: List[Dict], all_reference_tabl
     if not referenced_ids:
         return []
 
-    # Filter tables based on referenced IDs
     filtered_tables = []
     for table in all_reference_tables:
         table_id = table.get('reference_id', '')
@@ -153,19 +153,50 @@ def get_referenced_tables_for_panel(panel_fields: List[Dict], all_reference_tabl
     return filtered_tables
 
 
-def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
-                        panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+def panel_has_validate_edv_rules(panel_fields: List[Dict]) -> bool:
     """
-    Call the EDV Rule mini agent via claude -p
+    Check if any field in the panel has a Validate EDV rule.
 
     Args:
-        panel_fields: Fields from source_destination_agent output
+        panel_fields: List of fields in the panel
+
+    Returns:
+        True if at least one field has a Validate EDV rule
+    """
+    for field in panel_fields:
+        rules = field.get('rules', [])
+        for rule in rules:
+            rule_name = rule.get('rule_name', '') if isinstance(rule, dict) else str(rule)
+            if rule_name in VALIDATE_EDV_RULE_NAMES:
+                return True
+    return False
+
+
+def count_validate_edv_rules(panel_fields: List[Dict]) -> int:
+    """Count total Validate EDV rules across all fields in a panel."""
+    count = 0
+    for field in panel_fields:
+        rules = field.get('rules', [])
+        for rule in rules:
+            rule_name = rule.get('rule_name', '') if isinstance(rule, dict) else str(rule)
+            if rule_name in VALIDATE_EDV_RULE_NAMES:
+                count += 1
+    return count
+
+
+def call_validate_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
+                                  panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+    """
+    Call the Validate EDV mini agent via claude -p
+
+    Args:
+        panel_fields: Fields from EDV agent output
         reference_tables: Filtered reference tables for this panel
         panel_name: Name of the panel
         temp_dir: Directory for temp files
 
     Returns:
-        List of fields with EDV params populated, or None if failed
+        List of fields with Validate EDV params/source/dest populated, or None if failed
     """
 
     # Sanitize panel name for filename
@@ -174,7 +205,8 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
     # Temp files for input/output
     fields_input_file = temp_dir / f"{safe_panel_name}_fields_input.json"
     tables_input_file = temp_dir / f"{safe_panel_name}_tables_input.json"
-    output_file = temp_dir / f"{safe_panel_name}_edv_output.json"
+    output_file = temp_dir / f"{safe_panel_name}_validate_edv_output.json"
+    log_file = temp_dir / f"{safe_panel_name}_validate_edv_log.txt"
 
     # Write fields to temp file
     with open(fields_input_file, 'w') as f:
@@ -184,75 +216,73 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
     with open(tables_input_file, 'w') as f:
         json.dump(reference_tables, f, indent=2)
 
-    prompt = f"""Process fields for panel "{panel_name}" and populate EDV rule parameters.
+    prompt = f"""Process fields for panel "{panel_name}" and populate Validate EDV rule parameters, source fields, and destination fields.
 
 ## Input Data
 1. Fields with rules: {fields_input_file}
 2. Reference tables: {tables_input_file}
+3. Log file: {log_file}
 
 ## Task
 For each field in the input:
 1. Read the field's logic text and examine its rules
-2. For EDV-related rules (EXT_DROP_DOWN, EXT_VALUE), populate the params field
-3. Analyze table references in logic to determine:
-   - Which table to use (ddType)
-   - Which columns to display (da)
-   - Filter criteria for cascading dropdowns (criterias)
-4. For non-EDV rules, leave params empty or don't add it
+2. For Validate EDV rules ("Validate EDV (Server)" or "Validate External Data Value (Client)"):
+   a. Determine the EDV table name from logic and reference tables
+   b. Populate source_fields (the field being validated + any filter fields)
+   c. Populate destination_fields positionally matching table columns:
+      - Use field variableNames for columns that map to form fields
+      - Use "-1" for columns that should be skipped
+   d. Build params:
+      - Simple string (table name) for single-source lookups
+      - JSON object with "param" and "conditionList" for filtered lookups
+3. For non-Validate-EDV rules, leave them completely unchanged
 
-## Rules for EDV params:
-- Independent/Parent dropdowns: Empty criterias array
-- Dependent/Child dropdowns: Specify criterias mapping parent fields to table columns
-- Use field variableNames from source_fields for parent references
-- Map columns as a1, a2, a3, etc. based on table structure
-- Only include tables mentioned in the field's logic section
+## Key Rules
+- destination_fields array is POSITIONAL — each index corresponds to a table column (a1, a2, a3, ...)
+- Use "-1" for any column position that doesn't map to a form field
+- All destination fields must exist in the input field list
+- Simple params: just the table name string, e.g. "COMPANY_CODE"
+- Filtered params: {{"param": "TABLE_NAME", "conditionList": [...]}}
+- DO NOT modify any non-Validate-EDV rules
 
 ## Output
 Write a JSON array to: {output_file}
 
-The output should have the same structure as input, but with params added to EDV rules:
-If the rule is EDV Dropdown, then field called `_dropdown_type` should be added. This field can have 3 values: `Independent`, `Parent`, `Child`.
+The output should have the same structure as input, but with Validate EDV rules having populated params, source_fields, and destination_fields:
 
 ```json
 [
   {{
     "field_name": "Field Name",
-    "type": "DROPDOWN",
+    "type": "TEXT",
     "mandatory": true,
     "logic": "...",
     "rules": [
       {{
         "id": 1,
-        "rule_name": "EXT_DROP_DOWN",
-        "source_fields": ["__parent_field__"],
-        "destination_fields": ["__current_field__"],
-        "_dropdown_type": "Parent",  // or "Independent" or "Child"
-        "params": {{
-          "conditionList": [
-            {{
-              "ddType": ["TABLE_NAME"],
-              "criterias": [{{"a1": "__parent_field__"}}],
-              "da": ["a2", "a3"],
-              "criteriaSearchAttr": [],
-              "additionalOptions": null,
-              "emptyAddOptionCheck": null,
-              "ddProperties": null
-            }}
-          ],
-          "__reasoning": "Explanation of why this structure was chosen"
-        }},
-        "_reasoning": "..."
+        "rule_name": "Validate EDV (Server)",
+        "source_fields": ["__pin_code__"],
+        "destination_fields": ["__city__", "__district__", "__state__", "__country__"],
+        "params": "PIN-CODE",
+        "_reasoning": "Explanation of table mapping and column-to-field correspondence"
+      }},
+      {{
+        "id": 2,
+        "rule_name": "Some Other Rule",
+        "source_fields": ["__field1__"],
+        "destination_fields": ["__field2__"],
+        "_reasoning": "Unchanged from input"
       }}
     ],
-    "variableName": "__current_field__"
+    "variableName": "__pin_code__"
   }}
 ]
 ```
 
 IMPORTANT:
-- Only add params to EDV-related rules
-- Keep all existing fields, rules, and attributes from input
-- Add params alongside existing rule attributes
+- Only modify Validate EDV rules — all other rules must be passed through unchanged
+- Keep all existing fields and attributes from input
+- Log each step to the log file
 """
 
     try:
@@ -260,14 +290,15 @@ IMPORTANT:
         print(f"PROCESSING PANEL: {panel_name}")
         print(f"  Fields: {len(panel_fields)}")
         print(f"  Reference Tables: {len(reference_tables)}")
+        print(f"  Validate EDV Rules: {count_validate_edv_rules(panel_fields)}")
         print('='*70)
 
-        # Call claude -p with the EDV mini agent
+        # Call claude -p with the Validate EDV mini agent
         process = subprocess.Popen(
             [
                 "claude",
                 "-p", prompt,
-                "--agent", "mini/03_edv_rule_agent_v2",
+                "--agent", "mini/04_validate_edv_agent_v2",
                 "--allowedTools", "Read,Write"
             ],
             stdout=subprocess.PIPE,
@@ -286,7 +317,7 @@ IMPORTANT:
         process.wait()
 
         if process.returncode != 0:
-            print(f"✗ EDV mini agent failed with exit code: {process.returncode}", file=sys.stderr)
+            print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
         # Read output file
@@ -294,20 +325,20 @@ IMPORTANT:
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
-                print(f"✗ Failed to parse output JSON: {e}", file=sys.stderr)
+                print(f"  Failed to parse output JSON: {e}", file=sys.stderr)
                 return None
         else:
-            print(f"✗ Output file not found: {output_file}", file=sys.stderr)
+            print(f"  Output file not found: {output_file}", file=sys.stderr)
             return None
 
     except FileNotFoundError:
-        print("✗ Error: 'claude' command not found", file=sys.stderr)
+        print("  Error: 'claude' command not found", file=sys.stderr)
         return None
     except Exception as e:
-        print(f"✗ Error calling EDV mini agent: {e}", file=sys.stderr)
+        print(f"  Error calling Validate EDV mini agent: {e}", file=sys.stderr)
         import traceback
         traceback.print_exc()
         return None
@@ -315,7 +346,7 @@ IMPORTANT:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="EDV Rule Dispatcher - Panel-by-panel EDV params population"
+        description="Validate EDV Dispatcher - Panel-by-panel Validate EDV params population"
     )
     parser.add_argument(
         "--bud",
@@ -323,25 +354,25 @@ def main():
         help="Path to BUD document (.docx)"
     )
     parser.add_argument(
-        "--source-dest-output",
+        "--edv-output",
         required=True,
-        help="Path to source_destination_agent output JSON (panels with rules)"
+        help="Path to EDV Rule agent output JSON (panels with EDV dropdown params)"
     )
     parser.add_argument(
         "--output",
-        default="output/edv_rules/all_panels_edv.json",
-        help="Output file for all panels (default: output/edv_rules/all_panels_edv.json)"
+        default="output/validate_edv/all_panels_validate_edv.json",
+        help="Output file for all panels (default: output/validate_edv/all_panels_validate_edv.json)"
     )
 
     args = parser.parse_args()
 
     # Validate inputs
     if not Path(args.bud).exists():
-        print(f"✗ Error: BUD file not found: {args.bud}", file=sys.stderr)
+        print(f"Error: BUD file not found: {args.bud}", file=sys.stderr)
         sys.exit(1)
 
-    if not Path(args.source_dest_output).exists():
-        print(f"✗ Error: Source-destination output file not found: {args.source_dest_output}", file=sys.stderr)
+    if not Path(args.edv_output).exists():
+        print(f"Error: EDV agent output file not found: {args.edv_output}", file=sys.stderr)
         sys.exit(1)
 
     # Create output directory and temp directory
@@ -366,45 +397,57 @@ def main():
         for table in all_reference_tables:
             ref_id = table.get('reference_id', 'unknown')
             title = table.get('title', 'No title')
-            print(f"  - {ref_id}: {title}")
+            cols = len(table.get('attributes/columns', {}))
+            print(f"  - {ref_id}: {title} ({cols} columns)")
 
-    # Step 3: Load source-destination agent output
-    print(f"\nLoading source-destination output: {args.source_dest_output}")
-    with open(args.source_dest_output, 'r') as f:
-        source_dest_data = json.load(f)
+    # Step 3: Load EDV agent output
+    print(f"\nLoading EDV agent output: {args.edv_output}")
+    with open(args.edv_output, 'r') as f:
+        edv_data = json.load(f)
 
-    print(f"Found {len(source_dest_data)} panels in input")
+    print(f"Found {len(edv_data)} panels in input")
 
     # Step 4: Process each panel
     print("\n" + "="*70)
-    print("PROCESSING PANELS WITH EDV AGENT")
+    print("PROCESSING PANELS WITH VALIDATE EDV AGENT")
     print("="*70)
 
     successful_panels = 0
     failed_panels = 0
     skipped_panels = 0
+    passthrough_panels = 0
     total_fields_processed = 0
     all_results = {}
 
-    for panel_name, panel_fields in source_dest_data.items():
+    for panel_name, panel_fields in edv_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
             skipped_panels += 1
             continue
 
+        # Check if this panel has any Validate EDV rules
+        if not panel_has_validate_edv_rules(panel_fields):
+            print(f"\nPanel '{panel_name}': no Validate EDV rules - passing through unchanged")
+            all_results[panel_name] = panel_fields
+            passthrough_panels += 1
+            total_fields_processed += len(panel_fields)
+            continue
+
         # Filter reference tables for this panel
         referenced_tables = get_referenced_tables_for_panel(panel_fields, all_reference_tables)
 
-        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {len(referenced_tables)} referenced tables")
+        validate_edv_count = count_validate_edv_rules(panel_fields)
+        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {validate_edv_count} Validate EDV rules, {len(referenced_tables)} referenced tables")
 
         if referenced_tables:
             print("  Referenced tables:")
             for table in referenced_tables:
                 ref_id = table.get('reference_id', 'unknown')
-                print(f"    - {ref_id}")
+                cols = list(table.get('attributes/columns', {}).values())
+                print(f"    - {ref_id}: columns={cols}")
 
-        # Call EDV mini agent
-        result = call_edv_mini_agent(
+        # Call Validate EDV mini agent
+        result = call_validate_edv_mini_agent(
             panel_fields,
             referenced_tables,
             panel_name,
@@ -417,23 +460,27 @@ def main():
             all_results[panel_name] = result
         else:
             failed_panels += 1
-            print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+            # On failure, pass through original data
+            all_results[panel_name] = panel_fields
+            total_fields_processed += len(panel_fields)
+            print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
 
     # Step 5: Write all results to single output file
     if all_results:
         print(f"\nWriting all results to: {output_file}")
         with open(output_file, 'w') as f:
             json.dump(all_results, f, indent=2)
-        print(f"✓ Successfully wrote {len(all_results)} panels to output file")
+        print(f"Successfully wrote {len(all_results)} panels to output file")
 
     # Print final summary
     print("\n" + "="*70)
-    print("EDV DISPATCHER COMPLETE")
+    print("VALIDATE EDV DISPATCHER COMPLETE")
     print("="*70)
-    print(f"Total Panels: {len(source_dest_data)}")
-    print(f"Successful: {successful_panels}")
+    print(f"Total Panels: {len(edv_data)}")
+    print(f"Processed (with Validate EDV): {successful_panels}")
+    print(f"Passed Through (no Validate EDV): {passthrough_panels}")
     print(f"Failed: {failed_panels}")
-    print(f"Skipped: {skipped_panels}")
+    print(f"Skipped (empty): {skipped_panels}")
     print(f"Total Fields Processed: {total_fields_processed}")
     print(f"Total Reference Tables: {len(all_reference_tables)}")
     print(f"Output File: {output_file}")

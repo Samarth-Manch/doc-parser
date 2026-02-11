@@ -20,9 +20,17 @@ A schema with the field name, type, logic, variableName and a list of rules that
 
 ---
 
-## Instructions
+## RULES (FOLLOW THESE RULES VERY STRICTLY)
 1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
-2) There will be logic, where it mentions it will be Auto Derived from some rule, no rule is required in that case **unless** other rules are specified.
+2) If there is **ANY** dependent dropdown, then it should be cleared when the parent dropdown values are changed. **EXECUTE** Rule in that case should be added.
+3) **Validate EDV** rule will almost always be placed on a **dropdown** field. If a parent-child dropdown relationship exists, the Validate EDV rule must be placed on the **child dropdown** (the dependent one), not the parent.
+---
+
+## Information about Dropdowns and EDV (External Data Value)
+EDV (External Data Value) is an external reference table in the Manch platform with multiple use cases - (1) Simple dropdowns where table columns provide dropdown options, (2) Cascading dropdowns where a child dropdown's values are filtered based on a parent dropdown's selection. Identify cascading from logic keywords like "based on", "depends on", "filtered by". Table references in logic (like "table 1.3", "reference table 1.2") indicate which embedded Excel table to use. Params must include table name, column mappings, filter criteria for cascading, and whether the dropdown has dependencies. Analyze field logic and rule schemas to determine the correct EDV configuration. Cascading dropdowns also have the same rule as the parent dropdown, i.e. **EDV Dropdown (Client)**.
+
+## Information about Validate EDV (External Data Value)
+Validate EDV is a server-side validation/lookup rule that queries an EDV table by a source field's value and auto-populates one or more destination fields based on the matching row's columns. For example, entering a PIN code can auto-fill City, District, State, and Country. The **Validate EDV rule will almost always be placed on a dropdown field**. If a parent-child dropdown relationship exists, the Validate EDV rule should be placed on the **child dropdown** (the dependent one), not the parent. The logic will typically mention deriving or fetching additional field values after a dropdown selection — keywords like "derive", "fetch", "auto-populate", "lookup", "validate against table" indicate a Validate EDV rule. The rule names to look for are **"Validate EDV (Server)"** and **"Validate External Data Value (Client)"**.
 
 ---
 
