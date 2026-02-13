@@ -186,7 +186,10 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
 
     source_ids = []
     for sf in source_fields:
-        if sf in id_map:
+        # Handle "-1" as a special case - convert to integer -1
+        if sf == "-1":
+            source_ids.append(-1)
+        elif sf in id_map:
             source_ids.append(id_map[sf])
         else:
             print(f"  Warning: Source field '{sf}' not found in ID map, using current field ID")
@@ -194,7 +197,10 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
 
     destination_ids = []
     for df in destination_fields:
-        if df in id_map:
+        # Handle "-1" as a special case - convert to integer -1
+        if df == "-1":
+            destination_ids.append(-1)
+        elif df in id_map:
             destination_ids.append(id_map[df])
         else:
             print(f"  Warning: Destination field '{df}' not found in ID map, using current field ID")
@@ -305,6 +311,90 @@ def _build_schema_panel_map(metadatas: List[Dict]) -> Dict[str, Dict[str, int]]:
     return panel_field_map
 
 
+def _build_parent_child_dropdown_map(edv_data: Dict) -> Dict[str, List[str]]:
+    """
+    Build a map of parent dropdown variable names to their child dropdown variable names.
+
+    Returns:
+        Dict mapping parent_variable_name -> [child_variable_name1, child_variable_name2, ...]
+    """
+    parent_child_map = {}
+
+    for panel_name, fields in edv_data.items():
+        for field in fields:
+            rules = field.get('rules', [])
+            variable_name = field.get('variableName', sanitize_variable_name(field.get('field_name', '')))
+
+            for rule in rules:
+                dropdown_type = rule.get('_dropdown_type', '')
+
+                # If this is a parent dropdown, initialize its entry
+                if dropdown_type.lower() == 'parent':
+                    if variable_name not in parent_child_map:
+                        parent_child_map[variable_name] = []
+
+                # If this is a child dropdown, add it to its parent's list
+                elif dropdown_type.lower() == 'child':
+                    source_fields = rule.get('source_fields', [])
+                    for parent_var in source_fields:
+                        if parent_var not in parent_child_map:
+                            parent_child_map[parent_var] = []
+                        parent_child_map[parent_var].append(variable_name)
+
+    return parent_child_map
+
+
+def create_execute_rule_for_parent(field_id: int, child_variables: List[str], rule_id: int) -> Dict:
+    """
+    Create an EXECUTE rule for parent dropdown fields.
+
+    The expression triggers on change and executes clear field (cf), async data field fill (asdff),
+    and refresh field data (rffdd) functions on all child dropdowns.
+
+    Args:
+        field_id: The parent field's metadata ID
+        child_variables: List of child dropdown variable names
+        rule_id: The rule ID to assign
+
+    Returns:
+        Dict containing the EXECUTE rule
+    """
+    # Build the expression for all children
+    # Format: on("change") and (cf(true,"child1","child1");asdff(true,"child1","child1");rffdd(true,"child1");...)
+    expressions = []
+    for child_var in child_variables:
+        # Add cf, asdff, and rffdd calls for each child
+        expressions.append(f'cf(true,"{child_var}","{child_var}")')
+        expressions.append(f'asdff(true,"{child_var}","{child_var}")')
+        expressions.append(f'rffdd(true,"{child_var}")')
+
+    # Join all expressions with semicolons
+    expression = 'on("change") and (' + ';'.join(expressions) + ')'
+
+    execute_rule = {
+        "id": rule_id,
+        "createUser": "FIRST_PARTY",
+        "updateUser": "FIRST_PARTY",
+        "actionType": "EXECUTE",
+        "processingType": "CLIENT",
+        "sourceIds": [field_id],
+        "destinationIds": [],
+        "conditionalValues": [expression],
+        "condition": "IN",
+        "conditionValueType": "EXPR",
+        "postTriggerRuleIds": [],
+        "button": "",
+        "searchable": False,
+        "executeOnFill": True,
+        "executeOnRead": False,
+        "executeOnEsign": False,
+        "executePostEsign": False,
+        "runPostConditionFail": False
+    }
+
+    return execute_rule
+
+
 def build_id_map_from_schema(schema_data: Dict, edv_data: Dict) -> Dict[str, int]:
     """
     Build a mapping from EDV variableNames to schema formFillMetadata IDs.
@@ -367,6 +457,19 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     id_map = build_id_map_from_schema(schema_data, edv_data)
     print(f"Built ID map: {len(id_map)} variable names mapped to schema IDs")
 
+    # Build map from EDV variable names to schema variable names
+    var_name_map = {}
+    for meta in metadatas:
+        field_name = meta.get('formTag', {}).get('name', '')
+        schema_var_name = meta.get('variableName', '')
+        # Find corresponding field in EDV data
+        for panel_name, fields in edv_data.items():
+            for field in fields:
+                if field.get('field_name') == field_name:
+                    edv_var_name = field.get('variableName', sanitize_variable_name(field_name))
+                    var_name_map[edv_var_name] = schema_var_name
+                    break
+
     # Find the max existing rule ID in the schema to continue from
     rule_id_counter = 1
     for meta in metadatas:
@@ -374,11 +477,15 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
             if rule.get('id', 0) >= rule_id_counter:
                 rule_id_counter = rule['id'] + 1
 
+    # Build parent-child dropdown relationships
+    parent_child_map = _build_parent_child_dropdown_map(edv_data)
+
     # Stats tracking
     fields_matched = 0
     fields_with_rules = 0
     fields_unmatched = []
     total_rules_injected = 0
+    execute_rules_added = 0
 
     # Inject rules into matching fields (panel-scoped)
     for panel_name, fields in edv_data.items():
@@ -387,6 +494,7 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
         for field in fields:
             field_name = field.get('field_name', '')
             rules = field.get('rules', [])
+            variable_name = field.get('variableName', sanitize_variable_name(field_name))
 
             if field_name not in schema_fields_in_panel:
                 if rules:
@@ -394,24 +502,38 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                 continue
 
             fields_matched += 1
-            if not rules:
-                continue
-
-            fields_with_rules += 1
             meta_idx = schema_fields_in_panel[field_name]
             field_id = metadatas[meta_idx]['id']
 
-            for rule in rules:
-                form_fill_rule = create_form_fill_rule(rule, field_id, id_map, rule_id_counter)
-                metadatas[meta_idx]['formFillRules'].append(form_fill_rule)
+            # Inject existing rules
+            if rules:
+                fields_with_rules += 1
+                for rule in rules:
+                    form_fill_rule = create_form_fill_rule(rule, field_id, id_map, rule_id_counter)
+                    metadatas[meta_idx]['formFillRules'].append(form_fill_rule)
+                    rule_id_counter += 1
+                    total_rules_injected += 1
+
+            # Add EXECUTE rule for parent dropdowns
+            if variable_name in parent_child_map:
+                child_variables = parent_child_map[variable_name]
+                # Convert child EDV variable names to schema variable names
+                child_schema_vars = [var_name_map.get(cv, cv) for cv in child_variables]
+                execute_rule = create_execute_rule_for_parent(
+                    field_id, child_schema_vars, rule_id_counter
+                )
+                metadatas[meta_idx]['formFillRules'].append(execute_rule)
                 rule_id_counter += 1
                 total_rules_injected += 1
+                execute_rules_added += 1
+                print(f"  Added EXECUTE rule to parent '{field_name}' for {len(child_variables)} child(ren)")
 
     stats = {
         'fields_matched': fields_matched,
         'fields_with_rules': fields_with_rules,
         'fields_unmatched': fields_unmatched,
         'total_rules_injected': total_rules_injected,
+        'execute_rules_added': execute_rules_added,
         'total_schema_fields': len(metadatas),
         'fields_with_empty_rules': sum(
             1 for m in metadatas if not m.get('formFillRules')
@@ -493,6 +615,8 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
 
     # Track variable name to ID mapping - all IDs start from 1
     id_map = {}
+    # Track EDV variable name to short variable name mapping
+    var_name_map = {}
 
     # All ID counters start from 1
     metadata_counter = 1  # formFillMetadata IDs
@@ -521,6 +645,21 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
             temp_metadata_counter += 1
 
     print(f"Created ID map for {len(id_map)} variables")
+
+    # Build parent-child dropdown relationships
+    parent_child_map = _build_parent_child_dropdown_map(edv_data)
+
+    # Pre-build variable name map (EDV var name -> short var name)
+    # This needs to be done before processing so EXECUTE rules can use it
+    temp_counter = metadata_counter
+    for panel_name, fields in edv_data.items():
+        temp_counter += 1  # Skip panel ID
+        for field in fields:
+            field_name = field.get('field_name', 'Unknown Field')
+            edv_var_name = field.get('variableName', sanitize_variable_name(field_name))
+            short_var = generate_short_variable_name(field_name, temp_counter)
+            var_name_map[edv_var_name] = short_var
+            temp_counter += 1
 
     # Process each panel
     for panel_name, fields in edv_data.items():
@@ -646,6 +785,17 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
                 form_fill_rule = create_form_fill_rule(rule, field_metadata_id, id_map, rule_id_counter)
                 metadata["formFillRules"].append(form_fill_rule)
                 rule_id_counter += 1  # Increment rule ID for next rule
+
+            # Add EXECUTE rule for parent dropdowns
+            if variable_name in parent_child_map:
+                child_variables = parent_child_map[variable_name]
+                # Convert child EDV variable names to schema short variable names
+                child_short_vars = [var_name_map.get(cv, cv) for cv in child_variables]
+                execute_rule = create_execute_rule_for_parent(
+                    field_metadata_id, child_short_vars, rule_id_counter
+                )
+                metadata["formFillRules"].append(execute_rule)
+                rule_id_counter += 1
 
             doc_type["formFillMetadatas"].append(metadata)
             form_order += 0.0001

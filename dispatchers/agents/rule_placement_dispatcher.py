@@ -173,9 +173,13 @@ For each field in fields_with_logic:
 4. Multiple rules can apply to a single field
 5. If no specific rules apply, use empty array
 
-## Instructions
+## RULES (FOLLOW THESE RULES VERY STRICTLY)
 1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
-2) There will be logic, where it mentions it will be Auto Derived from some rule, no rule is required in that case **unless** other rules are specified.
+2) If there is **ANY** dependent dropdown, then it should be cleared when the parent dropdown values are changed. **EXECUTE** Rule in that case should be added.
+3) Remember that, for rules like Make Mandatory, Make Non Mandatory, Make Visible, Make Invisible, Make Enabled and Make Disabled, the rules should be placed **ON** on the Source Field. Meaning, if the logic says if the dropdown value is 'Yes', make this invisible, the rule will be placed **ON** the dropdown.
+4) For rules like Make Mandatory, Make Non Mandatory, Make Visible, Make Invisible, Make Enabled and Make Disabled, analyse the whole panel and decide where these rules should be placed properly.
+5) Whenever a logic mentions that this should a field should be made visible/invisible/mandatory/non-mandatory **BASED ON SOME LOGIC**, then the opposite rules **ALSO** should be applied. For example: If the logic says that field x should be made invisible if dropdown value is 'Yes', then with invisible there should also be a visible rule.---
+
 
 ## Output
 Write a JSON array to: {output_file}

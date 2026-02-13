@@ -5,11 +5,10 @@ Validate EDV Mini Agent Dispatcher
 This script:
 1. Reads BUD document using doc_parser to extract reference tables
 2. Reads output from EDV Rule agent (panel-by-panel)
-3. For each panel, checks if any fields have Validate EDV rules
-4. Filters reference tables mentioned in fields' logic
-5. Calls Validate EDV mini agent with panel fields and filtered reference tables
-6. Panels with no Validate EDV rules are passed through unchanged
-7. Outputs single JSON file containing all panels with Validate EDV params populated
+3. For each panel, filters reference tables mentioned in fields' logic
+4. Calls Validate EDV mini agent to analyze dropdown fields and place Validate EDV rules
+5. ALL panels are processed, regardless of whether they have dropdown fields
+6. Outputs single JSON file containing all panels with Validate EDV rules placed and populated
 """
 
 import argparse
@@ -23,12 +22,6 @@ from typing import Dict, List, Optional, Set
 # Import doc_parser
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from doc_parser import DocumentParser
-
-
-VALIDATE_EDV_RULE_NAMES = {
-    "Validate EDV (Server)",
-    "Validate External Data Value (Client)",
-}
 
 
 def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
@@ -153,34 +146,37 @@ def get_referenced_tables_for_panel(panel_fields: List[Dict], all_reference_tabl
     return filtered_tables
 
 
-def panel_has_validate_edv_rules(panel_fields: List[Dict]) -> bool:
+DROPDOWN_TYPES = {
+    "DROPDOWN", "EXTERNAL_DROP_DOWN_VALUE", "MULTI_DROPDOWN",
+    "dropdown", "external_dropdown", "multi_dropdown",
+}
+
+
+def panel_has_dropdown_fields(panel_fields: List[Dict]) -> bool:
     """
-    Check if any field in the panel has a Validate EDV rule.
+    Check if any field in the panel is a dropdown type.
+    Validate EDV rules are always placed on dropdown fields.
 
     Args:
         panel_fields: List of fields in the panel
 
     Returns:
-        True if at least one field has a Validate EDV rule
+        True if at least one field is a dropdown
     """
     for field in panel_fields:
-        rules = field.get('rules', [])
-        for rule in rules:
-            rule_name = rule.get('rule_name', '') if isinstance(rule, dict) else str(rule)
-            if rule_name in VALIDATE_EDV_RULE_NAMES:
-                return True
+        field_type = field.get('type', '')
+        if field_type.upper() in {t.upper() for t in DROPDOWN_TYPES}:
+            return True
     return False
 
 
-def count_validate_edv_rules(panel_fields: List[Dict]) -> int:
-    """Count total Validate EDV rules across all fields in a panel."""
+def count_dropdown_fields(panel_fields: List[Dict]) -> int:
+    """Count total dropdown fields in a panel."""
     count = 0
     for field in panel_fields:
-        rules = field.get('rules', [])
-        for rule in rules:
-            rule_name = rule.get('rule_name', '') if isinstance(rule, dict) else str(rule)
-            if rule_name in VALIDATE_EDV_RULE_NAMES:
-                count += 1
+        field_type = field.get('type', '')
+        if field_type.upper() in {t.upper() for t in DROPDOWN_TYPES}:
+            count += 1
     return count
 
 
@@ -216,7 +212,7 @@ def call_validate_edv_mini_agent(panel_fields: List[Dict], reference_tables: Lis
     with open(tables_input_file, 'w') as f:
         json.dump(reference_tables, f, indent=2)
 
-    prompt = f"""Process fields for panel "{panel_name}" and populate Validate EDV rule parameters, source fields, and destination fields.
+    prompt = f"""Process fields for panel "{panel_name}" and determine which dropdown fields need a Validate EDV rule, then place and populate it.
 
 ## Input Data
 1. Fields with rules: {fields_input_file}
@@ -225,53 +221,53 @@ def call_validate_edv_mini_agent(panel_fields: List[Dict], reference_tables: Lis
 
 ## Task
 For each field in the input:
-1. Read the field's logic text and examine its rules
-2. For Validate EDV rules ("Validate EDV (Server)" or "Validate External Data Value (Client)"):
-   a. Determine the EDV table name from logic and reference tables
-   b. Populate source_fields (the field being validated + any filter fields)
-   c. Populate destination_fields positionally matching table columns:
-      - Use field variableNames for columns that map to form fields
-      - Use "-1" for columns that should be skipped
-   d. Build params:
-      - Simple string (table name) for single-source lookups
-      - JSON object with "param" and "conditionList" for filtered lookups
-3. For non-Validate-EDV rules, leave them completely unchanged
+1. Read the field's logic text
+2. Check if the field is a dropdown — Validate EDV rules are ALWAYS placed on dropdown fields
+3. If dropdown, check if it is parent or child (keywords: "based on", "depends on", "filtered by")
+4. Check if the logic mentions auto-populating/deriving other fields from an EDV/reference table
+5. If a Validate EDV rule is needed, PLACE it on the field and fill in:
+   a. source_fields: the dropdown field itself + any additional filter fields
+   b. destination_fields: positionally matching table columns (variableName for mapped, "-1" for skipped)
+   c. params: simple table name string OR JSON with "param" and "conditionList" for filtered lookups
+   d. _reasoning: explanation of the mapping
+6. All pre-existing rules on every field must be passed through UNCHANGED
 
 ## Key Rules
+- Validate EDV rules are ALWAYS placed on dropdown fields only
+- If parent-child dropdown exists, Validate EDV goes on the CHILD, not the parent
 - destination_fields array is POSITIONAL — each index corresponds to a table column (a1, a2, a3, ...)
 - Use "-1" for any column position that doesn't map to a form field
-- All destination fields must exist in the input field list
-- Simple params: just the table name string, e.g. "COMPANY_CODE"
-- Filtered params: {{"param": "TABLE_NAME", "conditionList": [...]}}
-- DO NOT modify any non-Validate-EDV rules
+- All source and destination fields must exist in the input field list — do NOT invent fields
+- DO NOT modify any pre-existing rules
 
 ## Output
 Write a JSON array to: {output_file}
 
-The output should have the same structure as input, but with Validate EDV rules having populated params, source_fields, and destination_fields:
+The output should have the same structure as input, but with Validate EDV rules ADDED to dropdown fields that need them:
 
 ```json
 [
   {{
-    "field_name": "Field Name",
-    "type": "TEXT",
+    "field_name": "Pin Code",
+    "type": "DROPDOWN",
     "mandatory": true,
     "logic": "...",
     "rules": [
       {{
         "id": 1,
+        "rule_name": "EDV Dropdown (Client)",
+        "source_fields": ["__pin_code__"],
+        "destination_fields": [],
+        "params": {{}},
+        "_reasoning": "Pre-existing rule — unchanged"
+      }},
+      {{
+        "id": 2,
         "rule_name": "Validate EDV (Server)",
         "source_fields": ["__pin_code__"],
         "destination_fields": ["__city__", "__district__", "__state__", "__country__"],
         "params": "PIN-CODE",
-        "_reasoning": "Explanation of table mapping and column-to-field correspondence"
-      }},
-      {{
-        "id": 2,
-        "rule_name": "Some Other Rule",
-        "source_fields": ["__field1__"],
-        "destination_fields": ["__field2__"],
-        "_reasoning": "Unchanged from input"
+        "_reasoning": "Placed by Validate EDV agent. PIN-CODE table columns a2-a5 map to city, district, state, country."
       }}
     ],
     "variableName": "__pin_code__"
@@ -280,8 +276,8 @@ The output should have the same structure as input, but with Validate EDV rules 
 ```
 
 IMPORTANT:
-- Only modify Validate EDV rules — all other rules must be passed through unchanged
-- Keep all existing fields and attributes from input
+- This agent PLACES new Validate EDV rules — they do NOT exist in the input
+- Keep all existing fields, rules, and attributes from input unchanged
 - Log each step to the log file
 """
 
@@ -289,8 +285,8 @@ IMPORTANT:
         print(f"\n{'='*70}")
         print(f"PROCESSING PANEL: {panel_name}")
         print(f"  Fields: {len(panel_fields)}")
+        print(f"  Dropdown Fields: {count_dropdown_fields(panel_fields)}")
         print(f"  Reference Tables: {len(reference_tables)}")
-        print(f"  Validate EDV Rules: {count_validate_edv_rules(panel_fields)}")
         print('='*70)
 
         # Call claude -p with the Validate EDV mini agent
@@ -415,7 +411,6 @@ def main():
     successful_panels = 0
     failed_panels = 0
     skipped_panels = 0
-    passthrough_panels = 0
     total_fields_processed = 0
     all_results = {}
 
@@ -425,19 +420,11 @@ def main():
             skipped_panels += 1
             continue
 
-        # Check if this panel has any Validate EDV rules
-        if not panel_has_validate_edv_rules(panel_fields):
-            print(f"\nPanel '{panel_name}': no Validate EDV rules - passing through unchanged")
-            all_results[panel_name] = panel_fields
-            passthrough_panels += 1
-            total_fields_processed += len(panel_fields)
-            continue
-
         # Filter reference tables for this panel
         referenced_tables = get_referenced_tables_for_panel(panel_fields, all_reference_tables)
 
-        validate_edv_count = count_validate_edv_rules(panel_fields)
-        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {validate_edv_count} Validate EDV rules, {len(referenced_tables)} referenced tables")
+        dropdown_count = count_dropdown_fields(panel_fields)
+        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {dropdown_count} dropdowns, {len(referenced_tables)} referenced tables")
 
         if referenced_tables:
             print("  Referenced tables:")
@@ -477,8 +464,7 @@ def main():
     print("VALIDATE EDV DISPATCHER COMPLETE")
     print("="*70)
     print(f"Total Panels: {len(edv_data)}")
-    print(f"Processed (with Validate EDV): {successful_panels}")
-    print(f"Passed Through (no Validate EDV): {passthrough_panels}")
+    print(f"Successfully Processed: {successful_panels}")
     print(f"Failed: {failed_panels}")
     print(f"Skipped (empty): {skipped_panels}")
     print(f"Total Fields Processed: {total_fields_processed}")
