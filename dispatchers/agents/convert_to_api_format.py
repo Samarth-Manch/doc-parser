@@ -76,9 +76,41 @@ def map_field_type_to_form_tag_type(field_type: str) -> str:
         'MULTIPLE_FILE': 'MULTIPLE_FILE',
         'PANEL': 'PANEL',
         'LABEL': 'LABEL',
-        'BUTTON': 'BUTTON'
+        'BUTTON': 'BUTTON',
+        'ARRAY_HDR': 'ARRAY_HDR',
+        'ARRAY_END': 'ARRAY_END'
     }
     return type_mapping.get(field_type, 'TEXT')
+
+
+def set_header_metadata_ids(metadatas: List[Dict]) -> int:
+    """
+    Set headerMetadataId on fields between ARRAY_HDR and ARRAY_END.
+
+    Fields between an ARRAY_HDR and its matching ARRAY_END (inclusive of
+    ARRAY_END) get headerMetadataId set to the ARRAY_HDR's id.
+
+    Returns:
+        Number of fields updated
+    """
+    updated = 0
+    array_hdr_id = None
+
+    for meta in metadatas:
+        ftype = meta.get('formTag', {}).get('type', '')
+
+        if ftype == 'ARRAY_HDR':
+            array_hdr_id = meta['id']
+        elif ftype == 'ARRAY_END':
+            if array_hdr_id is not None:
+                meta['headerMetadataId'] = array_hdr_id
+                updated += 1
+            array_hdr_id = None
+        elif array_hdr_id is not None:
+            meta['headerMetadataId'] = array_hdr_id
+            updated += 1
+
+    return updated
 
 
 def load_rule_schemas(schema_path: str = None) -> Dict[str, Dict]:
@@ -235,12 +267,14 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
         form_fill_rule['sourceType'] = source_type
 
     # Add conditional fields only when they have values
-    conditional_values = rule.get('conditional_values', [])
+    # Support both camelCase (from agent output) and snake_case keys
+    conditional_values = rule.get('conditionalValues', rule.get('conditional_values', []))
     condition = rule.get('condition', '')
+    condition_value_type = rule.get('conditionValueType', 'TEXT')
     if conditional_values or condition:
         form_fill_rule["conditionalValues"] = conditional_values if conditional_values else []
         form_fill_rule["condition"] = condition if condition else "IN"
-        form_fill_rule["conditionValueType"] = "TEXT"
+        form_fill_rule["conditionValueType"] = condition_value_type
 
     # Add params if present
     if 'params' in rule and rule['params']:
@@ -480,6 +514,19 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     # Build parent-child dropdown relationships
     parent_child_map = _build_parent_child_dropdown_map(edv_data)
 
+    # Find max existing IDs in the schema to continue from
+    max_metadata_id = max((m['id'] for m in metadatas), default=0)
+    max_form_tag_id = max((m.get('formTag', {}).get('id', 0) for m in metadatas), default=0)
+    max_prefill_id = 0
+    for m in metadatas:
+        pf = m.get('preFillData', {})
+        if isinstance(pf, dict) and pf.get('id', 0) > max_prefill_id:
+            max_prefill_id = pf['id']
+
+    new_metadata_counter = max_metadata_id + 1
+    new_form_tag_counter = max_form_tag_id + 1
+    new_prefill_counter = max_prefill_id + 1
+
     # Stats tracking
     fields_matched = 0
     fields_with_rules = 0
@@ -497,6 +544,69 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
             variable_name = field.get('variableName', sanitize_variable_name(field_name))
 
             if field_name not in schema_fields_in_panel:
+                # RuleCheck is a session-based control field added by the
+                # session_based_dispatcher — create a new metadata entry for it
+                if field_name == 'RuleCheck' and rules:
+                    new_field_id = new_metadata_counter
+                    new_metadata_counter += 1
+                    new_ftag_id = new_form_tag_counter
+                    new_form_tag_counter += 1
+                    new_pf_id = new_prefill_counter
+                    new_prefill_counter += 1
+
+                    short_var = generate_short_variable_name(field_name, new_field_id)
+                    id_map[variable_name] = new_field_id
+
+                    new_meta = {
+                        "id": new_field_id,
+                        "signMetadataId": metadatas[0].get('signMetadataId', 1) if metadatas else 1,
+                        "upperLeftX": 0.0, "upperLeftY": 0.0,
+                        "lowerRightX": 0.0, "lowerRightY": 0.0,
+                        "page": 1, "fontSize": 12, "fontStyle": "Courier",
+                        "scaleX": 1.0, "scaleY": 1.0,
+                        "mandatory": False, "editable": False,
+                        "formTag": {
+                            "id": new_ftag_id,
+                            "name": field_name,
+                            "standardField": False,
+                            "type": "TEXT"
+                        },
+                        "variableName": short_var,
+                        "preFillData": {"id": new_pf_id, "name": field_name, "value": ""},
+                        "groupName": "", "helpText": "", "placeholder": " ",
+                        "exportable": False, "visible": True, "pdfFill": False,
+                        "formOrder": 0.0, "exportLabel": "",
+                        "exportToBulkTemplate": False, "characterSpace": 0.0,
+                        "encryptValue": False, "htmlContent": "",
+                        "formFillDataEnable": False, "reportVisible": False,
+                        "formTagValidations": [], "extendedFormFillLocations": [],
+                        "formFillMetaTranslations": [], "formFillRules": []
+                    }
+
+                    for rule in rules:
+                        form_fill_rule = create_form_fill_rule(rule, new_field_id, id_map, rule_id_counter)
+                        new_meta['formFillRules'].append(form_fill_rule)
+                        rule_id_counter += 1
+                        total_rules_injected += 1
+
+                    # Insert right after the panel header
+                    panel_idx = next(
+                        (i for i, m in enumerate(metadatas)
+                         if m.get('formTag', {}).get('name') == panel_name
+                         and m.get('formTag', {}).get('type') == 'PANEL'),
+                        None
+                    )
+                    if panel_idx is not None:
+                        metadatas.insert(panel_idx + 1, new_meta)
+                        panel_field_map = _build_schema_panel_map(metadatas)
+                    else:
+                        metadatas.append(new_meta)
+
+                    fields_matched += 1
+                    fields_with_rules += 1
+                    print(f"  Created RuleCheck field (id={new_field_id}) in panel '{panel_name}' with {len(rules)} session rules")
+                    continue
+
                 if rules:
                     fields_unmatched.append(f"{field_name} (panel: {panel_name})")
                 continue
@@ -527,6 +637,11 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                 total_rules_injected += 1
                 execute_rules_added += 1
                 print(f"  Added EXECUTE rule to parent '{field_name}' for {len(child_variables)} child(ren)")
+
+    # Set headerMetadataId on fields between ARRAY_HDR and ARRAY_END
+    array_fields_updated = set_header_metadata_ids(metadatas)
+    if array_fields_updated:
+        print(f"  Set headerMetadataId on {array_fields_updated} fields inside ARRAY sections")
 
     stats = {
         'fields_matched': fields_matched,
@@ -801,6 +916,11 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
             form_order += 0.0001
 
     template["documentTypes"].append(doc_type)
+
+    # Set headerMetadataId on fields between ARRAY_HDR and ARRAY_END
+    array_fields_updated = set_header_metadata_ids(doc_type["formFillMetadatas"])
+    if array_fields_updated:
+        print(f"  Set headerMetadataId on {array_fields_updated} fields inside ARRAY sections")
 
     return {"template": template}
 

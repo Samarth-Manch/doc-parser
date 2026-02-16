@@ -29,7 +29,11 @@ def count_rules_needing_conditions(panel_fields: List[Dict]) -> int:
     """
     count = 0
     condition_keywords = [
-        'if ', 'when ', 'based on', 'always invisible', 'always disabled',
+        'if ', 'when ', 'based on',
+        'always invisible', 'always disabled', 'always mandatory',
+        'always non-mandatory', 'always enabled', 'always visible',
+        'by default invisible', 'by default disabled', 'by default mandatory',
+        'by default non-mandatory', 'by default enabled', 'by default visible',
         'non-editable', 'hidden', 'visible only when', 'mandatory if'
     ]
 
@@ -76,48 +80,107 @@ def call_conditional_logic_mini_agent(panel_fields: List[Dict],
 2. Log file: {log_file}
 
 ## Task
-For each field in the input:
-1. Read the logic text of **ALL** fields in the panel (cross-field analysis is critical)
-2. Build a map of field dependencies by analyzing which fields mention other fields in their logic
-3. For each rule on the current field:
-   a. Check if the rule needs conditional logic based on the field's logic
-   b. For visibility/mandatory rules (Make Visible, Make Invisible, Make Mandatory, etc.),
-      POPULATE source_fields and destination_fields by cross-field analysis:
-      - source_fields: The field whose value triggers the condition (usually the current field)
-      - destination_fields: ALL fields whose logic mentions this source field
-        * Search through ALL other fields' logic in the panel
-        * Find fields with logic like "if [current field]", "based on [current field]", "when [current field] is"
-        * These are your destination fields
-   c. Determine the condition operator (IN, NOT_IN, or BETWEEN)
-   d. Extract the conditional values from the logic
-   e. Determine the condition value type (typically TEXT)
-   f. Add conditionalValues, condition, and conditionValueType fields to the rule
+**YOUR RESPONSIBILITY**: Populate source_fields and destination_fields for visibility/mandatory rules AND add conditional logic.
 
-**Critical**: For a dropdown with visibility/mandatory rules, you MUST read the logic of ALL other fields
-to find which ones mention this dropdown. Do NOT guess relationships.
+### Step 1: Read ALL fields' logic
+Read the logic text of **ALL** fields in the panel to understand field relationships.
+
+### Step 2: Check where visibility/mandatory rules are placed
+**CHECK FIRST** - determine if rules are ALREADY on controller (correct) or on affected fields (wrong):
+
+**CASE A: Rules ALREADY on controller (correct placement)**
+```
+Controller field already has: Make Visible, Make Invisible rules
+Affected fields' logic: "If controller is Yes, make visible"
+→ Rules are CORRECTLY placed - just populate source/dest
+→ Do NOT create new rules
+```
+
+**CASE B: Rules on affected fields (wrong placement)**
+```
+Affected fields have: Make Visible rules (each referencing controller)
+→ Rules are on WRONG fields - need consolidation
+```
+
+### Step 3: Take appropriate action
+**For CASE A (rules already on controller):**
+1. Read logic of all affected fields (fields that mention this controller)
+2. Populate source_fields = controller variable name
+3. Populate destination_fields = all affected field variable names
+4. Add conditional logic (conditionalValues, condition, conditionValueType)
+5. **Do NOT create new rules - just update existing ones**
+
+**For CASE B (rules on affected fields):**
+1. Group rules by source field (the controller)
+2. Combine destinations into ONE rule per condition
+3. Create consolidated rule on controller field
+4. Keep existing rules on affected fields
+
+### Step 4: Add conditional logic to ALL rules
+For each rule:
+   a. Determine the condition operator (IN, NOT_IN, or BETWEEN)
+   b. Extract the conditional values from the logic
+   c. Determine the condition value type (typically TEXT)
+   d. Add conditionalValues, condition, and conditionValueType fields
+
+**Critical**: Check placement FIRST. If rules are already on controller, just populate fields - don't create duplicates!
 
 ## Key Rules
-- For conditional visibility/mandatory rules, POPULATE source_fields and destination_fields by analyzing ALL fields' logic
-- To find destination fields: search through ALL other fields' logic for mentions of the source field
+- **NO DUPLICATES**: If rules are ALREADY on controller field, just populate source/dest - do NOT create new rules
+- **CHECK PLACEMENT FIRST**: Determine if rules are on controller (correct) or affected fields (wrong)
+- **If on controller**: Just add source_fields, destination_fields, and conditional logic to existing rules
+- **If on affected fields**: Consolidate onto controller while keeping originals on affected fields
+- Group rules by rule_name and conditionalValues, combine destinations into ONE rule
+- Controller field gets ONE rule per condition with multiple destinations
 - The condition operator is ALWAYS one of: IN, NOT_IN, or BETWEEN
-- For "Always Invisible": use condition: "NOT_IN", conditionalValues: ["Invisible"]
-- For "Always Disabled": use condition: "NOT_IN", conditionalValues: ["Disable"]
+- For "Always/By default Invisible": use condition: "NOT_IN", conditionalValues: ["Invisible"]
+- For "Always/By default Disabled": use condition: "NOT_IN", conditionalValues: ["Disable"]
+- For "Always/By default Mandatory": use condition: "NOT_IN", conditionalValues: ["Mandatory"]
+- For "Always/By default Non-Mandatory": use condition: "NOT_IN", conditionalValues: ["Non Mandatory"]
+- For "Always/By default Enabled": use condition: "NOT_IN", conditionalValues: ["Enable"]
+- For "Always/By default Visible": use condition: "NOT_IN", conditionalValues: ["Visible"]
+- "Always" and "By default" are equivalent keywords — both mean the rule fires unconditionally using NOT_IN
 - conditionalValues is ALWAYS an array of strings
-- If logic has NO conditions, do NOT add conditional fields
 
-## Cross-Field Analysis Example
-If "Field A" dropdown has a Make Visible rule:
-1. Read logic of ALL fields in panel
-2. Find fields mentioning "Field A" in their logic:
-   - "Field B" logic: "If Field A is X, make mandatory"
-   - "Field C" logic: "If Field A is X, show this"
-   - "Field D" logic: "Always visible" (no mention)
-3. destination_fields = ["__field_b__", "__field_c__"]
+## Example 1: Rules ALREADY on Controller (Correct - No Consolidation Needed)
+**Input:**
+```
+Field A (controller): Has Make Visible, Make Invisible rules (source/dest empty)
+Field B logic: "If Field A is Yes, make visible"
+Field C logic: "If Field A is Yes, make visible"
+Field D logic: "If Field A is Yes, make visible"
+Field B, C, D: rules=[] (no visibility rules on affected fields)
+```
+
+**Output (just populate source/dest, no new rules):**
+```
+Field A:
+  - Make Visible with source="Field A", dest=["Field B","Field C","Field D"], values=["Yes"], condition="IN"
+  - Make Invisible with source="Field A", dest=["Field B","Field C","Field D"], values=["No"], condition="IN"
+Field B, C, D: rules=[] (still empty - no rules to add)
+```
+
+## Example 2: Rules on Affected Fields (Wrong - Needs Consolidation)
+**Input:**
+```
+Field A (controller): rules=[]
+Field B: Make Visible, Make Invisible rules (referencing Field A)
+Field C: Make Visible, Make Invisible rules (referencing Field A)
+Field D: Make Visible, Make Invisible rules (referencing Field A)
+```
+
+**Output (consolidated on controller, keeping originals):**
+```
+Field A:
+  - Make Visible with source="Field A", dest=["Field B","Field C","Field D"], values=["Yes"]
+  - Make Invisible with source="Field A", dest=["Field B","Field C","Field D"], values=["No"]
+Field B, C, D: Original Make Visible and Make Invisible rules KEPT
+```
 
 ## Special Cases
 
-### Always Invisible / Hidden
-Logic: "Always invisible", "Hidden", "Never visible"
+### Always/By Default Invisible / Hidden
+Logic: "Always invisible", "By default invisible", "Hidden", "Never visible"
 Add:
 ```json
 {{
@@ -127,8 +190,8 @@ Add:
 }}
 ```
 
-### Always Disabled / Non-Editable
-Logic: "Always disabled", "Non-editable", "Read-only", "System-generated"
+### Always/By Default Disabled / Non-Editable
+Logic: "Always disabled", "By default disabled", "Non-editable", "Read-only", "System-generated"
 Add:
 ```json
 {{
@@ -138,12 +201,56 @@ Add:
 }}
 ```
 
-### Conditional Based on Value
-Logic: "If dropdown is 'Yes', make visible", "If vendor type is ZDES, ZDOM"
+### Always/By Default Mandatory
+Logic: "Always mandatory", "By default mandatory"
 Add:
 ```json
 {{
-    "conditionalValues": ["Yes"],
+    "conditionalValues": ["Mandatory"],
+    "condition": "NOT_IN",
+    "conditionValueType": "TEXT"
+}}
+```
+
+### Always/By Default Non-Mandatory
+Logic: "Always non-mandatory", "By default non-mandatory"
+Add:
+```json
+{{
+    "conditionalValues": ["Non Mandatory"],
+    "condition": "NOT_IN",
+    "conditionValueType": "TEXT"
+}}
+```
+
+### Always/By Default Enabled
+Logic: "Always enabled", "By default enabled"
+Add:
+```json
+{{
+    "conditionalValues": ["Enable"],
+    "condition": "NOT_IN",
+    "conditionValueType": "TEXT"
+}}
+```
+
+### Always/By Default Visible
+Logic: "Always visible", "By default visible"
+Add:
+```json
+{{
+    "conditionalValues": ["Visible"],
+    "condition": "NOT_IN",
+    "conditionValueType": "TEXT"
+}}
+```
+
+### Conditional Based on Value
+Logic: "If dropdown is 'X', make visible", "If field value is A, B, C"
+Add:
+```json
+{{
+    "conditionalValues": ["X"],
     "condition": "IN",
     "conditionValueType": "TEXT"
 }}
@@ -152,38 +259,82 @@ Add:
 ## Output
 Write a JSON array to: {output_file}
 
-The output should have the same structure as input, but with conditional logic fields ADDED and source/destination POPULATED for conditional rules:
+The output should have the same structure as input, but with:
+1. **If rules ALREADY on controller**: Source/dest/conditional fields POPULATED on existing rules (no new rules)
+2. **If rules on affected fields**: Consolidated rules ADDED to controller, originals KEPT on affected fields
+3. Conditional logic fields ADDED to all rules (conditionalValues, condition, conditionValueType)
 
+**Example: Rules already on controller (most common case):**
 ```json
 [
   {{
-    "field_name": "Field B",
-    "type": "TEXT",
-    "mandatory": false,
-    "logic": "If Field A is 'X', then this field becomes mandatory. Otherwise invisible.",
+    "field_name": "Field A",
+    "type": "EXTERNAL_DROP_DOWN_VALUE",
+    "logic": "Dropdown with values Yes/No",
     "rules": [
       {{
         "id": 1,
-        "rule_name": "Make Mandatory (Client)",
-        "source_fields": ["__field_a__"],
-        "destination_fields": ["__field_b__"],
-        "conditionalValues": ["X"],
-        "condition": "IN",
-        "conditionValueType": "TEXT",
-        "_reasoning": "Makes Field B mandatory when Field A is X. Source: field_a (trigger). Destination: field_b (affected)."
+        "rule_name": "EDV Dropdown (Client)",
+        "source_fields": [],
+        "destination_fields": ["__field_a__"],
+        ...
       }},
       {{
         "id": 2,
-        "rule_name": "Make Invisible (Client)",
+        "rule_name": "Make Visible (Client)",
         "source_fields": ["__field_a__"],
-        "destination_fields": ["__field_b__"],
-        "conditionalValues": ["Y"],
+        "destination_fields": ["__field_b__", "__field_c__", "__field_d__"],
+        "conditionalValues": ["Yes"],
         "condition": "IN",
         "conditionValueType": "TEXT",
-        "_reasoning": "Hides Field B when Field A is Y. Source: field_a (trigger). Destination: field_b (affected)."
+        "_reasoning": "Shows Fields B, C, D when Field A is Yes. Source/dest populated by analyzing affected fields' logic."
+      }},
+      {{
+        "id": 3,
+        "rule_name": "Make Invisible (Client)",
+        "source_fields": ["__field_a__"],
+        "destination_fields": ["__field_b__", "__field_c__", "__field_d__"],
+        "conditionalValues": ["No"],
+        "condition": "IN",
+        "conditionValueType": "TEXT",
+        "_reasoning": "Hides Fields B, C, D when Field A is No. Source/dest populated by analyzing affected fields' logic."
+      }},
+      {{
+        "id": 4,
+        "rule_name": "Make Mandatory (Client)",
+        "source_fields": ["__field_a__"],
+        "destination_fields": ["__field_b__"],
+        "conditionalValues": ["Yes"],
+        "condition": "IN",
+        "conditionValueType": "TEXT",
+        "_reasoning": "Makes Field B mandatory when Field A is Yes."
+      }},
+      {{
+        "id": 5,
+        "rule_name": "Make Non Mandatory (Client)",
+        "source_fields": ["__field_a__"],
+        "destination_fields": ["__field_b__"],
+        "conditionalValues": ["No"],
+        "condition": "IN",
+        "conditionValueType": "TEXT",
+        "_reasoning": "Makes Field B non-mandatory when Field A is No."
       }}
     ],
+    "variableName": "__field_a__"
+  }},
+  {{
+    "field_name": "Field B",
+    "type": "TEXT",
+    "logic": "If Field A is 'Yes', show and make mandatory, otherwise hide and non-mandatory",
+    "rules": [],
     "variableName": "__field_b__"
+  }},
+  {{
+    "field_name": "Field C",
+    "type": "TEXT",
+    "logic": "If Field A is 'Yes', show",
+    "rules": [],
+    "variableName": "__field_c__"
   }}
 ]
 ```
@@ -208,11 +359,23 @@ The output should have the same structure as input, but with conditional logic f
 ```
 
 IMPORTANT:
-- For conditional rules, POPULATE source_fields (trigger field) and destination_fields (affected field)
-- For "always" rules (always invisible/disabled), source_fields remains empty
-- Keep all existing fields, rules, and attributes from input unchanged
+- **CHECK PLACEMENT FIRST**: Determine if rules are ALREADY on controller or on affected fields
+- **If on controller**: Just populate source_fields and destination_fields - do NOT create new rules
+- **If on affected fields**: Consolidate onto controller while keeping originals
+- For "always/by default" rules (invisible/disabled/mandatory/non-mandatory/enabled/visible), source_fields remains empty, destination is the field itself
+- **NO DUPLICATES**: Do not create duplicate rules if they already exist on controller field
 - ADD the three conditional fields where needed: conditionalValues, condition, conditionValueType
+- Group rules by rule_name and conditionalValues before combining destinations
 - Log each step to the log file
+
+## Implementation Steps:
+1. Read all fields' logic to build relationship map
+2. Identify controller fields (mentioned in other fields' logic)
+3. **Check if visibility/mandatory rules are ALREADY on controller fields**
+4. **If YES**: Just populate source/dest/conditional - skip to step 6
+5. **If NO** (rules on affected fields): Group and consolidate onto controller
+6. Add conditional logic to all rules
+7. Write output preserving all existing rules
 """
 
     try:
