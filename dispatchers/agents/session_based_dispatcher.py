@@ -154,7 +154,7 @@ def build_session_rules(all_panels: Dict[str, List[Dict]],
             "rule_name": "Make Visible - Session Based (Client)",
             "source_fields": [RULE_CHECK_VARIABLE],
             "destination_fields": first_visible,
-            "params": {"value": "FIRST_PARTY"},
+            "params": "FIRST_PARTY",
             "conditionalValues": ["Visible"],
             "condition": "NOT_IN",
             "conditionValueType": "TEXT",
@@ -168,7 +168,7 @@ def build_session_rules(all_panels: Dict[str, List[Dict]],
             "rule_name": "Make Invisible - Session Based (Client)",
             "source_fields": [RULE_CHECK_VARIABLE],
             "destination_fields": first_invisible,
-            "params": {"value": "FIRST_PARTY"},
+            "params": "FIRST_PARTY",
             "conditionalValues": ["Invisible"],
             "condition": "NOT_IN",
             "conditionValueType": "TEXT",
@@ -182,7 +182,7 @@ def build_session_rules(all_panels: Dict[str, List[Dict]],
             "rule_name": "Make Visible - Session Based (Client)",
             "source_fields": [RULE_CHECK_VARIABLE],
             "destination_fields": second_visible,
-            "params": {"value": "SECOND_PARTY"},
+            "params": "SECOND_PARTY",
             "conditionalValues": ["Visible"],
             "condition": "NOT_IN",
             "conditionValueType": "TEXT",
@@ -196,7 +196,7 @@ def build_session_rules(all_panels: Dict[str, List[Dict]],
             "rule_name": "Make Invisible - Session Based (Client)",
             "source_fields": [RULE_CHECK_VARIABLE],
             "destination_fields": second_invisible,
-            "params": {"value": "SECOND_PARTY"},
+            "params": "SECOND_PARTY",
             "conditionalValues": ["Invisible"],
             "condition": "NOT_IN",
             "conditionValueType": "TEXT",
@@ -274,7 +274,7 @@ def main():
     session_rules = build_session_rules(conditional_data, initiator_fields, vendor_fields)
 
     for rule in session_rules:
-        print(f"  {rule['rule_name']} ({rule['params']['value']}): {len(rule['destination_fields'])} destination fields")
+        print(f"  {rule['rule_name']} ({rule['params']}): {len(rule['destination_fields'])} destination fields")
 
     # Step 4: Create the RuleCheck field and inject into first panel
     rule_check_field = {
@@ -287,16 +287,21 @@ def main():
     }
 
     all_results = {}
-    first_panel = True
+    first_panel_done = False
+    panel_names = list(conditional_data.keys())
 
-    for panel_name, panel_fields in conditional_data.items():
-        if first_panel:
-            # Insert RuleCheck at the start of the first panel
+    for idx, (panel_name, panel_fields) in enumerate(conditional_data.items()):
+        all_results[panel_name] = panel_fields
+
+        # Insert RuleCheck AFTER the first panel (as the first field in the second panel)
+        if not first_panel_done and idx == 0 and len(panel_names) > 1:
+            # Mark that we've passed the first panel
+            first_panel_done = True
+        elif not first_panel_done and idx == 1:
+            # Insert RuleCheck as the first field of the second panel
             all_results[panel_name] = [rule_check_field] + panel_fields
-            print(f"\n  Inserted 'RuleCheck' field at start of panel '{panel_name}' with {len(session_rules)} session rules")
-            first_panel = False
-        else:
-            all_results[panel_name] = panel_fields
+            print(f"\n  Inserted 'RuleCheck' field at start of panel '{panel_name}' (after first panel) with {len(session_rules)} session rules")
+            first_panel_done = True
 
     # Step 5: Write output
     print(f"\nWriting output to: {output_file}")
@@ -312,7 +317,7 @@ def main():
     print(f"RuleCheck field placed in: {list(conditional_data.keys())[0]}")
     print(f"Session rules on RuleCheck: {len(session_rules)}")
     for rule in session_rules:
-        param = rule["params"]["value"]
+        param = rule["params"]
         action = "VISIBLE" if "Visible" in rule["rule_name"] else "INVISIBLE"
         print(f"  {action} ({param}): {len(rule['destination_fields'])} fields")
     print(f"Total destination mappings: {total_dest}")

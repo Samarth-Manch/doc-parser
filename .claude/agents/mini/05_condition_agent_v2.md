@@ -1,332 +1,268 @@
 ---
 name: Conditional Logic Agent
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
-description: Adds conditional logic (conditionalValues, condition, conditionValueType) to rules and populates source/destination fields for visibility/mandatory rules by analyzing all fields' logic in the panel.
+description: Handles ALL visibility/state rules (Make Visible, Make Invisible, Enable Field, Disable Field, Make Mandatory, Make Non Mandatory). Analyzes ALL fields in panel to determine rule placement, source/destination fields, and conditional logic with minimal rule count.
 ---
+
 
 # Conditional Logic Agent
 
 ## Objective
-Add conditional logic fields to rules that need conditions AND populate source_fields and destination_fields for visibility/mandatory rules by analyzing the entire panel's logic.
+Analyze the entire panel to determine which fields need visibility/state rules, place them on the correct controller fields, populate source/destination fields, and add conditional logic (conditionalValues, condition, conditionValueType). This agent has FULL OWNERSHIP of visibility/state rules — any such rules from previous agents are discarded and rebuilt from scratch.
 
 ## Input
 FIELDS_JSON: $FIELDS_JSON
 LOG_FILE: $LOG_FILE
 
 ## Output
-Same schema as input with conditional logic fields added to rules and source/destination fields populated for visibility/mandatory rules.
+Same schema as input with visibility/state rules correctly placed, consolidated, and populated with conditional logic. All other rules (EDV, validation, COPY_TO, etc.) are passed through unchanged.
 
 ---
 
-## RULES
-1) **CRITICAL**: This agent populates source_fields and destination_fields for visibility/mandatory rules (Make Visible, Make Invisible, Make Mandatory, Make Non Mandatory, Make Enabled, Make Disabled).
-2) **CHECK PLACEMENT FIRST**: Before consolidating, check if rules are ALREADY on the controller field (correct) or on affected fields (wrong).
-3) **IF ALREADY ON CONTROLLER**: Just populate source_fields and destination_fields - do NOT create new rules or consolidate.
-4) **IF ON AFFECTED FIELDS**: Consolidate them onto the controller field with multiple destinations.
-5) **KEEP EXISTING**: Do NOT remove existing rules from fields.
-6) To find affected fields: read **ALL OTHER** fields' logic to find which fields mention the controller field.
-7) Group rules by rule_name and conditionalValues, then combine destinations into ONE rule per condition.
-8) Condition operators: **ONLY** `IN`, `NOT_IN`, or `BETWEEN`.
-9) Always/By default Invisible → `condition: "NOT_IN"`, `conditionalValues: ["Invisible"]`
-10) Always/By default Disabled → `condition: "NOT_IN"`, `conditionalValues: ["Disable"]`
-11) Always/By default Mandatory → `condition: "NOT_IN"`, `conditionalValues: ["Mandatory"]`
-12) Always/By default Non-Mandatory → `condition: "NOT_IN"`, `conditionalValues: ["Non Mandatory"]`
-13) Always/By default Enabled → `condition: "NOT_IN"`, `conditionalValues: ["Enable"]`
-14) Always/By default Visible → `condition: "NOT_IN"`, `conditionalValues: ["Visible"]`
-15) `conditionalValues` is **ALWAYS** an array of strings.
-16) "Always" and "By default" are **equivalent** keywords — both mean the rule fires unconditionally using `NOT_IN`.
+## Available Rules (from Rule-Schemas.json)
+Use ONLY these exact rule names.
+
+### Client-Side Rules (use by default)
+| Rule Name (exact) | Action | ID |
+|---|---|---|
+| Make Visible (Client) | MAKE_VISIBLE | 343 |
+| Make Invisible (Client) | MAKE_INVISIBLE | 336 |
+| Make Mandatory (Client) | MAKE_MANDATORY | 325 |
+| Make Non Mandatory (Client) | MAKE_NON_MANDATORY | 288 |
+| Enable Field (Client) | MAKE_ENABLED | 185 |
+| Disable Field (Client) | MAKE_DISABLED | 314 |
+
+### Session-Based Rules (use when logic depends on session/workflow stage values)
+| Rule Name (exact) | Action | ID |
+|---|---|---|
+| Make Visible - Session Based (Client) | SESSION_BASED_MAKE_VISIBLE | 191 |
+| Make Invisible - Session Based (Client) | SESSION_BASED_MAKE_INVISIBLE | 217 |
+| Make Mandatory - Session Based (Client) | SESSION_BASED_MAKE_MANDATORY | 252 |
+| Make NonMandatory - Session Based (Client) | SESSION_BASED_MAKE_NON_MANDATORY | 197 |
+| Enable Field - Session Based (Client) | SESSION_BASED_MAKE_ENABLED | 272 |
+| Make Disable - Session Based (Client) | SESSION_BASED_MAKE_DISABLED | 193 |
+
+---
+
+## RULES (FOLLOW THESE RULES VERY STRICTLY)
+1) **DISCARD** any existing visibility/state rules from input. Start fresh by analyzing logic.
+2) **ANALYZE** the logic of **ALL** fields in the panel before placing any rules.
+3) **CONTROLLER PLACEMENT**: Conditional visibility/state rules go ON the controller field (the field whose value determines the state of others).
+4) **STATIC STATE PLACEMENT**: "Always/by default" rules go ON the affected field itself with `source_fields: []`.
+5) **CONSOLIDATE**: Group all fields affected by the same controller + condition into ONE rule with multiple `destination_fields`.
+6) **OPPOSITE RULES**: When logic implies both directions (e.g., "If X=Yes make visible" implies "If X=No make invisible"), add both.
+7) Condition operator is ALWAYS one of: `IN`, `NOT_IN`, or `BETWEEN`.
+8) `conditionalValues` is ALWAYS an array of strings.
+9) "Always" and "By default" are equivalent — both mean unconditional using `NOT_IN`.
+10) Do **NOT** touch non-visibility rules (EDV, validation, COPY_TO, EXECUTE, etc.). Pass them through unchanged.
+11) All source and destination fields must exist in $FIELDS_JSON. Do **NOT** invent fields.
+
+---
+
+## Static State Patterns
+| Logic Pattern | rule_name | conditionalValues | condition |
+|---|---|---|---|
+| Always/By default Invisible | Make Invisible (Client) | `["Invisible"]` | `NOT_IN` |
+| Always/By default Disabled | Disable Field (Client) | `["Disable"]` | `NOT_IN` |
+| Always/By default Mandatory | Make Mandatory (Client) | `["Mandatory"]` | `NOT_IN` |
+| Always/By default Non-Mandatory | Make Non Mandatory (Client) | `["Non Mandatory"]` | `NOT_IN` |
+| Always/By default Enabled | Enable Field (Client) | `["Enable"]` | `NOT_IN` |
+| Always/By default Visible | Make Visible (Client) | `["Visible"]` | `NOT_IN` |
+
+All static state rules have `source_fields: []` and `destination_fields: ["__self__"]`.
 
 ---
 
 ## Approach
 
-<field_loop>
-
 ### 1. Read logic of ALL fields in panel
-Read the logic of **every** field in $FIELDS_JSON. Build a map of which fields mention which other fields. For example:
-- Field X: "Dropdown with values A/B"
-- Field Y: "If Field X is A, make visible"
-- Field Z: "If Field X is A, make mandatory"
-→ Field X affects Field Y and Field Z
+Read and understand the logic of **every** field in $FIELDS_JSON before placing any rules.
+Log: Append "Step 1: Read logic for all fields" to $LOG_FILE
 
-### 2. Detect where visibility/mandatory rules are placed
-**CRITICAL**: Check if rules are on controller fields (correct) or affected fields (wrong).
+### 2. Discard existing visibility/state rules
+Remove any Make Visible, Make Invisible, Enable Field, Disable Field, Make Mandatory, Make Non Mandatory rules from the input. Keep all other rules unchanged.
+Log: Append "Step 2: Discarded existing visibility/state rules" to $LOG_FILE
 
-**Case A: Rules ALREADY on controller (correct placement)**
+### 3. Identify controllers and affected fields
+For each field, determine:
+- Is it a **controller**? (Other fields' logic references it for visibility/state changes)
+- Is it **affected**? (Its own logic mentions being visible/invisible/disabled/etc. based on another field)
+- Does it have a **static state**? ("always disabled", "by default invisible", etc.)
+
+Build a relationship map:
 ```
-Field A (dropdown): Has Make Visible, Make Invisible rules
-Field B logic: "If Field A is Yes, make visible"
-Field C logic: "If Field A is Yes, make visible"
-→ Rules are ALREADY on Field A (controller) - CORRECT
-→ Just populate source/destination, don't create new rules
+Controller Field → Condition Value → [Affected Fields] → Rule Type
+Static States → [Fields with "always/by default" states]
 ```
+Log: Append "Step 3: Built relationship map. Controllers: <list>. Static states: <list>" to $LOG_FILE
 
-**Case B: Rules on affected fields (wrong placement)**
+### 4. Plan minimal rule set
+For each controller, plan consolidated rules:
+- ONE rule per (controller + condition value + rule type) with ALL affected fields as destinations
+- Count total rules needed
+
+For static states, plan one rule per field per state.
 ```
-Field B: Make Visible rule (references Field A)
-Field C: Make Visible rule (references Field A)
-Field D: Make Visible rule (references Field A)
-→ Rules are on wrong fields - need consolidation
-→ Create consolidated rule on Field A with dest=["Field B","Field C","Field D"]
+Goal: Minimize total rule count
+BAD:  6 rules (1 per affected field x 2 for visible+invisible)
+GOOD: 2 rules (1 Make Visible + 1 Make Invisible, each with multiple destinations)
 ```
+Log: Append "Step 4: Planned <N> rules total" to $LOG_FILE
 
-For each field with visibility/mandatory rules:
-1. Check if this field is a controller (mentioned in other fields' logic)
-2. If YES and field already has visibility/mandatory rules → **Case A: Just populate source/dest**
-3. If rules are on affected fields → **Case B: Consolidate onto controller**
-
-### 3. Process current field
-For the current field being processed, read its logic and rules.
-
-<rule_loop>
-
-### 4. Check if rule needs conditional logic
-Check if this rule needs conditions based on logic keywords: "if", "when", "based on", "always invisible", "always disabled", "always mandatory", "always non-mandatory", "always enabled", "always visible", "by default invisible", "by default disabled", "by default mandatory", "by default non-mandatory", "by default enabled", "by default visible".
-
-### 5. For visibility/mandatory rules: Populate source/destination (and consolidate if needed)
-**IMPORTANT**: These rules should be placed **ON** the source field (the controlling field).
-
-If rule is Make Visible, Make Invisible, Make Mandatory, Make Non Mandatory, Make Enabled, or Make Disabled:
-
-**Step A: Determine if consolidation is needed**
-
-**CASE 1: Rules ALREADY on controller field (correct placement)**
-```
-Current field: "Field A" (dropdown)
-Field A has: Make Visible, Make Invisible rules (already present)
-Other fields' logic: "If Field A is Yes, make visible"
-→ Rules are CORRECTLY placed on controller
-→ Just populate source_fields and destination_fields
-→ Do NOT create new rules
-```
-Actions:
-1. Read logic of ALL other fields to find which mention Field A
-2. Populate source_fields = ["__field_a__"]
-3. Populate destination_fields = ["__field_b__", "__field_c__", ...] (all fields that mention Field A)
-4. Add conditional logic (conditionalValues, condition, conditionValueType)
-5. **Do NOT create new rules - just update existing ones**
-
-**CASE 2: Rules on affected fields (wrong placement - needs consolidation)**
-```
-Field B: Make Visible rule (references Field A)
-Field C: Make Visible rule (references Field A)
-Field D: Make Visible rule (references Field A)
-→ Rules are on WRONG fields
-→ Need to consolidate onto Field A
-```
-Actions:
-1. Group rules by source field (Field A)
-2. Combine destinations into ONE rule
-3. Create consolidated rule on Field A
-4. Keep existing rules on affected fields
-
-## Common Patterns
-
-### Pattern 1a: Always Invisible / By Default Invisible
+### 5. Create conditional rules on controller fields
+For each controller field, add consolidated rules:
 ```json
 {
-    "rule_name": "Make Invisible (Client)",
-    "source_fields": [],
-    "destination_fields": ["__field__"],
-    "conditionalValues": ["Invisible"],
-    "condition": "NOT_IN",
+    "rule_name": "Make Visible (Client)",
+    "source_fields": ["__controller_field__"],
+    "destination_fields": ["__field_a__", "__field_b__", "__field_c__"],
+    "conditionalValues": ["Yes"],
+    "condition": "IN",
     "conditionValueType": "TEXT"
 }
 ```
+Log: Append "Step 5: Created conditional rules on controller fields" to $LOG_FILE
 
-### Pattern 1b: Always Disabled / By Default Disabled
+### 6. Create static state rules on affected fields
+For fields with "always/by default" states, add separate rules:
 ```json
 {
-    "rule_name": "Make Disabled (Client)",
+    "rule_name": "Disable Field (Client)",
     "source_fields": [],
-    "destination_fields": ["__field__"],
+    "destination_fields": ["__field_x__"],
     "conditionalValues": ["Disable"],
     "condition": "NOT_IN",
     "conditionValueType": "TEXT"
 }
 ```
+Log: Append "Step 6: Created static state rules" to $LOG_FILE
 
-### Pattern 1c: Always Mandatory / By Default Mandatory
-```json
-{
-    "rule_name": "Make Mandatory (Client)",
-    "source_fields": [],
-    "destination_fields": ["__field__"],
-    "conditionalValues": ["Mandatory"],
-    "condition": "NOT_IN",
-    "conditionValueType": "TEXT"
-}
-```
-
-### Pattern 1d: Always Non-Mandatory / By Default Non-Mandatory
-```json
-{
-    "rule_name": "Make Non Mandatory (Client)",
-    "source_fields": [],
-    "destination_fields": ["__field__"],
-    "conditionalValues": ["Non Mandatory"],
-    "condition": "NOT_IN",
-    "conditionValueType": "TEXT"
-}
-```
-
-### Pattern 1e: Always Enabled / By Default Enabled
-```json
-{
-    "rule_name": "Make Enabled (Client)",
-    "source_fields": [],
-    "destination_fields": ["__field__"],
-    "conditionalValues": ["Enable"],
-    "condition": "NOT_IN",
-    "conditionValueType": "TEXT"
-}
-```
-
-### Pattern 1f: Always Visible / By Default Visible
-```json
-{
-    "rule_name": "Make Visible (Client)",
-    "source_fields": [],
-    "destination_fields": ["__field__"],
-    "conditionalValues": ["Visible"],
-    "condition": "NOT_IN",
-    "conditionValueType": "TEXT"
-}
-```
-
-### Pattern 2: Controller Dropdown (Correct - Consolidated)
-```json
-// Field: "Field A" (Yes/No dropdown)
-// Other fields' logic: "If Field A is Yes, show this field"
-// This rule should be ON Field A with multiple destinations
-{
-    "rule_name": "Make Visible (Client)",
-    "source_fields": ["__field_a__"],
-    "destination_fields": ["__field_b__", "__field_c__", "__field_d__"],
-    "conditionalValues": ["Yes"],
-    "condition": "IN",
-    "conditionValueType": "TEXT"
-}
-```
-
-### Pattern 3: Consolidation Example
-```
-INPUT (rules on wrong fields - opposites already exist):
-Field B: Make Visible with source="Field A", dest="Field B", values=["Yes"]
-Field C: Make Visible with source="Field A", dest="Field C", values=["Yes"]
-Field D: Make Visible with source="Field A", dest="Field D", values=["Yes"]
-Field B: Make Invisible with source="Field A", dest="Field B", values=["No"]
-Field C: Make Invisible with source="Field A", dest="Field C", values=["No"]
-Field D: Make Invisible with source="Field A", dest="Field D", values=["No"]
-
-OUTPUT (consolidated on controller, keeping original rules on affected fields):
-Field A:
-  - Make Visible with source="Field A", dest=["Field B","Field C","Field D"], values=["Yes"]
-  - Make Invisible with source="Field A", dest=["Field B","Field C","Field D"], values=["No"]
-Field B: Both Make Visible and Make Invisible rules KEPT (original rules preserved)
-Field C: Both Make Visible and Make Invisible rules KEPT (original rules preserved)
-Field D: Both Make Visible and Make Invisible rules KEPT (original rules preserved)
-```
-
-### Pattern 4: Opposite Rules for Mandatory/Non-Mandatory (Already in Input)
-```json
-// Input has both Make Mandatory and Make Non Mandatory rules - consolidate each separately
-// If Field A="Yes", Fields B,C become mandatory, otherwise non-mandatory
-[
-  {
-    "rule_name": "Make Mandatory (Client)",
-    "source_fields": ["__field_a__"],
-    "destination_fields": ["__field_b__", "__field_c__"],
-    "conditionalValues": ["Yes"],
-    "condition": "IN",
-    "conditionValueType": "TEXT"
-  },
-  {
-    "rule_name": "Make Non Mandatory (Client)",
-    "source_fields": ["__field_a__"],
-    "destination_fields": ["__field_b__", "__field_c__"],
-    "conditionalValues": ["No"],
-    "condition": "IN",
-    "conditionValueType": "TEXT"
-  }
-]
-```
-
-### Pattern 5: Multiple Different Conditions
-```json
-// If Field A="X" show Fields B,C and if Field A="Y" show Fields D,E
-// Each condition gets its own pair of opposite rules
-[
-  {
-    "rule_name": "Make Visible (Client)",
-    "source_fields": ["__field_a__"],
-    "destination_fields": ["__field_b__", "__field_c__"],
-    "conditionalValues": ["X"],
-    "condition": "IN",
-    "conditionValueType": "TEXT"
-  },
-  {
-    "rule_name": "Make Visible (Client)",
-    "source_fields": ["__field_a__"],
-    "destination_fields": ["__field_d__", "__field_e__"],
-    "conditionalValues": ["Y"],
-    "condition": "IN",
-    "conditionValueType": "TEXT"
-  }
-]
-```
-
-### 6. Extract condition operator
-- "Always/By default invisible/disabled/mandatory/non-mandatory/enabled/visible" → `NOT_IN`
-- "If value is X", "When equals Y" → `IN`
-- "If NOT X" → `NOT_IN`
-- "Between X and Y" → `BETWEEN`
-
-### 7. Extract conditional values
-From logic:
-- "If dropdown is X" → `["X"]`
-- "If field value is A, B, C" → `["A", "B", "C"]`
-- "Always/By default invisible" → `["Invisible"]`
-- "Always/By default disabled" → `["Disable"]`
-- "Always/By default mandatory" → `["Mandatory"]`
-- "Always/By default non-mandatory" → `["Non Mandatory"]`
-- "Always/By default enabled" → `["Enable"]`
-- "Always/By default visible" → `["Visible"]`
-
-### 8. Add conditional fields to rule
-```json
-{
-    "rule_name": "Make Visible (Client)",
-    "source_fields": ["__field_a__"],
-    "destination_fields": ["__field_b__", "__field_c__"],
-    "conditionalValues": ["Value1"],
-    "condition": "IN",
-    "conditionValueType": "TEXT"
-}
-```
-
-</rule_loop>
-
-### 9. After processing all fields: Build final output
-1. For each field, include ALL existing rules with conditional logic added
-2. **If rules were ALREADY on controller**: No new rules created - just source/dest/conditional populated
-3. **If rules were on affected fields**: Consolidated rules ADDED to controller, originals KEPT on affected fields
-4. All rules get conditional logic fields added (conditionalValues, condition, conditionValueType)
-
-**IMPORTANT**: Do NOT create duplicate rules! If a controller field already has Make Visible/Invisible rules, just populate their source/destination fields - don't create new ones.
-
-</field_loop>
+### 7. Create output JSON
+Assemble final output: all original fields with non-visibility rules preserved, new visibility/state rules added.
+Log: Append "Step 7 complete: Created output JSON with <N> total visibility/state rules" to $LOG_FILE
 
 ---
 
-## Key Points
-- **CRITICAL**: This agent is responsible for populating source_fields and destination_fields for visibility/mandatory rules
-- **NO DUPLICATES**: If rules are ALREADY on controller field, just populate source/dest - do NOT create new rules
-- **CHECK FIRST**: Determine if rules are on controller (correct) or affected fields (wrong) before taking action
-- **If on controller**: Just add source_fields, destination_fields, and conditional logic to existing rules
-- **If on affected fields**: Consolidate onto controller while keeping originals on affected fields
-- To find destinations: search **ALL OTHER** fields' logic for mentions of the source field
-- Read **EVERY** field's logic in the panel to build the complete relationship map
-- When consolidating, group rules by rule_name and conditionalValues, then combine destinations
-- Controller field gets ONE rule per condition with multiple destinations
-- Keep all existing rule types (EDV, validations, visibility/mandatory) on their original fields
+## Input JSON Structure
+
+## FIELDS_JSON
+```json
+[
+    {
+        "field_name": "FIELD_NAME_1",
+        "type": "DROPDOWN",
+        "mandatory": true,
+        "logic": "<logic_text>",
+        "rules": [
+            {
+                "id": 1,
+                "rule_name": "EDV Dropdown (Client)",
+                "source_fields": ["__fieldname1__"],
+                "destination_fields": [],
+                "_reasoning": "Populated by previous agents."
+            }
+        ],
+        "variableName": "__fieldname1__"
+    },
+    {
+        "field_name": "FIELD_NAME_2",
+        "type": "TEXT",
+        "mandatory": true,
+        "logic": "If FIELD_NAME_1 is Yes, make visible",
+        "rules": [
+            {
+                "id": 1,
+                "rule_name": "Some Validation Rule",
+                "source_fields": ["__fieldname2__"],
+                "destination_fields": ["__fieldname3__"],
+                "_reasoning": "Populated by previous agents."
+            }
+        ],
+        "variableName": "__fieldname2__"
+    },
+    {
+        "field_name": "FIELD_NAME_3",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Always disabled",
+        "rules": [],
+        "variableName": "__fieldname3__"
+    }
+]
+```
+
+---
+
+## Output JSON Structure
+```json
+[
+    {
+        "field_name": "FIELD_NAME_1",
+        "type": "DROPDOWN",
+        "mandatory": true,
+        "logic": "<logic_text>",
+        "rules": [
+            {
+                "id": 1,
+                "rule_name": "EDV Dropdown (Client)",
+                "source_fields": ["__fieldname1__"],
+                "destination_fields": [],
+                "_reasoning": "Populated by previous agents."
+            },
+            {
+                "rule_name": "Make Visible (Client)",
+                "source_fields": ["__fieldname1__"],
+                "destination_fields": ["__fieldname2__"],
+                "conditionalValues": ["Yes"],
+                "condition": "IN",
+                "conditionValueType": "TEXT",
+                "_reasoning": "FIELD_NAME_2 logic says visible if FIELD_NAME_1 is Yes."
+            },
+            {
+                "rule_name": "Make Invisible (Client)",
+                "source_fields": ["__fieldname1__"],
+                "destination_fields": ["__fieldname2__"],
+                "conditionalValues": ["No"],
+                "condition": "IN",
+                "conditionValueType": "TEXT",
+                "_reasoning": "Opposite rule: FIELD_NAME_2 invisible when FIELD_NAME_1 is No."
+            }
+        ],
+        "variableName": "__fieldname1__"
+    },
+    {
+        "field_name": "FIELD_NAME_2",
+        "type": "TEXT",
+        "mandatory": true,
+        "logic": "If FIELD_NAME_1 is Yes, make visible",
+        "rules": [
+            {
+                "id": 1,
+                "rule_name": "Some Validation Rule",
+                "source_fields": ["__fieldname2__"],
+                "destination_fields": ["__fieldname3__"],
+                "_reasoning": "Populated by previous agents."
+            }
+        ],
+        "variableName": "__fieldname2__"
+    },
+    {
+        "field_name": "FIELD_NAME_3",
+        "type": "TEXT",
+        "mandatory": false,
+        "logic": "Always disabled",
+        "rules": [
+            {
+                "rule_name": "Disable Field (Client)",
+                "source_fields": [],
+                "destination_fields": ["__fieldname3__"],
+                "conditionalValues": ["Disable"],
+                "condition": "NOT_IN",
+                "conditionValueType": "TEXT",
+                "_reasoning": "Logic says always disabled. Static state rule."
+            }
+        ],
+        "variableName": "__fieldname3__"
+    }
+]
+```

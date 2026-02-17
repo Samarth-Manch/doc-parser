@@ -184,12 +184,112 @@ def get_rule_schemas() -> Dict[str, Dict]:
     return _rule_schemas_cache
 
 
-def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rule_id_counter: int) -> Dict:
+def _has_yes_no_params(rules: List[Dict]) -> bool:
+    """
+    Check if any rule in the list has YES_NO or YES_NO_OPTIONS in its params.
+
+    Args:
+        rules: List of rule dicts from EDV data
+
+    Returns:
+        True if any rule has YES_NO or YES_NO_OPTIONS in params
+    """
+    for rule in rules:
+        params = rule.get('params', '')
+        if isinstance(params, str):
+            if 'YES_NO' in params or 'YES_NO_OPTIONS' in params:
+                return True
+        elif isinstance(params, dict):
+            params_str = str(params)
+            if 'YES_NO' in params_str or 'YES_NO_OPTIONS' in params_str:
+                return True
+    return False
+
+
+def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_map: Dict[str, Dict[str, int]],
+                           metadatas: List[Dict], global_id_map: Dict[str, int], field_id: int,
+                           edv_data: Dict = None) -> int:
+    """
+    Resolve a variable name to a field ID with panel-scoped priority.
+
+    Resolution order:
+    1. Check if variable is in the current panel (panel-scoped lookup by field name)
+    2. Check global ID map (cross-panel lookup)
+    3. Fall back to current field ID
+
+    Args:
+        variable_name: The variable name to resolve (e.g., "__street__")
+        current_panel: The name of the panel containing the current field
+        panel_field_map: Dict mapping panel_name -> {field_name -> metadata_index}
+        metadatas: List of all metadata entries
+        global_id_map: Global variable name -> ID map (fallback)
+        field_id: Current field ID (last resort fallback)
+        edv_data: EDV data dict (optional, for better field name matching)
+
+    Returns:
+        The resolved field ID
+    """
+    # Special case: -1 passes through
+    if variable_name == "-1":
+        return -1
+
+    # First, try to find in current panel
+    # Strategy: Look up the field_name from EDV data that corresponds to this variable_name,
+    # then find that field_name in the schema panel
+    if current_panel in panel_field_map and edv_data and current_panel in edv_data:
+        # Find the field_name in EDV data that has this variable_name
+        target_field_name = None
+        for field in edv_data[current_panel]:
+            field_var = field.get('variableName', sanitize_variable_name(field.get('field_name', '')))
+            if field_var == variable_name:
+                target_field_name = field.get('field_name', '')
+                break
+
+        # If found, look up this field_name in the schema panel
+        if target_field_name and target_field_name in panel_field_map[current_panel]:
+            meta_idx = panel_field_map[current_panel][target_field_name]
+            return metadatas[meta_idx]['id']
+
+    # Fallback: Check all fields in current panel by variableName matching
+    if current_panel in panel_field_map:
+        for field_name, meta_idx in panel_field_map[current_panel].items():
+            meta = metadatas[meta_idx]
+            # Check both schema variableName and EDV-style variableName
+            meta_var_name = meta.get('variableName', '')
+            edv_var_name = sanitize_variable_name(field_name)
+            if meta_var_name == variable_name or edv_var_name == variable_name:
+                return meta['id']
+
+    # Second, check global ID map (cross-panel lookup)
+    if variable_name in global_id_map:
+        return global_id_map[variable_name]
+
+    # Last resort: use current field ID
+    print(f"  Warning: Variable '{variable_name}' not found in panel '{current_panel}' or globally, using current field ID")
+    return field_id
+
+
+def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rule_id_counter: int,
+                          current_panel: str = None, panel_field_map: Dict = None, metadatas: List[Dict] = None,
+                          edv_data: Dict = None):
     """
     Convert EDV rule to formFillRule format.
 
     Looks up rule_name in Rule-Schemas.json for correct actionType and processingType.
     Output structure matches the reference vendor_creation.json exactly.
+
+    Args:
+        rule: The rule dict from EDV data
+        field_id: The current field's metadata ID
+        id_map: Global variable name -> ID mapping (fallback)
+        rule_id_counter: The rule ID to assign
+        current_panel: Name of the panel containing this field (for panel-scoped resolution)
+        panel_field_map: Panel-scoped field lookup (panel_name -> {field_name -> meta_idx})
+        metadatas: List of all metadata entries (for panel-scoped resolution)
+        edv_data: EDV data dict (for better field name matching in panel-scoped resolution)
+
+    Returns:
+        Dict containing the rule, or None if the rule doesn't exist in Rule-Schemas.json
     """
     rule_name = rule.get('rule_name', '')
     rule_schemas = get_rule_schemas()
@@ -206,41 +306,64 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
         source_type = schema_entry.get('sourceType', '')
         button = schema_entry.get('button', '')
     else:
-        print(f"  Warning: Rule '{rule_name}' not found in Rule-Schemas.json")
-        action_type = rule_name.upper().replace(' ', '_')
-        processing_type = 'CLIENT'
-        source_type = ''
-        button = ''
+        print(f"  Warning: Rule '{rule_name}' not found in Rule-Schemas.json - skipping")
+        return None
 
     # Map source and destination variable names to IDs
     source_fields = rule.get('source_fields', [])
     destination_fields = rule.get('destination_fields', [])
 
+    # Use panel-aware resolution if panel context is available
+    use_panel_aware = (current_panel is not None and panel_field_map is not None and metadatas is not None)
+
     source_ids = []
     for sf in source_fields:
-        # Handle "-1" as a special case - convert to integer -1
-        if sf == "-1":
-            source_ids.append(-1)
-        elif sf in id_map:
-            source_ids.append(id_map[sf])
+        if use_panel_aware:
+            resolved_id = _resolve_variable_to_id(sf, current_panel, panel_field_map, metadatas, id_map, field_id, edv_data)
+            source_ids.append(resolved_id)
         else:
-            print(f"  Warning: Source field '{sf}' not found in ID map, using current field ID")
-            source_ids.append(field_id)
+            # Fallback to simple lookup
+            if sf == "-1":
+                source_ids.append(-1)
+            elif sf in id_map:
+                source_ids.append(id_map[sf])
+            else:
+                print(f"  Warning: Source field '{sf}' not found in ID map, using current field ID")
+                source_ids.append(field_id)
 
     destination_ids = []
     for df in destination_fields:
-        # Handle "-1" as a special case - convert to integer -1
-        if df == "-1":
-            destination_ids.append(-1)
-        elif df in id_map:
-            destination_ids.append(id_map[df])
+        if use_panel_aware:
+            resolved_id = _resolve_variable_to_id(df, current_panel, panel_field_map, metadatas, id_map, field_id, edv_data)
+            destination_ids.append(resolved_id)
         else:
-            print(f"  Warning: Destination field '{df}' not found in ID map, using current field ID")
-            destination_ids.append(field_id)
+            # Fallback to simple lookup
+            if df == "-1":
+                destination_ids.append(-1)
+            elif df in id_map:
+                destination_ids.append(id_map[df])
+            else:
+                print(f"  Warning: Destination field '{df}' not found in ID map, using current field ID")
+                destination_ids.append(field_id)
 
     # If no sources, use field itself
     if not source_ids:
         source_ids = [field_id]
+
+    # Handle special cases for -1 source fields
+    if -1 in source_ids:
+        # 1. For COPY_TO rules: if source is -1, remove the rule
+        if action_type == 'COPY_TO':
+            print(f"  Warning: Rule '{rule_name}' (COPY_TO) has source field -1, removing rule")
+            return None
+        # 2. For VERIFY with sourceType EXTERNAL_DATA_VALUE: if source is -1, remove the rule
+        elif action_type == 'VERIFY' and source_type == 'EXTERNAL_DATA_VALUE':
+            print(f"  Warning: Rule '{rule_name}' (VERIFY with EXTERNAL_DATA_VALUE) has source field -1, removing rule")
+            return None
+        # 3. For Make Disabled rules: if source is -1, use destination fields as source
+        elif 'DISABLED' in action_type or 'DISABLE' in action_type:
+            print(f"  Info: Rule '{rule_name}' ({action_type}) has source field -1, using destination fields as source")
+            source_ids = destination_ids if destination_ids else [field_id]
 
     # Build rule matching reference vendor_creation.json structure
     form_fill_rule = {
@@ -315,6 +438,9 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
             form_fill_rule['params'] = params
         else:
             form_fill_rule['params'] = json.dumps(params)
+
+    # Remove all fields starting with underscore (internal/debug fields like _reasoning, _dropdown_type)
+    form_fill_rule = {k: v for k, v in form_fill_rule.items() if not k.startswith('_')}
 
     return form_fill_rule
 
@@ -584,10 +710,13 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                     }
 
                     for rule in rules:
-                        form_fill_rule = create_form_fill_rule(rule, new_field_id, id_map, rule_id_counter)
-                        new_meta['formFillRules'].append(form_fill_rule)
-                        rule_id_counter += 1
-                        total_rules_injected += 1
+                        form_fill_rule = create_form_fill_rule(rule, new_field_id, id_map, rule_id_counter,
+                                                               current_panel=panel_name, panel_field_map=panel_field_map,
+                                                               metadatas=metadatas, edv_data=edv_data)
+                        if form_fill_rule is not None:
+                            new_meta['formFillRules'].append(form_fill_rule)
+                            rule_id_counter += 1
+                            total_rules_injected += 1
 
                     # Insert right after the panel header
                     panel_idx = next(
@@ -619,10 +748,19 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
             if rules:
                 fields_with_rules += 1
                 for rule in rules:
-                    form_fill_rule = create_form_fill_rule(rule, field_id, id_map, rule_id_counter)
-                    metadatas[meta_idx]['formFillRules'].append(form_fill_rule)
-                    rule_id_counter += 1
-                    total_rules_injected += 1
+                    form_fill_rule = create_form_fill_rule(rule, field_id, id_map, rule_id_counter,
+                                                           current_panel=panel_name, panel_field_map=panel_field_map,
+                                                           metadatas=metadatas, edv_data=edv_data)
+                    if form_fill_rule is not None:
+                        metadatas[meta_idx]['formFillRules'].append(form_fill_rule)
+                        rule_id_counter += 1
+                        total_rules_injected += 1
+
+                # Check if any rule has YES_NO params and update prefill value
+                if _has_yes_no_params(rules):
+                    if 'preFillData' in metadatas[meta_idx] and metadatas[meta_idx]['preFillData']:
+                        metadatas[meta_idx]['preFillData']['value'] = 'No'
+                        print(f"  Set prefill value to 'No' for field '{field_name}' (has YES_NO params)")
 
             # Add EXECUTE rule for parent dropdowns
             if variable_name in parent_child_map:
@@ -895,11 +1033,18 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
             }
 
             # Add rules
+            # Note: panel context not available in legacy mode, will use global lookup
             rules = field.get('rules', [])
             for rule in rules:
-                form_fill_rule = create_form_fill_rule(rule, field_metadata_id, id_map, rule_id_counter)
-                metadata["formFillRules"].append(form_fill_rule)
-                rule_id_counter += 1  # Increment rule ID for next rule
+                form_fill_rule = create_form_fill_rule(rule, field_metadata_id, id_map, rule_id_counter,
+                                                       current_panel=None, panel_field_map=None, metadatas=None)
+                if form_fill_rule is not None:
+                    metadata["formFillRules"].append(form_fill_rule)
+                    rule_id_counter += 1  # Increment rule ID for next rule
+
+            # Check if any rule has YES_NO params and update prefill value
+            if _has_yes_no_params(rules):
+                metadata['preFillData']['value'] = 'No'
 
             # Add EXECUTE rule for parent dropdowns
             if variable_name in parent_child_map:
