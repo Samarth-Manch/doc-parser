@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Conditional Logic Mini Agent Dispatcher
+Derivation Logic Mini Agent Dispatcher
 
 This script:
-1. Reads output from Validate EDV agent (panel by panel)
-2. For each panel, calls Conditional Logic mini agent to add conditional fields
-3. Outputs single JSON file containing all panels with conditional logic populated
+1. Reads output from Conditional Logic agent (panel by panel)
+2. For each panel, calls Derivation Logic mini agent to add Expression (Client) rules
+3. Outputs single JSON file containing all panels with derivation logic populated
 """
 
 import argparse
@@ -53,48 +53,46 @@ def query_context_usage(panel_name: str, agent_name: str) -> Optional[str]:
         return None
 
 
-def count_rules_needing_conditions(panel_fields: List[Dict]) -> int:
+def count_fields_with_derivation_logic(panel_fields: List[Dict]) -> int:
     """
-    Count rules that likely need conditional logic based on field logic.
+    Count fields that likely have derivation logic based on keywords.
 
     Args:
         panel_fields: List of fields in the panel
 
     Returns:
-        Estimated count of rules needing conditions
+        Estimated count of fields with derivation logic
     """
     count = 0
-    condition_keywords = [
-        'if ', 'when ', 'based on',
-        'always invisible', 'always disabled', 'always mandatory',
-        'always non-mandatory', 'always enabled', 'always visible',
-        'by default invisible', 'by default disabled', 'by default mandatory',
-        'by default non-mandatory', 'by default enabled', 'by default visible',
-        'non-editable', 'hidden', 'visible only when', 'mandatory if'
+    derivation_keywords = [
+        'derived', 'derive', 'derivation',
+        'value is ', 'value should be',
+        'populated as', 'populate as',
+        'default value', 'set as', 'set to',
+        'copied as', 'copy as',
+        'then value', 'then it is',
     ]
 
     for field in panel_fields:
         logic = field.get('logic', '').lower()
-        rules = field.get('rules', [])
-
-        if any(keyword in logic for keyword in condition_keywords) and rules:
-            count += len(rules)
+        if any(keyword in logic for keyword in derivation_keywords):
+            count += 1
 
     return count
 
 
-def call_conditional_logic_mini_agent(panel_fields: List[Dict],
+def call_derivation_logic_mini_agent(panel_fields: List[Dict],
                                       panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
     """
-    Call the Conditional Logic mini agent via claude -p
+    Call the Derivation Logic mini agent via claude -p
 
     Args:
-        panel_fields: Fields from Validate EDV agent output
+        panel_fields: Fields from Conditional Logic agent output
         panel_name: Name of the panel
         temp_dir: Directory for temp files
 
     Returns:
-        List of fields with conditional logic added, or None if failed
+        List of fields with derivation Expression rules added, or None if failed
     """
 
     # Sanitize panel name for filename
@@ -102,8 +100,8 @@ def call_conditional_logic_mini_agent(panel_fields: List[Dict],
 
     # Temp files for input/output
     fields_input_file = temp_dir / f"{safe_panel_name}_fields_input.json"
-    output_file = temp_dir / f"{safe_panel_name}_conditional_logic_output.json"
-    log_file = temp_dir / f"{safe_panel_name}_conditional_logic_log.txt"
+    output_file = temp_dir / f"{safe_panel_name}_derivation_output.json"
+    log_file = temp_dir / f"{safe_panel_name}_derivation_log.txt"
 
     # Write fields to temp file
     with open(fields_input_file, 'w') as f:
@@ -116,31 +114,35 @@ def call_conditional_logic_mini_agent(panel_fields: List[Dict],
 2. Log file: {log_file}
 
 ## Instructions
-Follow the step-by-step approach defined in the agent prompt (05_condition_agent_v2).
+Follow the step-by-step approach defined in the agent prompt (06_derivation_agent).
 - FIELDS_JSON = {fields_input_file}
 - LOG_FILE = {log_file}
 
-## CRITICAL: Vice Versa / Opposite Rule Handling
-When logic implies both directions (e.g., "If X=Yes make visible, otherwise invisible"),
-the opposite rule MUST use NOT_IN with the ORIGINAL value — NEVER use IN with the opposite value.
+## CRITICAL: Only Handle Derivation Logic
+This agent ONLY handles value derivation — logic that sets/derives/populates a field's VALUE
+based on another field's selection. Do NOT touch visibility, enabled/disabled, or mandatory rules.
 
-Example for "If Field A is Yes make visible, otherwise invisible":
-- Forward rule:  condition="IN",     conditionalValues=["Yes"] → Make Visible
-- Opposite rule: condition="NOT_IN", conditionalValues=["Yes"] → Make Invisible
+Look for logic patterns like:
+- "If X is selected then value is Y / derived as Y / populated as Y"
+- "If X then derive A, otherwise derive B"
+- Conditional value assignment based on another field
 
-WRONG: condition="IN", conditionalValues=["No"] for the opposite.
-RIGHT: condition="NOT_IN", conditionalValues=["Yes"] for the opposite.
+For each derivation found, place ONE Expression (Client) rule on the CONTROLLER field containing
+ALL ctfd + asdff expressions concatenated with semicolons in conditionalValues (NOT params).
 
-This ensures blank/empty values are also handled correctly (NOT_IN "Yes" covers No, blank, and any other value).
+The expression goes in conditionalValues as a single string, ALWAYS wrapped with on("change") and (...):
+  conditionValueType: "EXPR"
+  condition: "IN"
+  conditionalValues: ["on("change") and (ctfd(vo("_ctrl_")=="VAL1","Text1","_dest_");ctfd(vo("_ctrl_")!="VAL1","Text2","_dest_");asdff(vo("_dest_")!="","_dest_"))"]
 
-## CRITICAL: Derivation Logic is NOT Visibility
-Do NOT interpret value derivation logic as visibility rules. If logic describes WHAT VALUE
-a field should get based on conditions, that is derivation logic — SKIP it entirely.
-Examples to IGNORE:
-- "If India selected then value is DOM IN, if International then INT" → sets VALUE, not visibility
-- "If account group is ZDES/ZDOM then derived as Domestic" → DERIVES a value, not visibility
-- "Default value is X when Y is selected" → value derivation
-Only handle logic about visible/invisible, enabled/disabled, mandatory/non-mandatory states.
+Key rules:
+1. Expression ALWAYS starts with on("change") and ( and ends with )
+2. ALL expressions go into ONE rule on the CONTROLLER field — never separate rules
+3. Expression goes in conditionalValues, NOT in params — NO params field needed
+4. Do NOT escape quotes — use raw double quotes in the expression
+5. Use != for opposite/else conditions (never == with the opposite value)
+6. asdff goes at the end, before the closing parenthesis
+7. Add _expressionRuleType: "derivation" to each Expression (Client) rule
 
 ## Output
 Write a JSON array to: {output_file}
@@ -150,22 +152,22 @@ Write a JSON array to: {output_file}
         print(f"\n{'='*70}")
         print(f"PROCESSING PANEL: {panel_name}")
         print(f"  Fields: {len(panel_fields)}")
-        print(f"  Rules likely needing conditions: ~{count_rules_needing_conditions(panel_fields)}")
+        print(f"  Fields with likely derivation logic: ~{count_fields_with_derivation_logic(panel_fields)}")
         print('='*70)
 
-        # Call claude -p with the Conditional Logic mini agent
+        # Call claude -p with the Derivation Logic mini agent
         process = subprocess.Popen(
             [
                 "claude",
                 "-p", prompt,
-                "--agent", "mini/05_condition_agent_v2",
+                "--agent", "mini/06_derivation_agent",
                 "--allowedTools", "Read,Write"
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,
-            cwd=str(Path(__file__).parent.parent.parent)
+            cwd=PROJECT_ROOT
         )
 
         # Collect output
@@ -182,7 +184,7 @@ Write a JSON array to: {output_file}
 
         # Query context usage from the agent session
         print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Conditional Logic")
+        usage = query_context_usage(panel_name, "Derivation Logic")
         if usage:
             print(usage)
         else:
@@ -207,7 +209,7 @@ Write a JSON array to: {output_file}
         print("  Error: 'claude' command not found", file=sys.stderr)
         return None
     except Exception as e:
-        print(f"  Error calling Conditional Logic mini agent: {e}", file=sys.stderr)
+        print(f"  Error calling Derivation Logic mini agent: {e}", file=sys.stderr)
         import traceback
         traceback.print_exc()
         return None
@@ -215,24 +217,24 @@ Write a JSON array to: {output_file}
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Conditional Logic Dispatcher - Add conditional logic to rules panel-by-panel"
+        description="Derivation Logic Dispatcher - Add Expression (Client) rules for value derivation panel-by-panel"
     )
     parser.add_argument(
-        "--validate-edv-output",
+        "--conditional-logic-output",
         required=True,
-        help="Path to Validate EDV agent output JSON (panels with validate EDV rules)"
+        help="Path to Conditional Logic agent output JSON (panels with conditional rules)"
     )
     parser.add_argument(
         "--output",
-        default="output/conditional_logic/all_panels_conditional_logic.json",
-        help="Output file for all panels (default: output/conditional_logic/all_panels_conditional_logic.json)"
+        default="output/derivation_logic/all_panels_derivation.json",
+        help="Output file for all panels (default: output/derivation_logic/all_panels_derivation.json)"
     )
 
     args = parser.parse_args()
 
     # Validate inputs
-    if not Path(args.validate_edv_output).exists():
-        print(f"Error: Validate EDV output file not found: {args.validate_edv_output}", file=sys.stderr)
+    if not Path(args.conditional_logic_output).exists():
+        print(f"Error: Conditional Logic output file not found: {args.conditional_logic_output}", file=sys.stderr)
         sys.exit(1)
 
     # Create output directory and temp directory
@@ -242,16 +244,16 @@ def main():
     temp_dir = output_file.parent / "temp"
     temp_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load Validate EDV agent output
-    print(f"Loading Validate EDV agent output: {args.validate_edv_output}")
-    with open(args.validate_edv_output, 'r') as f:
-        validate_edv_data = json.load(f)
+    # Load Conditional Logic agent output
+    print(f"Loading Conditional Logic agent output: {args.conditional_logic_output}")
+    with open(args.conditional_logic_output, 'r') as f:
+        conditional_data = json.load(f)
 
-    print(f"Found {len(validate_edv_data)} panels in input")
+    print(f"Found {len(conditional_data)} panels in input")
 
     # Process each panel
     print("\n" + "="*70)
-    print("PROCESSING PANELS WITH CONDITIONAL LOGIC AGENT")
+    print("PROCESSING PANELS WITH DERIVATION LOGIC AGENT")
     print("="*70)
 
     successful_panels = 0
@@ -260,19 +262,19 @@ def main():
     total_fields_processed = 0
     all_results = {}
 
-    for panel_name, panel_fields in validate_edv_data.items():
+    for panel_name, panel_fields in conditional_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
             skipped_panels += 1
             continue
 
         total_rules = sum(len(field.get('rules', [])) for field in panel_fields)
-        estimated_conditions = count_rules_needing_conditions(panel_fields)
+        estimated_derivations = count_fields_with_derivation_logic(panel_fields)
 
-        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {total_rules} rules, ~{estimated_conditions} may need conditions")
+        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {total_rules} existing rules, ~{estimated_derivations} may have derivation logic")
 
-        # Call Conditional Logic mini agent
-        result = call_conditional_logic_mini_agent(
+        # Call Derivation Logic mini agent
+        result = call_derivation_logic_mini_agent(
             panel_fields,
             panel_name,
             temp_dir
@@ -298,9 +300,9 @@ def main():
 
     # Print final summary
     print("\n" + "="*70)
-    print("CONDITIONAL LOGIC DISPATCHER COMPLETE")
+    print("DERIVATION LOGIC DISPATCHER COMPLETE")
     print("="*70)
-    print(f"Total Panels: {len(validate_edv_data)}")
+    print(f"Total Panels: {len(conditional_data)}")
     print(f"Successfully Processed: {successful_panels}")
     print(f"Failed: {failed_panels}")
     print(f"Skipped (empty): {skipped_panels}")

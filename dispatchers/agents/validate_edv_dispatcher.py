@@ -23,6 +23,41 @@ from typing import Dict, List, Optional, Set
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from doc_parser import DocumentParser
 
+PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
+
+
+def query_context_usage(panel_name: str, agent_name: str) -> Optional[str]:
+    """
+    Query the last claude agent session for context/token usage.
+    Uses --continue to resume the last conversation and ask for usage stats.
+
+    Returns:
+        Usage report string, or None if failed
+    """
+    usage_prompt = (
+        "Report the context window usage for this conversation. "
+        "Include: (1) number of input tokens used, "
+        "(2) number of output tokens used, "
+        "(3) total tokens used, and "
+        "(4) percentage of the context window (200K tokens) that is filled. "
+        "Format as a brief one-line summary."
+    )
+
+    try:
+        process = subprocess.run(
+            ["claude", "--continue", "-p", usage_prompt],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            cwd=PROJECT_ROOT
+        )
+
+        if process.returncode == 0 and process.stdout.strip():
+            return process.stdout.strip()
+        return None
+    except Exception:
+        return None
+
 
 def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
     """
@@ -315,6 +350,15 @@ IMPORTANT:
         if process.returncode != 0:
             print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
+
+        # Query context usage from the agent session
+        print(f"\n--- Context Usage ({panel_name}) ---")
+        usage = query_context_usage(panel_name, "Validate EDV")
+        if usage:
+            print(usage)
+        else:
+            print("(Could not retrieve context usage)")
+        print("---")
 
         # Read output file
         if output_file.exists():

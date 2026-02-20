@@ -50,12 +50,22 @@ Use ONLY these exact rule names.
 3) **CONTROLLER PLACEMENT**: Conditional visibility/state rules go ON the controller field (the field whose value determines the state of others).
 4) **STATIC STATE PLACEMENT**: "Always/by default" rules go ON the affected field itself with `source_fields: []`.
 5) **CONSOLIDATE**: Group all fields affected by the same controller + condition into ONE rule with multiple `destination_fields`.
-6) **OPPOSITE RULES**: When logic implies both directions (e.g., "If X=Yes make visible" implies "If X=No make invisible"), add both.
+6) **OPPOSITE RULES**: When logic implies both directions (e.g., "If X=Yes make visible, otherwise invisible"), the opposite rule must use `NOT_IN` with the **original** value — NOT `IN` with the opposite value. Example: if the rule is `IN ["Yes"]` → Make Visible, the vice versa is `NOT_IN ["Yes"]` → Make Invisible. **NEVER** use `IN ["No"]` for the opposite — always negate the original condition. This correctly handles blank/empty values too.
 7) Condition operator is ALWAYS one of: `IN`, `NOT_IN`, or `BETWEEN`.
 8) `conditionalValues` is ALWAYS an array of strings.
 9) "Always" and "By default" are equivalent — both mean unconditional using `NOT_IN`.
 10) Do **NOT** touch non-visibility rules (EDV, validation, COPY_TO, EXECUTE, etc.). Pass them through unchanged.
 11) All source and destination fields must exist in $FIELDS_JSON. Do **NOT** invent fields.
+12) **STATIC RULES ARE ALWAYS SEPARATE**: "By default invisible", "always disabled", etc. must be individual rules placed on EACH affected field independently. **NEVER** combine static state rules across multiple fields into one rule. Each field gets its OWN static rule. Only CONDITIONAL rules (controlled by another field) can be consolidated with multiple `destination_fields`.
+13) **MIXED LOGIC**: When a field has BOTH a static default state AND a conditional override (e.g., "By default invisible, visible if Field A is Yes"), create TWO separate rules:
+    - One static rule on the field itself (e.g., Make Invisible with `NOT_IN`, `source_fields: []`)
+    - One conditional rule on the controller field (e.g., Make Visible with `IN`, `source_fields: ["__field_a__"]`)
+14) **DERIVATION LOGIC IS NOT VISIBILITY**: Do NOT interpret derivation/value-population logic as visibility rules. Logic that describes WHAT VALUE a field should get based on conditions is derivation logic, NOT visibility. Derivation logic to IGNORE includes any mention of:
+    - Setting a field's value based on another field's selection
+    - Deriving, populating, or copying a value conditionally
+    - Default values based on conditions
+    - Any logic about what text/value should appear in a field based on another field
+    Only handle logic that explicitly controls visibility (visible/invisible), enabled/disabled state, or mandatory/non-mandatory state. The Derivation Agent (06) handles all value derivation logic separately.
 
 ---
 
@@ -222,10 +232,10 @@ Log: Append "Step 7 complete: Created output JSON with <N> total visibility/stat
                 "rule_name": "Make Invisible (Client)",
                 "source_fields": ["__fieldname1__"],
                 "destination_fields": ["__fieldname2__"],
-                "conditionalValues": ["No"],
-                "condition": "IN",
+                "conditionalValues": ["Yes"],
+                "condition": "NOT_IN",
                 "conditionValueType": "TEXT",
-                "_reasoning": "Opposite rule: FIELD_NAME_2 invisible when FIELD_NAME_1 is No."
+                "_reasoning": "Opposite rule: FIELD_NAME_2 invisible when FIELD_NAME_1 is NOT Yes (covers No, blank, and any other value)."
             }
         ],
         "variableName": "__fieldname1__"

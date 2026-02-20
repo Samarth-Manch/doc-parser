@@ -438,6 +438,21 @@
       "strict_rule": true,
       "note": "STRICT - Only generate when reference explicitly has it"
     },
+    "GENERATE_ARRAY_FORM_GROUPS": {
+      "keywords": ["extended form fill", "array", "insert", "generate", "derive", "insert into the array", "generate array", "extended form", "form groups"],
+      "bud_phrases": [
+        "derive all the values from the edv table",
+        "insert into the array",
+        "extended form fill",
+        "generate array form groups",
+        "based on the inputs.*insert into",
+        "derive.*from.*table.*insert"
+      ],
+      "schema_id": null,
+      "processing_type": "CLIENT",
+      "children": {},
+      "note": "Derives values from an EDV table based on input fields and inserts them into an array/extended form fill group."
+    },
     "COPY_TO_DOCUMENT_STORAGE_ID": {
       "keywords": [],
       "bud_phrases": [],
@@ -485,7 +500,7 @@
       "note": "Session-specific non-mandatory rule."
     },
     "CONCAT": {
-      "keywords": ["concat", "concatenate", "combine"],
+      "keywords": ["concat", "concatenate", "combine", "concatenating"],
       "bud_phrases": ["concatenate", "combine fields"],
       "children": {
         "FORM_FILL_METADATA": {

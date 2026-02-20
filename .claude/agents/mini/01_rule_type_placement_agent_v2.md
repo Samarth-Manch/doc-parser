@@ -32,6 +32,8 @@ A schema with the field name, type, logic, variableName and a list of rules that
    - Make Non Mandatory
 4) If you encounter any of the above rules in the logic, **DO NOT** place them.
 5) Focus on extracting other rule types: validations (PAN, GST, MSME, etc.), COPY_TO, DERIVE, EDV rules, EXECUTE rules, etc.
+6) **VARIABLE NAME FORMAT**: Variable names MUST have exactly one underscore at the start and one at the end, with NO underscores in between. Even if the original variable_name contains underscores or double underscores (e.g., `__vendor_name__` or `_vendor_name_`), remove all internal underscores and use single leading/trailing underscores: `_vendorname_`. Format: `_<name with no underscores>_`.
+7) If one variableName is repeated, then add a number before it. For example, there are two fields with variableName `_name_` and `_name_`, then it should be `_name_` & `_name1_`.
 
 ---
 
@@ -68,7 +70,7 @@ After getting the rule names, for each field create the following schema.
             "Rule Name 1",
             "Rule Name 2"
         ],
-        "variableName": "__fieldname1__"
+        "variableName": "_fieldname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -79,7 +81,7 @@ After getting the rule names, for each field create the following schema.
             "Rule Name 1",
             "Rule Name 2"
         ],
-        "variableName": "__fieldname2__"
+        "variableName": "_fieldname2_"
     },
 ]
 ```

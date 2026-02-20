@@ -24,6 +24,41 @@ from collections import defaultdict
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from doc_parser import DocumentParser
 
+PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
+
+
+def query_context_usage(panel_name: str, agent_name: str) -> Optional[str]:
+    """
+    Query the last claude agent session for context/token usage.
+    Uses --continue to resume the last conversation and ask for usage stats.
+
+    Returns:
+        Usage report string, or None if failed
+    """
+    usage_prompt = (
+        "Report the context window usage for this conversation. "
+        "Include: (1) number of input tokens used, "
+        "(2) number of output tokens used, "
+        "(3) total tokens used, and "
+        "(4) percentage of the context window (200K tokens) that is filled. "
+        "Format as a brief one-line summary."
+    )
+
+    try:
+        process = subprocess.run(
+            ["claude", "--continue", "-p", usage_prompt],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            cwd=PROJECT_ROOT
+        )
+
+        if process.returncode == 0 and process.stdout.strip():
+            return process.stdout.strip()
+        return None
+    except Exception:
+        return None
+
 
 def extract_reference_tables_from_parser(parsed_doc) -> List[Dict]:
     """
@@ -194,11 +229,12 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
 For each field in the input:
 1. Read the field's logic text and examine its rules
 2. For EDV-related rules (EXT_DROP_DOWN, EXT_VALUE), populate the params field
-3. Analyze table references in logic to determine:
-   - Which table to use (ddType)
+3. For Generate Table Form Staging rules, populate params with externalDataType and order, and populate destination_fields by detecting ARRAY_HDR/ARRAY_END fields and matching EDV column names to field names
+4. Analyze table references in logic to determine:
+   - Which table to use (ddType / externalDataType)
    - Which columns to display (da)
    - Filter criteria for cascading dropdowns (criterias)
-4. For non-EDV rules, leave params empty or don't add it
+5. For non-EDV rules, leave params empty or don't add it
 
 ## Rules for EDV params:
 - Independent/Parent dropdowns: Empty criterias array
@@ -206,6 +242,12 @@ For each field in the input:
 - Use field variableNames from source_fields for parent references
 - Map columns as a1, a2, a3, etc. based on table structure
 - Only include tables mentioned in the field's logic section
+
+## Rules for Generate Table Form Staging:
+- params: {{"externalDataType": "<EDV_TABLE_NAME>", "order": [{{"attr": 1, "dir": "ASC"}}]}}
+- Detect ARRAY_HDR and ARRAY_END fields by looking at the field type
+- destination_fields[0] = ARRAY_HDR variableName
+- destination_fields[1..N] = map EDV table columns (a1, a2, ...) to fields between ARRAY_HDR and ARRAY_END by matching column names to field names. Use -1 if no match.
 
 ## Output
 Write a JSON array to: {output_file}
@@ -288,6 +330,15 @@ IMPORTANT:
         if process.returncode != 0:
             print(f"✗ EDV mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
+
+        # Query context usage from the agent session
+        print(f"\n--- Context Usage ({panel_name}) ---")
+        usage = query_context_usage(panel_name, "EDV Rule")
+        if usage:
+            print(usage)
+        else:
+            print("(Could not retrieve context usage)")
+        print("---")
 
         # Read output file
         if output_file.exists():
