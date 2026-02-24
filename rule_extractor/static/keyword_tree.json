@@ -405,12 +405,12 @@
       }
     },
     "COPY_TO": {
-      "keywords": ["copy", "derive", "copy from"],
+      "keywords": ["copy", "copy from"],
       "bud_phrases": [
         "copy from.*panel",
-        "copy from.*field",
-        "derive the country name"
+        "copy from.*field"
       ],
+      "negative_phrases": ["if.*then.*derive", "derived based on", "derived it as", "default value", "if.*then.*value is", "if.*else"],
       "children": {
         "FORM_FILL_METADATA": {
           "schema_id": 270,

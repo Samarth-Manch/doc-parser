@@ -16,7 +16,7 @@ pip install -r requirements.txt
 pytest test_parser.py -v
 python3 -m pytest test_parser.py::TestDocumentParser::test_04_field_extraction_count -v
 
-# Run the full rule extraction pipeline (9 stages)
+# Run the full rule extraction pipeline (10 stages)
 ./run_pipeline.sh --bud "documents/Vendor Creation Sample BUD.docx" --schema "documents/json_output/vendor_creation.json" --pretty
 
 # Run pipeline from a specific stage (resume after failure)
@@ -56,9 +56,9 @@ parsed.to_dict()           # JSON-serializable dict
 
 Table classification uses pattern-based header matching: `FIELD_HEADER_PATTERNS`, `INITIATOR_KEYWORDS`, `SPOC_KEYWORDS`, `APPROVAL_KEYWORDS` in `parser.py`.
 
-### Rule Extraction Pipeline (9 Stages)
+### Rule Extraction Pipeline (10 Stages)
 
-Each stage is a **dispatcher** (`dispatchers/agents/*.py`) that processes panels one-by-one. Stages 1–8 call Claude **mini agents** (prompt files in `.claude/agents/mini/`). Stage 9 is deterministic.
+Each stage is a **dispatcher** (`dispatchers/agents/*.py`) that processes panels one-by-one. Stages 1–9 call Claude **mini agents** (prompt files in `.claude/agents/mini/`). Stage 10 is deterministic.
 
 ```
 BUD (.docx)
@@ -70,8 +70,9 @@ BUD (.docx)
   ├─ Stage 5: Conditional Logic ───── Visibility/state rules (Make Visible, Enable, Mandatory, etc.)
   ├─ Stage 6: Derivation Logic ────── Expression (Client) rules with ctfd/asdff
   ├─ Stage 7: Clear Child Fields ──── Expression (Client) clearing rules (cf/asdff/rffdd)
-  ├─ Stage 8: Session Based ────────── Session-based visibility rules + RuleCheck field
-  └─ Stage 9: Convert to API Format ─ Final JSON for platform (formFillMetadatas + formFillRules)
+  ├─ Stage 8: Inter-Panel Rules ───── Cross-panel Copy To, visibility, delegation to specialized agents
+  ├─ Stage 9: Session Based ────────── Session-based visibility rules + RuleCheck field
+  └─ Stage 10: Convert to API Format ─ Final JSON for platform (formFillMetadatas + formFillRules)
 ```
 
 **Data flows forward**: Stage N output → Stage N+1 input. Each stage's output is at `output/{stage_name}/all_panels_*.json`. Intermediate per-panel files go in `output/{stage_name}/temp/`.
@@ -96,6 +97,7 @@ Every dispatcher follows the same structure:
 | `05_condition_agent_v2.md` | Conditional Logic | Visibility/state rules with conditions (DISCARDS & rebuilds) |
 | `06_derivation_agent.md` | Derivation | Value derivation via ctfd expressions |
 | `07_clear_child_fields_agent.md` | Clear Child Fields | Parent→child clearing via cf/asdff/rffdd expressions |
+| `09_inter_panel_agent.md` | Inter-Panel Rules | Cross-panel Copy To, visibility; delegates complex rules |
 | `08_session_based_agent.md` | Session Based | Session-based rules (FIRST_PARTY/SECOND_PARTY visibility) |
 
 ### Key Static Resources

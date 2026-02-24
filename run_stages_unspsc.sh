@@ -33,6 +33,10 @@ echo "========== Stage 7: Clear Child Fields =========="
 python3 dispatchers/agents/clear_child_fields_dispatcher.py --derivation-output "${OUT_DIR}/derivation_logic/all_panels_derivation.json" --output "${OUT_DIR}/clear_child_fields/all_panels_clear_child.json"
 echo "========== Stage 7 Complete =========="
 
-echo "========== Stage 8: Convert to API Format =========="
-python3 dispatchers/agents/convert_to_api_format.py --schema "$SCHEMA" --rules "${OUT_DIR}/clear_child_fields/all_panels_clear_child.json" --output /tmp/test_merged_UNSPSC.json --pretty
+echo "========== Stage 8: Inter-Panel Rules =========="
+python3 dispatchers/agents/inter_panel_dispatcher.py --clear-child-output "${OUT_DIR}/clear_child_fields/all_panels_clear_child.json" --bud "$BUD" --output "${OUT_DIR}/inter_panel/all_panels_inter_panel.json"
 echo "========== Stage 8 Complete =========="
+
+echo "========== Stage 9: Convert to API Format =========="
+python3 dispatchers/agents/convert_to_api_format.py --schema "$SCHEMA" --rules "${OUT_DIR}/inter_panel/all_panels_inter_panel.json" --output /tmp/test_merged_UNSPSC.json --pretty
+echo "========== Stage 9 Complete =========="

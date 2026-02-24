@@ -31,9 +31,22 @@ A schema with the field name, type, logic, variableName and a list of rules that
    - Make Mandatory
    - Make Non Mandatory
 4) If you encounter any of the above rules in the logic, **DO NOT** place them.
-5) Focus on extracting other rule types: validations (PAN, GST, MSME, etc.), COPY_TO, DERIVE, EDV rules, EXECUTE rules, etc.
-6) **VARIABLE NAME FORMAT**: Variable names MUST have exactly one underscore at the start and one at the end, with NO underscores in between. Even if the original variable_name contains underscores or double underscores (e.g., `__vendor_name__` or `_vendor_name_`), remove all internal underscores and use single leading/trailing underscores: `_vendorname_`. Format: `_<name with no underscores>_`.
-7) If one variableName is repeated, then add a number before it. For example, there are two fields with variableName `_name_` and `_name_`, then it should be `_name_` & `_name1_`.
+5) **DO NOT** place Copy To rules for fields with **conditional derivation logic** — these are handled by the Derivation Agent (Stage 6).
+   Conditional derivation = field value is set/derived/populated based on a condition or another field's value. Examples:
+   - "If X is selected then value is Y, else Z" → NOT Copy To (this is derivation)
+   - "If bank verified then N, else C" → NOT Copy To (this is derivation)
+   - "Derived as Domestic when account type is ZDES" → NOT Copy To (this is derivation)
+   - "Default value is X when condition Y" → NOT Copy To (this is derivation)
+   - "IF GST number is available Blank else populate default value as 0" → NOT Copy To (this is derivation)
+   Copy To is ONLY for simple direct field-to-field copy (e.g., "copy from Basic Details panel", "copy this value to another field").
+6) Focus on extracting other rule types: validations (PAN, GST, MSME, etc.), COPY_TO (simple direct copies only), EDV rules, EXECUTE rules, etc.
+6) **VARIABLE NAME FORMAT**: Variable names MUST include the **panel name** at the end to ensure uniqueness across panels. Format: `_<fieldname><panelname>_` where both fieldname and panelname are lowercase with all spaces, underscores, and special characters removed.
+   - Example: "Company Code" in panel "Basic Details" → `_companycodebasicdetails_`
+   - Example: "Vendor Name" in panel "Vendor Basic Details" → `_vendornamevendorbasicdetails_`
+   - Example: "IFSC Code" in panel "Bank Details" → `_ifsccodebankdetails_`
+   - Example: "Process Type" in panel "Basic Details" → `_processtypebasicdetails_`
+   - The panel name is provided in the prompt as the panel being processed.
+7) If one variableName is STILL repeated within the same panel after adding the panel suffix, append a number. For example: `_namebasicdetails_` & `_namebasicdetails1_`.
 
 ---
 
@@ -70,7 +83,7 @@ After getting the rule names, for each field create the following schema.
             "Rule Name 1",
             "Rule Name 2"
         ],
-        "variableName": "_fieldname1_"
+        "variableName": "_fieldnamepanelname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -81,7 +94,7 @@ After getting the rule names, for each field create the following schema.
             "Rule Name 1",
             "Rule Name 2"
         ],
-        "variableName": "_fieldname2_"
+        "variableName": "_fieldnamepanelname2_"
     },
 ]
 ```

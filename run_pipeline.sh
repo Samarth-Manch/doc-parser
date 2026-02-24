@@ -2,7 +2,7 @@
 #
 # run_pipeline.sh - Run the full rule extraction pipeline
 #
-# Runs all 8 dispatcher stages sequentially, each building on the previous output.
+# Runs all 10 dispatcher stages sequentially, each building on the previous output.
 # See README_PIPELINE.md for details.
 #
 
@@ -25,7 +25,7 @@ OUTPUT_DIR="output"
 FINAL_OUTPUT="documents/json_output/vendor_creation_generated.json"
 BUD_NAME="Vendor Creation"
 START_STAGE=1
-END_STAGE=9
+END_STAGE=10
 PRETTY_FLAG=""
 
 # ── Usage ───────────────────────────────────────────────────────────────────
@@ -45,8 +45,8 @@ ${BOLD}Options:${NC}
   --final-output <path>     Final API JSON output path
                             (default: documents/json_output/vendor_creation_generated.json)
   --bud-name <name>         BUD name for legacy mode (default: "Vendor Creation")
-  --start-stage <1-9>       Start from this stage (default: 1)
-  --end-stage <1-9>         Stop after this stage (default: 9)
+  --start-stage <1-10>      Start from this stage (default: 1)
+  --end-stage <1-10>        Stop after this stage (default: 10)
   --pretty                  Pretty print final API JSON
   -h, --help                Show this help
 
@@ -58,8 +58,9 @@ ${BOLD}Stages:${NC}
   5  Conditional Logic     Add visibility/state rules         (needs: stage 4 output)
   6  Derivation Logic      Add Expression rules for derivation (needs: stage 5 output)
   7  Clear Child Fields    Clear child fields on parent change (needs: stage 6 output)
-  8  Session Based         Inject RuleCheck session rules     (needs: --bud, stage 7 output)
-  9  Convert to API        Convert to final API format        (needs: stage 8 output, --schema optional)
+  8  Inter-Panel Rules     Handle cross-panel field references (needs: --bud, stage 7 output)
+  9  Session Based         Inject RuleCheck session rules     (needs: --bud, stage 8 output)
+  10 Convert to API        Convert to final API format        (needs: stage 9 output, --schema optional)
 
 ${BOLD}Examples:${NC}
   # Vendor Creation Sample BUD (full pipeline with schema injection)
@@ -111,8 +112,9 @@ STAGE4_OUT="${OUTPUT_DIR}/validate_edv/all_panels_validate_edv.json"
 STAGE5_OUT="${OUTPUT_DIR}/conditional_logic/all_panels_conditional_logic.json"
 STAGE6_OUT="${OUTPUT_DIR}/derivation_logic/all_panels_derivation.json"
 STAGE7_OUT="${OUTPUT_DIR}/clear_child_fields/all_panels_clear_child.json"
-STAGE8_OUT="${OUTPUT_DIR}/session_based/all_panels_session_based.json"
-STAGE9_OUT="${FINAL_OUTPUT}"
+STAGE8_OUT="${OUTPUT_DIR}/inter_panel/all_panels_inter_panel.json"
+STAGE9_OUT="${OUTPUT_DIR}/session_based/all_panels_session_based.json"
+STAGE10_OUT="${FINAL_OUTPUT}"
 
 # ── Helper ──────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -218,24 +220,31 @@ run_stage 7 "Clear Child Fields" \
         --derivation-output "$STAGE6_OUT" \
         --output "$STAGE7_OUT"
 
-# ── Stage 8: Session Based ─────────────────────────────────────────────────
-run_stage 8 "Session Based" \
-    python3 "${DISPATCHERS}/session_based_dispatcher.py" \
+# ── Stage 8: Inter-Panel Rules ─────────────────────────────────────────────
+run_stage 8 "Inter-Panel Rules" \
+    python3 "${DISPATCHERS}/inter_panel_dispatcher.py" \
         --clear-child-output "$STAGE7_OUT" \
         --bud "$BUD_DOC" \
         --output "$STAGE8_OUT"
 
-# ── Stage 9: Convert to API Format ─────────────────────────────────────────
-STAGE9_ARGS=(
+# ── Stage 9: Session Based ────────────────────────────────────────────────
+run_stage 9 "Session Based" \
+    python3 "${DISPATCHERS}/session_based_dispatcher.py" \
+        --clear-child-output "$STAGE8_OUT" \
+        --bud "$BUD_DOC" \
+        --output "$STAGE9_OUT"
+
+# ── Stage 10: Convert to API Format ───────────────────────────────────────
+STAGE10_ARGS=(
     python3 "${DISPATCHERS}/convert_to_api_format.py"
-    --input "$STAGE8_OUT"
-    --output "$STAGE9_OUT"
+    --input "$STAGE9_OUT"
+    --output "$STAGE10_OUT"
     --bud-name "$BUD_NAME"
 )
-[[ -n "$API_SCHEMA" ]] && STAGE9_ARGS+=(--schema "$API_SCHEMA")
-[[ -n "$PRETTY_FLAG" ]] && STAGE9_ARGS+=($PRETTY_FLAG)
+[[ -n "$API_SCHEMA" ]] && STAGE10_ARGS+=(--schema "$API_SCHEMA")
+[[ -n "$PRETTY_FLAG" ]] && STAGE10_ARGS+=($PRETTY_FLAG)
 
-run_stage 9 "Convert to API Format" "${STAGE9_ARGS[@]}"
+run_stage 10 "Convert to API Format" "${STAGE10_ARGS[@]}"
 
 # ── Summary ─────────────────────────────────────────────────────────────────
 PIPELINE_ELAPSED=$((SECONDS - PIPELINE_START))
@@ -258,4 +267,5 @@ echo -e "  ${BOLD}Outputs:${NC}"
 [[ $START_STAGE -le 7 && $END_STAGE -ge 7 ]] && echo -e "    Stage 7: ${CYAN}${STAGE7_OUT}${NC}"
 [[ $START_STAGE -le 8 && $END_STAGE -ge 8 ]] && echo -e "    Stage 8: ${CYAN}${STAGE8_OUT}${NC}"
 [[ $START_STAGE -le 9 && $END_STAGE -ge 9 ]] && echo -e "    Stage 9: ${CYAN}${STAGE9_OUT}${NC}"
+[[ $START_STAGE -le 10 && $END_STAGE -ge 10 ]] && echo -e "    Stage 10: ${CYAN}${STAGE10_OUT}${NC}"
 echo -e "${BOLD}════════════════════════════════════════════════════════════════════════${NC}"

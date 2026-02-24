@@ -579,7 +579,6 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                     new_pf_id = new_prefill_counter
                     new_prefill_counter += 1
 
-                    short_var = generate_short_variable_name(field_name, new_field_id)
                     id_map[variable_name] = new_field_id
 
                     new_meta = {
@@ -596,7 +595,7 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                             "standardField": False,
                             "type": "TEXT"
                         },
-                        "variableName": short_var,
+                        "variableName": variable_name,
                         "preFillData": {"id": new_pf_id, "name": field_name, "value": ""},
                         "groupName": "", "helpText": "", "placeholder": " ",
                         "exportable": False, "visible": True, "pdfFill": False,
@@ -793,7 +792,7 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
         panel_prefill_id = prefill_data_counter
         prefill_data_counter += 1
 
-        panel_var_name = generate_short_variable_name(panel_name, panel_id)
+        panel_var_name = sanitize_variable_name(panel_name)
 
         panel_metadata = {
             "id": panel_id,
@@ -849,9 +848,6 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
             # Map variable name to ID (use the actual metadata ID)
             id_map[variable_name] = field_metadata_id
 
-            # Generate short variable name
-            short_var_name = generate_short_variable_name(field_name, field_metadata_id)
-
             # Create formFillMetadata (fields have preFillData, panels don't)
             metadata = {
                 "id": field_metadata_id,
@@ -873,7 +869,7 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
                     "standardField": False,
                     "type": map_field_type_to_form_tag_type(field_type)
                 },
-                "variableName": short_var_name,
+                "variableName": variable_name,
                 "preFillData": {
                     "id": field_prefill_id,
                     "name": field_name,
