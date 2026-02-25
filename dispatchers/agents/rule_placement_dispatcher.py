@@ -15,8 +15,9 @@ import json
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Tuple
 from collections import defaultdict
 
 # Import doc_parser
@@ -108,15 +109,30 @@ def load_rule_schemas(rule_schemas_path: str) -> Dict:
     return dict(action_to_rules)
 
 
-def group_fields_by_panel(parsed_doc) -> Dict[str, List[Dict]]:
-    """Group fields by their panel from parsed document"""
+def group_fields_by_panel(parsed_doc) -> Tuple[Dict[str, List[Dict]], Dict[str, Dict]]:
+    """Group fields by their panel from parsed document.
+
+    Returns:
+        (panels, panel_headers) where panel_headers maps panel_name -> panel field entry
+        with a deterministically computed variableName and empty rules list.
+    """
     panels = defaultdict(list)
+    panel_headers: Dict[str, Dict] = {}
     current_panel = "default_panel"
 
     for field in parsed_doc.all_fields:
         # If field is a PANEL type, it becomes the current panel
         if field.field_type.value == 'PANEL':
             current_panel = field.name
+            panel_var = '_' + re.sub(r'[^a-z0-9]', '', field.name.lower()) + '_'
+            panel_headers[current_panel] = {
+                'field_name': field.name,
+                'type': 'PANEL',
+                'mandatory': False,
+                'logic': field.logic if field.logic else '',
+                'variableName': panel_var,
+                'rules': []
+            }
             continue
 
         field_data = {
@@ -128,7 +144,7 @@ def group_fields_by_panel(parsed_doc) -> Dict[str, List[Dict]]:
 
         panels[current_panel].append(field_data)
 
-    return panels
+    return dict(panels), panel_headers
 
 
 def extract_fields_from_bud(bud_path: str) -> object:
@@ -193,7 +209,10 @@ def get_relevant_rules(fields: List[Dict], matcher: KeywordTreeMatcher,
 
 
 def call_mini_agent(fields_with_logic: List[Dict], rule_names: Set[str],
-                   panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+                   panel_name: str, temp_dir: Path,
+                   context_usage: bool = False,
+                   verbose: bool = True,
+                   model: str = "opus") -> Optional[List[Dict]]:
     """
     Call the Rule Type Placement mini agent via claude -p
 
@@ -218,76 +237,29 @@ def call_mini_agent(fields_with_logic: List[Dict], rule_names: Set[str],
     with open(input_file, 'w') as f:
         json.dump(input_data, f, indent=2)
 
-    prompt = f"""Process fields for panel "{panel_name}" and determine which rules apply to each field.
+    prompt = f"""Process fields for panel "{panel_name}".
 
-## Input Data
-Read the input from: {input_file}
-
-The input contains:
-- fields_with_logic: Array of fields with their logic text
-- rule_names: List of available rule names
-
-## Task
-For each field in fields_with_logic:
-1. Read and understand the field's logic text
-2. Determine which rules from rule_names should be applied
-3. Consider the field type and mandatory flag
-4. Multiple rules can apply to a single field
-5. If no specific rules apply, use empty array
-
-## RULES (FOLLOW THESE RULES VERY STRICTLY)
-1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
-2) If there is **ANY** dependent dropdown, then it should be cleared when the parent dropdown values are changed. **EXECUTE** Rule in that case should be added.
-3) **IGNORE** the following visibility and state rules completely - these are handled by a separate Condition Agent:
-   - Make Visible, Make Invisible
-   - Make Enabled, Make Disabled
-   - Make Mandatory, Make Non Mandatory
-   Do NOT place any of these rules. Skip them entirely even if the logic mentions visibility, mandatory, enabled/disabled states.
-4) **DO NOT** place Copy To rules for fields with **conditional derivation logic**. These are handled by the Derivation Agent (Stage 6).
-   Conditional derivation means the field value is set/derived/populated based on conditions or other fields. Examples:
-   - "If X is selected then value is Y, else Z" → NOT Copy To (derivation)
-   - "If bank verified then N, else C" → NOT Copy To (derivation)
-   - "Derived as Domestic when account type is ZDES" → NOT Copy To (derivation)
-   - "Default value is X when condition Y" → NOT Copy To (derivation)
-   Copy To is ONLY for simple direct field-to-field copy (e.g., "copy from Basic Details panel").
-5) Focus ONLY on: validations (PAN, GST, MSME, etc.), COPY_TO (simple direct copies only), EDV rules, EXECUTE rules, and other non-visibility rules.
-
+## Input
+- FIELDS_WITH_LOGIC: {input_file} (contains fields_with_logic array and rule_names list)
+- LOG_FILE: {temp_dir / f"{re.sub(r'[^\\w\\-]', '_', panel_name)}_log.txt"}
 
 ## Output
-Write a JSON array to: {output_file}
+Write JSON array to: {output_file}
 
-Format:
-```json
-[
-  {{
-    "field_name": "Field Name",
-    "type": "TEXT",
-    "mandatory": true,
-    "logic": "original logic text",
-    "rules": ["RULE_NAME_1", "RULE_NAME_2"],
-    "variableName": "_fieldname_"
-  }}
-]
-```
-
-Each field must have:
-- field_name: exact name from input
-- type: exact type from input
-- mandatory: exact value from input
-- logic: exact logic text from input
-- rules: array of rule names (can be empty)
-- variableName: generated by converting field_name to lowercase, removing all spaces/underscores/special chars, THEN appending the panel name (also lowercase, no spaces/underscores), wrapped in single underscores. Format: _<fieldname>_<panelname>_ (e.g., "Company Code" in panel "Basic Details" -> "_companycode_basicdetails_"). This ensures variableNames are unique across panels.
+Follow the agent prompt instructions. The panel name for variableName generation is "{panel_name}".
 """
 
     try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name} ({len(fields_with_logic)} fields)")
-        print('='*70)
+        if verbose:
+            print(f"\n{'='*70}")
+            print(f"PROCESSING PANEL: {panel_name} ({len(fields_with_logic)} fields)")
+            print('='*70)
 
         # Call claude -p with the mini agent
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/01_rule_type_placement_agent_v2",
                 "--allowedTools", "Read,Write"
@@ -302,7 +274,8 @@ Each field must have:
         # Collect output
         output_lines = []
         for line in process.stdout:
-            print(line, end='', flush=True)
+            if verbose:
+                print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -311,21 +284,23 @@ Each field must have:
             print(f"✗ Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Rule Type Placement")
-        if usage:
-            print(usage)
-        else:
-            print("(Could not retrieve context usage)")
-        print("---")
+        # Query context usage from the agent session (opt-in)
+        if context_usage:
+            print(f"\n--- Context Usage ({panel_name}) ---")
+            usage = query_context_usage(panel_name, "Rule Type Placement")
+            if usage:
+                print(usage)
+            else:
+                print("(Could not retrieve context usage)")
+            print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                if verbose:
+                    print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"✗ Failed to parse output JSON: {e}", file=sys.stderr)
@@ -368,6 +343,23 @@ def main():
         default="output/rule_placement/all_panels_rules.json",
         help="Output file for all panels (default: output/rule_placement/all_panels_rules.json)"
     )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each panel (adds ~30s per panel)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel panels to process (default: 4, use 1 for sequential)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model to use (default: opus)"
+    )
 
     args = parser.parse_args()
 
@@ -393,7 +385,7 @@ def main():
 
     # Step 4: Group fields by panel
     print("\nGrouping fields by panel...")
-    panels = group_fields_by_panel(parsed_doc)
+    panels, panel_headers = group_fields_by_panel(parsed_doc)
     print(f"Found {len(panels)} panels")
 
     # Step 5: Process each panel
@@ -401,38 +393,79 @@ def main():
     print("PROCESSING PANELS")
     print("="*70)
 
-    successful_panels = 0
-    failed_panels = 0
-    total_fields_processed = 0
-    all_results = {}
+    max_workers = args.max_workers
 
+    # Prepare jobs
+    jobs = []
     for panel_name, fields in panels.items():
-        # Filter fields with logic
         fields_with_logic = [f for f in fields if f['logic'].strip()]
 
         if not fields_with_logic:
             print(f"\nSkipping panel '{panel_name}' - no fields with logic")
             continue
 
-        # Get relevant rules for this panel's fields
         relevant_rules = get_relevant_rules(fields_with_logic, matcher, action_to_rules)
-
         print(f"\nPanel '{panel_name}': {len(fields)} total, {len(fields_with_logic)} with logic, {len(relevant_rules)} relevant rules")
+        jobs.append((panel_name, fields_with_logic, relevant_rules))
 
-        result = call_mini_agent(
-            fields_with_logic,
-            relevant_rules,
-            panel_name,
-            temp_dir
-        )
+    successful_panels = 0
+    failed_panels = 0
+    total_fields_processed = 0
+    all_results = {}
 
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+    if max_workers <= 1:
+        # Sequential processing
+        for panel_name, fields_with_logic, relevant_rules in jobs:
+            result = call_mini_agent(
+                fields_with_logic, relevant_rules, panel_name, temp_dir,
+                context_usage=args.context_usage, verbose=True, model=args.model
+            )
+            if result:
+                successful_panels += 1
+                total_fields_processed += len(result)
+                all_results[panel_name] = result
+            else:
+                failed_panels += 1
+                print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+    else:
+        # Parallel processing
+        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_panel = {}
+            for panel_name, fields_with_logic, relevant_rules in jobs:
+                future = executor.submit(
+                    call_mini_agent,
+                    fields_with_logic, relevant_rules, panel_name, temp_dir,
+                    context_usage=args.context_usage, verbose=False, model=args.model
+                )
+                future_to_panel[future] = panel_name
+
+            for future in as_completed(future_to_panel):
+                panel_name = future_to_panel[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_panels += 1
+                        total_fields_processed += len(result)
+                        all_results[panel_name] = result
+                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                    else:
+                        failed_panels += 1
+                        print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+                except Exception as e:
+                    failed_panels += 1
+                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
+
+    # Reorder results to match original panel sequence and prepend PANEL field entries
+    ordered_results = {}
+    for panel_name in panels:
+        if panel_name in all_results:
+            fields = all_results[panel_name]
+            # Prepend the PANEL field entry deterministically (panels are also fields)
+            if panel_name in panel_headers:
+                fields = [panel_headers[panel_name]] + fields
+            ordered_results[panel_name] = fields
+    all_results = ordered_results
 
     # Step 6: Write all results to single output file
     if all_results:

@@ -16,6 +16,7 @@ import json
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 from collections import defaultdict
@@ -23,6 +24,9 @@ from collections import defaultdict
 # Import doc_parser
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from doc_parser import DocumentParser
+from context_optimization import (
+    strip_rules_except, restore_all_rules, is_edv_related_rule, log_strip_savings,
+)
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
@@ -189,7 +193,10 @@ def get_referenced_tables_for_panel(panel_fields: List[Dict], all_reference_tabl
 
 
 def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
-                        panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+                        panel_name: str, temp_dir: Path,
+                        context_usage: bool = False,
+                        verbose: bool = True,
+                        model: str = "opus") -> Optional[List[Dict]]:
     """
     Call the EDV Rule mini agent via claude -p
 
@@ -211,103 +218,44 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
     tables_input_file = temp_dir / f"{safe_panel_name}_tables_input.json"
     output_file = temp_dir / f"{safe_panel_name}_edv_output.json"
 
-    # Write fields to temp file
+    # Strip non-EDV rules to reduce context window usage
+    stripped_fields, stored_rules = strip_rules_except(panel_fields, is_edv_related_rule)
+    if verbose:
+        log_strip_savings(panel_fields, stripped_fields, panel_name)
+
+    # Write stripped fields to temp file
     with open(fields_input_file, 'w') as f:
-        json.dump(panel_fields, f, indent=2)
+        json.dump(stripped_fields, f, indent=2)
 
     # Write reference tables to temp file
     with open(tables_input_file, 'w') as f:
         json.dump(reference_tables, f, indent=2)
 
-    prompt = f"""Process fields for panel "{panel_name}" and populate EDV rule parameters.
+    prompt = f"""Process fields for panel "{panel_name}".
 
-## Input Data
-1. Fields with rules: {fields_input_file}
-2. Reference tables: {tables_input_file}
-
-## Task
-For each field in the input:
-1. Read the field's logic text and examine its rules
-2. For EDV-related rules (EXT_DROP_DOWN, EXT_VALUE), populate the params field
-3. For Generate Table Form Staging rules, populate params with externalDataType and order, and populate destination_fields by detecting ARRAY_HDR/ARRAY_END fields and matching EDV column names to field names
-4. Analyze table references in logic to determine:
-   - Which table to use (ddType / externalDataType)
-   - Which columns to display (da)
-   - Filter criteria for cascading dropdowns (criterias)
-5. For non-EDV rules, leave params empty or don't add it
-
-## Rules for EDV params:
-- Independent/Parent dropdowns: Empty criterias array
-- Dependent/Child dropdowns: Specify criterias mapping parent fields to table columns
-- Use field variableNames from source_fields for parent references
-- Map columns as a1, a2, a3, etc. based on table structure
-- Only include tables mentioned in the field's logic section
-
-## Rules for Generate Table Form Staging:
-- params: {{"externalDataType": "<EDV_TABLE_NAME>", "order": [{{"attr": 1, "dir": "ASC"}}]}}
-- Detect ARRAY_HDR and ARRAY_END fields by looking at the field type
-- destination_fields[0] = ARRAY_HDR variableName
-- destination_fields[1..N] = map EDV table columns (a1, a2, ...) to fields between ARRAY_HDR and ARRAY_END by matching column names to field names. Use -1 if no match.
+## Input
+- FIELDS_JSON: {fields_input_file}
+- REFERENCE_TABLES: {tables_input_file}
 
 ## Output
-Write a JSON array to: {output_file}
+Write JSON array to: {output_file}
 
-The output should have the same structure as input, but with params added to EDV rules:
-If the rule is EDV Dropdown, then field called `_dropdown_type` should be added. This field can have 3 values: `Independent`, `Parent`, `Child`.
-
-```json
-[
-  {{
-    "field_name": "Field Name",
-    "type": "DROPDOWN",
-    "mandatory": true,
-    "logic": "...",
-    "rules": [
-      {{
-        "id": 1,
-        "rule_name": "EXT_DROP_DOWN",
-        "source_fields": ["__parent_field__"],
-        "destination_fields": ["__current_field__"],
-        "_dropdown_type": "Parent",  // or "Independent" or "Child"
-        "params": {{
-          "conditionList": [
-            {{
-              "ddType": ["TABLE_NAME"],
-              "criterias": [{{"a1": "__parent_field__"}}],
-              "da": ["a2", "a3"],
-              "criteriaSearchAttr": [],
-              "additionalOptions": null,
-              "emptyAddOptionCheck": null,
-              "ddProperties": null
-            }}
-          ],
-          "__reasoning": "Explanation of why this structure was chosen"
-        }},
-        "_reasoning": "..."
-      }}
-    ],
-    "variableName": "__current_field__"
-  }}
-]
-```
-
-IMPORTANT:
-- Only add params to EDV-related rules
-- Keep all existing fields, rules, and attributes from input
-- Add params alongside existing rule attributes
+Follow the agent prompt instructions to populate EDV rule params.
 """
 
     try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name}")
-        print(f"  Fields: {len(panel_fields)}")
-        print(f"  Reference Tables: {len(reference_tables)}")
-        print('='*70)
+        if verbose:
+            print(f"\n{'='*70}")
+            print(f"PROCESSING PANEL: {panel_name}")
+            print(f"  Fields: {len(panel_fields)}")
+            print(f"  Reference Tables: {len(reference_tables)}")
+            print('='*70)
 
         # Call claude -p with the EDV mini agent
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/03_edv_rule_agent_v2",
                 "--allowedTools", "Read,Write"
@@ -322,7 +270,8 @@ IMPORTANT:
         # Collect output
         output_lines = []
         for line in process.stdout:
-            print(line, end='', flush=True)
+            if verbose:
+                print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -331,21 +280,24 @@ IMPORTANT:
             print(f"✗ EDV mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "EDV Rule")
-        if usage:
-            print(usage)
-        else:
-            print("(Could not retrieve context usage)")
-        print("---")
+        # Query context usage from the agent session (opt-in)
+        if context_usage:
+            print(f"\n--- Context Usage ({panel_name}) ---")
+            usage = query_context_usage(panel_name, "EDV Rule")
+            if usage:
+                print(usage)
+            else:
+                print("(Could not retrieve context usage)")
+            print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                result = restore_all_rules(result, stored_rules)
+                if verbose:
+                    print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"✗ Failed to parse output JSON: {e}", file=sys.stderr)
@@ -382,6 +334,23 @@ def main():
         "--output",
         default="output/edv_rules/all_panels_edv.json",
         help="Output file for all panels (default: output/edv_rules/all_panels_edv.json)"
+    )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each panel (adds ~30s per panel)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel panels to process (default: 4, use 1 for sequential)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model to use (default: opus)"
     )
 
     args = parser.parse_args()
@@ -431,21 +400,18 @@ def main():
     print("PROCESSING PANELS WITH EDV AGENT")
     print("="*70)
 
-    successful_panels = 0
-    failed_panels = 0
-    skipped_panels = 0
-    total_fields_processed = 0
-    all_results = {}
+    max_workers = args.max_workers
 
+    # Prepare jobs
+    jobs = []
+    skipped_panels = 0
     for panel_name, panel_fields in source_dest_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
             skipped_panels += 1
             continue
 
-        # Filter reference tables for this panel
         referenced_tables = get_referenced_tables_for_panel(panel_fields, all_reference_tables)
-
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {len(referenced_tables)} referenced tables")
 
         if referenced_tables:
@@ -454,21 +420,62 @@ def main():
                 ref_id = table.get('reference_id', 'unknown')
                 print(f"    - {ref_id}")
 
-        # Call EDV mini agent
-        result = call_edv_mini_agent(
-            panel_fields,
-            referenced_tables,
-            panel_name,
-            temp_dir
-        )
+        jobs.append((panel_name, panel_fields, referenced_tables))
 
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+    successful_panels = 0
+    failed_panels = 0
+    total_fields_processed = 0
+    all_results = {}
+
+    if max_workers <= 1:
+        # Sequential processing
+        for panel_name, panel_fields, referenced_tables in jobs:
+            result = call_edv_mini_agent(
+                panel_fields, referenced_tables, panel_name, temp_dir,
+                context_usage=args.context_usage, verbose=True, model=args.model
+            )
+            if result:
+                successful_panels += 1
+                total_fields_processed += len(result)
+                all_results[panel_name] = result
+            else:
+                failed_panels += 1
+                print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+    else:
+        # Parallel processing
+        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_panel = {}
+            for panel_name, panel_fields, referenced_tables in jobs:
+                future = executor.submit(
+                    call_edv_mini_agent,
+                    panel_fields, referenced_tables, panel_name, temp_dir,
+                    context_usage=args.context_usage, verbose=False, model=args.model
+                )
+                future_to_panel[future] = panel_name
+
+            for future in as_completed(future_to_panel):
+                panel_name = future_to_panel[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_panels += 1
+                        total_fields_processed += len(result)
+                        all_results[panel_name] = result
+                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                    else:
+                        failed_panels += 1
+                        print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+                except Exception as e:
+                    failed_panels += 1
+                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
+
+    # Reorder results to match original panel sequence
+    ordered_results = {}
+    for panel_name in source_dest_data:
+        if panel_name in all_results:
+            ordered_results[panel_name] = all_results[panel_name]
+    all_results = ordered_results
 
     # Step 5: Write all results to single output file
     if all_results:

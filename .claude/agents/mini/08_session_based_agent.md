@@ -20,7 +20,7 @@ Same schema as input with session-based rules correctly placed, consolidated, an
 
 ---
 
-## Available Rules (from Rule-Schemas.json)
+## Available Rules
 Use ONLY these exact rule names.
 
 | Rule Name (exact) | Action | ID |

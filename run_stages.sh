@@ -4,7 +4,7 @@ set -euo pipefail
 OUT_DIR="${1:?Usage: $0 <output-root-directory>}"
 
 echo "========== Stage 1: Rule Placement =========="
-python3 dispatchers/agents/rule_placement_dispatcher.py --bud "documents/Vendor Creation Sample BUD.docx" --keyword-tree "rule_extractor/static/keyword_tree.json" --rule-schemas "rules/Rule-Schemas.json" --output "${OUT_DIR}/rule_placement/all_panels_rules.json"
+python3 dispatchers/agents/rule_placement_dispatcher.py --bud "documents/Vendor Creation Sample BUD 2.docx" --keyword-tree "rule_extractor/static/keyword_tree.json" --rule-schemas "rules/Rule-Schemas.json" --output "${OUT_DIR}/rule_placement/all_panels_rules.json"
 echo "========== Stage 1 Complete =========="
 
 echo "========== Stage 2: Source / Destination =========="
@@ -12,11 +12,11 @@ python3 dispatchers/agents/source_destination_dispatcher.py --input "${OUT_DIR}/
 echo "========== Stage 2 Complete =========="
 
 echo "========== Stage 3: EDV Rules =========="
-python3 dispatchers/agents/edv_rule_dispatcher.py --bud "documents/Vendor Creation Sample BUD.docx" --source-dest-output "${OUT_DIR}/source_destination/all_panels_source_dest.json" --output "${OUT_DIR}/edv_rules/all_panels_edv.json"
+python3 dispatchers/agents/edv_rule_dispatcher.py --bud "documents/Vendor Creation Sample BUD 2.docx" --source-dest-output "${OUT_DIR}/source_destination/all_panels_source_dest.json" --output "${OUT_DIR}/edv_rules/all_panels_edv.json"
 echo "========== Stage 3 Complete =========="
 
 echo "========== Stage 4: Validate EDV =========="
-python3 dispatchers/agents/validate_edv_dispatcher.py --bud "documents/Vendor Creation Sample BUD.docx" --edv-output "${OUT_DIR}/edv_rules/all_panels_edv.json" --output "${OUT_DIR}/validate_edv/all_panels_validate_edv.json"
+python3 dispatchers/agents/validate_edv_dispatcher.py --bud "documents/Vendor Creation Sample BUD 2.docx" --edv-output "${OUT_DIR}/edv_rules/all_panels_edv.json" --output "${OUT_DIR}/validate_edv/all_panels_validate_edv.json"
 echo "========== Stage 4 Complete =========="
 
 echo "========== Stage 5: Conditional Logic =========="
