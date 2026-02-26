@@ -16,7 +16,7 @@ pip install -r requirements.txt
 pytest test_parser.py -v
 python3 -m pytest test_parser.py::TestDocumentParser::test_04_field_extraction_count -v
 
-# Run the full rule extraction pipeline (10 stages)
+# Run the full rule extraction pipeline (8 stages)
 ./run_pipeline.sh --bud "documents/Vendor Creation Sample BUD.docx" --schema "documents/json_output/vendor_creation.json" --pretty
 
 # Run pipeline from a specific stage (resume after failure)
@@ -56,9 +56,9 @@ parsed.to_dict()           # JSON-serializable dict
 
 Table classification uses pattern-based header matching: `FIELD_HEADER_PATTERNS`, `INITIATOR_KEYWORDS`, `SPOC_KEYWORDS`, `APPROVAL_KEYWORDS` in `parser.py`.
 
-### Rule Extraction Pipeline (10 Stages)
+### Rule Extraction Pipeline (8 Stages)
 
-Each stage is a **dispatcher** (`dispatchers/agents/*.py`) that processes panels one-by-one. Stages 1–9 call Claude **mini agents** (prompt files in `.claude/agents/mini/`). Stage 10 is deterministic.
+Each stage is a **dispatcher** (`dispatchers/agents/*.py`) that processes panels. Stages 1–6 call Claude **mini agents** (prompt files in `.claude/agents/mini/`). Stages 7–8 are deterministic.
 
 ```
 BUD (.docx)
@@ -67,12 +67,10 @@ BUD (.docx)
   ├─ Stage 2: Source / Destination ── Maps source & destination fields per rule
   ├─ Stage 3: EDV Rules ───────────── Populates EDV dropdown params (conditionList)
   ├─ Stage 4: Validate EDV ────────── Adds Validate EDV rules on dropdowns
-  ├─ Stage 5: Conditional Logic ───── Visibility/state rules (Make Visible, Enable, Mandatory, etc.)
-  ├─ Stage 6: Derivation Logic ────── Expression (Client) rules with ctfd/asdff
-  ├─ Stage 7: Clear Child Fields ──── Expression (Client) clearing rules (cf/asdff/rffdd)
-  ├─ Stage 8: Inter-Panel Rules ───── Cross-panel Copy To, visibility, delegation to specialized agents
-  ├─ Stage 9: Session Based ────────── Session-based visibility rules + RuleCheck field
-  └─ Stage 10: Convert to API Format ─ Final JSON for platform (formFillMetadatas + formFillRules)
+  ├─ Stage 5: Expression Rules ────── All expression rules in one pass (visibility, derivation, clearing)
+  ├─ Stage 6: Inter-Panel Rules ───── Cross-panel Copy To, visibility, expression rules
+  ├─ Stage 7: Session Based ────────── Deterministic RuleCheck field insertion
+  └─ Stage 8: Convert to API Format ─ Final JSON for platform (formFillMetadatas + formFillRules)
 ```
 
 **Data flows forward**: Stage N output → Stage N+1 input. Each stage's output is at `output/{stage_name}/all_panels_*.json`. Intermediate per-panel files go in `output/{stage_name}/temp/`.
@@ -94,17 +92,15 @@ Every dispatcher follows the same structure:
 | `02_source_destination_agent_v2.md` | Source/Destination | Which fields are inputs/outputs of each rule |
 | `03_edv_rule_agent_v2.md` | EDV Rules | Dropdown params: ddType, criterias, da, cascading |
 | `04_validate_edv_agent_v2.md` | Validate EDV | Validate EDV rules with positional column mapping |
-| `05_condition_agent_v2.md` | Conditional Logic | Visibility/state rules with conditions (DISCARDS & rebuilds) |
-| `06_derivation_agent.md` | Derivation | Value derivation via ctfd expressions |
-| `07_clear_child_fields_agent.md` | Clear Child Fields | Parent→child clearing via cf/asdff/rffdd expressions |
-| `09_inter_panel_agent.md` | Inter-Panel Rules | Cross-panel Copy To, visibility; delegates complex rules |
-| `08_session_based_agent.md` | Session Based | Session-based rules (FIRST_PARTY/SECOND_PARTY visibility) |
+| `expression_rule_agent.md` | Expression Rules | All expression rules: visibility, derivation, clearing, session |
+| `09_inter_panel_analysis_agent.md` | Inter-Panel Analysis | Cross-panel Pass 1: Copy To, visibility; flags complex refs |
+| `expression_rule_agent.md` | Inter-Panel Complex | Cross-panel Pass 2: expression rules for complex refs |
 
 ### Key Static Resources
 
 - `rules/Rule-Schemas.json` — 182+ predefined rule patterns with schema IDs, action types, field counts
 - `rule_extractor/static/keyword_tree.json` — Hierarchical keyword → action type → rule type mapping tree (used in Stage 1)
-- `archive/output/complete_format/*.json` — Reference API schemas for injection mode (Stage 9)
+- `archive/output/complete_format/*.json` — Reference API schemas for injection mode (Stage 8)
 
 ### Convert to API Format (`dispatchers/agents/convert_to_api_format.py`)
 

@@ -19,7 +19,6 @@ import json
 import subprocess
 import sys
 import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
@@ -27,7 +26,6 @@ from typing import Dict, List, Optional, Set, Tuple
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 sys.path.insert(0, PROJECT_ROOT)
 from doc_parser import DocumentParser
-from context_optimization import strip_rules_except, restore_all_rules, is_session_based_rule, log_strip_savings
 
 
 RULE_CHECK_VARIABLE = "__rulecheck__"
@@ -200,10 +198,7 @@ def prepare_panel_fields_with_bud_logic(panel_fields: List[Dict],
 def call_session_based_mini_agent(panel_fields: List[Dict],
                                    panel_name: str,
                                    session_params: str,
-                                   temp_dir: Path,
-                                   context_usage: bool = False,
-                                   verbose: bool = True,
-                                   model: str = "opus") -> Optional[List[Dict]]:
+                                   temp_dir: Path) -> Optional[List[Dict]]:
     """
     Call the Session Based mini agent via claude -p
 
@@ -225,41 +220,57 @@ def call_session_based_mini_agent(panel_fields: List[Dict],
     output_file = temp_dir / f"{safe_panel_name}_session_output.json"
     log_file = temp_dir / f"{safe_panel_name}_session_log.txt"
 
-    # Strip non-session rules — agent only adds session-based rules,
-    # keep existing session rules so agent can check for duplicates
-    stripped_fields, stored_rules = strip_rules_except(panel_fields, is_session_based_rule)
-    if verbose:
-        log_strip_savings(panel_fields, stripped_fields, panel_name)
-
-    # Write stripped fields to temp file
+    # Write fields to temp file
     with open(fields_input_file, 'w') as f:
-        json.dump(stripped_fields, f, indent=2)
+        json.dump(panel_fields, f, indent=2)
 
     prompt = f"""Process fields for panel "{panel_name}".
 
-## Input
-- FIELDS_JSON: {fields_input_file}
-- SESSION_PARAMS: {session_params}
-- LOG_FILE: {log_file}
+## Input Data
+1. Fields with rules: {fields_input_file}
+2. Log file: {log_file}
+
+## Instructions
+Follow the step-by-step approach defined in the agent prompt (08_session_based_agent).
+- FIELDS_JSON = {fields_input_file}
+- SESSION_PARAMS = {session_params}
+- LOG_FILE = {log_file}
+
+## CRITICAL: Only Handle Session-Based Rules
+Read each field's logic text and determine what session-based rules to place.
+Do NOT touch any other rules (visibility client rules, derivation, clearing, validation, etc.).
+
+All rules must use params = "{session_params}".
+
+## Rule Placement (mirrors condition agent pattern):
+- **Conditional rules** (logic references another field): place ON the controller field
+  - source_fields = [controller field's variableName]
+  - destination_fields = [affected field(s) variableName]
+- **Static rules** (logic says "Disable", "Invisible", "Non-Editable", etc.):
+  - place ON the affected field itself
+  - source_fields = []
+  - destination_fields = [field's own variableName]
+- **Empty logic** = NO session-based rules needed (deterministic visibility handled by RuleCheck separately)
+- Consolidate: group fields affected by the same controller + condition into ONE rule
+- Opposite rules: use NOT_IN with the original value (never IN with opposite value)
+- Skip PANEL-type fields
+- If a session-based rule (same rule_name + params) already exists, skip it
+- Pass through all existing non-session rules unchanged
 
 ## Output
-Write JSON array to: {output_file}
-
-Follow the agent prompt instructions (08_session_based_agent).
+Write a JSON array to: {output_file}
 """
 
     try:
-        if verbose:
-            print(f"\n{'='*70}")
-            print(f"PROCESSING PANEL: {panel_name} (session: {session_params})")
-            print(f"  Fields: {len(panel_fields)}")
-            print('='*70)
+        print(f"\n{'='*70}")
+        print(f"PROCESSING PANEL: {panel_name} (session: {session_params})")
+        print(f"  Fields: {len(panel_fields)}")
+        print('='*70)
 
         # Call claude -p with the Session Based mini agent
         process = subprocess.Popen(
             [
                 "claude",
-                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/08_session_based_agent",
                 "--allowedTools", "Read,Write"
@@ -274,8 +285,7 @@ Follow the agent prompt instructions (08_session_based_agent).
         # Collect output
         output_lines = []
         for line in process.stdout:
-            if verbose:
-                print(line, end='', flush=True)
+            print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -284,24 +294,21 @@ Follow the agent prompt instructions (08_session_based_agent).
             print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session (opt-in)
-        if context_usage:
-            print(f"\n--- Context Usage ({panel_name}) ---")
-            usage = query_context_usage(panel_name, "Session Based")
-            if usage:
-                print(usage)
-            else:
-                print("(Could not retrieve context usage)")
-            print("---")
+        # Query context usage from the agent session
+        print(f"\n--- Context Usage ({panel_name}) ---")
+        usage = query_context_usage(panel_name, "Session Based")
+        if usage:
+            print(usage)
+        else:
+            print("(Could not retrieve context usage)")
+        print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                result = restore_all_rules(result, stored_rules)
-                if verbose:
-                    print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
+                print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"  Failed to parse output JSON: {e}", file=sys.stderr)
@@ -419,23 +426,6 @@ def main():
         default="output/session_based/all_panels_session_based.json",
         help="Output file (default: output/session_based/all_panels_session_based.json)"
     )
-    parser.add_argument(
-        "--context-usage",
-        action="store_true",
-        default=False,
-        help="Query and display context window usage after each panel (adds ~30s per panel)"
-    )
-    parser.add_argument(
-        "--max-workers",
-        type=int,
-        default=4,
-        help="Max parallel panels to process (default: 4, use 1 for sequential)"
-    )
-    parser.add_argument(
-        "--model",
-        default="opus",
-        help="Claude model to use (default: opus)"
-    )
 
     args = parser.parse_args()
 
@@ -520,13 +510,9 @@ def main():
     print("PROCESSING PANELS WITH SESSION BASED AGENT")
     print("=" * 70)
 
-    max_workers = args.max_workers
-
-    # Prepare jobs (logic replacement must happen in main thread)
-    jobs = []
-    skipped_panels = 0
     successful_panels = 0
     failed_panels = 0
+    skipped_panels = 0
     total_fields_processed = 0
     all_results = {}
 
@@ -537,7 +523,10 @@ def main():
             all_results[panel_name] = panel_fields
             continue
 
+        # Get BUD 4.5.2 data for this panel
         vendor_panel_data = vendor_table_data.get(panel_name, {})
+
+        # Replace field logic with BUD table logic
         modified_fields = prepare_panel_fields_with_bud_logic(panel_fields, vendor_panel_data)
 
         fields_in_bud = sum(1 for f in modified_fields
@@ -550,63 +539,23 @@ def main():
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields "
               f"({fields_in_bud} in BUD table, {fields_not_in_bud} not in BUD table)")
 
-        jobs.append((panel_name, panel_fields, modified_fields))
+        # Call Session Based mini agent with SECOND_PARTY
+        result = call_session_based_mini_agent(
+            modified_fields,
+            panel_name,
+            "SECOND_PARTY",
+            temp_dir
+        )
 
-    if max_workers <= 1:
-        # Sequential processing
-        for panel_name, panel_fields, modified_fields in jobs:
-            result = call_session_based_mini_agent(
-                modified_fields, panel_name, "SECOND_PARTY", temp_dir,
-                context_usage=args.context_usage, verbose=True, model=args.model
-            )
-            if result:
-                successful_panels += 1
-                total_fields_processed += len(result)
-                all_results[panel_name] = result
-            else:
-                failed_panels += 1
-                all_results[panel_name] = panel_fields
-                total_fields_processed += len(panel_fields)
-                print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
-    else:
-        # Parallel processing
-        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            future_to_panel = {}
-            for panel_name, panel_fields, modified_fields in jobs:
-                future = executor.submit(
-                    call_session_based_mini_agent,
-                    modified_fields, panel_name, "SECOND_PARTY", temp_dir,
-                    context_usage=args.context_usage, verbose=False, model=args.model
-                )
-                future_to_panel[future] = (panel_name, panel_fields)
-
-            for future in as_completed(future_to_panel):
-                panel_name, original_fields = future_to_panel[future]
-                try:
-                    result = future.result()
-                    if result:
-                        successful_panels += 1
-                        total_fields_processed += len(result)
-                        all_results[panel_name] = result
-                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
-                    else:
-                        failed_panels += 1
-                        all_results[panel_name] = original_fields
-                        total_fields_processed += len(original_fields)
-                        print(f"✗ Panel '{panel_name}' failed - using original data", file=sys.stderr)
-                except Exception as e:
-                    failed_panels += 1
-                    all_results[panel_name] = original_fields
-                    total_fields_processed += len(original_fields)
-                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
-
-    # Reorder results to match original panel sequence
-    ordered_results = {}
-    for panel_name in input_data:
-        if panel_name in all_results:
-            ordered_results[panel_name] = all_results[panel_name]
-    all_results = ordered_results
+        if result:
+            successful_panels += 1
+            total_fields_processed += len(result)
+            all_results[panel_name] = result
+        else:
+            failed_panels += 1
+            all_results[panel_name] = panel_fields
+            total_fields_processed += len(panel_fields)
+            print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
 
     # ── Step 5: Write output ──────────────────────────────────────────────────
     print(f"\nWriting output to: {output_file}")

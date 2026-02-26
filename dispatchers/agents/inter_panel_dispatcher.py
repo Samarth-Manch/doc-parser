@@ -190,16 +190,21 @@ def call_pass2_complex_agent(complex_refs_file: Path,
 
 ## Input
 - COMPLEX_REFS_FILE: {complex_refs_file}
-- INVOLVED_PANELS_FILE: {involved_panels_file}
+- FIELDS_JSON: {involved_panels_file}
+  This is a JSON object where each key is a panel name and each value is the
+  array of fields for that panel. These are the involved panels with full field data.
 - COMPLEX_RULES_FILE: {complex_rules_file}
 - LOG_FILE: {log_file}
 
-Follow the agent prompt instructions (09_inter_panel_complex_agent).
+Use the expression_rule_agent instructions to build Expression (Client) rules
+for cross-panel derivation, clearing, and EDV references.
+The complex refs describe what needs to be done; the involved panels provide
+the field context. Write the output rules to COMPLEX_RULES_FILE.
 If no rules could be created, write empty dict {{}} to {complex_rules_file}.
 """
 
     try:
-        log("PASS 2: COMPLEX RULES — Starting")
+        log("PASS 2: COMPLEX RULES — Starting (using expression_rule_agent)")
         log(f"  Complex refs input: {complex_refs_file}")
         log(f"  Involved panels: {involved_panels_file}")
         log(f"  Complex rules output: {complex_rules_file}")
@@ -212,7 +217,7 @@ If no rules could be created, write empty dict {{}} to {complex_rules_file}.
                 "claude",
                 "--model", model,
                 "-p", prompt,
-                "--agent", "mini/09_inter_panel_complex_agent",
+                "--agent", "mini/expression_rule_agent",
                 "--allowedTools", "Read,Write"
             ],
             stdout=subprocess.PIPE,
@@ -251,7 +256,7 @@ def main():
     parser.add_argument(
         "--clear-child-output",
         required=True,
-        help="Path to Clear Child Fields agent output JSON (stage 7)"
+        help="Path to input JSON from previous stage (e.g., expression rules output)"
     )
     parser.add_argument(
         "--bud",

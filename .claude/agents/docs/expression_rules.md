@@ -117,6 +117,14 @@ minvi(vo("_gstPresent_") == "No", "_gstNumber_", "_gstImage_")
 
 > **Rule**: Always pair `mvi` and `minvi` for complete coverage — one for the positive case, one for the negative.
 
+> **Unconditional visibility**: When logic says a field is **always visible**, **always invisible**, **by default visible**, or **by default invisible** (no triggering condition), use `true` as the condition:
+> ```
+> mvi(true, "_field_")      // always visible — no condition needed
+> minvi(true, "_field_")    // always invisible — no condition needed
+> dis(true, "_field_")      // always disabled
+> mnm(true, "_field_")      // always non-mandatory
+> ```
+
 ---
 
 ### 3.3 Enable / Disable Functions
@@ -331,6 +339,23 @@ rgxtst(vo("_phone_"), '/^\\d{10}$/')
 rgxtst(vo("_field1_"), vo("_regexField_"))  // regex from another field
 ```
 
+> **ALWAYS use `rgxtst` for any character-level check** — checking a character at a specific position, checking string length, checking prefix/suffix, checking character type, or any string format validation. Never use string equality or manual substring logic when `rgxtst` can express it more cleanly.
+
+**Common character check patterns with `rgxtst`:**
+
+| What to check | Regex | Example |
+|---|---|---|
+| Nth character equals X (1-based) | `/^.{N-1}X/` | 4th char is 'C': `/^.{3}C/` |
+| Starts with prefix | `/^prefix/` | Starts with 'IND': `/^IND/` |
+| Ends with suffix | `/suffix$/` | Ends with 'Z': `/Z$/` |
+| Exact length N | `/^.{N}$/` | Exactly 10 chars: `/^.{10}$/` |
+| Min length N | `/^.{N,}$/` | At least 5 chars: `/^.{5,}$/` |
+| Only digits | `/^\d+$/` | `/^\d+$/` |
+| Only uppercase letters | `/^[A-Z]+$/` | `/^[A-Z]+$/` |
+| Only alphanumeric | `/^[A-Za-z0-9]+$/` | `/^[A-Za-z0-9]+$/` |
+| Contains substring | `/substring/` | Contains 'GST': `/GST/` |
+| Character in set at position | `/^.{N}[ABC]/` | 5th char is A, B, or C: `/^.{4}[ABC]/` |
+
 #### `validationStatusOf(id)` — alias: `vso`
 Returns the validation status of a field.
 Possible values: `"INIT"`, `"SUCCESS"`, `"FAIL"`, `"PENDING"`, `"ABORTED"`, `"TIMEOUT"`, `"WARN"`
@@ -399,6 +424,32 @@ vo("_field_") != ""          // check for non-empty
 ---
 
 ## 5. Common Composition Patterns
+
+### Pattern 0: Unconditional / Default State
+**When**: Logic says "always visible", "always invisible", "by default visible/invisible", "non-editable", "always disabled", "always non-mandatory" — there is **no trigger field**, the state is fixed.
+
+Use `true` as the condition. No pairing required since the state is permanent.
+
+```
+// "Always invisible" or "by default invisible"
+minvi(true, "_field_")
+
+// "Always visible" or "by default visible"
+mvi(true, "_field_")
+
+// "Non-editable" / "always disabled"
+dis(true, "_field_")
+
+// "Always non-mandatory"
+mnm(true, "_field_")
+
+// "Always disabled AND non-mandatory" (non-editable fields)
+dis(true, "_field_");mnm(true, "_field_")
+```
+
+> **Note**: Do NOT pair `mvi(true, ...)` with `minvi(...)` — they would conflict. Use `true` only when the state is unconditional (no opposite needed).
+
+---
 
 ### Pattern 1: Simple Conditional Visibility (Toggle)
 **When**: Field B should be visible if Field A = "Yes", invisible otherwise.
@@ -537,6 +588,33 @@ adderr(vo("_pan_") != "" and not rgxtst(vo("_pan_"), '/^[A-Z]{5}[0-9]{4}[A-Z]$/'
        "Invalid PAN format", "_pan_");
 remerr(vo("_pan_") == "" or rgxtst(vo("_pan_"), '/^[A-Z]{5}[0-9]{4}[A-Z]$/'),
        "_pan_")
+```
+
+### Pattern 17: Character-Position Check (always use rgxtst)
+**When**: Logic depends on a specific character at a position, prefix, suffix, length, or character type.
+**Always use `rgxtst` — never manual string comparison for character-level logic.**
+
+```
+// Check if 4th character (0-indexed position 3) is 'C'
+rgxtst(vo("_panNumber_"), '/^.{3}C/')
+
+// Conditional derivation based on character at position
+ctfd(vo("_panNumber_") != "" and rgxtst(vo("_panNumber_"), '/^.{3}P/'), "Individual", "_panCategory_");
+ctfd(vo("_panNumber_") != "" and rgxtst(vo("_panNumber_"), '/^.{3}C/'), "Company", "_panCategory_");
+asdff(vo("_panNumber_") != "", "_panCategory_")
+
+// Visibility based on field starting with a prefix
+mvi(rgxtst(vo("_accType_"), '/^IND/'), "_domesticFields_");
+minvi(not rgxtst(vo("_accType_"), '/^IND/'), "_domesticFields_")
+
+// Mandatory based on exact length
+mm(rgxtst(vo("_gstin_"), '/^.{15}$/'), "_gstVerifyButton_");
+mnm(not rgxtst(vo("_gstin_"), '/^.{15}$/'), "_gstVerifyButton_")
+
+// Error when field contains only digits (invalid name)
+adderr(vo("_name_") != "" and rgxtst(vo("_name_"), '/^\\d+$/'),
+       "Name cannot be all digits", "_name_");
+remerr(vo("_name_") == "" or not rgxtst(vo("_name_"), '/^\\d+$/'), "_name_")
 ```
 
 ### Pattern 15: Second Party Load with Transaction Status
@@ -777,7 +855,7 @@ In the pipeline JSON, an Expression (Client) rule looks like:
 {
   "rule_name": "Expression (Client)",
   "source_fields": ["__triggerField__"],
-  "destination_fields": ["__dependentField1__", "__dependentField2__"],
+  "destination_fields": [],
   "params": null,
   "conditionalValues": [
     "mvi(vo(\"_triggerField_\") == \"Yes\", \"_dependentField1_\", \"_dependentField2_\");minvi(vo(\"_triggerField_\") != \"Yes\", \"_dependentField1_\", \"_dependentField2_\")"
@@ -805,15 +883,15 @@ This internal tag identifies the purpose of the expression:
 
 ### Field Mapping
 
-- **`source_fields`**: The field(s) whose values are read in the expression (the triggers). Use `__doubleUnderscore__` format.
-- **`destination_fields`**: The field(s) affected by the expression (targets of `mvi`, `cf`, `ctfd`, etc.). Use `__doubleUnderscore__` format.
+- **`source_fields`**: The field(s) whose values drive the expression (the triggers). Use `__doubleUnderscore__` format.
+- **`destination_fields`**: Always `[]` (empty). The expression string in `conditionalValues[0]` already encodes which fields are affected — do not duplicate that information here.
 - **`conditionalValues[0]`**: The expression string itself. Variable names inside use `"_singleUnderscore_"` format.
 
 ---
 
 ## 8. Critical Rules & Gotchas
 
-1. **Variable name format**: In expression strings use `"_varName_"` (single underscores, quoted). In JSON arrays (`source_fields`, `destination_fields`) use `__varName__` (double underscores).
+1. **Variable name format**: In expression strings use `"_varName_"` (single underscores, quoted). In `source_fields` use `__varName__` (double underscores). `destination_fields` is always `[]` — the expression string already encodes which fields are affected.
 
 2. **Always pair opposites**: If you write `mvi(condition, ...)`, also write `minvi(negated_condition, ...)`. Same for `mm`/`mnm`, `en`/`dis`, `adderr`/`remerr`.
 
@@ -840,6 +918,10 @@ This internal tag identifies the purpose of the expression:
 13. **Session-based rules**: `sbmvi`/`sbminvi` take an extra `param` argument between condition and destVars. Valid params: `"FIRST_PARTY"`, `"SECOND_PARTY"`, `"GENERIC_STATIC"`.
 
 14. **Expression string escaping in JSON**: When the expression is stored in a JSON string, double quotes inside must be escaped: `\"`. For example: `"mvi(vo(\"_field_\") == \"Yes\", \"_dep_\")"`.
+
+15. **Character checks always use `rgxtst`**: Any logic involving a specific character position, string prefix, suffix, length, or character type MUST use `rgxtst`. Never use `==` or string slicing tricks for character-level checks. See Pattern 17 and the `rgxtst` reference for common patterns.
+
+16. **Unconditional state uses `true` as condition**: If logic says "always visible", "always invisible", "by default visible/invisible", "non-editable", or "always disabled" — use `true` as the condition with no pairing: `mvi(true, "_f_")`, `minvi(true, "_f_")`, `dis(true, "_f_")`, `mnm(true, "_f_")`. Do NOT pair these with an opposite rule since the state is permanent. See Pattern 0.
 
 ---
 

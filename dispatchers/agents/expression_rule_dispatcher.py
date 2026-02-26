@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from context_optimization import strip_all_rules, log_strip_savings
+from context_optimization import strip_all_rules, merge_expression_rules, log_strip_savings
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
@@ -62,18 +62,16 @@ def call_agent_single(
     temp_dir: Path,
     verbose: bool = True,
     model: str = "opus",
-    strip_rules: bool = False,
 ) -> Optional[List[Dict]]:
     safe = re.sub(r'[^\w\-]', '_', panel_name)
     input_file  = temp_dir / f"{safe}_expr_input.json"
     output_file = temp_dir / f"{safe}_expr_output.json"
     log_file    = temp_dir / f"{safe}_expr_log.txt"
 
-    fields_to_send = panel_fields
-    if strip_rules:
-        fields_to_send, _ = strip_all_rules(panel_fields)
-        if verbose:
-            log_strip_savings(panel_fields, fields_to_send, panel_name)
+    # Strip rules for context savings — agent only needs field logic
+    fields_to_send, _ = strip_all_rules(panel_fields)
+    if verbose:
+        log_strip_savings(panel_fields, fields_to_send, panel_name)
 
     with open(input_file, 'w') as f:
         json.dump(fields_to_send, f, indent=2)
@@ -90,7 +88,13 @@ Write the resulting JSON array to: {output_file}
 Follow the agent prompt instructions (expression_rule_agent).
 """
 
-    result = _run_agent(prompt, output_file, panel_name, verbose, model, multi=False)
+    agent_output = _run_agent(prompt, output_file, panel_name, verbose, model, multi=False)
+    if agent_output is not None:
+        # Merge: start from original fields (all existing rules intact),
+        # replace only expression/visibility/session rules with agent's output
+        result = merge_expression_rules(panel_fields, agent_output)
+    else:
+        result = None
     if verbose:
         _query_context_usage(panel_name)
     return result
@@ -103,21 +107,19 @@ def call_agent_multi(
     temp_dir: Path,
     verbose: bool = True,
     model: str = "opus",
-    strip_rules: bool = False,
 ) -> Optional[Dict[str, List[Dict]]]:
     label = "_".join(re.sub(r'[^\w\-]', '_', n)[:12] for n in panels)[:60]
     input_file  = temp_dir / f"multi_{label}_input.json"
     output_file = temp_dir / f"multi_{label}_output.json"
     log_file    = temp_dir / f"multi_{label}_log.txt"
 
-    panels_to_send = panels
-    if strip_rules:
-        panels_to_send = {}
-        for pname, pfields in panels.items():
-            stripped, _ = strip_all_rules(pfields)
-            panels_to_send[pname] = stripped
-            if verbose:
-                log_strip_savings(pfields, stripped, pname)
+    # Strip rules for context savings — agent only needs field logic
+    panels_to_send = {}
+    for pname, pfields in panels.items():
+        stripped, _ = strip_all_rules(pfields)
+        panels_to_send[pname] = stripped
+        if verbose:
+            log_strip_savings(pfields, stripped, pname)
 
     with open(input_file, 'w') as f:
         json.dump(panels_to_send, f, indent=2)
@@ -140,7 +142,17 @@ Apply expression_rule_agent logic to EVERY panel in the input.
 Panels share this context — use that awareness when building expressions.
 """
 
-    result = _run_agent(prompt, output_file, f"[{names}]", verbose, model, multi=True)
+    agent_output = _run_agent(prompt, output_file, f"[{names}]", verbose, model, multi=True)
+    if agent_output is not None:
+        # Merge: start from original fields, replace only expression rules
+        result = {}
+        for pname, agent_fields in agent_output.items():
+            if pname in panels:
+                result[pname] = merge_expression_rules(panels[pname], agent_fields)
+            else:
+                result[pname] = agent_fields
+    else:
+        result = None
     if verbose:
         _query_context_usage(", ".join(panels))
     return result
@@ -221,12 +233,6 @@ def main():
                         default=None,
                         help="Comma-separated panel indices to process together in one call "
                              "(e.g. --panels 0,2,4). Omit to process all panels one by one.")
-    parser.add_argument("--strip-rules",
-                        action="store_true",
-                        default=False,
-                        help="Strip all existing rules before sending to the agent. "
-                             "The agent only sees field logic and creates fresh expression rules. "
-                             "Stripped rules are restored and merged with the new output.")
     parser.add_argument("--max-workers", type=int, default=4,
                         help="Parallel workers for one-by-one mode (default: 4)")
     parser.add_argument("--model", default="opus",
@@ -269,8 +275,7 @@ def main():
         print(f"\nSending {len(selected)} panels together in one agent call: "
               f"{', '.join(selected)}")
 
-        result = call_agent_multi(selected, temp_dir, verbose=True, model=args.model,
-                                   strip_rules=args.strip_rules)
+        result = call_agent_multi(selected, temp_dir, verbose=True, model=args.model)
 
         if result is None:
             print("Combined agent call failed.", file=sys.stderr)
@@ -301,8 +306,7 @@ def main():
     if args.max_workers <= 1:
         for panel_name, panel_fields in jobs:
             result = call_agent_single(panel_fields, panel_name, temp_dir,
-                                       verbose=True, model=args.model,
-                                       strip_rules=args.strip_rules)
+                                       verbose=True, model=args.model)
             if result:
                 succeeded += 1
                 all_results[panel_name] = result
@@ -314,8 +318,7 @@ def main():
         print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={args.max_workers})")
         with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
             future_map = {
-                executor.submit(call_agent_single, pf, pn, temp_dir, False, args.model,
-                               args.strip_rules): (pn, pf)
+                executor.submit(call_agent_single, pf, pn, temp_dir, False, args.model): (pn, pf)
                 for pn, pf in jobs
             }
             for future in as_completed(future_map):

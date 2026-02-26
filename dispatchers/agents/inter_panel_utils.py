@@ -124,6 +124,12 @@ def quick_cross_panel_scan(input_data: Dict[str, List[Dict]]) -> bool:
     return False
 
 
+def _norm_var(v: str) -> str:
+    """Normalize __varname__ or _varname_ to _varname_ for index lookups."""
+    s = v.strip('_')
+    return f'_{s}_' if s else v
+
+
 def validate_inter_panel_rules(rules_by_panel: Dict[str, List[Dict]],
                                 var_index: Dict[str, str]) -> Tuple[Dict[str, List[Dict]], int]:
     """
@@ -144,14 +150,14 @@ def validate_inter_panel_rules(rules_by_panel: Dict[str, List[Dict]],
         for entry in field_rules_list:
             target_var = entry.get('target_field_variableName', '')
 
-            # Check that the target field exists
-            if target_var not in var_index:
+            # Check that the target field exists (normalize __x__ -> _x_ for lookup)
+            if _norm_var(target_var) not in var_index:
                 print(f"  Validation: target_field '{target_var}' not found in any panel, stripping")
                 stripped_count += 1
                 continue
 
             # Check that the target field is in the expected panel
-            actual_panel = var_index[target_var]
+            actual_panel = var_index[_norm_var(target_var)]
             if actual_panel.lower() != panel_name.lower():
                 print(f"  Validation: target_field '{target_var}' is in '{actual_panel}', "
                       f"not '{panel_name}' — relocating")
@@ -164,12 +170,12 @@ def validate_inter_panel_rules(rules_by_panel: Dict[str, List[Dict]],
             # Validate source_fields and destination_fields in rules
             valid_rules = []
             for rule in entry.get('rules_to_add', []):
-                # Check source_fields exist
+                # Check source_fields exist (normalize __x__ -> _x_ for lookup)
                 src_fields = rule.get('source_fields', [])
                 dst_fields = rule.get('destination_fields', [])
 
-                invalid_src = [f for f in src_fields if f not in var_index]
-                invalid_dst = [f for f in dst_fields if f not in var_index]
+                invalid_src = [f for f in src_fields if _norm_var(f) not in var_index]
+                invalid_dst = [f for f in dst_fields if _norm_var(f) not in var_index]
 
                 if invalid_src:
                     print(f"  Validation: rule '{rule.get('rule_name', '?')}' has invalid source_fields: "
@@ -179,7 +185,7 @@ def validate_inter_panel_rules(rules_by_panel: Dict[str, List[Dict]],
 
                 if invalid_dst:
                     # Remove invalid destinations but keep valid ones
-                    valid_dsts = [f for f in dst_fields if f in var_index]
+                    valid_dsts = [f for f in dst_fields if _norm_var(f) in var_index]
                     if valid_dsts:
                         rule['destination_fields'] = valid_dsts
                         print(f"  Validation: rule '{rule.get('rule_name', '?')}' — removed invalid "
@@ -243,18 +249,28 @@ def _merge_rules_into_panel(panel_fields: List[Dict],
         existing_rules = panel_fields[field_idx].get('rules', [])
 
         for rule in rules_to_add:
-            # Deduplicate: check if same rule_name + source_fields + destination_fields exists
+            # Deduplicate: check if an identical rule already exists.
+            # For Expression (Client) rules, also compare conditionalValues because
+            # multiple expression rules can legitimately share the same source/destination
+            # fields but have different expressions (different conditionalValues).
             is_duplicate = False
             for existing in existing_rules:
                 if isinstance(existing, str):
                     if existing == rule.get('rule_name', ''):
                         is_duplicate = True
                         break
-                elif (existing.get('rule_name') == rule.get('rule_name') and
-                      existing.get('source_fields') == rule.get('source_fields') and
-                      existing.get('destination_fields') == rule.get('destination_fields')):
-                    is_duplicate = True
-                    break
+                elif existing.get('rule_name') == rule.get('rule_name'):
+                    if rule.get('rule_name') == 'Expression (Client)':
+                        # For expression rules: duplicate only if conditionalValues also match
+                        if (existing.get('source_fields') == rule.get('source_fields') and
+                                existing.get('conditionalValues') == rule.get('conditionalValues')):
+                            is_duplicate = True
+                            break
+                    else:
+                        if (existing.get('source_fields') == rule.get('source_fields') and
+                                existing.get('destination_fields') == rule.get('destination_fields')):
+                            is_duplicate = True
+                            break
 
             if not is_duplicate:
                 # Assign next available rule ID

@@ -460,7 +460,10 @@ def main():
     ordered_results = {}
     for panel_name in panels:
         if panel_name in all_results:
-            fields = all_results[panel_name]
+            # Strip any PANEL-type fields the agent may have returned —
+            # the dispatcher owns the authoritative PANEL header
+            fields = [f for f in all_results[panel_name]
+                      if f.get('type', '').upper() != 'PANEL']
             # Prepend the PANEL field entry deterministically (panels are also fields)
             if panel_name in panel_headers:
                 fields = [panel_headers[panel_name]] + fields

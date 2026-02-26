@@ -202,6 +202,52 @@ def restore_rules_conditional_logic(
     return agent_output
 
 
+def merge_expression_rules(
+    original_fields: List[Dict],
+    agent_output: List[Dict],
+) -> List[Dict]:
+    """
+    Merge expression rules from agent output INTO the original fields.
+
+    Starts from the original fields (which have all existing rules from
+    previous stages intact). For each field, removes old expression/visibility/
+    session rules and appends the new ones from the agent output.
+
+    This approach guarantees that:
+    - All existing non-expression rules (EDV, Copy To, Validate, etc.) are preserved
+    - Fields the agent didn't return keep their original rules untouched
+    - Only expression/visibility/session rules are replaced by the agent's output
+    """
+    EXPRESSION_RULES = {"Expression (Client)"}
+    REPLACED = ALL_VISIBILITY_RULE_NAMES | SESSION_RULE_NAMES | EXPRESSION_RULES
+
+    # Build lookup: variableName → new rules from agent
+    agent_rules_by_var: Dict[str, List[Dict]] = {}
+    for field in agent_output:
+        var_name = field.get('variableName', '')
+        if var_name:
+            new_rules = [r for r in field.get('rules', [])
+                         if isinstance(r, dict) and r.get('rule_name') in REPLACED]
+            if new_rules:
+                agent_rules_by_var[var_name] = new_rules
+
+    # Merge into original fields
+    result = copy.deepcopy(original_fields)
+    for field in result:
+        var_name = field.get('variableName', '')
+        if not var_name:
+            continue
+
+        if var_name in agent_rules_by_var:
+            # Remove old expression/visibility/session rules, keep everything else
+            existing = field.get('rules', [])
+            kept = [r for r in existing
+                    if not (isinstance(r, dict) and r.get('rule_name') in REPLACED)]
+            field['rules'] = kept + agent_rules_by_var[var_name]
+
+    return result
+
+
 def restore_rules_after_slim(
     agent_output: List[Dict],
     stored_rules: Dict[str, List[Dict]],
