@@ -113,6 +113,11 @@ A single logic sentence may contain BOTH intra-panel and cross-panel references.
 12) If unsure whether logic qualifies, skip it. But do NOT skip logic simply because the affected field's logic mentions a cross-panel field — check whether the trigger is local first.
 13) **Character checks always use `rgxtst`**: Any logic involving a specific character at a position, string prefix/suffix, length check, or character type check MUST use `rgxtst`. Never use `==` or manual string comparisons for character-level logic. See Pattern 17 in the reference doc for common patterns.
 14) **`destination_fields` must always be empty (`[]`)**: The expression string in `conditionalValues[0]` already encodes which fields are affected. Do NOT populate `destination_fields`.
+15) **Party-scoped logic uses session-based functions**: If the logic mentions "second party", "first party", "vendor", "initiator", or restricts visibility/mandatory state to a specific party:
+    - **Visibility**: use `sbmvi`/`sbminvi` with param `"FIRST_PARTY"` or `"SECOND_PARTY"`. Never use `mvi`/`minvi` for party-scoped visibility.
+    - **Mandatory**: use `mm(pt() == "FP", ...)` for first-party mandatory, `mm(pt() == "SP", ...)` for second-party mandatory. Pair with `mnm(pt() == "SP/FP", ...)` for the opposite party.
+    - **Keywords**: "mandatory in first party", "mandatory in second party", "applicable in first party", "mandatory for vendor", "initiator fills", "second party only", etc.
+    - See Critical Rules 17 and 18, and Patterns 13 and 18 in the reference doc.
 
 ---
 
@@ -136,6 +141,8 @@ The BUD frequently describes logic on the **wrong field** for rule placement pur
 | "IFSC Code" logic: "Cleared when Cheque Image changes" | Cheque Image | **Cheque Image** (clear: `on("change")` + `cf` + `asdff` + `rffd` targeting IFSC) |
 | "Clerk fields" logic: "Mandatory when Account Group = INDS/FIVN" | Account Group | **Account Group** (mandatory: `mm`/`mnm` targeting Clerk fields) |
 | "Bank fields" logic: "Visible when Create Bank Key = Yes" | Create Bank Key | **Create Bank Key** (visibility + mandatory targeting Bank fields) |
+| "Field X" logic: "Mandatory in first party" | Field X itself | **Field X** (session-based: `sbmvi(true,"FIRST_PARTY","_x_");sbminvi(true,"SECOND_PARTY","_x_");mm(pt()=="FP","_x_");mnm(pt()=="SP","_x_")`) |
+| "Field Y" logic: "Mandatory in second party" | Field Y itself | **Field Y** (session-based: `sbmvi(true,"SECOND_PARTY","_y_");sbminvi(true,"FIRST_PARTY","_y_");mm(pt()=="SP","_y_");mnm(pt()=="FP","_y_")`) |
 
 ### Consolidation rule
 
@@ -154,15 +161,19 @@ Rule on "Country": on("change") and (cf(true, "_region_", "_city_");asdff(true, 
 
 ## Approach
 
-### 1. Read reference document
+This agent runs in **two phases**: Phase A places expression rules from logic text; Phase B adds clearing rules from the dependency graph of existing + newly placed rules.
+
+### Phase A — Logic-Text Expression Rules
+
+#### Step 1: Read reference document
 Read `.claude/agents/docs/expression_rules.md` to load the full function reference.
 Log: Append "Step 1: Read expression_rules.md" to $LOG_FILE
 
-### 2. Read all fields
+#### Step 2: Read all fields
 Read every field's `logic` in $FIELDS_JSON.
 Log: Append "Step 2: Read all field logic" to $LOG_FILE
 
-### 3. Classify each field
+#### Step 3: Classify each field
 For each field, determine:
 - Does its logic qualify as an expression rule?
 - Which functions are needed?
@@ -171,13 +182,64 @@ For each field, determine:
 
 Log: Append "Step 3: Qualifying fields: <list>, skipped cross-panel: <list>" to $LOG_FILE
 
-### 4. Build expressions
-For each qualifying field, build the full expression string using functions from the reference doc.
-Log: Append "Step 4: Built <N> expressions" to $LOG_FILE
+#### Step 4: Build and place expression rules
+Build expression strings using functions from the reference doc. Add Expression (Client) rules on the appropriate fields. Preserve all existing rules.
+Log: Append "Step 4: Built and placed <N> expression rules" to $LOG_FILE
 
-### 5. Place rules and output
-Add Expression (Client) rules on the appropriate fields. Preserve all existing rules.
-Log: Append "Step 5 complete: placed <N> Expression (Client) rules" to $LOG_FILE
+---
+
+### Phase B — Clearing Rules (Dependency Graph)
+
+This phase replicates the logic of the Clear Child Fields Agent. It scans ALL rules (original + newly placed in Phase A) to identify parent→child relationships and adds `cf`/`asdff`/`rffdd` clearing rules for parents that do not already have one.
+
+#### Step 5: Build parent→children map
+Scan ALL fields' rules (both original rules and rules placed in Phase A). For each rule, if it has `source_fields` pointing to field X and `destination_fields` pointing to other fields, record X as a parent. Only include **clearing-eligible** rule types:
+- EDV Dropdown (Client) / cascading dropdowns — condition: `true`
+- Expression (Client) with `ctfd` derivation — condition: `vo("_parent_")==""`
+- Validate EDV — condition: `vo("_parent_")==""`
+- Make Visible / Make Invisible / visibility rules — condition: `true`
+
+**Skip these rule types — they auto-populate and don't need clearing:**
+- OCR rules (PAN OCR, GSTIN OCR, Aadhaar OCR, etc.)
+- Validate PAN, Validate GSTIN, Validate MSME, Validate Pincode
+- Copy To (Client / Server)
+- Any rule whose `destination_fields` contains `-1` or self-references
+
+Log: Append "Step 5: Built parent→children map: <N> parents" to $LOG_FILE
+
+#### Step 6: Resolve to ultimate parents (chain tracing)
+Trace dependency chains to find ultimate root parents. If A→B and B→C, then A is the ultimate parent of BOTH B and C. Walk each parent upward: if a parent is itself a child of another field, move all its children to that grandparent. Repeat until every parent has no parent above it in the chain. The result maps each ultimate parent to ALL its descendants (children, grandchildren, etc.).
+
+Log: Append "Step 6: Resolved chains — <N> ultimate parents" to $LOG_FILE
+
+#### Step 7: Determine clearing condition per child relationship
+For each child of an ultimate parent, pick the condition based on how that child is linked to the parent:
+
+| Relationship | cf / rffdd condition | Rationale |
+|---|---|---|
+| Cascading EDV dropdown | `true` | Parent change always invalidates child dropdown options |
+| Derivation (`ctfd`) | `vo("_parent_")==""`  | Only clear when parent emptied; derivation re-populates child on non-empty change |
+| Validate EDV lookup | `vo("_parent_")==""` | Same as derivation |
+| Visibility-controlled | **extracted minvi condition** | Clear only when child is being hidden, not on every parent change |
+
+**For visibility-controlled children**: find `minvi(CONDITION, "_child_")` in the parent's Expression (Client) rule (already in the rules from Phase A or original rules). Extract `CONDITION` and use it as the `cf`/`rffdd` condition. Example: `minvi(vo("_A_")!="Yes","_B_")` → condition is `vo("_A_")!="Yes"`.
+
+**For mixed parents** (different relationship types for different children): group children by condition, emit separate `cf(...group)/rffdd(...group)` blocks for each group, then one shared `asdff(true, ...all_children)` covering everything.
+
+Log: Append "Step 7: Determined conditions" to $LOG_FILE
+
+#### Step 8: Place clearing rules (deduplicated)
+For each ultimate parent that does **NOT** already have a clearing `Expression (Client)` rule (i.e., no existing rule with `cf`/`asdff`/`rffdd` in its `conditionalValues`):
+- Build `on("change") and (cf(...);asdff(true,...);rffdd(...))`
+- `asdff` ALWAYS uses `true` as condition, covering all children
+- Use `_expressionRuleType: "clear_field"`
+- Skip if a clearing rule already exists on this field (deduplication)
+
+Log: Append "Step 8: Placed <N> clearing rules, skipped <N> (already exist)" to $LOG_FILE
+
+#### Step 9: Write output
+Combine Phase A rules and Phase B clearing rules. Output the full panel with all rules preserved.
+Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 
 ---
 
@@ -237,3 +299,70 @@ Log: Append "Step 5 complete: placed <N> Expression (Client) rules" to $LOG_FILE
     "_reasoning": "Age derived from DOB; error shown if under 18."
 }
 ```
+
+### Example — clearing (cascading dropdown, condition = true):
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["__category__"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"change\") and (cf(true,\"_subcategory_\",\"_item_\");asdff(true,\"_subcategory_\",\"_item_\");rffdd(true,\"_subcategory_\",\"_item_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "clear_field",
+    "_reasoning": "Cascading dropdown: category change always invalidates subcategory/item selections."
+}
+```
+
+### Example — clearing (derivation/EDV, condition = empty check):
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["__employeeid__"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"change\") and (cf(vo(\"_employeeid_\")==\"\",\"_employeename_\",\"_department_\");asdff(true,\"_employeename_\",\"_department_\");rffdd(vo(\"_employeeid_\")==\"\",\"_employeename_\",\"_department_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "clear_field",
+    "_reasoning": "Derivation parent: only clear when ID is emptied, not on every change."
+}
+```
+
+### Example — clearing (visibility-controlled child, condition = extracted minvi condition):
+Parent A has rule `mvi(vo("_A_")=="Yes","_B_");minvi(vo("_A_")!="Yes","_B_")` → hiding condition is `vo("_A_")!="Yes"`:
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["__A__"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"change\") and (cf(vo(\"_A_\")!=\"Yes\",\"_B_\");asdff(true,\"_B_\");rffdd(vo(\"_A_\")!=\"Yes\",\"_B_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "clear_field",
+    "_reasoning": "Visibility-controlled: B hidden when A != 'Yes' (minvi condition). Clear only when B is being hidden, not on every change."
+}
+```
+
+### Example — clearing (mixed parent: cascading child + derived children):
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["__region__"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"change\") and (cf(true,\"_branch_\");rffdd(true,\"_branch_\");cf(vo(\"_region_\")==\"\",\"_branchmanager_\",\"_branchcode_\");asdff(true,\"_branch_\",\"_branchmanager_\",\"_branchcode_\");rffdd(vo(\"_region_\")==\"\",\"_branchmanager_\",\"_branchcode_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "clear_field",
+    "_reasoning": "Mixed: branch=cascading(true), branchmanager/branchcode=derived(empty check). asdff covers all."
+}
+```
+
+> **Clearing rule key points:**
+> - Always wrap with `on("change") and (...)`
+> - **`cf` and `rffdd` condition is determined per relationship type** — never blindly `true` for all
+>   - Cascading dropdown → `true`
+>   - Derivation / Validate EDV → `vo("_parent_")==""`
+>   - Visibility-controlled → extracted `minvi` condition from the parent's expression rule
+> - `asdff` ALWAYS uses `true`, covering all children in one call
+> - `destination_fields` stays `[]`
+> - Deduplicate: skip if a clearing rule (cf/asdff/rffdd) already exists on the parent

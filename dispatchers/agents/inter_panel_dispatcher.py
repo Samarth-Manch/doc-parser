@@ -32,6 +32,7 @@ from inter_panel_utils import (
     read_inter_panel_output,
     read_complex_refs,
     get_involved_panels,
+    translate_expression_agent_output,
 )
 
 
@@ -448,7 +449,8 @@ def main():
             print("---")
 
         if pass2_success:
-            pass2_rules = read_inter_panel_output(complex_rules_file)
+            pass2_rules_raw = read_inter_panel_output(complex_rules_file)
+            pass2_rules = translate_expression_agent_output(pass2_rules_raw) if pass2_rules_raw else {}
             if pass2_rules:
                 pass2_count = sum(
                     sum(len(e.get('rules_to_add', [])) for e in entries)

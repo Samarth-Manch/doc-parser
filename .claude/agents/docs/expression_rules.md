@@ -283,6 +283,24 @@ Makes fields invisible for a specific session/party type.
 sbminvi(vo("_trigger_") == "a", "SECOND_PARTY", "_field1_", "_field2_")
 ```
 
+> **When to use session-based vs regular visibility**
+>
+> Use **`sbmvi` / `sbminvi`** (session-based) when the logic explicitly scopes visibility to a party or session:
+> - "Visible **only for second party** (vendor)"
+> - "Visible **only for first party** (initiator/requester)"
+> - "Visible **only when sent to vendor**"
+> - "This section is for the **vendor to fill**"
+> - "Hidden from the **initiator**"
+> - "**Second party only** fields"
+>
+> Use **`mvi` / `minvi`** (regular) for all other visibility — triggered by field values, load events, or conditions that are not party-scoped.
+>
+> **Param mapping from BUD language:**
+> | BUD language | param |
+> |---|---|
+> | "second party", "vendor", "sent to vendor" | `"SECOND_PARTY"` |
+> | "first party", "initiator", "requester" | `"FIRST_PARTY"` |
+
 #### `tso()` — transaction status
 Returns the transaction status string. Common value: `"SENT_TO_SECOND_PARTY"`.
 ```
@@ -575,11 +593,26 @@ minvi(+vo("_textf1_") == +vo("_textf2_"), "_label1_", "_label2_")
 ```
 
 ### Pattern 13: Session-Based Visibility
-**When**: Fields should be visible/invisible based on party type (FIRST_PARTY vs SECOND_PARTY).
+**When**: Logic mentions "second party", "vendor", "first party", "initiator", or scopes visibility to a specific party — use `sbmvi`/`sbminvi`, NOT `mvi`/`minvi`.
+
+**Keywords that trigger session-based rules**: "only for second party", "vendor to fill", "visible to vendor", "only for first party", "initiator only", "sent to vendor", "second party session".
+
 ```
+// "Visible only for second party (vendor)"
 sbmvi(true, "SECOND_PARTY", "_vendorField_", "_vendorSection_");
 sbminvi(true, "FIRST_PARTY", "_vendorField_", "_vendorSection_")
+
+// "Visible only for first party (initiator)"
+sbmvi(true, "FIRST_PARTY", "_initiatorField_");
+sbminvi(true, "SECOND_PARTY", "_initiatorField_")
+
+// "Visible for second party only if trigger = Yes"
+sbmvi(vo("_trigger_") == "Yes", "SECOND_PARTY", "_conditionalVendorField_");
+sbminvi(vo("_trigger_") != "Yes", "SECOND_PARTY", "_conditionalVendorField_")
+
 ```
+
+> **Do NOT use `mvi`/`minvi` for party-scoped rules.** If the logic says "second party" or "first party", always use the `sb*` variants.
 
 ### Pattern 14: Regex Validation
 **When**: Validate a field's format and show error for invalid input.
@@ -645,6 +678,43 @@ mm(vo("_isgstpresent_") == "No", "_declaration_");
 minvi(vo("_isgstpresent_") == "No", "_gstImage_", "_gstnumber_");
 mnm(vo("_isgstpresent_") == "No", "_gstImage_", "_gstnumber_")
 ```
+
+### Pattern 18: Session-Based Mandatory (Party-Scoped)
+**When**: Logic says "mandatory in first party", "mandatory in second party", "applicable only for first party", "required by vendor", "initiator fills", etc. — the field's **mandatory state** (and typically its visibility) depends on which party is currently filling the form.
+
+Use `sbmvi`/`sbminvi` for party-scoped visibility AND `mm`/`mnm` conditioned on `pt()` for party-scoped mandatory. `pt()` returns `"FP"` (first party / initiator) or `"SP"` (second party / vendor).
+
+**Keywords that trigger this pattern**: "mandatory in first party", "mandatory in second party", "applicable in first party", "applicable in second party", "mandatory for initiator", "mandatory for vendor", "required by vendor", "first party only", "second party only".
+
+```
+// "Mandatory in first party" — visible + mandatory for FP; hidden for SP
+sbmvi(true, "FIRST_PARTY", "_field_");
+sbminvi(true, "SECOND_PARTY", "_field_");
+mm(pt() == "FP", "_field_");
+mnm(pt() == "SP", "_field_")
+
+// "Mandatory in second party" — visible + mandatory for SP; hidden for FP
+sbmvi(true, "SECOND_PARTY", "_field_");
+sbminvi(true, "FIRST_PARTY", "_field_");
+mm(pt() == "SP", "_field_");
+mnm(pt() == "FP", "_field_")
+
+// Field visible to both parties but mandatory ONLY for first party
+mm(pt() == "FP", "_field_");
+mnm(pt() == "SP", "_field_")
+
+// Field visible to both parties but mandatory ONLY for second party
+mm(pt() == "SP", "_field_");
+mnm(pt() == "FP", "_field_")
+```
+
+> **Critical**: Always use `pt()` (not field value conditions) when mandatory depends on party. `pt()` returns `"FP"` (first party / initiator / requester) or `"SP"` (second party / vendor / recipient). Do NOT use `mvi`/`minvi` for party-scoped visibility in this pattern — always use `sbmvi`/`sbminvi`.
+
+**BUD language → param + pt() mapping:**
+| BUD phrase | sbmvi/sbminvi param | pt() value |
+|---|---|---|
+| "first party", "initiator", "requester" | `"FIRST_PARTY"` | `"FP"` |
+| "second party", "vendor", "recipient" | `"SECOND_PARTY"` | `"SP"` |
 
 ---
 
@@ -922,6 +992,10 @@ This internal tag identifies the purpose of the expression:
 15. **Character checks always use `rgxtst`**: Any logic involving a specific character position, string prefix, suffix, length, or character type MUST use `rgxtst`. Never use `==` or string slicing tricks for character-level checks. See Pattern 17 and the `rgxtst` reference for common patterns.
 
 16. **Unconditional state uses `true` as condition**: If logic says "always visible", "always invisible", "by default visible/invisible", "non-editable", or "always disabled" — use `true` as the condition with no pairing: `mvi(true, "_f_")`, `minvi(true, "_f_")`, `dis(true, "_f_")`, `mnm(true, "_f_")`. Do NOT pair these with an opposite rule since the state is permanent. See Pattern 0.
+
+17. **Party-scoped visibility uses session-based functions**: If logic mentions "second party", "first party", "vendor", "initiator", or scopes visibility to a specific party/session — use `sbmvi`/`sbminvi` with the appropriate param (`"SECOND_PARTY"`, `"FIRST_PARTY"`, `"GENERIC_STATIC"`). Never use `mvi`/`minvi` for party-scoped rules. See Pattern 13 and the `sbmvi`/`sbminvi` reference for the BUD-language → param mapping table.
+
+18. **Party-scoped mandatory uses `pt()`**: If logic says "mandatory in first party", "mandatory in second party", "applicable in first/second party", or any variant scoping mandatory state to a specific party — use `sbmvi`/`sbminvi` for visibility AND `mm(pt() == "FP", ...)` / `mm(pt() == "SP", ...)` for mandatory state. `pt()` returns `"FP"` for first party (initiator) and `"SP"` for second party (vendor). Never use a field-value condition for party-scoped mandatory — always use `pt()`. See Pattern 18.
 
 ---
 

@@ -1,14 +1,14 @@
 ---
 name: Inter-Panel Global Analysis Agent (Pass 1)
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
-description: Global analysis of ALL panels to detect cross-panel references. Creates fully-specified Copy To and visibility/state rules for simple cases, and flags complex references (derivation, EDV, clearing) for Pass 2.
+description: Global analysis of ALL panels to detect cross-panel references. Creates fully-specified Copy To rules for simple cases, and flags complex references (visibility/state, derivation, EDV, clearing) for Pass 2.
 ---
 
 
 # Inter-Panel Global Analysis Agent (Pass 1)
 
 ## Objective
-Analyze ALL panels at once (global view) to detect cross-panel references in field logic. Create fully-specified rules for simple cases (Copy To, visibility/state) and flag complex references for Pass 2 processing.
+Analyze ALL panels at once (global view) to detect cross-panel references in field logic. Create fully-specified rules for simple cases (Copy To only) and flag complex references (visibility/state, derivation, EDV, clearing) for Pass 2 processing via the expression rule agent.
 
 ## Input
 COMPACT_PANELS_FILE: $COMPACT_PANELS_FILE
@@ -28,12 +28,11 @@ Step 2 PROGRESS: Panel "Address Details" — found 3 cross-panel refs
 Step 2 DONE: Found 12 cross-panel references across 3 panels
 Step 3 START: Classifying references (simple vs complex)...
 Step 3 DONE: Simple: 8, Complex: 4
-Step 4 START: Creating rules for 8 simple references...
+Step 4 START: Creating rules for 3 simple references...
 Step 4 PROGRESS: Created Copy To rule — __companycode__ (Basic Details) -> Purchase Org Details
-Step 4 PROGRESS: Created Make Visible + Make Invisible — __processtype__ controls __addressproof__
-Step 4 DONE: Created 10 simple rules (6 visibility, 4 copy-to)
-Step 5 START: Flagging 4 complex references for Pass 2...
-Step 5 DONE: Flagged 4 complex refs (2 derivation, 1 clearing, 1 edv)
+Step 4 DONE: Created 3 simple rules (3 copy-to)
+Step 5 START: Flagging 9 complex references for Pass 2...
+Step 5 DONE: Flagged 9 complex refs (5 visibility, 2 derivation, 1 clearing, 1 edv)
 Step 6 START: Writing output files...
 Step 6 DONE: Wrote direct_rules.json (10 rules), complex_refs.json (4 refs)
 COMPLETE: Pass 1 finished successfully
@@ -59,15 +58,7 @@ Two output files:
 | Destination Fields | N fields (targets) |
 | conditionsRequired | false |
 
-### Visibility/State Rules (same as Condition Agent 05)
-| Rule Name (exact) | Action | ID |
-|---|---|---|
-| Make Visible (Client) | MAKE_VISIBLE | 343 |
-| Make Invisible (Client) | MAKE_INVISIBLE | 336 |
-| Make Mandatory (Client) | MAKE_MANDATORY | 325 |
-| Make Non Mandatory (Client) | MAKE_NON_MANDATORY | 288 |
-| Enable Field (Client) | MAKE_ENABLED | 185 |
-| Disable Field (Client) | MAKE_DISABLED | 314 |
+> **Note:** Visibility/state rules (Make Visible, Make Invisible, Enable, Disable, Make Mandatory, Make Non Mandatory) are **NOT** created here. They are flagged as complex and handled by the expression rule agent in Pass 2.
 
 ---
 
@@ -106,8 +97,8 @@ Each field line: `field_name | type | variableName | logic`
    - Visibility/State → host = controller field (field whose VALUE determines the state change)
 
 9) **CLASSIFY before acting**: For each cross-panel reference, classify as:
-    - **Simple** (handle directly): Copy To, visibility/state → create complete rule in DIRECT_RULES_FILE
-    - **Complex** (flag for Pass 2): derivation expressions (substring, name splitting), EDV/reference table lookups, clearing expressions → write to COMPLEX_REFS_FILE
+    - **Simple** (handle directly): Copy To only → create complete rule in DIRECT_RULES_FILE
+    - **Complex** (flag for Pass 2): visibility/state (Make Visible, Make Invisible, Enable, Disable, Make Mandatory, Make Non Mandatory), derivation expressions (substring, name splitting), EDV/reference table lookups, clearing expressions → write to COMPLEX_REFS_FILE
 
 10) **DERIVATION LOGIC IS NOT VISIBILITY**: Do NOT interpret value-population/derivation logic as visibility rules. If logic says "populate this field based on another panel's field value", that is derivation — flag it as complex, don't create a visibility rule.
 11) **Static state rules** ("Always/By default invisible") with no cross-panel reference are NOT your job — skip them (condition agent 05 handled those).
@@ -119,12 +110,12 @@ Each field line: `field_name | type | variableName | logic`
 
 ### Simple — Handle Directly (write to DIRECT_RULES_FILE)
 - **"Copy from X Panel"** → Copy To (Client) rule. Source = field in X Panel, Destination = current field.
-- **"Visible if Field from X Panel is VALUE"** → Make Visible (Client) on controller field, destination = affected fields. Plus opposite Make Invisible with NOT_IN.
-- **"If Process Type (from Basic Details) is India-Domestic, make visible"** → Conditional visibility rule.
-- **"Enable if X from Y Panel"** → Enable Field (Client) on controller, destination = affected fields.
-- **"Mandatory if X from Y Panel is VALUE"** → Make Mandatory (Client) on controller.
 
 ### Complex — Flag for Pass 2 (write to COMPLEX_REFS_FILE)
+- **"Visible if Field from X Panel is VALUE"** → Visibility expression. Type: `visibility`.
+- **"If Process Type (from Basic Details) is India-Domestic, make visible"** → Visibility expression. Type: `visibility`.
+- **"Enable if X from Y Panel"** → State expression. Type: `visibility`.
+- **"Mandatory if X from Y Panel is VALUE"** → State expression. Type: `visibility`.
 - **"First name = first word of Vendor Name (from Basic Details)"** → Derivation (substring logic). Type: `derivation`.
 - **"Populate from reference table based on field from X Panel"** → EDV lookup. Type: `edv`.
 - **"Clear child fields when parent from X Panel changes"** → Clearing. Type: `clearing`.
@@ -219,6 +210,15 @@ Note: `target_field_variableName` is the **host field** — the field the rule i
 ```json
 [
     {
+        "type": "visibility",
+        "source_panel": "Basic Details",
+        "target_panel": "Address Details",
+        "source_field": "__processtype__",
+        "target_field": "__addressproof__",
+        "logic": "Visible if Process Type (from Basic Details Panel) is India-Domestic",
+        "description": "Address Proof visible when Process Type is India-Domestic; invisible otherwise"
+    },
+    {
         "type": "derivation",
         "source_panel": "Basic Details",
         "target_panel": "Vendor Basic Details",
@@ -229,6 +229,8 @@ Note: `target_field_variableName` is the **host field** — the field the rule i
     }
 ]
 ```
+
+**Valid `type` values:** `visibility`, `derivation`, `edv`, `clearing`
 
 If no complex references, write an empty array: `[]`
 
@@ -267,90 +269,51 @@ If no complex references, write an empty array: `[]`
 }
 ```
 
-### Example 2: Visibility (Controller in referenced panel)
+### Example 2: Visibility (cross-panel — flag for Pass 2)
 
 **Scenario:** Panel "Address Details" has field "Address Proof" with logic: _"Visible if Process Type (from Basic Details Panel) is India-Domestic"_
 
 **Decision walkthrough:**
-1. Rule type = **Make Visible (Client)** + opposite **Make Invisible (Client)**
-2. **Host field** = controller = `__processtype__` (the field whose value controls visibility)
-3. **Host panel** = "Basic Details" (where controller lives)
-4. **source_fields** = `["__processtype__"]`
-5. **destination_fields** = `["__addressproof__"]`
+1. This is cross-panel visibility — **flag as complex**, do NOT create a direct rule.
+2. The expression rule agent in Pass 2 will handle this using `cf`/`rffdd` expression syntax.
 
-**Result in DIRECT_RULES_FILE:**
+**Result in COMPLEX_REFS_FILE:**
 ```json
-{
-    "Basic Details": [
-        {
-            "target_field_variableName": "__processtype__",
-            "rules_to_add": [
-                {
-                    "rule_name": "Make Visible (Client)",
-                    "source_fields": ["__processtype__"],
-                    "destination_fields": ["__addressproof__"],
-                    "conditionalValues": ["India-Domestic"],
-                    "condition": "IN",
-                    "conditionValueType": "TEXT",
-                    "_reasoning": "Cross-panel: Address Proof visible when Process Type is India-Domestic",
-                    "_inter_panel_source": "cross-panel"
-                },
-                {
-                    "rule_name": "Make Invisible (Client)",
-                    "source_fields": ["__processtype__"],
-                    "destination_fields": ["__addressproof__"],
-                    "conditionalValues": ["India-Domestic"],
-                    "condition": "NOT_IN",
-                    "conditionValueType": "TEXT",
-                    "_reasoning": "Cross-panel opposite: Address Proof invisible when Process Type is NOT India-Domestic",
-                    "_inter_panel_source": "cross-panel"
-                }
-            ]
-        }
-    ]
-}
+[
+    {
+        "type": "visibility",
+        "source_panel": "Basic Details",
+        "target_panel": "Address Details",
+        "source_field": "__processtype__",
+        "target_field": "__addressproof__",
+        "logic": "Visible if Process Type (from Basic Details Panel) is India-Domestic",
+        "description": "Address Proof visible when Process Type is India-Domestic; invisible otherwise"
+    }
+]
 ```
 
-### Example 3: Visibility with consolidation (multiple fields, same controller + condition)
+### Example 3: Visibility with multiple affected fields (cross-panel — flag for Pass 2)
 
 **Scenario:** Panel "Bank Details" has three fields all with logic referencing the same controller:
 - "IFSC Code": _"Visible if Process Type (from Basic Details) is India-Domestic"_
 - "Bank Name": _"Visible if Process Type (from Basic Details) is India-Domestic"_
 - "Branch": _"Visible if Process Type (from Basic Details) is India-Domestic"_
 
-**Decision:** All share the same controller (`__processtype__`) and condition (`India-Domestic`). **CONSOLIDATE** into ONE rule pair.
+**Decision:** All are cross-panel visibility — flag each as complex for Pass 2. The expression rule agent will consolidate them.
 
-**Result — ONE Make Visible + ONE Make Invisible (not 6 rules):**
+**Result in COMPLEX_REFS_FILE:**
 ```json
-{
-    "Basic Details": [
-        {
-            "target_field_variableName": "__processtype__",
-            "rules_to_add": [
-                {
-                    "rule_name": "Make Visible (Client)",
-                    "source_fields": ["__processtype__"],
-                    "destination_fields": ["__ifsccode__", "__bankname__", "__branch__"],
-                    "conditionalValues": ["India-Domestic"],
-                    "condition": "IN",
-                    "conditionValueType": "TEXT",
-                    "_reasoning": "Cross-panel: 3 Bank Details fields visible when Process Type is India-Domestic",
-                    "_inter_panel_source": "cross-panel"
-                },
-                {
-                    "rule_name": "Make Invisible (Client)",
-                    "source_fields": ["__processtype__"],
-                    "destination_fields": ["__ifsccode__", "__bankname__", "__branch__"],
-                    "conditionalValues": ["India-Domestic"],
-                    "condition": "NOT_IN",
-                    "conditionValueType": "TEXT",
-                    "_reasoning": "Cross-panel opposite: 3 Bank Details fields invisible when Process Type is NOT India-Domestic",
-                    "_inter_panel_source": "cross-panel"
-                }
-            ]
-        }
-    ]
-}
+[
+    {
+        "type": "visibility",
+        "source_panel": "Basic Details",
+        "target_panel": "Bank Details",
+        "source_field": "__processtype__",
+        "target_fields": ["__ifsccode__", "__bankname__", "__branch__"],
+        "logic": "Visible if Process Type (from Basic Details) is India-Domestic",
+        "description": "3 Bank Details fields visible when Process Type is India-Domestic; invisible otherwise"
+    }
+]
 ```
 
 ### Example 4: Complex reference (derivation — flag for Pass 2)

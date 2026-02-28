@@ -329,6 +329,50 @@ def merge_all_rules_into_output(input_data: Dict[str, List[Dict]],
     return output
 
 
+def translate_expression_agent_output(data: Dict[str, List[Dict]]) -> Dict[str, List[Dict]]:
+    """
+    Translate expression_rule_agent output format into the inter-panel merge format.
+
+    expression_rule_agent writes:
+        {"Panel": [{"field_name": "...", "variableName": "_var_", "rules": [...]}]}
+
+    Inter-panel merge expects:
+        {"Panel": [{"target_field_variableName": "_var_", "rules_to_add": [...]}]}
+
+    Detects which format the data is in by checking the first entry's keys.
+    If already in inter-panel format, returns as-is.
+    """
+    if not data:
+        return data
+
+    # Peek at the first entry to detect format
+    first_entries = next(iter(data.values()), [])
+    if not first_entries:
+        return data
+
+    first = first_entries[0]
+    # Already in inter-panel format
+    if 'target_field_variableName' in first or 'rules_to_add' in first:
+        return data
+
+    # Translate from expression_rule_agent format
+    translated: Dict[str, List[Dict]] = {}
+    for panel_name, fields in data.items():
+        entries = []
+        for field in fields:
+            var_name = field.get('variableName', '')
+            rules = field.get('rules', [])
+            if not var_name or not rules:
+                continue
+            entries.append({
+                'target_field_variableName': var_name,
+                'rules_to_add': rules,
+            })
+        if entries:
+            translated[panel_name] = entries
+    return translated
+
+
 def read_inter_panel_output(path: Path) -> Optional[Dict[str, List[Dict]]]:
     """
     Read inter-panel output file written by an agent.
