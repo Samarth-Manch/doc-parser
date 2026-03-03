@@ -8,7 +8,7 @@ This script:
    calls a lightweight LLM to detect and classify cross-panel references
 3. Phase 2: Rule generation — all refs (copy_to, visibility, derivation, clearing, EDV)
    grouped by source panel, sent to expression rule agent with only the involved panels.
-   Copy To refs use ctfd expressions with on("change") wrapping.
+   Copy To refs use ctfd expressions instead of deterministic Copy To rules.
 4. Phase 3: Validate + merge — deterministic Python merges all rules into output,
    validates variableNames, deduplicates, tags _inter_panel_source
 """
@@ -402,6 +402,7 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
             ],
             capture_output=True,
             text=True,
+            timeout=120,
             cwd=PROJECT_ROOT
         )
 
@@ -429,6 +430,9 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
 
         return result
 
+    except subprocess.TimeoutExpired:
+        log(f"  Phase 1: Detection TIMED OUT for '{panel_name}'")
+        return None
     except FileNotFoundError:
         log(f"  Phase 1: 'claude' command not found")
         return None
@@ -856,20 +860,20 @@ def main():
             f"(kept {len(all_refs)})")
 
     # ══════════════════════════════════════════════════════════════════════
-    # PHASE 2: All Rules via Expression Agent (copy_to uses ctfd with on("change"))
+    # PHASE 2: All Rules via Expression Agent (copy_to uses ctfd)
     # ══════════════════════════════════════════════════════════════════════
     copy_to_rules: Dict[str, List[Dict]] = {}
     copy_to_count = 0
     complex_rules: Dict[str, List[Dict]] = {}
     complex_rule_count = 0
 
-    # Merge simple refs into complex refs — expression agent handles copy_to via ctfd + on("change")
+    # Merge simple refs into complex refs — expression agent handles all via ctfd
     if simple_refs:
-        log(f"PHASE 2: Merging {len(simple_refs)} copy_to refs into complex refs (agent will use ctfd + on(\"change\"))")
+        log(f"PHASE 2: Merging {len(simple_refs)} copy_to refs into complex refs (agent will use ctfd)")
         complex_refs.extend(simple_refs)
 
     if complex_refs:
-        log(f"PHASE 2: EXPRESSION RULES — {len(complex_refs)} references (including {len(simple_refs)} copy_to)")
+        log(f"PHASE 2: EXPRESSION RULES — {len(complex_refs)} references (including copy_to → ctfd)")
         t0 = time.time()
 
         # Group complex refs by source panel
@@ -998,7 +1002,7 @@ Phase 1 — Per-Panel Detection (model={args.detect_model}, workers={args.max_wo
   Simple (copy_to): {len(simple_refs)}
   Complex: {len(complex_refs)}
 Phase 2 — Expression Rules via Agent (model={args.model}):
-  Total refs processed: {len(complex_refs)} (including {len(simple_refs)} copy_to)
+  Total refs processed: {len(complex_refs)} (including {len(simple_refs)} copy_to → ctfd)
   Rules created: {complex_rule_count}
 Phase 3 — Validate + Merge:
   Cross-panel rules added: {cross_panel_rule_count}

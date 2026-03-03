@@ -48,8 +48,7 @@ A field's logic **qualifies** if it can be mapped to one or more functions docum
 - Showing/hiding fields based on another field's value → `mvi`, `minvi`
 - Making fields mandatory/non-mandatory → `mm`, `mnm`
 - Enabling/disabling → `en`, `dis`
-- Simple direct value copy → `on("change")` + `ctfd` + `asdff` (see Copy To pattern below)
-- Deriving a computed/conditional value → `ctfd`, `asdff`, `concat`, `cwd`
+- Deriving or copying a value → `ctfd`, `asdff`, `concat`, `cwd`
 - Clearing child fields on parent change → `cf`, `asdff`, `rffdd`
 - Validation errors → `adderr`, `remerr`
 - Age calculation → `setAgeFromDate`
@@ -144,70 +143,6 @@ The BUD frequently describes logic on the **wrong field** for rule placement pur
 | "Bank fields" logic: "Visible when Create Bank Key = Yes" | Create Bank Key | **Create Bank Key** (visibility + mandatory targeting Bank fields) |
 | "Field X" logic: "Mandatory in first party" | Field X itself | **Field X** (session-based: `sbmvi(true,"FIRST_PARTY","_x_");sbminvi(true,"SECOND_PARTY","_x_");mm(pt()=="FP","_x_");mnm(pt()=="SP","_x_")`) |
 | "Field Y" logic: "Mandatory in second party" | Field Y itself | **Field Y** (session-based: `sbmvi(true,"SECOND_PARTY","_y_");sbminvi(true,"FIRST_PARTY","_y_");mm(pt()=="SP","_y_");mnm(pt()=="FP","_y_")`) |
-| "Company Code" logic: "Copy from Basic Details panel" | Company Code (Basic Details) | **Company Code (Basic Details)** — source field (copy: `on("change")` + `ctfd` + `asdff`) |
-| "Street" logic: "Copy the data from GST field Building Number" | Building Number (GST panel) | **Building Number (GST panel)** — source field (copy: `on("change")` + `ctfd` + `asdff`) |
-
----
-
-## Copy To (Simple Direct Copy) Pattern — CRITICAL
-
-When logic says "copy from X", "same as X", "get value from X", "data will come from X" with **NO conditions and NO transformations**, this is a **simple copy**. It MUST be placed as a **separate** `Expression (Client)` rule on the **source field** with `on("change")` wrapping.
-
-### Why `on("change")`?
-Simple copies must fire every time the source field changes. Without `on("change")`, the expression only evaluates on load. The `on("change")` ensures the destination stays in sync whenever the source value is updated.
-
-### Pattern:
-```
-on("change") and (ctfd(true, vo("_sourceField_"), "_destField1_", "_destField2_");asdff(true, "_destField1_", "_destField2_"))
-```
-
-### Key rules for Copy To:
-1. **Always wrap with `on("change") and (...)`** — copies must fire on every source change
-2. **Condition is always `true`** — unconditional copy, no `vo("_x_")==""` checks
-3. **Use `vo("_sourceField_")` as the value** — copy the source field's current value
-4. **Place on the SOURCE field** — the field being copied FROM, not the destination
-5. **Keep as a SEPARATE rule** — do NOT combine with derivation, visibility, or clearing rules on the same field. Copy To is its own rule.
-6. **Consolidate multiple destinations** — if the same source copies to multiple destinations, combine into ONE rule with all destinations listed
-7. **`_expressionRuleType` = `"copy_to"`**
-
-### Example — simple copy (single destination):
-BUD logic on "Company Code" in Purchase Org: _"Copy from 'Basic Details' panel"_
-→ Rule placed on Company Code in **Basic Details** (source):
-```json
-{
-    "rule_name": "Expression (Client)",
-    "source_fields": ["_companycodebasicdetails_"],
-    "destination_fields": [],
-    "conditionalValues": ["on(\"change\") and (ctfd(true, vo(\"_companycodebasicdetails_\"), \"_companycodepurchaseorganizationdetails_\");asdff(true, \"_companycodepurchaseorganizationdetails_\"))"],
-    "condition": "IN",
-    "conditionValueType": "EXPR",
-    "_expressionRuleType": "copy_to",
-    "_reasoning": "Simple copy: Company Code from Basic Details to Purchase Org Details on every change."
-}
-```
-
-### Example — simple copy (multiple destinations from same source):
-BUD logic: Street copies Building Number, Street 1 copies Street, Postal Code copies Pin Code — all from GST panel.
-→ Each GST source field gets its OWN copy rule. If one source copies to multiple destinations, consolidate:
-```json
-{
-    "rule_name": "Expression (Client)",
-    "source_fields": ["_buildingnumberpanandgstdetails_"],
-    "destination_fields": [],
-    "conditionalValues": ["on(\"change\") and (ctfd(true, vo(\"_buildingnumberpanandgstdetails_\"), \"_streetaddressdetails_\");asdff(true, \"_streetaddressdetails_\"))"],
-    "condition": "IN",
-    "conditionValueType": "EXPR",
-    "_expressionRuleType": "copy_to",
-    "_reasoning": "Simple copy: Building Number from GST Details to Street in Address Details on every change."
-}
-```
-
-### Do NOT confuse Copy To with Derivation:
-| Logic | Type | Rule |
-|-------|------|------|
-| "Copy from X" / "Same as X" / "Get value from X" | **Copy To** | `on("change") and (ctfd(true, vo("_src_"), "_dest_");asdff(true, "_dest_"))` |
-| "If X = India then value is 'DOM IN', else 'INT'" | **Derivation** | `ctfd(vo("_x_")=="India","DOM IN","_dest_");ctfd(vo("_x_")!="India","INT","_dest_");asdff(true,"_dest_")` |
-| "First name = first 35 chars of Vendor Name" | **Derivation** | `ctfd(vo("_name_")!="",replaceRange(vo("_name_"),0,34),"_first_");asdff(...)` |
 
 ### Consolidation rule
 
@@ -320,20 +255,6 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
     "conditionValueType": "EXPR",
     "_expressionRuleType": "<visibility|mandatory|derivation|clear_field|error|age|session|load_event>",
     "_reasoning": "<brief explanation of what this expression does and why>"
-}
-```
-
-### Example — simple copy (Copy To via ctfd with on("change")):
-```json
-{
-    "rule_name": "Expression (Client)",
-    "source_fields": ["_companycodebasicdetails_"],
-    "destination_fields": [],
-    "conditionalValues": ["on(\"change\") and (ctfd(true, vo(\"_companycodebasicdetails_\"), \"_companycodepurchaseorganizationdetails_\");asdff(true, \"_companycodepurchaseorganizationdetails_\"))"],
-    "condition": "IN",
-    "conditionValueType": "EXPR",
-    "_expressionRuleType": "copy_to",
-    "_reasoning": "Simple copy: Company Code from Basic Details to Purchase Org Details on every change."
 }
 ```
 

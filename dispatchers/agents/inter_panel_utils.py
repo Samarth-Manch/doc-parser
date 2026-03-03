@@ -15,6 +15,57 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 
+def build_compact_single_panel_text(panel_name: str, panel_fields: List[Dict]) -> str:
+    """
+    Build compact one-line-per-field representation of a SINGLE panel.
+    Used as input to Phase 1 per-panel reference detection agent.
+
+    Format:
+        field_name | type | variableName | logic
+
+    Args:
+        panel_name: Name of the panel
+        panel_fields: Fields in the panel
+
+    Returns:
+        Compact text representation of the panel's fields
+    """
+    lines = []
+    for field in panel_fields:
+        name = field.get('field_name', '?')
+        ftype = field.get('type', '?')
+        var = field.get('variableName', '?')
+        logic = field.get('logic', '')
+        # Collapse multiline logic to single line
+        logic_oneline = ' '.join(logic.split()) if logic else ''
+        lines.append(f"{name} | {ftype} | {var} | {logic_oneline}")
+    return '\n'.join(lines)
+
+
+def group_complex_refs_by_source_panel(
+    all_complex_refs: List[Dict],
+) -> Dict[str, List[Dict]]:
+    """
+    Group complex cross-panel references by their source (referenced) panel.
+
+    Refs with the same source panel likely share context and benefit from
+    being processed in the same agent call.
+
+    Args:
+        all_complex_refs: Flat list of complex reference records from Phase 1
+
+    Returns:
+        Dict mapping source_panel_name -> list of complex ref records
+    """
+    groups: Dict[str, List[Dict]] = {}
+    for ref in all_complex_refs:
+        source_panel = ref.get('referenced_panel', 'unknown')
+        if source_panel not in groups:
+            groups[source_panel] = []
+        groups[source_panel].append(ref)
+    return groups
+
+
 def build_compact_panels_text(all_panels_data: Dict[str, List[Dict]]) -> str:
     """
     Build compact one-line-per-field representation of ALL panels.
