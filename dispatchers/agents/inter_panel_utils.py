@@ -66,6 +66,32 @@ def group_complex_refs_by_source_panel(
     return groups
 
 
+def group_complex_refs_by_source_field(
+    all_complex_refs: List[Dict],
+) -> Dict[str, List[Dict]]:
+    """
+    Group complex cross-panel references by their source (referenced) field.
+
+    When multiple refs from different target panels all point to the same
+    source field, they end up in one group. One agent call sees all target
+    panels at once and produces consolidated rules (e.g., one visibility rule
+    and one clearing rule instead of duplicates per panel).
+
+    Args:
+        all_complex_refs: Flat list of complex reference records from Phase 1
+
+    Returns:
+        Dict mapping referenced_field_variableName -> list of complex ref records
+    """
+    groups: Dict[str, List[Dict]] = {}
+    for ref in all_complex_refs:
+        source_field = ref.get('referenced_field_variableName', 'unknown')
+        if source_field not in groups:
+            groups[source_field] = []
+        groups[source_field].append(ref)
+    return groups
+
+
 def build_compact_panels_text(all_panels_data: Dict[str, List[Dict]]) -> str:
     """
     Build compact one-line-per-field representation of ALL panels.

@@ -6,9 +6,10 @@ This script:
 1. Quick scan: checks if any cross-panel references exist (early exit if none)
 2. Phase 1: Per-panel reference detection — for each panel independently (parallel),
    calls a lightweight LLM to detect and classify cross-panel references
-3. Phase 2: Rule generation — all refs (copy_to, visibility, derivation, clearing, EDV)
+3. Phase 2: Rule generation — all refs (copy_to, visibility, derivation, clearing)
    grouped by source panel, sent to expression rule agent with only the involved panels.
    Copy To refs use ctfd expressions with on("change") wrapping.
+   EDV-classified refs are excluded from Phase 2 (handled by Phase 4).
 4. Phase 3: Validate + merge — deterministic Python merges all rules into output,
    validates variableNames, deduplicates, tags _inter_panel_source
 """
@@ -30,6 +31,7 @@ from inter_panel_utils import (
     build_compact_single_panel_text,
     build_compact_panels_text,
     build_variablename_index,
+    group_complex_refs_by_source_field,
     group_complex_refs_by_source_panel,
     quick_cross_panel_scan,
     validate_inter_panel_rules,
@@ -37,6 +39,14 @@ from inter_panel_utils import (
     read_inter_panel_output,
     translate_expression_agent_output,
 )
+
+from edv_rule_dispatcher import (
+    call_edv_mini_agent,
+    extract_reference_tables_from_parser,
+    get_referenced_tables_for_panel,
+)
+from validate_edv_dispatcher import call_validate_edv_mini_agent
+from doc_parser import DocumentParser
 
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
@@ -153,10 +163,22 @@ def normalize_detection_output(raw: any, panel_name: str, all_panel_names: List[
                     ref = _build_normalized_ref(det, field_var, field_name, valid_panel_set)
                     if ref:
                         refs.append(ref)
-            # Item might be a ref directly
-            elif any(k in item for k in ('referenced_panel', 'reference_type', 'field_variableName')):
-                ref = _build_normalized_ref(item, item.get('field_variableName', ''),
-                                            item.get('field_name', ''), valid_panel_set)
+            # Item might be a ref directly (flat or nested source_field/referenced_field format)
+            elif any(k in item for k in ('referenced_panel', 'reference_type', 'field_variableName',
+                                          'source_field', 'referenced_field')):
+                # Flatten nested source_field/referenced_field dicts before normalization
+                flat_item = dict(item)
+                if isinstance(flat_item.get('referenced_field'), dict):
+                    rf = flat_item['referenced_field']
+                    flat_item.setdefault('referenced_panel', rf.get('panel', ''))
+                    flat_item.setdefault('target_field', rf.get('variableName', ''))
+                    flat_item.setdefault('referenced_field_name', rf.get('field_name', ''))
+                if isinstance(flat_item.get('source_field'), dict):
+                    sf = flat_item['source_field']
+                    flat_item.setdefault('field_variableName', sf.get('variableName', ''))
+                    flat_item.setdefault('field_name', sf.get('field_name', ''))
+                ref = _build_normalized_ref(flat_item, flat_item.get('field_variableName', ''),
+                                            flat_item.get('field_name', ''), valid_panel_set)
                 if ref:
                     refs.append(ref)
         return {'panel_name': panel_name, 'cross_panel_references': refs} if refs else None
@@ -182,6 +204,7 @@ def normalize_detection_output(raw: any, panel_name: str, all_panel_names: List[
         if not isinstance(ref, dict):
             continue
         # Check for nested format: {field_name, variableName, references: [{referenced_panel, ...}]}
+        # Also check for nested source_field/referenced_field dicts (handled by _normalize_single_ref)
         if 'references' in ref and isinstance(ref['references'], list):
             parent_var = ref.get('variableName') or ref.get('field_variableName') or ''
             parent_name = ref.get('field_name') or ref.get('destination_field') or ''
@@ -212,6 +235,17 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
     """Normalize a single reference record to the expected schema."""
     VALID_CLASSIFICATIONS = {'copy_to', 'visibility', 'derivation', 'edv', 'clearing'}
 
+    # Handle nested object format: {source_field: {...}, referenced_field: {...}}
+    if isinstance(ref.get('referenced_field'), dict):
+        rf = ref['referenced_field']
+        ref.setdefault('referenced_panel', rf.get('panel', ''))
+        ref.setdefault('referenced_field_variableName', rf.get('variableName', ''))
+        ref.setdefault('referenced_field_name', rf.get('field_name', ''))
+    if isinstance(ref.get('source_field'), dict):
+        sf = ref['source_field']
+        ref.setdefault('field_variableName', sf.get('variableName', ''))
+        ref.setdefault('field_name', sf.get('field_name', ''))
+
     # Get referenced panel from various possible keys
     referenced_panel = (
         ref.get('referenced_panel') or
@@ -223,21 +257,29 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
         return None
 
     # Get classification, normalize invalid values
-    classification = (
-        ref.get('classification') or
-        ref.get('reference_classification') or
-        ref.get('reference_type') or
-        ''
-    ).lower()
+    # If classification is generic (e.g., "simple", "complex"), prefer reference_type
+    raw_classification = (ref.get('classification') or '').lower()
+    if raw_classification in ('simple', 'complex', ''):
+        classification = (
+            ref.get('reference_type') or
+            ref.get('reference_classification') or
+            raw_classification
+        ).lower()
+    else:
+        classification = raw_classification
     if classification not in VALID_CLASSIFICATIONS:
         # Map common variants
         if classification in ('multiple', 'visibility_condition', 'visibility_and_derivation',
-                              'visibility_state'):
+                              'visibility_state', 'panel_visibility'):
             classification = 'visibility'
         elif classification in ('copy', 'copy_to_field', 'cross_panel_field_copy'):
             classification = 'copy_to'
         elif classification in ('derive', 'value_population'):
             classification = 'derivation'
+        elif 'edv' in classification or 'derivation_edv' in classification:
+            classification = 'edv'
+        elif 'clearing' in classification or 'complex_clearing' in classification:
+            classification = 'clearing'
         else:
             classification = 'visibility'  # default to complex/visibility
 
@@ -247,18 +289,24 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
         ref_type = 'simple' if classification == 'copy_to' else 'complex'
 
     # Get field variableNames (the field in THIS panel whose logic references another panel)
+    # For panel-level visibility refs: target_panel_variableName = the panel being affected
+    # For field-level refs: source_variableName = the field whose logic has the cross-panel ref
     field_var = (
         ref.get('field_variableName') or
         ref.get('destination_variableName') or
         ref.get('variable_name') or
         ref.get('field_variable_name') or
         ref.get('variableName') or
+        ref.get('target_panel_variableName') or
+        ref.get('source_variableName') or
         ''
     )
     # Get referenced field variableName (the field in the OTHER panel)
     referenced_field_var = (
         ref.get('referenced_field_variableName') or
         ref.get('referenced_variableName') or
+        ref.get('target_variableName') or
+        ref.get('source_variableName') or
         ref.get('target_field') or
         ref.get('source_field') or
         'unknown'
@@ -286,8 +334,8 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
         'referenced_field_name': referenced_field_name,
         'type': ref_type,
         'classification': classification,
-        'logic_snippet': ref.get('logic_snippet', ref.get('reference_text', ref.get('logic', ''))),
-        'description': ref.get('description', ''),
+        'logic_snippet': ref.get('logic_snippet', ref.get('logic_excerpt', ref.get('reference_text', ref.get('logic', '')))),
+        'description': ref.get('description', ref.get('notes', '')),
     }
 
 
@@ -298,11 +346,19 @@ def _build_normalized_ref(det: Dict, field_var: str, field_name: str,
     if not target_panel or target_panel not in valid_panel_set:
         return None
 
-    classification = det.get('classification', det.get('reference_classification', '')).lower()
+    raw_cls = (det.get('classification') or det.get('reference_classification') or '').lower()
+    if raw_cls in ('simple', 'complex', ''):
+        classification = (det.get('reference_type') or raw_cls).lower()
+    else:
+        classification = raw_cls
     VALID = {'copy_to', 'visibility', 'derivation', 'edv', 'clearing'}
     if classification not in VALID:
         if 'copy' in classification:
             classification = 'copy_to'
+        elif 'edv' in classification:
+            classification = 'edv'
+        elif 'clearing' in classification:
+            classification = 'clearing'
         elif 'visibility' in classification or 'condition' in classification:
             classification = 'visibility'
         elif 'deriv' in classification:
@@ -408,12 +464,20 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
         if process.returncode != 0:
             log(f"  Phase 1: Detection FAILED for '{panel_name}' "
                 f"(exit code {process.returncode}) after {elapsed_str(t0)}")
-            return None
+            if process.stdout:
+                log(f"    stdout: {process.stdout[:500]}")
+            if process.stderr:
+                log(f"    stderr: {process.stderr[:500]}")
+            # Fall through to check if output file was still written
 
-        # Read output
+        # Read output (check file even on non-zero exit — partial output recovery)
         if not output_file.exists():
             log(f"  Phase 1: No output file for '{panel_name}' after {elapsed_str(t0)}")
             return None
+
+        if process.returncode != 0:
+            log(f"  Phase 1: '{panel_name}' CLI failed (exit code {process.returncode}) "
+                f"but output file found — recovering")
 
         with open(output_file, 'r') as f:
             raw_result = json.load(f)
@@ -616,20 +680,26 @@ If no rules could be created, write empty dict {{}} to {output_file}.
             cwd=PROJECT_ROOT
         )
 
-        for line in process.stdout:
-            print(line, end='', flush=True)
+        with open(log_file, 'a') as lf:
+            for line in process.stdout:
+                print(line, end='', flush=True)
+                lf.write(line)
 
         process.wait()
 
         if process.returncode != 0:
             log(f"  Phase 2: FAILED for '{group_label}' "
                 f"(exit code {process.returncode}) after {elapsed_str(t0)}")
-            return {}
+            # Fall through to check if output file was still written
 
-        # Read output
+        # Read output (check file even on non-zero exit — partial output recovery)
         if not output_file.exists():
             log(f"  Phase 2: No output file for '{group_label}' after {elapsed_str(t0)}")
             return {}
+
+        if process.returncode != 0:
+            log(f"  Phase 2: '{group_label}' CLI failed (exit code {process.returncode}) "
+                f"but output file found — recovering")
 
         raw_output = read_inter_panel_output(output_file)
         result = translate_expression_agent_output(raw_output) if raw_output else {}
@@ -855,6 +925,29 @@ def main():
         log(f"  Filtered out {filtered_out} refs with empty field_variableName "
             f"(kept {len(all_refs)})")
 
+    # ── Track panels with edv-classified refs (for Phase 4) ──
+    edv_panels = set()
+    for ref in all_refs:
+        if ref.get('classification') == 'edv':
+            # Include the panel containing the field
+            field_var = ref.get('field_variableName', '')
+            norm = _norm_var(field_var)
+            if norm in var_index:
+                edv_panels.add(var_index[norm])
+            # Include the referenced panel (cross-panel source)
+            ref_panel = ref.get('referenced_panel', '')
+            if ref_panel and ref_panel in input_data:
+                edv_panels.add(ref_panel)
+    if edv_panels:
+        log(f"  EDV-classified panels (for Phase 4): {', '.join(sorted(edv_panels))}")
+
+    # ── Filter edv-classified refs from Phase 2 (handled by Phase 4) ──
+    pre_edv_filter = len(complex_refs)
+    complex_refs = [r for r in complex_refs if r.get('classification') != 'edv']
+    edv_filtered = pre_edv_filter - len(complex_refs)
+    if edv_filtered:
+        log(f"  Filtered {edv_filtered} edv-classified refs from Phase 2 (handled by Phase 4)")
+
     # ══════════════════════════════════════════════════════════════════════
     # PHASE 2: All Rules via Expression Agent (copy_to uses ctfd with on("change"))
     # ══════════════════════════════════════════════════════════════════════
@@ -872,22 +965,32 @@ def main():
         log(f"PHASE 2: EXPRESSION RULES — {len(complex_refs)} references (including {len(simple_refs)} copy_to)")
         t0 = time.time()
 
-        # Group complex refs by source panel
-        groups = group_complex_refs_by_source_panel(complex_refs)
-        log(f"  Grouped into {len(groups)} source panel groups: "
+        # Group complex refs by source field (not panel) to consolidate
+        # rules when multiple panels reference the same source field
+        groups = group_complex_refs_by_source_field(complex_refs)
+        log(f"  Grouped into {len(groups)} source field groups: "
             f"{', '.join(f'{k} ({len(v)} refs)' for k, v in groups.items())}")
 
-        for source_panel, refs_group in groups.items():
+        for source_field_var, refs_group in groups.items():
             # Collect all involved panels for this group
             involved_panel_names = set()
-            involved_panel_names.add(source_panel)
+
+            # Add the source field's panel (looked up from var_index)
+            source_norm = _norm_var(source_field_var)
+            if source_norm in var_index:
+                involved_panel_names.add(var_index[source_norm])
+
             for ref in refs_group:
-                # The panel that has the field with the logic
+                # Add the panel that has the field with the logic
                 field_var = ref.get('field_variableName', '')
                 if field_var:
                     norm = _norm_var(field_var)
                     if norm in var_index:
                         involved_panel_names.add(var_index[norm])
+                # Also add the referenced panel directly
+                ref_panel = ref.get('referenced_panel', '')
+                if ref_panel:
+                    involved_panel_names.add(ref_panel)
 
             # Extract involved panels from input data
             involved_panels: Dict[str, List[Dict]] = {}
@@ -902,12 +1005,16 @@ def main():
                             break
 
             if not involved_panels:
-                log(f"  Phase 2: No involved panels found for group '{source_panel}', skipping")
+                log(f"  Phase 2: No involved panels found for group '{source_field_var}', skipping")
                 continue
+
+            # Use the source field's name for a readable label
+            source_field_name = refs_group[0].get('referenced_field_name', source_field_var)
+            group_label = f"{source_field_name} ({source_field_var})"
 
             group_rules = call_complex_rules_agent(
                 refs_group, involved_panels, temp_dir,
-                group_label=source_panel, model=args.model,
+                group_label=group_label, model=args.model,
             )
 
             # Merge group rules into overall complex_rules
@@ -979,6 +1086,100 @@ def main():
     log(f"Phase 3 COMPLETE — took {elapsed_str(t0)}")
 
     # ══════════════════════════════════════════════════════════════════════
+    # PHASE 4: Cross-Panel EDV Processing (targeted panels only)
+    # ══════════════════════════════════════════════════════════════════════
+    phase4_edv_panels = 0
+    phase4_vedv_panels = 0
+    pre_phase4_rule_count = output_rule_count
+
+    if edv_panels:
+        log(f"PHASE 4: CROSS-PANEL EDV PROCESSING — {len(edv_panels)} panels")
+        t0 = time.time()
+
+        # Parse BUD to extract reference tables
+        log(f"  Parsing BUD for reference tables: {args.bud}")
+        bud_parser = DocumentParser()
+        parsed_doc = bud_parser.parse(args.bud)
+        all_reference_tables = extract_reference_tables_from_parser(parsed_doc)
+        log(f"  Found {len(all_reference_tables)} reference tables")
+
+        # Reuse existing all_panels_index_file (written in Phase 1)
+        # It has the same field_name/variableName data since merge only adds rules
+
+        # Phase 4a: EDV Rules
+        log(f"  Phase 4a: EDV Rules on {len(edv_panels)} panels...")
+        for panel_name in sorted(edv_panels):
+            if panel_name not in all_results:
+                log(f"    Skipping '{panel_name}' — not in results")
+                continue
+
+            panel_fields = all_results[panel_name]
+            referenced_tables = get_referenced_tables_for_panel(panel_fields, all_reference_tables)
+            log(f"    EDV agent: '{panel_name}' ({len(panel_fields)} fields, "
+                f"{len(referenced_tables)} ref tables)")
+
+            result = call_edv_mini_agent(
+                panel_fields, referenced_tables, panel_name, temp_dir,
+                context_usage=args.context_usage,
+                verbose=True,
+                model=args.model,
+                all_panels_index_file=all_panels_index_file,
+            )
+
+            if result:
+                all_results[panel_name] = result
+                phase4_edv_panels += 1
+                log(f"    EDV agent: '{panel_name}' — success ({len(result)} fields)")
+            else:
+                log(f"    EDV agent: '{panel_name}' — FAILED (keeping existing data)")
+
+        # Phase 4b: Validate EDV Rules
+        log(f"  Phase 4b: Validate EDV on {len(edv_panels)} panels...")
+        for panel_name in sorted(edv_panels):
+            if panel_name not in all_results:
+                log(f"    Skipping '{panel_name}' — not in results")
+                continue
+
+            panel_fields = all_results[panel_name]
+            referenced_tables = get_referenced_tables_for_panel(panel_fields, all_reference_tables)
+            log(f"    Validate EDV: '{panel_name}' ({len(panel_fields)} fields, "
+                f"{len(referenced_tables)} ref tables)")
+
+            result = call_validate_edv_mini_agent(
+                panel_fields, referenced_tables, panel_name, temp_dir,
+                context_usage=args.context_usage,
+                verbose=True,
+                model=args.model,
+            )
+
+            if result:
+                all_results[panel_name] = result
+                phase4_vedv_panels += 1
+                log(f"    Validate EDV: '{panel_name}' — success ({len(result)} fields)")
+            else:
+                log(f"    Validate EDV: '{panel_name}' — FAILED (keeping existing data)")
+
+        # Recount rules after Phase 4
+        output_rule_count = sum(
+            len(f.get('rules', []))
+            for fields in all_results.values()
+            for f in fields
+        )
+        cross_panel_rule_count = 0
+        for panel_fields_list in all_results.values():
+            for field in panel_fields_list:
+                for rule in field.get('rules', []):
+                    if isinstance(rule, dict) and rule.get('_inter_panel_source') == 'cross-panel':
+                        cross_panel_rule_count += 1
+
+        log(f"Phase 4 COMPLETE — took {elapsed_str(t0)}")
+        log(f"  EDV panels: {phase4_edv_panels} ok, Validate EDV panels: {phase4_vedv_panels} ok")
+        log(f"  Rules delta: {output_rule_count - pre_phase4_rule_count} "
+            f"(pre={pre_phase4_rule_count}, post={output_rule_count})")
+    else:
+        log("Phase 4 skipped — no EDV-classified cross-panel references")
+
+    # ══════════════════════════════════════════════════════════════════════
     # Write output
     # ══════════════════════════════════════════════════════════════════════
     log(f"Writing output to: {output_file}")
@@ -1002,6 +1203,10 @@ Phase 2 — Expression Rules via Agent (model={args.model}):
   Rules created: {complex_rule_count}
 Phase 3 — Validate + Merge:
   Cross-panel rules added: {cross_panel_rule_count}
+Phase 4 — Cross-Panel EDV Processing:
+  EDV-classified panels: {len(edv_panels)}
+  EDV processed: {phase4_edv_panels}, Validate EDV processed: {phase4_vedv_panels}
+  Rules delta: {output_rule_count - pre_phase4_rule_count}
 Rule Audit:
   Input rules: {input_rule_count}
   Output rules: {output_rule_count}

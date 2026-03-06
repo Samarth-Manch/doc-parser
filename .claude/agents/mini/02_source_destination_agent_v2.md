@@ -25,8 +25,7 @@ A schema with the field name, type, logic and a list of object of rules with rul
 3) When you analyze the schema, you may notice that not all of fields might be required that the rule is offering, in that case those fields, which are not required, you will have to put "-1", in that to let the system know that this output doesn't need to be populated in any field. The destination fields output need to be serially as per the destination fields in the schema.
 4) Analyze in that panel what all fields can be populated using that rule, most of the times this will not be mentioned in the logic section of that field.
 5) There will be cases when there might be multiple option for populating fields, you will need fill all the source and destination fields for all the rules, don't assume that it will be copied from other rules/fields.
-6) Validate EDV (Verify) rules will have empty source and destination fields.
-7) For rules like Make Mandatory, Make Non Mandatory, Make Visible, Make Invisible, Make Enabled and Make Disabled that require conditions (e.g., "if X then make Y visible"), **leave source and destination fields EMPTY**. The Conditional Logic Agent will populate these fields later when it analyzes the conditional logic. 
+6) For rules like Make Mandatory, Make Non Mandatory, Make Visible, Make Invisible, Make Enabled and Make Disabled that require conditions (e.g., "if X then make Y visible"), **leave source and destination fields EMPTY**. The Conditional Logic Agent will populate these fields later when it analyzes the conditional logic. 
 
 ---
 

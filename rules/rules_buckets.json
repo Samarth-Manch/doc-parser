@@ -164,7 +164,6 @@
       "use_when": "Populate dropdowns from external tables, validate against master data, or lookup reference data (like IFSC to bank name)",
       "rules": [
         {"id": 295, "name": "EDV Dropdown (Client)", "action": "EXT_VALUE", "desc": "Populate dropdown from EDV table"},
-        {"id": 196, "name": "Validate External Data Value (Client)", "action": "VERIFY", "desc": "Client-side EDV validation"},
         {"id": 346, "name": "Validate EDV (Server)", "action": "VALIDATION", "desc": "Server-side EDV validation"},
         {"id": 285, "name": "Get Data From EDV", "action": "VERIFY", "desc": "Retrieve data from EDV (e.g., IFSC lookup)"},
         {"id": 266, "name": "Count EDV Records", "action": "COUNT", "desc": "Count matching EDV records"},

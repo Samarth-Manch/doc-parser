@@ -244,49 +244,6 @@
         }
       }
     },
-    "VALIDATION": {
-      "keywords": ["validate edv", "validate against", "edv validation", "fetch from table", "populate from table"],
-      "bud_phrases": [
-        "validate against table",
-        "edv validation",
-        "populate fields from edv",
-        "validation will populate",
-        "fetch data from table"
-      ],
-      "note": "VALIDATION with EXTERNAL_DATA_VALUE sourceType - validates against EDV table AND populates destination fields with column values. Table names come from BUD/reference, not hardcoded.",
-      "children": {
-        "EXTERNAL_DATA_VALUE": {
-          "schema_id": 346,
-          "keywords": ["edv", "external data value"],
-          "bud_phrases": ["validate edv", "fetch from edv table"],
-          "processing_type": "SERVER",
-          "requires_params": true,
-          "params_type": "string_or_json",
-          "params_notes": {
-            "simple": "String table name when single source, simple validation",
-            "complex": "JSON with conditionList when multiple sources, conditional validation"
-          },
-          "params_structure": {
-            "simple": "TABLE_NAME_FROM_BUD",
-            "complex": {
-              "param": "TABLE_NAME_FROM_BUD",
-              "conditionList": [{
-                "conditionNumber": "int",
-                "conditionType": "IN|NOT_IN",
-                "conditionValueType": "TEXT",
-                "conditionAttributes": ["attribute values"],
-                "continueOnFailure": "boolean",
-                "errorMessage": "string"
-              }]
-            }
-          },
-          "destination_mapping": {
-            "note": "destinationIds array maps to table columns by ordinal. Use -1 for unmapped ordinals.",
-            "example": "[-1, -1, field1_id, field2_id, ...] where -1 skips that ordinal"
-          }
-        }
-      }
-    },
     "CONVERT_TO": {
       "keywords": ["upper case", "lower case", "uppercase", "lowercase"],
       "bud_phrases": [
@@ -320,22 +277,6 @@
         }
       }
     },
-    "COPY_TO": {
-      "keywords": ["copy", "copy from"],
-      "bud_phrases": [
-        "copy from.*panel",
-        "copy from.*field"
-      ],
-      "negative_phrases": ["if.*then.*derive", "derived based on", "derived it as", "default value", "if.*then.*value is", "if.*else"],
-      "children": {
-        "FORM_FILL_METADATA": {
-          "schema_id": 270,
-          "keywords": ["copy", "copy field"],
-          "bud_phrases": ["copy from", "derive from"],
-          "processing_type": "CLIENT"
-        }
-      }
-    },
     "DELETE_DOCUMENT": {
       "keywords": ["delete document"],
       "bud_phrases": [],
@@ -353,21 +294,6 @@
       "children": {},
       "strict_rule": true,
       "note": "STRICT - Only generate when reference explicitly has it"
-    },
-    "GENERATE_ARRAY_FORM_GROUPS": {
-      "keywords": ["extended form fill", "array", "insert", "generate", "derive", "insert into the array", "generate array", "extended form", "form groups"],
-      "bud_phrases": [
-        "derive all the values from the edv table",
-        "insert into the array",
-        "extended form fill",
-        "generate array form groups",
-        "based on the inputs.*insert into",
-        "derive.*from.*table.*insert"
-      ],
-      "schema_id": null,
-      "processing_type": "CLIENT",
-      "children": {},
-      "note": "Derives values from an EDV table based on input fields and inserts them into an array/extended form fill group."
     },
     "COPY_TO_DOCUMENT_STORAGE_ID": {
       "keywords": [],

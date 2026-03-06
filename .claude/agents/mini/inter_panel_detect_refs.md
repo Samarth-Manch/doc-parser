@@ -61,11 +61,11 @@ When a reference is found:
 ### Complex — `type: "complex"`
 
 - **visibility**: Logic says "Visible if/when [field] from X Panel is [value]", "Invisible if...", "Enable if...", "Disable if...", "Mandatory if...". Any conditional show/hide/enable/disable/mandatory based on another panel's field.
-- **derivation**: Logic describes value transformation, substring extraction, concatenation, or conditional value population from another panel's field. E.g., "First name = first word of Vendor Name (from X Panel)".
-- **edv**: Logic references EDV/external tables filtered by a field from another panel. E.g., "Dropdown values from EDV table filtered by Country (from X Panel)".
+- **derivation**: Logic describes value transformation, substring extraction, concatenation, or conditional value population from another panel's field, with NO mention of EDV, reference table, or validation. E.g., "First name = first word of Vendor Name (from X Panel)".
+- **edv**: Logic references an EDV table, reference table, or validation involving a field from another panel. This includes ANY of: dropdown values filtered by another panel's field, values derived/auto-populated through validation from a reference table using another panel's field, or attribute lookups from a reference table where the lookup key is in another panel. E.g., "Derive from VC_COMPANY_DETAILS reference table attribute 2, dependent on Vendor Number (from X Panel)", "Dropdown values from EDV table filtered by Country (from X Panel)", "derived automatically through Validation from reference table using field from X Panel".
 - **clearing**: Logic says fields should be cleared when a field from another panel changes. E.g., "Clear when X (from Y Panel) changes".
 
-**IMPORTANT**: Do NOT use any other classification values. Only use: `copy_to`, `visibility`, `derivation`, `edv`, `clearing`. If a reference involves multiple types (e.g., visibility + derivation), use the primary one. If it's mainly about visibility/mandatory, use `visibility`. If it's mainly about copying/populating values, use `derivation`.
+**IMPORTANT**: Do NOT use any other classification values. Only use: `copy_to`, `visibility`, `derivation`, `edv`, `clearing`. If a reference involves multiple types (e.g., visibility + derivation), use the primary one. If it's mainly about visibility/mandatory, use `visibility`. If the logic mentions ANY of: EDV, reference table, validation table, attribute lookup — ALWAYS classify as `edv`, never `derivation`.
 
 ---
 

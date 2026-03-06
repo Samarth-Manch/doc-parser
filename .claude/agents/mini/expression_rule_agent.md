@@ -119,6 +119,13 @@ A single logic sentence may contain BOTH intra-panel and cross-panel references.
     - **Mandatory**: use `mm(pt() == "FP", ...)` for first-party mandatory, `mm(pt() == "SP", ...)` for second-party mandatory. Pair with `mnm(pt() == "SP/FP", ...)` for the opposite party.
     - **Keywords**: "mandatory in first party", "mandatory in second party", "applicable in first party", "mandatory for vendor", "initiator fills", "second party only", etc.
     - See Critical Rules 17 and 18, and Patterns 13 and 18 in the reference doc.
+16) **Panel visibility — PANEL only, no children**: When creating `mvi`/`minvi` rules that target a field with `type: "PANEL"`, use ONLY the PANEL field's variableName. Do NOT list child fields — the platform automatically cascades visibility to all children when a PANEL is made visible/invisible.
+    - Example: If the panel field is `_vendordetails_` (type: PANEL):
+      ```
+      mvi(condition, "_vendordetails_")
+      minvi(!condition, "_vendordetails_")
+      ```
+    - WRONG: `mvi(condition, "_vendordetails_", "_vendorname_", "_vendorcode_")` — never list children
 
 ---
 

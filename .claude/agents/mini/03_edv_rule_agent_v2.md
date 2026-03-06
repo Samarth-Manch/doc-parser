@@ -13,6 +13,7 @@ Populate params for all EDV-related rules (EXT_DROP_DOWN, EXT_VALUE, Validate ED
 ## Input
 FIELDS_JSON: $FIELDS_JSON
 REFERENCE_TABLES: $REFERENCE_TABLES
+ALL_PANELS_INDEX: $ALL_PANELS_INDEX (optional — compact index of all panels' fields for cross-panel resolution)
 
 ## Output
 A schema with the existing input schema, and also wherever required in the rule schema a param field with **CORRECT** JSON.
@@ -20,7 +21,7 @@ A schema with the existing input schema, and also wherever required in the rule 
 ---
 
 ## Instructions
-1) **NOT** all rules need a param field. **ONLY** EDV Dropdown rules and Generate Table Form Staging rules need a parameter.
+1) **NOT** all rules need a param field. **ONLY** EDV Dropdown rules need a parameter.
 
 ---
 
@@ -104,13 +105,16 @@ Understand the logic of the current field from $FIELDS_JSON.
 ### 2. Read the logic section of the particular field
 Understand what all fields are given to you as input from $FIELDS_JSON, as this will used to create a param JSON structure for the EDV rules.
 
+### 2b. Resolve cross-panel field references (if needed)
+If the logic references a field that does NOT exist in $FIELDS_JSON (e.g., a field from another panel like "Vendor Number" from "Vendor Details"), look it up in $ALL_PANELS_INDEX to find its variableName. The index is a JSON object: `{panel_name: [{field_name, variableName}, ...]}`. Use the resolved variableName in `source_fields` or `criterias` as needed. If $ALL_PANELS_INDEX is not provided, skip fields that reference other panels.
+
 ### 3. Read the particular table the logic refers to
-Understand which particular table the logic is referring to from the $REFERENCE_TABLES input. This is important for JSON creation of the param field in the rule. 
+Understand which particular table the logic is referring to from the $REFERENCE_TABLES input. This is important for JSON creation of the param field in the rule.
 
 <rule_loop>
 
 ### 4. Check if current rule is an EDV rule or not
-Check whether the current rule is a EDV rule or not. EDV rule can be `EXT_VALUE`, `EXT_DROP_DOWN`, or `Generate Table Form Staging`.
+Check whether the current rule is a EDV rule or not. EDV rule can be `EXT_VALUE` or `EXT_DROP_DOWN`.
 
 ## 5. Check whether this is the only dropdown in the panel, or multiple
 Check whether this is the only dropdown in the panel, or multiple and you should also check how many dropdowns are related to one other (Cascading dropdowns).
@@ -163,45 +167,6 @@ What this structure means is basically show the values in the dropdown from the 
 ```
 
 What this structure basically says is that, based on the values selected in the fields variableName1 and variableName2 which correspond to the columns 1 and 2 in the table, show the values of the dropdown as column3 and column4. This structure **WILL** depend on the logic section of the field.
-
-## 7b. Create JSON Structure for Generate Table Form Staging
-This rule populates an ARRAY_HDR (table/grid) from an EDV table. It fills the rows of the array with data from the EDV.
-
-**Params structure:**
-```json
-{
-  "params": {
-    "externalDataType": "<EDV_TABLE_NAME>",
-    "order": [
-      {"attr": 1, "dir": "ASC"}
-    ]
-  }
-}
-```
-
-- `externalDataType`: The EDV table name (same as what would go in ddType for dropdowns)
-- `order`: Sorting order. Each entry has `attr` (column number, 1-based) and `dir` (`"ASC"` or `"DESC"`). **Default is `[{"attr": 1, "dir": "ASC"}]`** unless the BUD specifies otherwise.
-
-**How to detect ARRAY_HDR and ARRAY_END:**
-Look at the `type` field of each field in $FIELDS_JSON. Fields with `type: "ARRAY_HDR"` mark the start of an array section, and fields with `type: "ARRAY_END"` mark the end. All fields between ARRAY_HDR and ARRAY_END belong to that array section.
-
-**Destination fields — column-to-field name mapping:**
-The destination_fields for this rule are built by **matching EDV table column names to field names** between ARRAY_HDR and ARRAY_END:
-
-1. **First entry**: Always the variableName of the ARRAY_HDR field itself
-2. **Remaining entries**: Iterate through the EDV table columns in order (a1, a2, a3, ...). For each column, find the field between ARRAY_HDR and ARRAY_END whose `field_name` matches (or closely matches) that column's name. Place that field's variableName in the corresponding position. If no field matches a column, use `-1`.
-
-**Example:** If the EDV table has columns `{a1: "Code", a2: "Name", a3: "Attribute", a4: "Type"}` and the fields between ARRAY_HDR and ARRAY_END are `[Attribute (__attr__), Code (__code__), Type (__type__)]`:
-- a1 ("Code") → matches field "Code" → `__code__`
-- a2 ("Name") → no matching field → `-1`
-- a3 ("Attribute") → matches field "Attribute" → `__attr__`
-- a4 ("Type") → matches field "Type" → `__type__`
-- destination_fields = `["__arrayhdr__", "__code__", "-1", "__attr__", "__type__"]`
-
-The sequence always follows the EDV table column order, NOT the field order in the panel.
-
-**Source fields:**
-The source_fields are the parent dropdown fields that control which data is loaded into the array (e.g., the dropdown whose selection determines what rows appear).
 
 </rule_loop>
 </field_loop>
@@ -425,32 +390,3 @@ If the rule is EDV Dropdown, then field called `_dropdown_type` should be added.
 ]
 ```
 
-### Generate Table Form Staging Output Example
-Given an EDV table with columns `{a1: "Mandatory", a2: "Attribute", a3: "Atr Code", a4: "Dropdown Type"}` and fields between ARRAY_HDR ("Attribute Details") and ARRAY_END: `[Mandatory, Attribute, Atr Code, Dropdown Type]`:
-```json
-{
-    "field_name": "Modifiers",
-    "type": "DROPDOWN",
-    "mandatory": true,
-    "logic": "Based on Noun and Modifiers, populate attribute details table from reference table 1.5",
-    "rules": [
-        {
-            "rule_name": "Generate Table Form Staging",
-            "source_fields": ["__noun__", "__modifiers__"],
-            "destination_fields": ["__attributedetails__", "__mandatory__", "__attribute__", "__atrcode__", "__dropdowntype__"],
-            "params": {
-                "externalDataType": "UNSPSC_ATTRIBUTES",
-                "order": [{"attr": 1, "dir": "ASC"}]
-            },
-            "_reasoning": "Populates Attribute Details array from UNSPSC_ATTRIBUTES EDV. First destination is ARRAY_HDR. Remaining mapped by matching EDV column names to field names: a1(Mandatory)->__mandatory__, a2(Attribute)->__attribute__, a3(Atr Code)->__atrcode__, a4(Dropdown Type)->__dropdowntype__."
-        }
-    ],
-    "variableName": "__modifiers__"
-}
-```
-
-**Key points for Generate Table Form Staging:**
-- `destination_fields[0]` = ARRAY_HDR variableName
-- `destination_fields[1..N]` = mapped by matching EDV table column names to field names between ARRAY_HDR and ARRAY_END. Sequence follows EDV column order (a1, a2, a3, ...), NOT field order. Use `-1` if no field matches a column.
-- `params.order` defaults to `[{"attr": 1, "dir": "ASC"}]` unless BUD specifies otherwise
-- `params.externalDataType` = the EDV table name

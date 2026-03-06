@@ -31,6 +31,24 @@ from context_optimization import (
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
 
+def build_all_panels_index(input_data: Dict[str, List[Dict]]) -> Dict[str, List[Dict]]:
+    """
+    Build a compact index of all panels' fields: {panel_name: [{field_name, variableName}]}.
+    Used by EDV agent to resolve cross-panel field references.
+    """
+    index = {}
+    for panel_name, fields in input_data.items():
+        index[panel_name] = [
+            {
+                'field_name': f.get('field_name', ''),
+                'variableName': f.get('variableName', ''),
+            }
+            for f in fields
+            if f.get('variableName')
+        ]
+    return index
+
+
 def query_context_usage(panel_name: str, agent_name: str) -> Optional[str]:
     """
     Query the last claude agent session for context/token usage.
@@ -196,7 +214,8 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
                         panel_name: str, temp_dir: Path,
                         context_usage: bool = False,
                         verbose: bool = True,
-                        model: str = "opus") -> Optional[List[Dict]]:
+                        model: str = "opus",
+                        all_panels_index_file: Optional[Path] = None) -> Optional[List[Dict]]:
     """
     Call the EDV Rule mini agent via claude -p
 
@@ -205,6 +224,7 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
         reference_tables: Filtered reference tables for this panel
         panel_name: Name of the panel
         temp_dir: Directory for temp files
+        all_panels_index_file: Path to shared all-panels index file for cross-panel resolution
 
     Returns:
         List of fields with EDV params populated, or None if failed
@@ -231,11 +251,16 @@ def call_edv_mini_agent(panel_fields: List[Dict], reference_tables: List[Dict],
     with open(tables_input_file, 'w') as f:
         json.dump(reference_tables, f, indent=2)
 
+    # Build prompt with optional all-panels index for cross-panel resolution
+    index_line = ""
+    if all_panels_index_file:
+        index_line = f"\n- ALL_PANELS_INDEX: {all_panels_index_file}"
+
     prompt = f"""Process fields for panel "{panel_name}".
 
 ## Input
 - FIELDS_JSON: {fields_input_file}
-- REFERENCE_TABLES: {tables_input_file}
+- REFERENCE_TABLES: {tables_input_file}{index_line}
 
 ## Output
 Write JSON array to: {output_file}
@@ -395,6 +420,13 @@ def main():
 
     print(f"Found {len(source_dest_data)} panels in input")
 
+    # Step 3b: Build all-panels index for cross-panel field resolution
+    all_panels_index = build_all_panels_index(source_dest_data)
+    all_panels_index_file = temp_dir / "all_panels_index.json"
+    with open(all_panels_index_file, 'w') as f:
+        json.dump(all_panels_index, f, indent=2)
+    print(f"All-panels index written: {all_panels_index_file}")
+
     # Step 4: Process each panel
     print("\n" + "="*70)
     print("PROCESSING PANELS WITH EDV AGENT")
@@ -432,7 +464,8 @@ def main():
         for panel_name, panel_fields, referenced_tables in jobs:
             result = call_edv_mini_agent(
                 panel_fields, referenced_tables, panel_name, temp_dir,
-                context_usage=args.context_usage, verbose=True, model=args.model
+                context_usage=args.context_usage, verbose=True, model=args.model,
+                all_panels_index_file=all_panels_index_file,
             )
             if result:
                 successful_panels += 1
@@ -450,7 +483,8 @@ def main():
                 future = executor.submit(
                     call_edv_mini_agent,
                     panel_fields, referenced_tables, panel_name, temp_dir,
-                    context_usage=args.context_usage, verbose=False, model=args.model
+                    context_usage=args.context_usage, verbose=False, model=args.model,
+                    all_panels_index_file=all_panels_index_file,
                 )
                 future_to_panel[future] = panel_name
 

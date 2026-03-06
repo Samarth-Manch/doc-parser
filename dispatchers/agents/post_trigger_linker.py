@@ -52,6 +52,7 @@ def link_post_triggers(json_path: str, output_path: str) -> None:
     # Step 3: Link postTriggerRuleIds
     populated = []   # rules that received at least one postTriggerRuleId
     no_trigger = []  # SERVER rules with no triggers found
+    skipped_self = []  # self-references skipped
 
     for meta in all_metadatas:
         field_name = meta.get('formTag', {}).get('name', f"id={meta.get('id')}")
@@ -60,10 +61,24 @@ def link_post_triggers(json_path: str, output_path: str) -> None:
             if rule.get('processingType') != 'SERVER':
                 continue
 
+            rule_id = rule.get('id')
             dest_ids = [d for d in rule.get('destinationIds', []) if d != -1]
             added_ids = []
 
+            source_field_id = meta.get('id')
+
             for dest_id in dest_ids:
+                # Skip if destination is the same field — post triggers
+                # should only chain to rules on different fields
+                if dest_id == source_field_id:
+                    skipped_self.append({
+                        'field': field_name,
+                        'rule_id': rule_id,
+                        'action': rule.get('actionType'),
+                        'reason': 'destination is same field',
+                    })
+                    continue
+
                 dest_field = id_to_field.get(dest_id)
                 if dest_field is None:
                     continue
@@ -82,29 +97,105 @@ def link_post_triggers(json_path: str, output_path: str) -> None:
             if added_ids:
                 populated.append({
                     'field': field_name,
-                    'rule_id': rule.get('id'),
+                    'rule_id': rule_id,
                     'action': rule.get('actionType'),
                     'added': added_ids,
                 })
             else:
                 no_trigger.append({
                     'field': field_name,
-                    'rule_id': rule.get('id'),
+                    'rule_id': rule_id,
                     'action': rule.get('actionType'),
                     'dest_ids': dest_ids,
                 })
+
+    # Step 4: Detect and remove circular references
+    # Build a graph: rule_id → list of postTriggerRuleIds
+    rule_id_to_rule = {}
+    for meta in all_metadatas:
+        for rule in meta.get('formFillRules', []):
+            rid = rule.get('id')
+            if rid is not None:
+                rule_id_to_rule[rid] = rule
+
+    def _has_cycle_from(start_id, graph):
+        """Check if following postTriggerRuleIds from start_id leads back to it."""
+        visited = set()
+        stack = list(graph.get(start_id, []))
+        while stack:
+            nid = stack.pop()
+            if nid == start_id:
+                return True
+            if nid in visited:
+                continue
+            visited.add(nid)
+            stack.extend(graph.get(nid, []))
+        return False
+
+    # Build adjacency from current state
+    graph = {}
+    for rid, rule in rule_id_to_rule.items():
+        pts = rule.get('postTriggerRuleIds', [])
+        if pts:
+            graph[rid] = list(pts)
+
+    circular_removed = []
+    # For each rule, check if any of its postTriggerRuleIds creates a cycle
+    for rid in list(graph.keys()):
+        rule = rule_id_to_rule[rid]
+        pts = rule.get('postTriggerRuleIds', [])
+        if not pts:
+            continue
+        clean = []
+        for tid in pts:
+            # Temporarily set postTriggerRuleIds to clean + [tid] and check
+            graph[rid] = clean + [tid]
+            if _has_cycle_from(rid, graph):
+                field_name = 'unknown'
+                for m in all_metadatas:
+                    if any(r.get('id') == rid for r in m.get('formFillRules', [])):
+                        field_name = m.get('formTag', {}).get('name', f"id={m.get('id')}")
+                        break
+                circular_removed.append({
+                    'rule_id': rid,
+                    'removed_trigger': tid,
+                    'field': field_name,
+                })
+            else:
+                clean.append(tid)
+        # Update the rule with the cycle-free list
+        if clean:
+            rule['postTriggerRuleIds'] = clean
+            graph[rid] = clean
+        else:
+            rule.pop('postTriggerRuleIds', None)
+            graph.pop(rid, None)
 
     # Report
     print(f"\n--- Results ---")
     print(f"Total SERVER rules scanned : {total_server_rules}")
     print(f"Rules with triggers linked : {len(populated)}")
     print(f"Rules with no triggers     : {len(no_trigger)}")
+    print(f"Self-references skipped    : {len(skipped_self)}")
+    print(f"Circular references removed: {len(circular_removed)}")
 
     if populated:
         print("\nLinked rules:")
         for p in populated:
             print(f"  Rule {p['rule_id']} ({p['action']}) on {p['field']!r}"
                   f" → postTriggerRuleIds: {p['added']}")
+
+    if skipped_self:
+        print("\nSame-field references skipped (would cause infinite loop):")
+        for s in skipped_self:
+            print(f"  Rule {s['rule_id']} ({s['action']}) on {s['field']!r}"
+                  f" — destination is same field")
+
+    if circular_removed:
+        print("\nCircular references removed (would cause infinite loop):")
+        for c in circular_removed:
+            print(f"  Rule {c['rule_id']} on {c['field']!r}"
+                  f" — removed trigger to rule {c['removed_trigger']}")
 
     if no_trigger:
         print("\nNo triggers found for:")

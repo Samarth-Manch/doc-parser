@@ -23,13 +23,78 @@ The same schema as input, but with Validate EDV rules **added** to dropdown fiel
 
 ## RULES (FOLLOW THESE RULES VERY STRICTLY)
 1) Do **NOT** modify any pre-existing rules. All existing rules must be passed through **UNCHANGED**. This agent only **adds** new Validate EDV rules.
-2) Validate EDV rules are **always** placed on **dropdown** fields. If a parent-child dropdown relationship exists, the rule must be placed on the **child dropdown**, not the parent.
-3) The `source_fields` is the field whose value is looked up in the EDV table. Usually the field the rule is placed on, but filtered lookups can have additional source fields.
-4) The `destination_fields` array must be ordered **positionally** matching the EDV table columns. Use `"-1"` for skipped columns, `variableName` for mapped columns.
-5) **ALL** source and destination fields must exist in $FIELDS_JSON. Do **NOT** invent fields.
-6) Table names in `params` should be **UPPERCASE** with underscores (e.g., `"COMPANY_CODE"`, `"PIN-CODE"`).
-7) For **simple lookups** (single source, no filter), `params` = table name string.
-8) For **filtered lookups** (multiple sources, conditional), `params` = JSON object with `param` and `conditionList`.
+2) The Validate EDV (Server) rule is **almost always placed on the source field** — the field whose value triggers the EDV lookup. Identify which field is the source (the field that "affects" or "drives" the lookup) and place the rule **on that field**. The source field can be any type (DROPDOWN, TEXT, etc.), not just dropdowns.
+3) **Multiple fields can be derived from a single Validate EDV rule**, but the derivation logic is often **spread across the destination fields' logic sections**, not on the source field itself. You must scan ALL fields' logic to find derivation mentions (e.g., "derived from X field through validation", "auto-populated based on X from EDV table") and **consolidate** them into a single Validate EDV rule placed on the source field.
+4) The `source_fields` is the field whose value is looked up in the EDV table. Usually the field the rule is placed on, but filtered lookups can have additional source fields. If a parent-child dropdown relationship exists, the rule is placed on the **child dropdown** (the child is the source field for the lookup).
+5) The first column (a1) of the EDV table is **always the lookup key** and must be **skipped** in `destination_fields` — do NOT include a mapping for it. The `destination_fields` array starts from the **2nd column (a2)** onward. So if the EDV table has N columns, `destination_fields` must have exactly **N-1** entries. Use `"-1"` for unmapped columns, `variableName` for mapped columns.
+6) **ALL** source and destination fields must exist in $FIELDS_JSON. Do **NOT** invent fields.
+7) Table names in `params` should be **UPPERCASE** with underscores (e.g., `"COMPANY_CODE"`, `"PIN-CODE"`).
+8) For **simple lookups** (single source, no filter), `params` = table name string.
+9) For **filtered lookups** (multiple sources, conditional), `params` = JSON object with `param` and `conditionList`.
+
+---
+
+## Rule Construct (from Rule-Schemas.json)
+
+When placing a Validate EDV rule, you MUST always use the following construct from Rule-Schemas.json. This is the canonical schema — do NOT deviate from it.
+
+```json
+{
+    "name": "Validate EDV (Server)",
+    "source": "EXTERNAL_DATA_VALUE",
+    "action": "VALIDATION",
+    "processingType": "SERVER",
+    "applicableTypes": [],
+    "sourceFields": {
+        "numberOfItems": 1,
+        "fields": [
+            {
+                "name": "Form Field",
+                "ordinal": 1,
+                "mandatory": true,
+                "unlimited": false
+            }
+        ]
+    },
+    "destinationFields": {
+        "numberOfItems": 1,
+        "fields": [
+            {
+                "name": "Form Field",
+                "ordinal": 1,
+                "mandatory": false,
+                "unlimited": true
+            }
+        ]
+    },
+    "params": {
+        "paramType": "string",
+        "jsonSchema": {
+            "type": "object",
+            "uiSchema": {},
+            "properties": {
+                "value": {
+                    "title": "ExternalData metdatada",
+                    "remoteEnum": "v2/company/{{companyId}}/external-data-metadata?page=0&size=1000&sort=id%2Cdesc&fetchAll=true&genericData=true&searchParam=",
+                    "transformer": "*.name"
+                }
+            }
+        }
+    },
+    "deleted": false,
+    "validatable": false,
+    "skipValidations": false,
+    "conditionsRequired": false,
+    "button": "Verify"
+}
+```
+
+Key points from this construct:
+- **rule_name** must always be `"Validate EDV (Server)"` (not "Validate External Data Value (Client)" or any other variant)
+- **sourceFields**: 1 mandatory source field (the field whose value triggers the lookup). `unlimited: false` means exactly 1 source field.
+- **destinationFields**: 1 base destination field with `unlimited: true`, meaning multiple destination fields are allowed.
+- **params**: Takes a string value (the EDV table name) or a JSON object with `param` and `conditionList` for filtered lookups.
+- **button**: `"Verify"` — this rule creates a verification/validation button on the form.
 
 ---
 
@@ -70,80 +135,101 @@ The same schema as input, but with Validate EDV rules **added** to dropdown fiel
 
 ## Approach
 
+### Pre-scan: Identify all fields and scan for EDV derivation relationships
+
+Before processing individual fields, scan **ALL** fields in $FIELDS_JSON to build a complete picture of source-destination relationships:
+
+1. **List all fields**: Note each field's `variableName`, `type`, `field_name`, and `logic`.
+2. **Scan every field's logic for derivation mentions**: Look for keywords in each field's logic: "derive", "fetch", "auto fetch", "auto-populate", "lookup", "validate against table", "on validation", "will be populated", "through Validation from", "derived automatically through Validation", "through Validation", "based on", "depends on", "filtered by", "from Reference Table", "from EDV table".
+3. **Identify source fields**: For each field that mentions being derived/auto-populated, determine **which field is the source** — the field whose value triggers the EDV lookup. The source is the field that "affects" this field, the field being validated against the EDV table. **IMPORTANT**: A field can be a source field for Validate EDV even if it already has an EDV Dropdown rule. The EDV Dropdown rule populates dropdown options; the Validate EDV rule performs a lookup and auto-fills related fields on selection. These are separate purposes — do NOT skip a source field just because it already has an EDV Dropdown rule with destination_fields.
+4. **Group by source field**: Multiple destination fields may each mention being derived from the **same source field** via the **same EDV table**. Consolidate these into a single Validate EDV rule to be placed on that source field.
+5. **Check derivability**: For each identified source field, verify that the derivation can actually be done via an EDV rule. If $REFERENCE_TABLES has a matching table, use it to confirm column mappings. If $REFERENCE_TABLES is empty or has no matching table, but the logic explicitly names an EDV table (e.g., "Reference Table- TABLE_NAME attribute N"), still proceed — use the table name and attribute numbers from the logic text to build the rule.
+
+Log: Append "Pre-scan complete: Identified <N> potential Validate EDV rules. Source fields: <list>. Grouped destinations: <map>" to $LOG_FILE
+
+---
+
 <field_loop>
 
-### 1. Read the logic section of the particular field
-Understand the logic of the current field from $FIELDS_JSON. Look for keywords: "derive", "fetch", "auto-populate", "lookup", "validate against table", "on validation", "will be populated".
-Log: Append "Step 1: Read logic for field <field_name>" to $LOG_FILE
+### 1. Check if this field was identified as a source field in the pre-scan
+Using the pre-scan results, check if this field was identified as a **source field** for a Validate EDV rule. If this field is NOT a source field (i.e., it is only a destination or has no EDV relationship), skip to the next field.
+Log: Append "Step 1: Field <field_name> is source field: yes/no" to $LOG_FILE
 
-### 2. Identify all fields in the panel
-Understand what all fields are given to you as input from $FIELDS_JSON. Note each field's `variableName`, `type`, and `field_name`. Source and destination fields must come from this list only.
+### 2. Read the logic of this source field and all its destination fields
+Read the logic of the current source field AND the logic of all destination fields identified in the pre-scan. The derivation information is often written in the **destination fields' logic**, not the source field itself. Combine all relevant logic to get the full picture.
+Log: Append "Step 2: Source field <field_name> has <N> destination fields: <list>" to $LOG_FILE
 
-### 3. Check if this field is a dropdown
-Check the field's `type`. Validate EDV rules are **always** placed on dropdown fields. If the field is NOT a dropdown, skip to the next field.
-Log: Append "Step 3: Field <field_name> type is <type>. Is dropdown: yes/no" to $LOG_FILE
-
-### 4. Check if this is a parent or child dropdown
-If the field is a dropdown, determine the relationship:
+### 3. Check if this is a parent or child dropdown (if applicable)
+If the source field is a dropdown, determine the relationship:
 - **Independent**: No dependency on other dropdowns.
 - **Parent**: Other dropdowns depend on this one.
 - **Child**: Depends on a parent dropdown ("based on", "depends on", "filtered by"). Validate EDV rule must be on the **child**, not the parent.
-Log: Append "Step 4: Field <field_name> dropdown classification: Independent/Parent/Child" to $LOG_FILE
+If it is a parent-only field (no lookup/derivation on its own), the rule should be on the child instead — skip this field.
+Log: Append "Step 3: Field <field_name> dropdown classification: Independent/Parent/Child" to $LOG_FILE
 
-### 5. Check if any fields need to be auto-populated / derived
-From the logic, identify which other fields in the panel should be auto-populated when this field's value is validated against an EDV table. Verify each exists in the field list from Step 2. If a mentioned field doesn't exist in the panel, ignore it (belongs to another panel).
-Log: Append "Step 5: Fields to auto-populate from <field_name>: <list>" to $LOG_FILE
-
-### 6. Decide if this dropdown field needs a Validate EDV rule
-Based on Steps 1-5, determine whether a Validate EDV rule should be **placed** on this dropdown field. A Validate EDV rule is needed when:
-- The logic mentions validating against an EDV/reference table AND auto-populating other fields from the result
-- If parent-child relationship exists, the rule goes on the **child**, not the parent
+### 4. Confirm this field needs a Validate EDV rule
+Based on Steps 1-3 and the pre-scan, confirm whether a Validate EDV rule should be **placed** on this source field. A Validate EDV rule is needed when:
+- The field's value is used to look up / validate against an EDV/reference table AND auto-populate other fields from the result
+- Destination fields' logic mentions "auto fetch", "derived from", "fetched from", "through validation", or references a specific table attribute (e.g., "attribute N") for auto-population
+- A Validate EDV rule is needed **even if the field already has an EDV Dropdown rule**. The two rules serve different purposes — EDV Dropdown populates the dropdown options, while Validate EDV performs the lookup and auto-fills related fields on selection. Do NOT skip a field just because EDV Dropdown already has destination_fields.
 
 If NOT needed, skip to the next field — leave existing rules unchanged.
-Log: Append "Step 6: Field <field_name> needs Validate EDV: yes/no. Reason: <reason>" to $LOG_FILE
+Log: Append "Step 4: Field <field_name> needs Validate EDV: yes/no. Reason: <reason>" to $LOG_FILE
 
-### 7. Determine the EDV table name
+### 5. Determine the EDV table name
 From logic and $REFERENCE_TABLES:
-- Look for table references in logic (e.g., "table 1.3", "COMPANY_CODE", "PIN-CODE")
-- Match to a reference table from $REFERENCE_TABLES by comparing column names and sample data
+- Look for table references in logic (e.g., "table 1.3", "COMPANY_CODE", "PIN-CODE", "Reference Table- TABLE_NAME")
+- If $REFERENCE_TABLES has a matching table, use it to confirm column mappings
+- If $REFERENCE_TABLES is empty or has no matching table, extract the table name directly from the logic text (e.g., "Reference Table- VC_BASIC_DETAILS" → table name is `VC_BASIC_DETAILS`)
 - Derive the table name in UPPERCASE
-Log: Append "Step 7: EDV table for <field_name>: <table_name>" to $LOG_FILE
+Log: Append "Step 5: EDV table for <field_name>: <table_name>" to $LOG_FILE
 
-### 8. Determine source fields
+### 6. Determine source fields
 - Primary source field = the field the rule is placed on (its `variableName`)
 - If logic mentions filtering by additional fields, add those as additional source fields
 - All source fields must exist in the field list
-Log: Append "Step 8: Source fields for <field_name>: <source_field_list>" to $LOG_FILE
+Log: Append "Step 6: Source fields for <field_name>: <source_field_list>" to $LOG_FILE
 
-### 9. Determine destination fields with positional column mapping
-Using the reference table from Step 7 and auto-populate analysis from Step 5:
+### 7. Determine destination fields with positional column mapping
+Using the reference table from Step 5, the pre-scan results, and the combined logic from Step 2:
+
+**If $REFERENCE_TABLES has the matching table:**
 1. Read table column structure (`a1`, `a2`, `a3`, ...)
-2. For each column: lookup key column = `"-1"`, mapped column = field's `variableName`, unmapped column = `"-1"`
-3. Array must be positionally ordered matching table columns
-4. All variableNames must exist in the field list
-Log: Append "Step 9: Destination fields for <field_name>: <destination_array>" to $LOG_FILE
+2. **Skip the first column (a1)** — it is always the lookup key and is never included in destination fields
+3. Starting from `a2`, for each remaining column: mapped column = field's `variableName`, unmapped column = `"-1"`
+4. The resulting array has exactly **N-1** entries (where N = total EDV columns). For example, a 5-column EDV table produces exactly 4 destination fields (mapping a2→a5).
 
-### 10. Build the params
+**If $REFERENCE_TABLES is empty or has no matching table:**
+1. Determine the total number of columns from the highest attribute number mentioned in the logic across all destination fields (e.g., if logic mentions "attribute 14", the table has at least 14 columns)
+2. **Skip position 1 (a1)** — it is the lookup key
+3. Build the destination array from position 2 to N: place each destination field's `variableName` at the position matching its attribute number, fill all other positions with `"-1"`
+
+**Common rules:**
+5. All variableNames must exist in the field list
+6. Include ALL destination fields gathered from the pre-scan — remember that derivation logic is spread across multiple fields' logic sections
+Log: Append "Step 7: Destination fields for <field_name>: <destination_array> (skipped a1 lookup key, N-1 entries)" to $LOG_FILE
+
+### 8. Build the params
 - **Simple lookup** (1 source field, no conditions): `params` = table name string
 - **Filtered lookup** (multiple source fields, conditional): `params` = JSON with `param` and `conditionList`
-Log: Append "Step 10: Params for <field_name>: <params_value>" to $LOG_FILE
+Log: Append "Step 8: Params for <field_name>: <params_value>" to $LOG_FILE
 
-### 11. Place the Validate EDV rule on the field and fill in the details
-Add a new Validate EDV rule object to the field's `rules` array with all determined values:
-- `rule_name`: "Validate EDV (Server)" or "Validate External Data Value (Client)"
-- `source_fields` from Step 8
-- `destination_fields` from Step 9
-- `params` from Step 10
-- `_reasoning` with explanation referencing table columns and field mappings
+### 9. Place the Validate EDV rule on the source field and fill in the details
+Add a new Validate EDV rule object to the **source field's** `rules` array using the **Rule Construct** defined above. The rule must have:
+- `rule_name`: Always `"Validate EDV (Server)"` (this is the canonical name from Rule-Schemas.json — do NOT use any other variant)
+- `source_fields` from Step 6
+- `destination_fields` from Step 7
+- `params` from Step 8
+- `_reasoning` with explanation referencing table columns, source field, and all destination field mappings
 
 All existing rules on the field are kept **unchanged**. The Validate EDV rule is **added** alongside them.
-Log: Append "Step 11: Placed Validate EDV rule on field <field_name> with <N> source fields, <M> destination fields" to $LOG_FILE
+Log: Append "Step 9: Placed Validate EDV rule on source field <field_name> with <N> source fields, <M> destination fields" to $LOG_FILE
 
 </field_loop>
 
-### 12. Create the output JSON
+### 10. Create the output JSON
 Assemble final output JSON. Verify all placed Validate EDV rules have non-empty `source_fields`, `destination_fields`, and `params`. All pre-existing rules are unchanged.
-Log: Append "Step 12 complete: Created output JSON" to $LOG_FILE
+Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
 
 ---
 
@@ -252,14 +338,13 @@ Log: Append "Step 12 complete: Created output JSON" to $LOG_FILE
                     "__vendor_type__"
                 ],
                 "destination_fields": [
-                    "-1",
                     "__vendor_name__",
                     "-1",
                     "__category__",
                     "__subcategory__"
                 ],
                 "params": "VC_VENDOR_TYPES",
-                "_reasoning": "VC_VENDOR_TYPES has 5 columns. Column 1 lookup key (-1). Column 2 maps to vendor_name. Column 3 not needed (-1). Columns 4-5 map to category and subcategory."
+                "_reasoning": "VC_VENDOR_TYPES has 5 columns. Column a1 is the lookup key (skipped). Destinations start from a2: a2→vendor_name, a3→not needed (-1), a4→category, a5→subcategory. Total 4 destination fields."
             },
             {
                 "id": 2,
@@ -287,7 +372,7 @@ Log: Append "Step 12 complete: Created output JSON" to $LOG_FILE
                     "__purchase_organization__"
                 ],
                 "destination_fields": [
-                    "-1", "-1", "-1", "-1", "-1", "-1", "-1", "-1",
+                    "-1", "-1", "-1", "-1", "-1", "-1", "-1",
                     "__purchase_org_desc__"
                 ],
                 "params": {
@@ -303,7 +388,7 @@ Log: Append "Step 12 complete: Created output JSON" to $LOG_FILE
                         }
                     ]
                 },
-                "_reasoning": "Filtered lookup with 3 source fields. conditionList filters on attributes 4 and 9. Only column 9 maps to a field; columns 1-8 skipped."
+                "_reasoning": "Filtered lookup with 3 source fields. Table has 9 columns. Column a1 is lookup key (skipped). Destinations start from a2: columns a2-a8 not needed (-1), a9→purchase_org_desc. Total 8 destination fields."
             }
         ],
         "variableName": "__purchase_organization__"
