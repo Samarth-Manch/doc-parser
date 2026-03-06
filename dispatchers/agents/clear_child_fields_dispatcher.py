@@ -13,9 +13,12 @@ import json
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
+
+from context_optimization import slim_rules_for_relationship_analysis, restore_rules_after_slim, log_strip_savings
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
@@ -84,7 +87,10 @@ def count_fields_with_children(panel_fields: List[Dict]) -> int:
 
 
 def call_clear_child_fields_mini_agent(panel_fields: List[Dict],
-                                        panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+                                        panel_name: str, temp_dir: Path,
+                                        context_usage: bool = False,
+                                        verbose: bool = True,
+                                        model: str = "opus") -> Optional[List[Dict]]:
     """
     Call the Clear Child Fields mini agent via claude -p
 
@@ -105,87 +111,41 @@ def call_clear_child_fields_mini_agent(panel_fields: List[Dict],
     output_file = temp_dir / f"{safe_panel_name}_clear_child_output.json"
     log_file = temp_dir / f"{safe_panel_name}_clear_child_log.txt"
 
-    # Write fields to temp file
+    # Slim rules — agent needs rule_name/source/destination to identify
+    # parent-child relationships, but doesn't need full params/conditions
+    slimmed_fields, stored_rules = slim_rules_for_relationship_analysis(panel_fields)
+    if verbose:
+        log_strip_savings(panel_fields, slimmed_fields, panel_name)
+
+    # Write slimmed fields to temp file
     with open(fields_input_file, 'w') as f:
-        json.dump(panel_fields, f, indent=2)
+        json.dump(slimmed_fields, f, indent=2)
 
     prompt = f"""Process fields for panel "{panel_name}".
 
-## Input Data
-1. Fields with rules: {fields_input_file}
-2. Log file: {log_file}
-
-## Instructions
-Follow the step-by-step approach defined in the agent prompt (07_clear_child_fields_agent).
-- FIELDS_JSON = {fields_input_file}
-- LOG_FILE = {log_file}
-
-## CRITICAL: Only Handle Clearing Logic
-This agent ONLY handles clearing child fields when a parent field changes.
-Do NOT touch visibility, enabled/disabled, mandatory, derivation, or any other rules.
-
-Scan ALL existing rules in the panel to find parent→child relationships.
-
-IMPORTANT — NOT every parent-child relationship needs a clearing rule. Think from the UI
-perspective: does the user need stale child values to be reset?
-
-DO create clearing rules for these relationship types:
-- Cascading dropdowns: Parent dropdown changes → child dropdown options are now wrong → must clear. Condition: true
-- Expression (Client) derivation rules (ctfd): Parent value changes → derived value is stale → clear when parent is emptied. Condition: vo("_parent_")==""
-- Validate EDV rules: Lookup source changes → looked-up values are stale → clear when source is emptied. Condition: vo("_parent_")==""
-- Visibility/state rules (Make Visible, Make Invisible, Enable, Disable, Mandatory, Non-Mandatory): Parent changes → hidden fields may have stale data → clear. Condition: true
-
-DO NOT create clearing rules for these (they handle their own data, clearing is redundant):
-- OCR rules (PAN OCR, GSTIN OCR, Aadhaar Front OCR, Aadhaar Back OCR) — extract data from uploads, overwrite fields each time
-- Validation rules with API calls (Validate PAN, Validate GSTIN, MSME Validation, Validate Pincode) — call external APIs and overwrite destinations each trigger
-- Copy To rules — copy overwrites destination on each trigger
-- Any rule that auto-populates fields as a one-shot side effect of a specific action
-
-Ask yourself: "If I don't add a clearing rule here, will the user see stale/wrong data?"
-If no (because the rule overwrites data anyway), skip it.
-If yes (because the user changed a dropdown and old child values are now invalid), add it.
-
-ULTIMATE PARENT PLACEMENT: Trace dependency chains to the root.
-If A→B→C (A affects B, B affects C), the clearing for BOTH B and C goes on A (not B).
-Walk chains upward until you find the field with no parent above it.
-
-For each ultimate parent, place ONE Expression (Client) rule with cf, asdff, rffdd calls
-covering ALL descendants (children, grandchildren, etc.).
-
-CRITICAL — Choose the correct CONDITION for clearing (first arg of cf/asdff/rffdd):
-- Use `true` when parent is a dropdown/selection and changing it invalidates children
-  (cascading dropdowns, visibility controllers)
-  Example: cf(true,"_state_","_city_")
-- Use `vo("_parent_")==""` when parent populates/derives child values
-  (derivation, EDV lookup)
-  Only clear when parent becomes empty, otherwise derived values get wiped immediately.
-  Example: cf(vo("_pan_")=="","_panholdername_","_pantype_")
-
-Key rules:
-1. Expression ALWAYS starts with on("change") and ( and ends with )
-2. THREE function calls per condition group: cf, asdff, rffdd — same condition, same children
-3. ONE rule per ULTIMATE PARENT — includes all descendants
-4. Expression goes in conditionalValues, NOT in params — NO params field needed
-5. Do NOT escape quotes — use raw double quotes in the expression
-6. Skip destination_fields that are "-1" (cross-panel references)
-7. Deduplicate children — each child appears only once
-8. Add _expressionRuleType: "clear_field" to each rule
+## Input
+- FIELDS_JSON: {fields_input_file}
+- LOG_FILE: {log_file}
 
 ## Output
-Write a JSON array to: {output_file}
+Write JSON array to: {output_file}
+
+Follow the agent prompt instructions (07_clear_child_fields_agent).
 """
 
     try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name}")
-        print(f"  Fields: {len(panel_fields)}")
-        print(f"  Fields with likely parent-child relationships: ~{count_fields_with_children(panel_fields)}")
-        print('='*70)
+        if verbose:
+            print(f"\n{'='*70}")
+            print(f"PROCESSING PANEL: {panel_name}")
+            print(f"  Fields: {len(panel_fields)}")
+            print(f"  Fields with likely parent-child relationships: ~{count_fields_with_children(panel_fields)}")
+            print('='*70)
 
         # Call claude -p with the Clear Child Fields mini agent
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/07_clear_child_fields_agent",
                 "--allowedTools", "Read,Write"
@@ -200,7 +160,8 @@ Write a JSON array to: {output_file}
         # Collect output
         output_lines = []
         for line in process.stdout:
-            print(line, end='', flush=True)
+            if verbose:
+                print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -209,21 +170,24 @@ Write a JSON array to: {output_file}
             print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Clear Child Fields")
-        if usage:
-            print(usage)
-        else:
-            print("(Could not retrieve context usage)")
-        print("---")
+        # Query context usage from the agent session (opt-in)
+        if context_usage:
+            print(f"\n--- Context Usage ({panel_name}) ---")
+            usage = query_context_usage(panel_name, "Clear Child Fields")
+            if usage:
+                print(usage)
+            else:
+                print("(Could not retrieve context usage)")
+            print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
+                result = restore_rules_after_slim(result, stored_rules)
+                if verbose:
+                    print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"  Failed to parse output JSON: {e}", file=sys.stderr)
@@ -256,6 +220,23 @@ def main():
         default="output/clear_child_fields/all_panels_clear_child.json",
         help="Output file for all panels (default: output/clear_child_fields/all_panels_clear_child.json)"
     )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each panel (adds ~30s per panel)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel panels to process (default: 4, use 1 for sequential)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model to use (default: opus)"
+    )
 
     args = parser.parse_args()
 
@@ -283,12 +264,11 @@ def main():
     print("PROCESSING PANELS WITH CLEAR CHILD FIELDS AGENT")
     print("="*70)
 
-    successful_panels = 0
-    failed_panels = 0
-    skipped_panels = 0
-    total_fields_processed = 0
-    all_results = {}
+    max_workers = args.max_workers
 
+    # Prepare jobs
+    jobs = []
+    skipped_panels = 0
     for panel_name, panel_fields in derivation_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
@@ -297,26 +277,69 @@ def main():
 
         total_rules = sum(len(field.get('rules', [])) for field in panel_fields)
         estimated_parents = count_fields_with_children(panel_fields)
-
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {total_rules} existing rules, ~{estimated_parents} may be parent fields")
+        jobs.append((panel_name, panel_fields))
 
-        # Call Clear Child Fields mini agent
-        result = call_clear_child_fields_mini_agent(
-            panel_fields,
-            panel_name,
-            temp_dir
-        )
+    successful_panels = 0
+    failed_panels = 0
+    total_fields_processed = 0
+    all_results = {}
 
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            # On failure, pass through original data
-            all_results[panel_name] = panel_fields
-            total_fields_processed += len(panel_fields)
-            print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
+    if max_workers <= 1:
+        # Sequential processing
+        for panel_name, panel_fields in jobs:
+            result = call_clear_child_fields_mini_agent(
+                panel_fields, panel_name, temp_dir,
+                context_usage=args.context_usage, verbose=True, model=args.model
+            )
+            if result:
+                successful_panels += 1
+                total_fields_processed += len(result)
+                all_results[panel_name] = result
+            else:
+                failed_panels += 1
+                all_results[panel_name] = panel_fields
+                total_fields_processed += len(panel_fields)
+                print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
+    else:
+        # Parallel processing
+        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_panel = {}
+            for panel_name, panel_fields in jobs:
+                future = executor.submit(
+                    call_clear_child_fields_mini_agent,
+                    panel_fields, panel_name, temp_dir,
+                    context_usage=args.context_usage, verbose=False, model=args.model
+                )
+                future_to_panel[future] = (panel_name, panel_fields)
+
+            for future in as_completed(future_to_panel):
+                panel_name, original_fields = future_to_panel[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_panels += 1
+                        total_fields_processed += len(result)
+                        all_results[panel_name] = result
+                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                    else:
+                        failed_panels += 1
+                        all_results[panel_name] = original_fields
+                        total_fields_processed += len(original_fields)
+                        print(f"✗ Panel '{panel_name}' failed - using original data", file=sys.stderr)
+                except Exception as e:
+                    failed_panels += 1
+                    all_results[panel_name] = original_fields
+                    total_fields_processed += len(original_fields)
+                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
+
+    # Reorder results to match original panel sequence
+    ordered_results = {}
+    for panel_name in derivation_data:
+        if panel_name in all_results:
+            ordered_results[panel_name] = all_results[panel_name]
+    all_results = ordered_results
 
     # Write all results to single output file
     if all_results:

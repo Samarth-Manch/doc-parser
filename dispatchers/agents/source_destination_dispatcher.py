@@ -14,6 +14,7 @@ import json
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -111,7 +112,10 @@ def get_relevant_rule_schemas(panel_fields: List[Dict],
 
 
 def call_mini_agent(panel_fields: List[Dict], rule_schemas: List[Dict],
-                   panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+                   panel_name: str, temp_dir: Path,
+                   context_usage: bool = False,
+                   verbose: bool = True,
+                   model: str = "opus") -> Optional[List[Dict]]:
     """
     Call the Source Destination mini agent via claude -p
 
@@ -136,81 +140,29 @@ def call_mini_agent(panel_fields: List[Dict], rule_schemas: List[Dict],
     with open(input_file, 'w') as f:
         json.dump(input_data, f, indent=2)
 
-    prompt = f"""Process fields for panel "{panel_name}" and populate source/destination fields for each rule.
+    prompt = f"""Process fields for panel "{panel_name}".
 
-## Input Data
-Read the input from: {input_file}
-
-The input contains:
-- fields_with_rules: Array of fields with their logic and assigned rule names
-- rule_schemas: Full schemas for all rules mentioned in the fields
-
-## Task
-For each field in fields_with_rules:
-1. Read and understand the field's logic text
-2. For each rule assigned to that field:
-   a. Find the rule's schema in rule_schemas
-   b. Analyze sourceFields and destinationFields from the schema
-   c. Based on the logic and schema, determine:
-      - source_fields: Array of variableNames that provide input to this rule
-      - destination_fields: Array of variableNames that receive output from this rule
-   d. Add the field's own variableName where appropriate
-
-## Important Notes
-- Use variableName format (e.g., "__fieldname__") for source/destination fields
-- Source fields are inputs to the rule (what the rule reads from)
-- Destination fields are outputs of the rule (what the rule writes to)
-- A field can be both a source and destination
-- Multiple fields can be sources or destinations for a single rule
-
-## RULES (FOLLOW THESE RULES VERY STRICTLY)
-1) **ALL** the fields which will be extracted for populating source and destination fields, after analysis of logic and the rule schema, should exist in the field list. **NO** extra fields should be invented to satisfy the RULES_SCHEMA or logic section of that particular field. Even if logic section mentions some other field, it is possible that it is another PANEL altogether which you **SHOULD** ignore.(**STRICTLY** follow this)
-2) If some logic section mention another panel or field that doesn't exist in the given list for logic (input or output), then you may ignore those fields after analysis of the logic section.
-3) When you analyze the schema, you may notice that not all of fields might be required that the rule is offering, in that case those fields, which are not required, you will have to put "-1", in that to let the system know that this output doesn't need to be populated in any field. The destination fields output need to be serially as per the destination fields in the schema.
-4) Analyze in that panel what all fields can be populated using that rule, most of the times this will not be mentioned in the logic section of that field.
-5) There will be cases when there might be multiple option for populating fields, you will need fill all the source and destination fields for all the rules, don't assume that it will be copied from other rules/fields.
-6) Validate EDV (Verify) rules will have empty source and destination fields.
-7) For rules like Make Mandatory, Make Non Mandatory, Make Visible, Make Invisible, Make Enabled and Make Disabled that require conditions (e.g., "if X then make Y visible"), **leave source and destination fields EMPTY**. The Conditional Logic Agent will populate these fields later when it analyzes the conditional logic. 
+## Input
+- FIELDS_WITH_RULES: {input_file} (contains fields_with_rules array and rule_schemas)
+- LOG_FILE: {temp_dir / f"{re.sub(r'[^\\w\\-]', '_', panel_name)}_log.txt"}
 
 ## Output
-Write a JSON array to: {output_file}
+Write JSON array to: {output_file}
 
-Format:
-```json
-[
-  {{
-    "field_name": "Field Name",
-    "type": "TEXT",
-    "mandatory": true,
-    "logic": "original logic text",
-    "rules": [
-      {{
-        "id": 1,
-        "rule_name": "RULE_NAME_1",
-        "source_fields": ["__field1__", "__field2__"],
-        "destination_fields": ["__field3__"],
-        "_reasoning": "Reasoning for chosen source fields and destination fields."
-      }}
-    ],
-    "variableName": "__fieldname__"
-  }}
-]
-```
-
-Each field must preserve:
-- field_name, type, mandatory, logic, variableName from input
-- rules: now as array of objects (not strings) with id, rule_name, source_fields, destination_fields
+Follow the agent prompt instructions to populate source and destination fields for each rule.
 """
 
     try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name} ({len(panel_fields)} fields)")
-        print('='*70)
+        if verbose:
+            print(f"\n{'='*70}")
+            print(f"PROCESSING PANEL: {panel_name} ({len(panel_fields)} fields)")
+            print('='*70)
 
         # Call claude -p with the mini agent
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/02_source_destination_agent_v2",
                 "--allowedTools", "Read,Write"
@@ -225,7 +177,8 @@ Each field must preserve:
         # Collect output
         output_lines = []
         for line in process.stdout:
-            print(line, end='', flush=True)
+            if verbose:
+                print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -234,21 +187,23 @@ Each field must preserve:
             print(f"✗ Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Source Destination")
-        if usage:
-            print(usage)
-        else:
-            print("(Could not retrieve context usage)")
-        print("---")
+        # Query context usage from the agent session (opt-in)
+        if context_usage:
+            print(f"\n--- Context Usage ({panel_name}) ---")
+            usage = query_context_usage(panel_name, "Source Destination")
+            if usage:
+                print(usage)
+            else:
+                print("(Could not retrieve context usage)")
+            print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                if verbose:
+                    print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"✗ Failed to parse output JSON: {e}", file=sys.stderr)
@@ -286,6 +241,23 @@ def main():
         default="output/source_destination/all_panels_source_dest.json",
         help="Output file for all panels (default: output/source_destination/all_panels_source_dest.json)"
     )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each panel (adds ~30s per panel)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel panels to process (default: 4, use 1 for sequential)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model to use (default: opus)"
+    )
 
     args = parser.parse_args()
 
@@ -313,36 +285,74 @@ def main():
     print("PROCESSING PANELS")
     print("="*70)
 
-    successful_panels = 0
-    failed_panels = 0
-    total_fields_processed = 0
-    all_results = {}
+    max_workers = args.max_workers
 
+    # Prepare jobs
+    jobs = []
     for panel_name, panel_fields in panels_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
             continue
 
-        # Get relevant rule schemas for this panel
         relevant_schemas = get_relevant_rule_schemas(panel_fields, name_to_schema)
-
         total_rules_in_panel = sum(len(f.get('rules', [])) for f in panel_fields)
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {total_rules_in_panel} total rules, {len(relevant_schemas)} unique rule schemas")
+        jobs.append((panel_name, panel_fields, relevant_schemas))
 
-        result = call_mini_agent(
-            panel_fields,
-            relevant_schemas,
-            panel_name,
-            temp_dir
-        )
+    successful_panels = 0
+    failed_panels = 0
+    total_fields_processed = 0
+    all_results = {}
 
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+    if max_workers <= 1:
+        # Sequential processing
+        for panel_name, panel_fields, relevant_schemas in jobs:
+            result = call_mini_agent(
+                panel_fields, relevant_schemas, panel_name, temp_dir,
+                context_usage=args.context_usage, verbose=True, model=args.model
+            )
+            if result:
+                successful_panels += 1
+                total_fields_processed += len(result)
+                all_results[panel_name] = result
+            else:
+                failed_panels += 1
+                print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+    else:
+        # Parallel processing
+        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_panel = {}
+            for panel_name, panel_fields, relevant_schemas in jobs:
+                future = executor.submit(
+                    call_mini_agent,
+                    panel_fields, relevant_schemas, panel_name, temp_dir,
+                    context_usage=args.context_usage, verbose=False, model=args.model
+                )
+                future_to_panel[future] = panel_name
+
+            for future in as_completed(future_to_panel):
+                panel_name = future_to_panel[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_panels += 1
+                        total_fields_processed += len(result)
+                        all_results[panel_name] = result
+                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                    else:
+                        failed_panels += 1
+                        print(f"✗ Panel '{panel_name}' failed", file=sys.stderr)
+                except Exception as e:
+                    failed_panels += 1
+                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
+
+    # Reorder results to match original panel sequence
+    ordered_results = {}
+    for panel_name in panels_data:
+        if panel_name in all_results:
+            ordered_results[panel_name] = all_results[panel_name]
+    all_results = ordered_results
 
     # Step 4: Write all results to single output file
     if all_results:

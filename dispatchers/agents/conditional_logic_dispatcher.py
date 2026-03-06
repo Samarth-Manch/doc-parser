@@ -13,9 +13,14 @@ import json
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
+
+from context_optimization import (
+    strip_all_rules, restore_rules_conditional_logic, log_strip_savings,
+)
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
@@ -84,7 +89,10 @@ def count_rules_needing_conditions(panel_fields: List[Dict]) -> int:
 
 
 def call_conditional_logic_mini_agent(panel_fields: List[Dict],
-                                      panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+                                      panel_name: str, temp_dir: Path,
+                                      context_usage: bool = False,
+                                      verbose: bool = True,
+                                      model: str = "opus") -> Optional[List[Dict]]:
     """
     Call the Conditional Logic mini agent via claude -p
 
@@ -105,58 +113,40 @@ def call_conditional_logic_mini_agent(panel_fields: List[Dict],
     output_file = temp_dir / f"{safe_panel_name}_conditional_logic_output.json"
     log_file = temp_dir / f"{safe_panel_name}_conditional_logic_log.txt"
 
-    # Write fields to temp file
+    # Strip ALL rules — agent rebuilds visibility from scratch, doesn't need others
+    stripped_fields, stored_rules = strip_all_rules(panel_fields)
+    if verbose:
+        log_strip_savings(panel_fields, stripped_fields, panel_name)
+
+    # Write stripped fields to temp file
     with open(fields_input_file, 'w') as f:
-        json.dump(panel_fields, f, indent=2)
+        json.dump(stripped_fields, f, indent=2)
 
     prompt = f"""Process fields for panel "{panel_name}".
 
-## Input Data
-1. Fields with rules: {fields_input_file}
-2. Log file: {log_file}
-
-## Instructions
-Follow the step-by-step approach defined in the agent prompt (05_condition_agent_v2).
-- FIELDS_JSON = {fields_input_file}
-- LOG_FILE = {log_file}
-
-## CRITICAL: Vice Versa / Opposite Rule Handling
-When logic implies both directions (e.g., "If X=Yes make visible, otherwise invisible"),
-the opposite rule MUST use NOT_IN with the ORIGINAL value — NEVER use IN with the opposite value.
-
-Example for "If Field A is Yes make visible, otherwise invisible":
-- Forward rule:  condition="IN",     conditionalValues=["Yes"] → Make Visible
-- Opposite rule: condition="NOT_IN", conditionalValues=["Yes"] → Make Invisible
-
-WRONG: condition="IN", conditionalValues=["No"] for the opposite.
-RIGHT: condition="NOT_IN", conditionalValues=["Yes"] for the opposite.
-
-This ensures blank/empty values are also handled correctly (NOT_IN "Yes" covers No, blank, and any other value).
-
-## CRITICAL: Derivation Logic is NOT Visibility
-Do NOT interpret value derivation logic as visibility rules. If logic describes WHAT VALUE
-a field should get based on conditions, that is derivation logic — SKIP it entirely.
-Examples to IGNORE:
-- "If India selected then value is DOM IN, if International then INT" → sets VALUE, not visibility
-- "If account group is ZDES/ZDOM then derived as Domestic" → DERIVES a value, not visibility
-- "Default value is X when Y is selected" → value derivation
-Only handle logic about visible/invisible, enabled/disabled, mandatory/non-mandatory states.
+## Input
+- FIELDS_JSON: {fields_input_file}
+- LOG_FILE: {log_file}
 
 ## Output
-Write a JSON array to: {output_file}
+Write JSON array to: {output_file}
+
+Follow the agent prompt instructions (05_condition_agent_v2).
 """
 
     try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name}")
-        print(f"  Fields: {len(panel_fields)}")
-        print(f"  Rules likely needing conditions: ~{count_rules_needing_conditions(panel_fields)}")
-        print('='*70)
+        if verbose:
+            print(f"\n{'='*70}")
+            print(f"PROCESSING PANEL: {panel_name}")
+            print(f"  Fields: {len(panel_fields)}")
+            print(f"  Rules likely needing conditions: ~{count_rules_needing_conditions(panel_fields)}")
+            print('='*70)
 
         # Call claude -p with the Conditional Logic mini agent
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/05_condition_agent_v2",
                 "--allowedTools", "Read,Write"
@@ -171,7 +161,8 @@ Write a JSON array to: {output_file}
         # Collect output
         output_lines = []
         for line in process.stdout:
-            print(line, end='', flush=True)
+            if verbose:
+                print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -180,21 +171,25 @@ Write a JSON array to: {output_file}
             print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Conditional Logic")
-        if usage:
-            print(usage)
-        else:
-            print("(Could not retrieve context usage)")
-        print("---")
+        # Query context usage from the agent session (opt-in)
+        if context_usage:
+            print(f"\n--- Context Usage ({panel_name}) ---")
+            usage = query_context_usage(panel_name, "Conditional Logic")
+            if usage:
+                print(usage)
+            else:
+                print("(Could not retrieve context usage)")
+            print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
+                # Restore non-visibility rules; agent rebuilt visibility from scratch
+                result = restore_rules_conditional_logic(result, stored_rules)
+                if verbose:
+                    print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"  Failed to parse output JSON: {e}", file=sys.stderr)
@@ -227,6 +222,23 @@ def main():
         default="output/conditional_logic/all_panels_conditional_logic.json",
         help="Output file for all panels (default: output/conditional_logic/all_panels_conditional_logic.json)"
     )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each panel (adds ~30s per panel)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel panels to process (default: 4, use 1 for sequential)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model to use (default: opus)"
+    )
 
     args = parser.parse_args()
 
@@ -254,12 +266,11 @@ def main():
     print("PROCESSING PANELS WITH CONDITIONAL LOGIC AGENT")
     print("="*70)
 
-    successful_panels = 0
-    failed_panels = 0
-    skipped_panels = 0
-    total_fields_processed = 0
-    all_results = {}
+    max_workers = args.max_workers
 
+    # Prepare jobs
+    jobs = []
+    skipped_panels = 0
     for panel_name, panel_fields in validate_edv_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
@@ -268,26 +279,69 @@ def main():
 
         total_rules = sum(len(field.get('rules', [])) for field in panel_fields)
         estimated_conditions = count_rules_needing_conditions(panel_fields)
-
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {total_rules} rules, ~{estimated_conditions} may need conditions")
+        jobs.append((panel_name, panel_fields))
 
-        # Call Conditional Logic mini agent
-        result = call_conditional_logic_mini_agent(
-            panel_fields,
-            panel_name,
-            temp_dir
-        )
+    successful_panels = 0
+    failed_panels = 0
+    total_fields_processed = 0
+    all_results = {}
 
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            # On failure, pass through original data
-            all_results[panel_name] = panel_fields
-            total_fields_processed += len(panel_fields)
-            print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
+    if max_workers <= 1:
+        # Sequential processing
+        for panel_name, panel_fields in jobs:
+            result = call_conditional_logic_mini_agent(
+                panel_fields, panel_name, temp_dir,
+                context_usage=args.context_usage, verbose=True, model=args.model
+            )
+            if result:
+                successful_panels += 1
+                total_fields_processed += len(result)
+                all_results[panel_name] = result
+            else:
+                failed_panels += 1
+                all_results[panel_name] = panel_fields
+                total_fields_processed += len(panel_fields)
+                print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
+    else:
+        # Parallel processing
+        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_panel = {}
+            for panel_name, panel_fields in jobs:
+                future = executor.submit(
+                    call_conditional_logic_mini_agent,
+                    panel_fields, panel_name, temp_dir,
+                    context_usage=args.context_usage, verbose=False, model=args.model
+                )
+                future_to_panel[future] = (panel_name, panel_fields)
+
+            for future in as_completed(future_to_panel):
+                panel_name, original_fields = future_to_panel[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_panels += 1
+                        total_fields_processed += len(result)
+                        all_results[panel_name] = result
+                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                    else:
+                        failed_panels += 1
+                        all_results[panel_name] = original_fields
+                        total_fields_processed += len(original_fields)
+                        print(f"✗ Panel '{panel_name}' failed - using original data", file=sys.stderr)
+                except Exception as e:
+                    failed_panels += 1
+                    all_results[panel_name] = original_fields
+                    total_fields_processed += len(original_fields)
+                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
+
+    # Reorder results to match original panel sequence
+    ordered_results = {}
+    for panel_name in validate_edv_data:
+        if panel_name in all_results:
+            ordered_results[panel_name] = all_results[panel_name]
+    all_results = ordered_results
 
     # Write all results to single output file
     if all_results:

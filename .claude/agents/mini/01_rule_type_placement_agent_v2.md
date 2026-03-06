@@ -21,6 +21,7 @@ A schema with the field name, type, logic, variableName and a list of rules that
 ---
 
 ## RULES (FOLLOW THESE RULES VERY STRICTLY)
+0) **DO NOT output PANEL fields** — PANEL entries are handled by the dispatcher. If you see a field with `"type": "PANEL"` in the input, skip it entirely. Your output should contain only non-PANEL fields.
 1) For **ALL** dropdown types always use **EDV Dropdown (Client)** rule.
 2) If there is **ANY** dependent dropdown, then it should be cleared when the parent dropdown values are changed. **EXECUTE** Rule in that case should be added.
 3) **IGNORE** the following visibility and state rules - these are handled by the Condition Agent (05):
@@ -98,4 +99,6 @@ After getting the rule names, for each field create the following schema.
     },
 ]
 ```
+
+> **Note**: Do NOT include PANEL fields in your output. The dispatcher handles PANEL entries separately.
 Log: Append "Step 3 complete: Created skeleton rule structure for all fields" to $LOG_FILE

@@ -13,9 +13,12 @@ import json
 import subprocess
 import sys
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
+
+from context_optimization import strip_all_rules, restore_all_rules, log_strip_savings
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
@@ -82,7 +85,10 @@ def count_fields_with_derivation_logic(panel_fields: List[Dict]) -> int:
 
 
 def call_derivation_logic_mini_agent(panel_fields: List[Dict],
-                                      panel_name: str, temp_dir: Path) -> Optional[List[Dict]]:
+                                      panel_name: str, temp_dir: Path,
+                                      context_usage: bool = False,
+                                      verbose: bool = True,
+                                      model: str = "opus") -> Optional[List[Dict]]:
     """
     Call the Derivation Logic mini agent via claude -p
 
@@ -103,62 +109,40 @@ def call_derivation_logic_mini_agent(panel_fields: List[Dict],
     output_file = temp_dir / f"{safe_panel_name}_derivation_output.json"
     log_file = temp_dir / f"{safe_panel_name}_derivation_log.txt"
 
-    # Write fields to temp file
+    # Strip ALL rules — agent only adds derivation rules, doesn't need others
+    stripped_fields, stored_rules = strip_all_rules(panel_fields)
+    if verbose:
+        log_strip_savings(panel_fields, stripped_fields, panel_name)
+
+    # Write stripped fields to temp file
     with open(fields_input_file, 'w') as f:
-        json.dump(panel_fields, f, indent=2)
+        json.dump(stripped_fields, f, indent=2)
 
     prompt = f"""Process fields for panel "{panel_name}".
 
-## Input Data
-1. Fields with rules: {fields_input_file}
-2. Log file: {log_file}
-
-## Instructions
-Follow the step-by-step approach defined in the agent prompt (06_derivation_agent).
-- FIELDS_JSON = {fields_input_file}
-- LOG_FILE = {log_file}
-
-## CRITICAL: Only Handle Derivation Logic
-This agent ONLY handles value derivation — logic that sets/derives/populates a field's VALUE
-based on another field's selection. Do NOT touch visibility, enabled/disabled, or mandatory rules.
-
-Look for logic patterns like:
-- "If X is selected then value is Y / derived as Y / populated as Y"
-- "If X then derive A, otherwise derive B"
-- Conditional value assignment based on another field
-
-For each derivation found, place ONE Expression (Client) rule on the CONTROLLER field containing
-ALL ctfd + asdff expressions concatenated with semicolons in conditionalValues (NOT params).
-
-The expression goes in conditionalValues as a single string, ALWAYS wrapped with on("change") and (...):
-  conditionValueType: "EXPR"
-  condition: "IN"
-  conditionalValues: ["on("change") and (ctfd(vo("_ctrl_")=="VAL1","Text1","_dest_");ctfd(vo("_ctrl_")!="VAL1","Text2","_dest_");asdff(vo("_dest_")!="","_dest_"))"]
-
-Key rules:
-1. Expression ALWAYS starts with on("change") and ( and ends with )
-2. ALL expressions go into ONE rule on the CONTROLLER field — never separate rules
-3. Expression goes in conditionalValues, NOT in params — NO params field needed
-4. Do NOT escape quotes — use raw double quotes in the expression
-5. Use != for opposite/else conditions (never == with the opposite value)
-6. asdff goes at the end, before the closing parenthesis
-7. Add _expressionRuleType: "derivation" to each Expression (Client) rule
+## Input
+- FIELDS_JSON: {fields_input_file}
+- LOG_FILE: {log_file}
 
 ## Output
-Write a JSON array to: {output_file}
+Write JSON array to: {output_file}
+
+Follow the agent prompt instructions (06_derivation_agent).
 """
 
     try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name}")
-        print(f"  Fields: {len(panel_fields)}")
-        print(f"  Fields with likely derivation logic: ~{count_fields_with_derivation_logic(panel_fields)}")
-        print('='*70)
+        if verbose:
+            print(f"\n{'='*70}")
+            print(f"PROCESSING PANEL: {panel_name}")
+            print(f"  Fields: {len(panel_fields)}")
+            print(f"  Fields with likely derivation logic: ~{count_fields_with_derivation_logic(panel_fields)}")
+            print('='*70)
 
         # Call claude -p with the Derivation Logic mini agent
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
                 "--agent", "mini/06_derivation_agent",
                 "--allowedTools", "Read,Write"
@@ -173,7 +157,8 @@ Write a JSON array to: {output_file}
         # Collect output
         output_lines = []
         for line in process.stdout:
-            print(line, end='', flush=True)
+            if verbose:
+                print(line, end='', flush=True)
             output_lines.append(line)
 
         process.wait()
@@ -182,21 +167,24 @@ Write a JSON array to: {output_file}
             print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
             return None
 
-        # Query context usage from the agent session
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Derivation Logic")
-        if usage:
-            print(usage)
-        else:
-            print("(Could not retrieve context usage)")
-        print("---")
+        # Query context usage from the agent session (opt-in)
+        if context_usage:
+            print(f"\n--- Context Usage ({panel_name}) ---")
+            usage = query_context_usage(panel_name, "Derivation Logic")
+            if usage:
+                print(usage)
+            else:
+                print("(Could not retrieve context usage)")
+            print("---")
 
         # Read output file
         if output_file.exists():
             try:
                 with open(output_file, 'r') as f:
                     result = json.load(f)
-                print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
+                result = restore_all_rules(result, stored_rules)
+                if verbose:
+                    print(f"  Panel '{panel_name}' completed - {len(result)} fields processed")
                 return result
             except json.JSONDecodeError as e:
                 print(f"  Failed to parse output JSON: {e}", file=sys.stderr)
@@ -229,6 +217,23 @@ def main():
         default="output/derivation_logic/all_panels_derivation.json",
         help="Output file for all panels (default: output/derivation_logic/all_panels_derivation.json)"
     )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each panel (adds ~30s per panel)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel panels to process (default: 4, use 1 for sequential)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model to use (default: opus)"
+    )
 
     args = parser.parse_args()
 
@@ -256,12 +261,11 @@ def main():
     print("PROCESSING PANELS WITH DERIVATION LOGIC AGENT")
     print("="*70)
 
-    successful_panels = 0
-    failed_panels = 0
-    skipped_panels = 0
-    total_fields_processed = 0
-    all_results = {}
+    max_workers = args.max_workers
 
+    # Prepare jobs
+    jobs = []
+    skipped_panels = 0
     for panel_name, panel_fields in conditional_data.items():
         if not panel_fields:
             print(f"\nSkipping panel '{panel_name}' - no fields")
@@ -270,26 +274,69 @@ def main():
 
         total_rules = sum(len(field.get('rules', [])) for field in panel_fields)
         estimated_derivations = count_fields_with_derivation_logic(panel_fields)
-
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields, {total_rules} existing rules, ~{estimated_derivations} may have derivation logic")
+        jobs.append((panel_name, panel_fields))
 
-        # Call Derivation Logic mini agent
-        result = call_derivation_logic_mini_agent(
-            panel_fields,
-            panel_name,
-            temp_dir
-        )
+    successful_panels = 0
+    failed_panels = 0
+    total_fields_processed = 0
+    all_results = {}
 
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            # On failure, pass through original data
-            all_results[panel_name] = panel_fields
-            total_fields_processed += len(panel_fields)
-            print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
+    if max_workers <= 1:
+        # Sequential processing
+        for panel_name, panel_fields in jobs:
+            result = call_derivation_logic_mini_agent(
+                panel_fields, panel_name, temp_dir,
+                context_usage=args.context_usage, verbose=True, model=args.model
+            )
+            if result:
+                successful_panels += 1
+                total_fields_processed += len(result)
+                all_results[panel_name] = result
+            else:
+                failed_panels += 1
+                all_results[panel_name] = panel_fields
+                total_fields_processed += len(panel_fields)
+                print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
+    else:
+        # Parallel processing
+        print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_panel = {}
+            for panel_name, panel_fields in jobs:
+                future = executor.submit(
+                    call_derivation_logic_mini_agent,
+                    panel_fields, panel_name, temp_dir,
+                    context_usage=args.context_usage, verbose=False, model=args.model
+                )
+                future_to_panel[future] = (panel_name, panel_fields)
+
+            for future in as_completed(future_to_panel):
+                panel_name, original_fields = future_to_panel[future]
+                try:
+                    result = future.result()
+                    if result:
+                        successful_panels += 1
+                        total_fields_processed += len(result)
+                        all_results[panel_name] = result
+                        print(f"✓ Panel '{panel_name}' completed - {len(result)} fields processed")
+                    else:
+                        failed_panels += 1
+                        all_results[panel_name] = original_fields
+                        total_fields_processed += len(original_fields)
+                        print(f"✗ Panel '{panel_name}' failed - using original data", file=sys.stderr)
+                except Exception as e:
+                    failed_panels += 1
+                    all_results[panel_name] = original_fields
+                    total_fields_processed += len(original_fields)
+                    print(f"✗ Panel '{panel_name}' error: {e}", file=sys.stderr)
+
+    # Reorder results to match original panel sequence
+    ordered_results = {}
+    for panel_name in conditional_data:
+        if panel_name in all_results:
+            ordered_results[panel_name] = all_results[panel_name]
+    all_results = ordered_results
 
     # Write all results to single output file
     if all_results:

@@ -287,90 +287,6 @@
         }
       }
     },
-    "MAKE_VISIBLE": {
-      "keywords": ["visible", "show"],
-      "bud_phrases": [
-        "then visible",
-        "visible and mandatory",
-        "visible and editable"
-      ],
-      "schema_id": 343,
-      "processing_type": "CLIENT",
-      "children": {},
-      "placement_rule": "Place on CONTROLLING field (the dropdown/checkbox mentioned in 'if field X'), NOT on the destination field where logic appears",
-      "requires_condition": true,
-      "condition_type": "IN",
-      "aggregation_note": "Aggregate all fields controlled by same source into one rule with multiple destinationIds"
-    },
-    "MAKE_INVISIBLE": {
-      "keywords": ["invisible", "hidden", "hide"],
-      "bud_phrases": [
-        "otherwise invisible",
-        "invisible and non-mandatory",
-        "hidden for other"
-      ],
-      "schema_id": 336,
-      "processing_type": "CLIENT",
-      "children": {},
-      "placement_rule": "Paired with MAKE_VISIBLE. Place on same CONTROLLING field.",
-      "requires_condition": true,
-      "condition_type": "NOT_IN"
-    },
-    "MAKE_MANDATORY": {
-      "keywords": ["mandatory", "required"],
-      "bud_phrases": [
-        "visible and mandatory",
-        "mandatory if",
-        "then mandatory"
-      ],
-      "schema_id": 325,
-      "processing_type": "CLIENT",
-      "children": {},
-      "placement_rule": "Often paired with MAKE_VISIBLE",
-      "requires_condition": true,
-      "condition_type": "IN"
-    },
-    "MAKE_NON_MANDATORY": {
-      "keywords": ["non-mandatory", "non mandatory", "optional"],
-      "bud_phrases": [
-        "otherwise non-mandatory",
-        "invisible and non-mandatory",
-        "non-mandatory in all"
-      ],
-      "schema_id": 288,
-      "processing_type": "CLIENT",
-      "children": {},
-      "placement_rule": "Paired with MAKE_MANDATORY",
-      "requires_condition": true,
-      "condition_type": "NOT_IN"
-    },
-    "MAKE_DISABLED": {
-      "keywords": ["disabled", "non-editable", "non editable", "read only"],
-      "bud_phrases": [
-        "non-editable",
-        "non editable",
-        "(non-editable)",
-        "non editable if cancelled cheque"
-      ],
-      "schema_id": 314,
-      "processing_type": "CLIENT",
-      "children": {
-        "FORM_FILL_METADATA": {
-          "schema_id": 314,
-          "keywords": ["disable", "non-editable"],
-          "processing_type": "CLIENT"
-        }
-      },
-      "placement_rule": "Apply to destination fields that receive data from VERIFY/OCR",
-      "destination_field_indicator": "Data will come from"
-    },
-    "MAKE_ENABLED": {
-      "keywords": ["enabled", "editable"],
-      "bud_phrases": ["editable for other option"],
-      "schema_id": 185,
-      "processing_type": "CLIENT",
-      "children": {}
-    },
     "CONVERT_TO": {
       "keywords": ["upper case", "lower case", "uppercase", "lowercase"],
       "bud_phrases": [
@@ -466,38 +382,6 @@
       },
       "auto_generate_for": "FILE",
       "note": "Auto-applied to all FILE type fields"
-    },
-    "SESSION_BASED_MAKE_VISIBLE": {
-      "keywords": ["session", "second party visible", "first party visible"],
-      "bud_phrases": ["visible for second party", "visible for first party"],
-      "schema_id": null,
-      "processing_type": "CLIENT",
-      "children": {},
-      "note": "Session-specific visibility. Used when visibility differs between FIRST_PARTY and SECOND_PARTY."
-    },
-    "SESSION_BASED_MAKE_INVISIBLE": {
-      "keywords": ["session", "second party invisible", "first party invisible"],
-      "bud_phrases": ["invisible for second party", "hidden for first party"],
-      "schema_id": null,
-      "processing_type": "CLIENT",
-      "children": {},
-      "note": "Session-specific invisibility. Paired with SESSION_BASED_MAKE_VISIBLE."
-    },
-    "SESSION_BASED_MAKE_MANDATORY": {
-      "keywords": ["session mandatory", "second party mandatory"],
-      "bud_phrases": ["mandatory for second party"],
-      "schema_id": null,
-      "processing_type": "CLIENT",
-      "children": {},
-      "note": "Session-specific mandatory rule."
-    },
-    "SESSION_BASED_MAKE_NON_MANDATORY": {
-      "keywords": ["session non-mandatory", "second party non-mandatory"],
-      "bud_phrases": ["non-mandatory for second party"],
-      "schema_id": null,
-      "processing_type": "CLIENT",
-      "children": {},
-      "note": "Session-specific non-mandatory rule."
     },
     "CONCAT": {
       "keywords": ["concat", "concatenate", "combine", "concatenating"],

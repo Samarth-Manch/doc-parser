@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """
-Inter-Panel Cross-Panel Rules Dispatcher
+Inter-Panel Cross-Panel Rules Dispatcher (v3 — Panel-by-Panel Architecture)
 
 This script:
-1. Reads output from Clear Child Fields agent (stage 7)
-2. For each panel, detects cross-panel references in field logic
-3. Calls Inter-Panel mini agent to create simple cross-panel rules (Copy To, visibility)
-4. Collects delegation records for complex rules (derivation, EDV, clearing)
-5. Phase 2: dispatches delegated rules to specialized agents (06, 03/04, 07)
-6. Merges all results and outputs single JSON file
+1. Quick scan: checks if any cross-panel references exist (early exit if none)
+2. Phase 1: Per-panel reference detection — for each panel independently (parallel),
+   calls a lightweight LLM to detect and classify cross-panel references
+3. Phase 2: Rule generation — all refs (copy_to, visibility, derivation, clearing, EDV)
+   grouped by source panel, sent to expression rule agent with only the involved panels.
+   Copy To refs use ctfd expressions instead of deterministic Copy To rules.
+4. Phase 3: Validate + merge — deterministic Python merges all rules into output,
+   validates variableNames, deduplicates, tags _inter_panel_source
 """
 
 import argparse
@@ -16,27 +18,61 @@ import json
 import subprocess
 import sys
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from context_optimization import strip_all_rules_multi_panel
+from context_optimization import print_context_report
 from inter_panel_utils import (
-    detect_referenced_panels,
-    get_referenced_panel_fields,
-    merge_inter_panel_rules_immediate,
-    apply_deferred_rules,
-    write_referenced_panels_file,
+    build_compact_single_panel_text,
+    build_compact_panels_text,
+    build_variablename_index,
+    group_complex_refs_by_source_panel,
+    quick_cross_panel_scan,
+    validate_inter_panel_rules,
+    merge_all_rules_into_output,
     read_inter_panel_output,
-    _merge_rules_into_panel,
+    translate_expression_agent_output,
 )
 
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
+# Master log file — set in main(), used by log() globally
+_master_log: Optional[Path] = None
 
-def query_context_usage(panel_name: str, agent_name: str) -> Optional[str]:
-    """
-    Query the last claude agent session for context/token usage.
-    """
+# Thread lock for log writes
+import threading
+_log_lock = threading.Lock()
+
+
+def log(msg: str, also_print: bool = True):
+    """Log a timestamped message to master log file and optionally to stdout."""
+    ts = datetime.now().strftime("%H:%M:%S")
+    line = f"[{ts}] {msg}"
+    with _log_lock:
+        if also_print:
+            print(line, flush=True)
+        if _master_log:
+            with open(_master_log, 'a') as f:
+                f.write(line + '\n')
+
+
+def elapsed_str(start: float) -> str:
+    """Return human-readable elapsed time string."""
+    secs = time.time() - start
+    if secs < 60:
+        return f"{secs:.1f}s"
+    mins = int(secs // 60)
+    remaining = secs % 60
+    return f"{mins}m {remaining:.1f}s"
+
+
+def query_context_usage(pass_name: str) -> Optional[str]:
+    """Query the last claude agent session for context/token usage."""
     usage_prompt = (
         "Report the context window usage for this conversation. "
         "Include: (1) number of input tokens used, "
@@ -62,445 +98,519 @@ def query_context_usage(panel_name: str, agent_name: str) -> Optional[str]:
         return None
 
 
-def detect_cross_panel_refs_with_llm(panel_fields: List[Dict],
-                                      panel_name: str,
-                                      all_panel_names: List[str],
-                                      temp_dir: Path) -> Optional[List[str]]:
+# ══════════════════════════════════════════════════════════════════════════════
+# Phase 1: Per-Panel Reference Detection
+# ══════════════════════════════════════════════════════════════════════════════
+
+def build_all_panels_index(input_data: Dict[str, List[Dict]]) -> Dict[str, List[Dict]]:
     """
-    Use a lightweight claude -p call to detect cross-panel references in field logic.
-    More reliable than regex — catches variations like:
-      - (from 'Basic Details' panel)
-      - from Basic Details Panel
-      - "if Process Type from Basic Details is..."
-      - implicit references by field name context
-
-    Args:
-        panel_fields: Fields for the current panel
-        panel_name: Current panel name
-        all_panel_names: All panel names in the dataset
-        temp_dir: Directory for temp files
-
-    Returns:
-        List of referenced panel names, or None on failure.
-        Empty list means no cross-panel references detected.
+    Build a compact index of all panels' fields: {panel_name: [{field_name, variableName}]}.
+    Used by detection agents to resolve referenced field variableNames.
     """
-    # Collect field names + logic text (compact format to minimize tokens)
-    field_summaries = []
-    has_any_logic = False
-    for field in panel_fields:
-        logic = field.get('logic', '')
-        if logic:
-            has_any_logic = True
-            field_summaries.append(f"- {field.get('field_name', '?')}: {logic}")
+    index = {}
+    for panel_name, fields in input_data.items():
+        index[panel_name] = [
+            {
+                'field_name': f.get('field_name', ''),
+                'variableName': f.get('variableName', ''),
+            }
+            for f in fields
+            if f.get('variableName')
+        ]
+    return index
 
-    if not has_any_logic:
-        return []
 
-    other_panels = [p for p in all_panel_names if p.lower() != panel_name.lower()]
-    if not other_panels:
-        return []
+def normalize_detection_output(raw: any, panel_name: str, all_panel_names: List[str]) -> Optional[Dict]:
+    """
+    Normalize the detection agent's output into the expected format.
 
-    fields_text = '\n'.join(field_summaries)
-    panels_text = ', '.join(other_panels)
+    Handles various malformed outputs:
+    - Array instead of object
+    - Different key names (references, detected_references, refs)
+    - Missing panel_name
+    - Invalid classification values
+    """
+    VALID_CLASSIFICATIONS = {'copy_to', 'visibility', 'derivation', 'edv', 'clearing'}
+    valid_panel_set = set(all_panel_names)
 
-    prompt = f"""You are analyzing field logic text for cross-panel references.
-
-Current panel: "{panel_name}"
-Other panels in this form: [{panels_text}]
-
-Field logic text:
-{fields_text}
-
-TASK: Identify which OTHER panels are referenced in ANY field's logic above.
-Cross-panel references include:
-- Explicit: "(from Basic Details panel)", "(from 'PAN and GST Details')", "from Basic Details Panel"
-- Conditional: "if Process Type from Basic Details is...", "visible when field in X Panel is..."
-- Copy/derive: "copy from X panel", "derived from field in X panel"
-- Any mention of another panel's name in the context of reading/using a value from it
-
-Respond with ONLY a JSON array of referenced panel names. Use the exact panel names from the list above.
-If NO cross-panel references exist, respond with an empty array: []
-
-Examples:
-["Basic Details", "PAN and GST Details"]
-[]
-["Basic Details"]"""
-
-    safe_panel_name = re.sub(r'[^\w\-]', '_', panel_name)
-    detect_output_file = temp_dir / f"{safe_panel_name}_detect_refs.json"
-
-    try:
-        process = subprocess.run(
-            ["claude", "-p", prompt, "--allowedTools", ""],
-            capture_output=True,
-            text=True,
-            timeout=60,
-            cwd=PROJECT_ROOT
-        )
-
-        if process.returncode != 0:
-            print(f"  LLM detection failed (exit {process.returncode}), falling back to regex", file=sys.stderr)
-            return None
-
-        output = process.stdout.strip()
-
-        # Extract JSON array from response (may have markdown fencing)
-        json_match = re.search(r'\[.*?\]', output, re.DOTALL)
-        if not json_match:
-            print(f"  LLM detection returned no JSON array, falling back to regex", file=sys.stderr)
-            return None
-
-        referenced = json.loads(json_match.group())
-
-        if not isinstance(referenced, list):
-            return None
-
-        # Normalize: only keep panels that actually exist
-        valid_refs = []
-        for ref in referenced:
-            if not isinstance(ref, str):
+    # If raw is a list, try to extract refs from it
+    if isinstance(raw, list):
+        refs = []
+        for item in raw:
+            if not isinstance(item, dict):
                 continue
-            for actual_name in all_panel_names:
-                if ref.lower() == actual_name.lower() and actual_name.lower() != panel_name.lower():
-                    valid_refs.append(actual_name)
-                    break
+            # Item might be a field entry with detected_references
+            if 'detected_references' in item:
+                field_var = item.get('variableName', '')
+                field_name = item.get('field_name', '')
+                for det in item['detected_references']:
+                    if not isinstance(det, dict):
+                        continue
+                    # Skip same-panel references
+                    target_panel = det.get('target_panel', '')
+                    if target_panel == panel_name:
+                        continue
+                    ref = _build_normalized_ref(det, field_var, field_name, valid_panel_set)
+                    if ref:
+                        refs.append(ref)
+            # Item might be a ref directly
+            elif any(k in item for k in ('referenced_panel', 'reference_type', 'field_variableName')):
+                ref = _build_normalized_ref(item, item.get('field_variableName', ''),
+                                            item.get('field_name', ''), valid_panel_set)
+                if ref:
+                    refs.append(ref)
+        return {'panel_name': panel_name, 'cross_panel_references': refs} if refs else None
 
-        # Save detection result for debugging
-        with open(detect_output_file, 'w') as f:
-            json.dump({"panel": panel_name, "llm_raw": referenced, "validated": valid_refs}, f, indent=2)
-
-        return valid_refs
-
-    except json.JSONDecodeError as e:
-        print(f"  LLM detection JSON parse error: {e}, falling back to regex", file=sys.stderr)
+    if not isinstance(raw, dict):
         return None
-    except Exception as e:
-        print(f"  LLM detection error: {e}, falling back to regex", file=sys.stderr)
-        return None
 
-
-def call_inter_panel_mini_agent(panel_fields: List[Dict],
-                                 panel_name: str,
-                                 referenced_data: Dict[str, List[Dict]],
-                                 temp_dir: Path) -> Tuple[Optional[List[Dict]],
-                                                           Optional[Dict[str, List[Dict]]],
-                                                           Optional[List[Dict]]]:
-    """
-    Call the Inter-Panel mini agent via claude -p
-
-    Args:
-        panel_fields: Fields from Clear Child Fields output
-        panel_name: Name of the current panel
-        referenced_data: Fields from referenced panels
-        temp_dir: Directory for temp files
-
-    Returns:
-        Tuple of (result_fields, inter_panel_rules, delegation_records)
-        Any can be None on failure
-    """
-    safe_panel_name = re.sub(r'[^\w\-]', '_', panel_name)
-
-    # Temp files
-    fields_input_file = temp_dir / f"{safe_panel_name}_fields_input.json"
-    referenced_file = temp_dir / f"{safe_panel_name}_referenced_panels.json"
-    output_file = temp_dir / f"{safe_panel_name}_inter_panel_output.json"
-    inter_panel_output_file = temp_dir / f"{safe_panel_name}_inter_panel_rules.json"
-    delegation_output_file = temp_dir / f"{safe_panel_name}_delegations.json"
-    log_file = temp_dir / f"{safe_panel_name}_inter_panel_log.txt"
-
-    # Write input files
-    with open(fields_input_file, 'w') as f:
-        json.dump(panel_fields, f, indent=2)
-
-    write_referenced_panels_file(referenced_data, referenced_file)
-
-    referenced_panel_list = ', '.join(sorted(referenced_data.keys()))
-    referenced_field_counts = ', '.join(
-        f"{p}: {len(fs)} fields" for p, fs in sorted(referenced_data.items())
+    # Find the refs array under various possible keys
+    refs_raw = (
+        raw.get('cross_panel_references') or
+        raw.get('references') or
+        raw.get('detected_references') or
+        raw.get('refs') or
+        []
     )
 
-    prompt = f"""Process fields for panel "{panel_name}" to extract cross-panel rules.
+    if not refs_raw:
+        return None
 
-## Input Data
-1. Current panel fields: {fields_input_file}
-2. Referenced panel fields: {referenced_file}
-3. Log file: {log_file}
-
-## Instructions
-Follow the step-by-step approach defined in the agent prompt (09_inter_panel_agent).
-- FIELDS_JSON = {fields_input_file}
-- REFERENCED_PANELS_JSON = {referenced_file}
-- CURRENT_PANEL = {panel_name}
-- OUTPUT_FILE = {output_file}
-- INTER_PANEL_OUTPUT_FILE = {inter_panel_output_file}
-- DELEGATION_OUTPUT_FILE = {delegation_output_file}
-- LOG_FILE = {log_file}
-
-## Context
-Referenced panels detected: [{referenced_panel_list}]
-Referenced panel field counts: {referenced_field_counts}
-
-## CRITICAL
-- ONLY handle cross-panel logic (references to fields/values from OTHER panels)
-- PASS THROUGH all existing rules unchanged
-- Write THREE output files:
-  1. {output_file} — updated current panel fields
-  2. {inter_panel_output_file} — rules for OTHER panels (only if needed)
-  3. {delegation_output_file} — complex delegations (only if needed)
-- If no cross-panel rules needed, still write {output_file} with unchanged fields
-- If no inter-panel rules, write empty dict {{}} to {inter_panel_output_file}
-- If no delegations, write empty list [] to {delegation_output_file}
-
-## Output
-Write JSON to the three output files listed above.
-"""
-
-    try:
-        print(f"\n{'='*70}")
-        print(f"PROCESSING PANEL: {panel_name}")
-        print(f"  Fields: {len(panel_fields)}")
-        print(f"  Referenced panels: {referenced_panel_list}")
-        print(f"  Referenced fields: {referenced_field_counts}")
-        print('='*70)
-
-        process = subprocess.Popen(
-            [
-                "claude",
-                "-p", prompt,
-                "--agent", "mini/09_inter_panel_agent",
-                "--allowedTools", "Read,Write"
-            ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            bufsize=1,
-            cwd=PROJECT_ROOT
-        )
-
-        output_lines = []
-        for line in process.stdout:
-            print(line, end='', flush=True)
-            output_lines.append(line)
-
-        process.wait()
-
-        if process.returncode != 0:
-            print(f"  Mini agent failed with exit code: {process.returncode}", file=sys.stderr)
-            return None, None, None
-
-        # Query context usage
-        print(f"\n--- Context Usage ({panel_name}) ---")
-        usage = query_context_usage(panel_name, "Inter-Panel")
-        if usage:
-            print(usage)
+    # Normalize each ref (handle nested "references" sub-arrays)
+    normalized_refs = []
+    for ref in refs_raw:
+        if not isinstance(ref, dict):
+            continue
+        # Check for nested format: {field_name, variableName, references: [{referenced_panel, ...}]}
+        if 'references' in ref and isinstance(ref['references'], list):
+            parent_var = ref.get('variableName') or ref.get('field_variableName') or ''
+            parent_name = ref.get('field_name') or ref.get('destination_field') or ''
+            for sub_ref in ref['references']:
+                if not isinstance(sub_ref, dict):
+                    continue
+                # Merge parent field info into sub-ref for normalization
+                merged = dict(sub_ref)
+                merged.setdefault('field_variableName', parent_var)
+                merged.setdefault('destination_variableName', parent_var)
+                merged.setdefault('field_name', parent_name)
+                merged.setdefault('destination_field', parent_name)
+                norm = _normalize_single_ref(merged, valid_panel_set)
+                if norm:
+                    normalized_refs.append(norm)
         else:
-            print("(Could not retrieve context usage)")
-        print("---")
+            norm = _normalize_single_ref(ref, valid_panel_set)
+            if norm:
+                normalized_refs.append(norm)
 
-        # Read main output
-        result = None
-        if output_file.exists():
-            try:
-                with open(output_file, 'r') as f:
-                    result = json.load(f)
-                print(f"  Main output: {len(result)} fields")
-            except json.JSONDecodeError as e:
-                print(f"  Failed to parse main output JSON: {e}", file=sys.stderr)
+    if not normalized_refs:
+        return None
 
-        # Read inter-panel rules
-        inter_rules = read_inter_panel_output(inter_panel_output_file)
-        if inter_rules:
-            total = sum(
-                sum(len(e.get('rules_to_add', [])) for e in entries)
-                for entries in inter_rules.values()
-            )
-            print(f"  Inter-panel rules: {total} rules for {len(inter_rules)} panels")
+    return {'panel_name': panel_name, 'cross_panel_references': normalized_refs}
+
+
+def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
+    """Normalize a single reference record to the expected schema."""
+    VALID_CLASSIFICATIONS = {'copy_to', 'visibility', 'derivation', 'edv', 'clearing'}
+
+    # Get referenced panel from various possible keys
+    referenced_panel = (
+        ref.get('referenced_panel') or
+        ref.get('target_panel') or
+        ref.get('source_panel') or
+        ''
+    )
+    if not referenced_panel or referenced_panel not in valid_panel_set:
+        return None
+
+    # Get classification, normalize invalid values
+    classification = (
+        ref.get('classification') or
+        ref.get('reference_classification') or
+        ref.get('reference_type') or
+        ''
+    ).lower()
+    if classification not in VALID_CLASSIFICATIONS:
+        # Map common variants
+        if classification in ('multiple', 'visibility_condition', 'visibility_and_derivation',
+                              'visibility_state'):
+            classification = 'visibility'
+        elif classification in ('copy', 'copy_to_field', 'cross_panel_field_copy'):
+            classification = 'copy_to'
+        elif classification in ('derive', 'value_population'):
+            classification = 'derivation'
         else:
-            inter_rules = {}
+            classification = 'visibility'  # default to complex/visibility
 
-        # Read delegation records
-        delegations = None
-        if delegation_output_file.exists():
-            try:
-                with open(delegation_output_file, 'r') as f:
-                    delegations = json.load(f)
-                if isinstance(delegations, list) and delegations:
-                    print(f"  Delegations: {len(delegations)} complex references")
-                else:
-                    delegations = []
-            except json.JSONDecodeError:
-                delegations = []
+    # Determine type
+    ref_type = ref.get('type', ref.get('complexity', ''))
+    if ref_type not in ('simple', 'complex'):
+        ref_type = 'simple' if classification == 'copy_to' else 'complex'
+
+    # Get field variableNames (the field in THIS panel whose logic references another panel)
+    field_var = (
+        ref.get('field_variableName') or
+        ref.get('destination_variableName') or
+        ref.get('variable_name') or
+        ref.get('field_variable_name') or
+        ref.get('variableName') or
+        ''
+    )
+    # Get referenced field variableName (the field in the OTHER panel)
+    referenced_field_var = (
+        ref.get('referenced_field_variableName') or
+        ref.get('referenced_variableName') or
+        ref.get('target_field') or
+        ref.get('source_field') or
+        'unknown'
+    )
+
+    # Get field name (human-readable)
+    field_name = (
+        ref.get('field_name') or
+        ref.get('destination_field') or
+        ''
+    )
+    # Get referenced field name
+    referenced_field_name = (
+        ref.get('referenced_field_name') or
+        ref.get('referenced_field') or
+        ref.get('target_field') or
+        ''
+    )
+
+    return {
+        'field_variableName': field_var,
+        'field_name': field_name,
+        'referenced_panel': referenced_panel,
+        'referenced_field_variableName': referenced_field_var,
+        'referenced_field_name': referenced_field_name,
+        'type': ref_type,
+        'classification': classification,
+        'logic_snippet': ref.get('logic_snippet', ref.get('reference_text', ref.get('logic', ''))),
+        'description': ref.get('description', ''),
+    }
+
+
+def _build_normalized_ref(det: Dict, field_var: str, field_name: str,
+                          valid_panel_set: set) -> Optional[Dict]:
+    """Build a normalized ref from a detected_references sub-entry."""
+    target_panel = det.get('target_panel', det.get('referenced_panel', ''))
+    if not target_panel or target_panel not in valid_panel_set:
+        return None
+
+    classification = det.get('classification', det.get('reference_classification', '')).lower()
+    VALID = {'copy_to', 'visibility', 'derivation', 'edv', 'clearing'}
+    if classification not in VALID:
+        if 'copy' in classification:
+            classification = 'copy_to'
+        elif 'visibility' in classification or 'condition' in classification:
+            classification = 'visibility'
+        elif 'deriv' in classification:
+            classification = 'derivation'
         else:
-            delegations = []
+            classification = 'visibility'
 
-        return result, inter_rules, delegations
+    ref_type = 'simple' if classification == 'copy_to' else 'complex'
 
-    except FileNotFoundError:
-        print("  Error: 'claude' command not found", file=sys.stderr)
-        return None, None, None
-    except Exception as e:
-        print(f"  Error calling Inter-Panel mini agent: {e}", file=sys.stderr)
-        import traceback
-        traceback.print_exc()
-        return None, None, None
+    return {
+        'field_variableName': field_var,
+        'field_name': field_name,
+        'referenced_panel': target_panel,
+        'referenced_field_variableName': det.get('target_field', 'unknown'),
+        'referenced_field_name': det.get('target_field', ''),
+        'type': ref_type,
+        'classification': classification,
+        'logic_snippet': det.get('reference_text', ''),
+        'description': det.get('description', ''),
+    }
 
 
-def call_specialized_agent(delegation: Dict,
-                            all_results: Dict[str, List[Dict]],
-                            input_data: Dict[str, List[Dict]],
-                            temp_dir: Path) -> Optional[Tuple[str, List[Dict]]]:
+def detect_cross_panel_refs(
+    panel_name: str,
+    panel_fields: List[Dict],
+    all_panel_names: List[str],
+    all_panels_index_file: Path,
+    temp_dir: Path,
+    model: str = "haiku",
+) -> Optional[Dict]:
     """
-    Call a specialized agent (derivation, EDV, clearing) for a delegated cross-panel reference.
+    Phase 1: Detect cross-panel references for a single panel via LLM.
+
+    Calls the inter_panel_detect_refs agent with:
+    - This panel's fields (compact, rules stripped)
+    - All panels index (for variableName resolution)
 
     Args:
-        delegation: Delegation record from Phase 1
-        all_results: Current pipeline results (panel -> fields)
-        input_data: Original input data
-        temp_dir: Directory for temp files
+        panel_name: Name of the panel to analyze
+        panel_fields: Fields in the panel
+        all_panel_names: All panel names in the form
+        all_panels_index_file: Path to the shared all-panels index file
+        temp_dir: Temporary directory for intermediate files
+        model: Claude model to use (default: haiku for speed)
 
     Returns:
-        Tuple of (target_panel, inter_panel_rules_list) or None on failure
+        Detection result dict (normalized), or None on failure
     """
-    delegation_type = delegation.get('type', '')
-    source_panel = delegation.get('source_panel', '')
-    target_panel = delegation.get('target_panel', '')
-    source_field = delegation.get('source_field', '')
-    target_field = delegation.get('target_field', '')
-    logic = delegation.get('logic', '')
-    description = delegation.get('description', '')
+    # Create safe filename from panel name
+    safe_name = re.sub(r'[^a-zA-Z0-9_]', '_', panel_name).lower()
 
-    if not delegation_type or not target_panel:
-        print(f"  Skipping invalid delegation: {delegation}", file=sys.stderr)
-        return None
+    # Build compact field data (strip rules for context optimization)
+    compact_fields = []
+    for field in panel_fields:
+        compact_fields.append({
+            'field_name': field.get('field_name', ''),
+            'type': field.get('type', ''),
+            'variableName': field.get('variableName', ''),
+            'logic': field.get('logic', ''),
+        })
 
-    # Build minimal field subset for the specialized agent
-    target_fields = all_results.get(target_panel, input_data.get(target_panel, []))
-    source_fields = all_results.get(source_panel, input_data.get(source_panel, []))
+    # Write panel fields file
+    panel_fields_file = temp_dir / f"detect_{safe_name}_fields.json"
+    with open(panel_fields_file, 'w') as f:
+        json.dump(compact_fields, f, indent=2)
 
-    # Find the specific target and source field entries
-    target_field_entry = None
-    source_field_entry = None
+    # Output file
+    output_file = temp_dir / f"detect_{safe_name}_output.json"
 
-    for f in target_fields:
-        if f.get('variableName') == target_field:
-            target_field_entry = f
-            break
-
-    for f in source_fields:
-        if f.get('variableName') == source_field:
-            source_field_entry = f
-            break
-
-    if not target_field_entry:
-        print(f"  Delegation target field '{target_field}' not found in panel '{target_panel}'", file=sys.stderr)
-        return None
-
-    safe_name = re.sub(r'[^\w\-]', '_', f"{source_panel}_{target_panel}_{delegation_type}")
-    delegation_input = temp_dir / f"delegation_{safe_name}_input.json"
-    delegation_output = temp_dir / f"delegation_{safe_name}_output.json"
-    delegation_log = temp_dir / f"delegation_{safe_name}_log.txt"
-
-    # Build targeted field list (just source + target)
-    targeted_fields = []
-    if source_field_entry:
-        targeted_fields.append(source_field_entry)
-    targeted_fields.append(target_field_entry)
-
-    with open(delegation_input, 'w') as f_out:
-        json.dump(targeted_fields, f_out, indent=2)
-
-    # Select agent based on delegation type
-    if delegation_type == 'derivation':
-        agent_file = "mini/06_derivation_agent"
-        agent_label = "Derivation"
-        prompt = f"""Process a cross-panel derivation rule.
-
-## Context
-Source panel: {source_panel}
-Target panel: {target_panel}
-Source field: {source_field}
-Target field: {target_field}
-Logic: {logic}
-Description: {description}
+    prompt = f"""Detect cross-panel references in this panel's fields.
 
 ## Input
-Fields: {delegation_input}
-Log file: {delegation_log}
+- PANEL_FIELDS_FILE: {panel_fields_file}
+- PANEL_NAME: {panel_name}
+- ALL_PANELS_INDEX_FILE: {all_panels_index_file}
+- OUTPUT_FILE: {output_file}
 
-## Instructions
-Follow the derivation agent approach (06_derivation_agent).
-- FIELDS_JSON = {delegation_input}
-- LOG_FILE = {delegation_log}
-
-Create an Expression (Client) rule with ctfd/asdff expressions for this cross-panel derivation.
-The source field is from another panel — use its variableName as-is.
-
-## Output
-Write JSON array to: {delegation_output}
+Read the panel fields and the all-panels index.
+Check each field's logic for references to other panels.
+Use the all-panels index to resolve referenced field variableNames.
+Classify each reference and write the structured output to OUTPUT_FILE.
+The output MUST be a JSON object with keys "panel_name" and "cross_panel_references".
 """
-    elif delegation_type == 'edv':
-        agent_file = "mini/03_edv_rule_agent_v2"
-        agent_label = "EDV"
-        prompt = f"""Process a cross-panel EDV rule.
-
-## Context
-Source panel: {source_panel}
-Target panel: {target_panel}
-Source field: {source_field}
-Target field: {target_field}
-Logic: {logic}
-Description: {description}
-
-## Input
-Fields: {delegation_input}
-Log file: {delegation_log}
-
-## Instructions
-Follow the EDV agent approach (03_edv_rule_agent_v2).
-- FIELDS_JSON = {delegation_input}
-- LOG_FILE = {delegation_log}
-
-## Output
-Write JSON array to: {delegation_output}
-"""
-    elif delegation_type == 'clearing':
-        agent_file = "mini/07_clear_child_fields_agent"
-        agent_label = "Clear Child"
-        prompt = f"""Process a cross-panel clearing rule.
-
-## Context
-Source panel: {source_panel}
-Target panel: {target_panel}
-Source field: {source_field}
-Target field: {target_field}
-Logic: {logic}
-Description: {description}
-
-## Input
-Fields: {delegation_input}
-Log file: {delegation_log}
-
-## Instructions
-Follow the clear child fields agent approach (07_clear_child_fields_agent).
-- FIELDS_JSON = {delegation_input}
-- LOG_FILE = {delegation_log}
-
-## Output
-Write JSON array to: {delegation_output}
-"""
-    else:
-        print(f"  Unknown delegation type: {delegation_type}", file=sys.stderr)
-        return None
 
     try:
-        print(f"\n  --- Delegation: {agent_label} ({source_panel} -> {target_panel}) ---")
-        print(f"  Source: {source_field}, Target: {target_field}")
+        log(f"  Phase 1: Detecting refs in '{panel_name}' ({len(panel_fields)} fields)...")
+
+        t0 = time.time()
+
+        process = subprocess.run(
+            [
+                "claude",
+                "--model", model,
+                "-p", prompt,
+                "--agent", "mini/inter_panel_detect_refs",
+                "--allowedTools", "Read,Write"
+            ],
+            capture_output=True,
+            text=True,
+            timeout=120,
+            cwd=PROJECT_ROOT
+        )
+
+        if process.returncode != 0:
+            log(f"  Phase 1: Detection FAILED for '{panel_name}' "
+                f"(exit code {process.returncode}) after {elapsed_str(t0)}")
+            return None
+
+        # Read output
+        if not output_file.exists():
+            log(f"  Phase 1: No output file for '{panel_name}' after {elapsed_str(t0)}")
+            return None
+
+        with open(output_file, 'r') as f:
+            raw_result = json.load(f)
+
+        # Normalize the output to handle format variations
+        result = normalize_detection_output(raw_result, panel_name, all_panel_names)
+
+        if result:
+            ref_count = len(result.get('cross_panel_references', []))
+            log(f"  Phase 1: '{panel_name}' — {ref_count} refs detected ({elapsed_str(t0)})")
+        else:
+            log(f"  Phase 1: '{panel_name}' — 0 refs detected ({elapsed_str(t0)})")
+
+        return result
+
+    except subprocess.TimeoutExpired:
+        log(f"  Phase 1: Detection TIMED OUT for '{panel_name}'")
+        return None
+    except FileNotFoundError:
+        log(f"  Phase 1: 'claude' command not found")
+        return None
+    except (json.JSONDecodeError, IOError) as e:
+        log(f"  Phase 1: Error reading output for '{panel_name}': {e}")
+        return None
+    except Exception as e:
+        log(f"  Phase 1: Error detecting refs for '{panel_name}': {e}")
+        return None
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Phase 2a: Simple Copy To Rules (Deterministic)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def build_simple_copy_to_rules(
+    simple_refs: List[Dict],
+    var_index: Dict[str, str],
+) -> Dict[str, List[Dict]]:
+    """
+    Phase 2a: Build Copy To rules deterministically from simple references.
+
+    For each simple copy_to reference, creates a Copy To Form Field (Client) rule
+    on the source field, with the destination being the receiving field.
+
+    Args:
+        simple_refs: List of simple reference records with classification "copy_to"
+        var_index: variableName -> panel_name lookup
+
+    Returns:
+        Rules in merge format: {panel: [{target_field_variableName, rules_to_add}]}
+    """
+    if not simple_refs:
+        return {}
+
+    # Group by source field to consolidate destinations
+    # Key: (source_panel, source_variableName) -> list of destination variableNames
+    source_groups: Dict[Tuple[str, str], List[str]] = {}
+
+    for ref in simple_refs:
+        source_var = ref.get('referenced_field_variableName', '')
+        source_panel = ref.get('referenced_panel', '')
+        dest_var = ref.get('field_variableName', '')
+
+        if not source_var or source_var == 'unknown' or not dest_var:
+            log(f"  Phase 2a: Skipping copy_to ref with missing fields: {ref}")
+            continue
+
+        # Verify source field exists
+        norm_src = _norm_var(source_var)
+        if norm_src not in var_index:
+            log(f"  Phase 2a: Source field '{source_var}' not found, skipping")
+            continue
+
+        # Use the actual panel from the index
+        actual_panel = var_index[norm_src]
+
+        key = (actual_panel, source_var)
+        if key not in source_groups:
+            source_groups[key] = []
+
+        # Avoid duplicate destinations
+        if dest_var not in source_groups[key]:
+            source_groups[key].append(dest_var)
+
+    # Build rules
+    rules_by_panel: Dict[str, List[Dict]] = {}
+
+    for (host_panel, source_var), dest_vars in source_groups.items():
+        rule = {
+            'rule_name': 'Copy To Form Field (Client)',
+            'source_fields': [source_var],
+            'destination_fields': dest_vars,
+            '_reasoning': f"Cross-panel: Copy {source_var} to {', '.join(dest_vars)}",
+            '_inter_panel_source': 'cross-panel',
+        }
+
+        entry = {
+            'target_field_variableName': source_var,
+            'rules_to_add': [rule],
+        }
+
+        if host_panel not in rules_by_panel:
+            rules_by_panel[host_panel] = []
+        rules_by_panel[host_panel].append(entry)
+
+    return rules_by_panel
+
+
+def _norm_var(v: str) -> str:
+    """Normalize __varname__ or _varname_ to _varname_ for index lookups."""
+    s = v.strip('_')
+    return f'_{s}_' if s else v
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Phase 2: Complex Rules via Expression Agent (Targeted Context)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def call_complex_rules_agent(
+    complex_refs: List[Dict],
+    involved_panels: Dict[str, List[Dict]],
+    temp_dir: Path,
+    group_label: str,
+    model: str = "opus",
+) -> Dict[str, List[Dict]]:
+    """
+    Phase 2: Call expression rule agent with targeted context for complex refs.
+
+    Only sends the involved panels (stripped of rules) + complex ref descriptions
+    to the agent. Much smaller context than sending all panels.
+
+    Args:
+        complex_refs: List of complex reference records for this group
+        involved_panels: Only the panels involved in these refs
+        temp_dir: Temporary directory
+        group_label: Label for logging (e.g., source panel name)
+        model: Claude model to use
+
+    Returns:
+        Rules in merge format: {panel: [{target_field_variableName, rules_to_add}]}
+    """
+    safe_label = re.sub(r'[^a-zA-Z0-9_]', '_', group_label).lower()
+
+    # Strip rules from involved panels
+    involved_stripped = strip_all_rules_multi_panel(involved_panels)
+
+    # Write involved panels
+    involved_file = temp_dir / f"complex_{safe_label}_panels.json"
+    with open(involved_file, 'w') as f:
+        json.dump(involved_stripped, f, indent=2)
+
+    # Write complex refs
+    refs_file = temp_dir / f"complex_{safe_label}_refs.json"
+    with open(refs_file, 'w') as f:
+        json.dump(complex_refs, f, indent=2)
+
+    # Output and log files
+    output_file = temp_dir / f"complex_{safe_label}_rules.json"
+    log_file = temp_dir / f"complex_{safe_label}_log.txt"
+    with open(log_file, 'w') as f:
+        f.write(f"=== Complex Rules Agent ({group_label}) — {datetime.now().isoformat()} ===\n")
+
+    prompt = f"""Process complex cross-panel references for rule generation.
+
+## Input
+- COMPLEX_REFS_FILE: {refs_file}
+  This JSON array describes the cross-panel references that need Expression (Client) rules.
+  Each entry has: type (visibility/derivation/edv/clearing), source and target panels/fields,
+  logic snippet, and description.
+- FIELDS_JSON: {involved_file}
+  This is a JSON object where each key is a panel name and each value is the
+  array of fields for that panel. These are the involved panels with full field data.
+- LOG_FILE: {log_file}
+
+Read the complex refs to understand what rules are needed.
+Read the involved panels to get field details (variableNames, types).
+Use the expression_rule_agent instructions to build Expression (Client) rules
+for the described cross-panel references.
+Write the output to: {output_file}
+Output format: JSON object where keys are panel names and values are arrays of fields
+with their rules (same format as FIELDS_JSON input but with new rules added).
+If no rules could be created, write empty dict {{}} to {output_file}.
+"""
+
+    try:
+        log(f"  Phase 2: Rules for '{group_label}' "
+            f"({len(complex_refs)} refs, {len(involved_panels)} panels)...")
+        log(f"    Agent log: {log_file}")
+
+        t0 = time.time()
 
         process = subprocess.Popen(
             [
                 "claude",
+                "--model", model,
                 "-p", prompt,
-                "--agent", agent_file,
+                "--agent", "mini/expression_rule_agent",
                 "--allowedTools", "Read,Write"
             ],
             stdout=subprocess.PIPE,
@@ -516,58 +626,64 @@ Write JSON array to: {delegation_output}
         process.wait()
 
         if process.returncode != 0:
-            print(f"  Delegation agent failed with exit code: {process.returncode}", file=sys.stderr)
-            return None
+            log(f"  Phase 2: FAILED for '{group_label}' "
+                f"(exit code {process.returncode}) after {elapsed_str(t0)}")
+            return {}
 
-        if delegation_output.exists():
-            try:
-                with open(delegation_output, 'r') as f_in:
-                    result_fields = json.load(f_in)
+        # Read output
+        if not output_file.exists():
+            log(f"  Phase 2: No output file for '{group_label}' after {elapsed_str(t0)}")
+            return {}
 
-                # Extract new rules from the result (rules not in original)
-                new_rules = []
-                for rf in result_fields:
-                    if rf.get('variableName') == target_field:
-                        original_rule_count = len(target_field_entry.get('rules', []))
-                        all_rules = rf.get('rules', [])
-                        if len(all_rules) > original_rule_count:
-                            new_rules = all_rules[original_rule_count:]
+        raw_output = read_inter_panel_output(output_file)
+        result = translate_expression_agent_output(raw_output) if raw_output else {}
 
-                if new_rules:
-                    # Mark as cross-panel
-                    for rule in new_rules:
-                        rule['_inter_panel_source'] = 'cross-panel'
-
-                    inter_panel_entry = {
-                        'target_field_variableName': target_field,
-                        'rules_to_add': new_rules
-                    }
-                    print(f"  Delegation produced {len(new_rules)} rules for {target_field}")
-                    return target_panel, [inter_panel_entry]
-                else:
-                    print(f"  Delegation produced no new rules")
-                    return None
-
-            except json.JSONDecodeError as e:
-                print(f"  Failed to parse delegation output: {e}", file=sys.stderr)
-                return None
+        if result:
+            rule_count = sum(
+                sum(len(e.get('rules_to_add', [])) for e in entries)
+                for entries in result.values()
+            )
+            log(f"  Phase 2: '{group_label}' — {rule_count} rules ({elapsed_str(t0)})")
         else:
-            print(f"  Delegation output file not found", file=sys.stderr)
-            return None
+            log(f"  Phase 2: '{group_label}' — no rules produced ({elapsed_str(t0)})")
+            result = {}
 
+        # Context report
+        agent_prompt_file = Path(PROJECT_ROOT) / ".claude" / "agents" / "mini" / "expression_rule_agent.md"
+        expr_ref_file = Path(PROJECT_ROOT) / ".claude" / "agents" / "docs" / "expression_rules.md"
+        print_context_report(
+            label=f"Phase 2: {group_label}",
+            agent_files=[agent_prompt_file],
+            prompt_chars=len(prompt),
+            input_json_chars=involved_file.stat().st_size + refs_file.stat().st_size,
+            output_file=output_file,
+            extra_read_files=[expr_ref_file] if expr_ref_file.exists() else [],
+        )
+
+        return result
+
+    except FileNotFoundError:
+        log(f"  Phase 2: 'claude' command not found")
+        return {}
     except Exception as e:
-        print(f"  Error in delegation: {e}", file=sys.stderr)
-        return None
+        log(f"  Phase 2: Error for '{group_label}': {e}")
+        import traceback
+        traceback.print_exc()
+        return {}
 
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Main
+# ══════════════════════════════════════════════════════════════════════════════
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Inter-Panel Cross-Panel Rules Dispatcher - Handle cross-panel field references"
+        description="Inter-Panel Cross-Panel Rules Dispatcher (v3) — Panel-by-Panel Architecture"
     )
     parser.add_argument(
         "--clear-child-output",
         required=True,
-        help="Path to Clear Child Fields agent output JSON (stage 7)"
+        help="Path to input JSON from previous stage (e.g., expression rules output)"
     )
     parser.add_argument(
         "--bud",
@@ -579,12 +695,34 @@ def main():
         default="output/inter_panel/all_panels_inter_panel.json",
         help="Output file (default: output/inter_panel/all_panels_inter_panel.json)"
     )
+    parser.add_argument(
+        "--context-usage",
+        action="store_true",
+        default=False,
+        help="Query and display context window usage after each phase (adds ~30s per phase)"
+    )
+    parser.add_argument(
+        "--model",
+        default="opus",
+        help="Claude model for complex rule generation (default: opus)"
+    )
+    parser.add_argument(
+        "--detect-model",
+        default="haiku",
+        help="Claude model for Phase 1 reference detection (default: haiku)"
+    )
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Max parallel workers for Phase 1 detection (default: 4)"
+    )
 
     args = parser.parse_args()
 
     # Validate inputs
     if not Path(args.clear_child_output).exists():
-        print(f"Error: Clear Child Fields output not found: {args.clear_child_output}", file=sys.stderr)
+        print(f"Error: Input not found: {args.clear_child_output}", file=sys.stderr)
         sys.exit(1)
 
     if not Path(args.bud).exists():
@@ -598,147 +736,234 @@ def main():
     temp_dir = output_file.parent / "temp"
     temp_dir.mkdir(parents=True, exist_ok=True)
 
+    # Set up master log file
+    global _master_log
+    _master_log = temp_dir / "inter_panel_master.log"
+    with open(_master_log, 'w') as f:
+        f.write(f"=== Inter-Panel Dispatcher v3 — {datetime.now().isoformat()} ===\n")
+
+    pipeline_start = time.time()
+    log("=" * 60, also_print=False)
+    log("INTER-PANEL DISPATCHER v3 STARTED (Panel-by-Panel)")
+    log(f"Master log: {_master_log}")
+    print(f"  Monitor progress:  tail -f {_master_log}")
+
     # Load input data
-    print(f"Loading Clear Child Fields output: {args.clear_child_output}")
+    log(f"Loading input: {args.clear_child_output}")
     with open(args.clear_child_output, 'r') as f:
         input_data = json.load(f)
 
     all_panel_names = list(input_data.keys())
-    print(f"Found {len(input_data)} panels: {', '.join(all_panel_names)}")
+    input_field_count = sum(len(fields) for fields in input_data.values())
+    input_rule_count = sum(
+        len(f.get('rules', []))
+        for fields in input_data.values()
+        for f in fields
+    )
+    log(f"Found {len(input_data)} panels: {', '.join(all_panel_names)}")
+    log(f"Total fields: {input_field_count}, Total rules: {input_rule_count}")
 
     # ══════════════════════════════════════════════════════════════════════
-    # PHASE 1: Process each panel with inter-panel agent
+    # QUICK SCAN: Check if any cross-panel references exist
     # ══════════════════════════════════════════════════════════════════════
-    print("\n" + "="*70)
-    print("PHASE 1: PROCESSING PANELS WITH INTER-PANEL AGENT")
-    print("="*70)
+    log("Quick cross-panel scan...")
+    t0 = time.time()
+    has_cross_panel = quick_cross_panel_scan(input_data)
+    log(f"Quick scan done in {elapsed_str(t0)} — result: {'refs found' if has_cross_panel else 'no refs'}")
 
-    successful_panels = 0
-    failed_panels = 0
-    skipped_panels = 0
-    total_fields_processed = 0
-    all_results = {}
-    all_delegations = []
-    deferred_rules: Dict[str, List[Dict]] = {}
+    if not has_cross_panel:
+        log("No cross-panel references detected — copying input to output (early exit)")
+        with open(output_file, 'w') as f:
+            json.dump(input_data, f, indent=2)
+        log(f"Output: {output_file} ({input_field_count} fields, unchanged)")
+        sys.exit(0)
 
-    for panel_name, panel_fields in input_data.items():
-        if not panel_fields:
-            print(f"\nSkipping panel '{panel_name}' - no fields")
-            skipped_panels += 1
-            all_results[panel_name] = panel_fields
-            continue
+    log("Cross-panel references detected — proceeding with panel-by-panel analysis")
 
-        # Detect cross-panel references using LLM pre-scan (with regex fallback)
-        print(f"\nPanel '{panel_name}': {len(panel_fields)} fields — scanning for cross-panel references...")
+    # Build variableName index for validation
+    var_index = build_variablename_index(input_data)
+    log(f"Built variableName index: {len(var_index)} fields across {len(input_data)} panels")
 
-        llm_refs = detect_cross_panel_refs_with_llm(panel_fields, panel_name, all_panel_names, temp_dir)
+    # ══════════════════════════════════════════════════════════════════════
+    # PHASE 1: Per-Panel Reference Detection (parallel)
+    # ══════════════════════════════════════════════════════════════════════
+    log(f"PHASE 1: PER-PANEL REFERENCE DETECTION — "
+        f"{len(input_data)} panels, max {args.max_workers} workers, model={args.detect_model}")
+    t0 = time.time()
 
-        if llm_refs is not None:
-            # LLM detection succeeded
-            referenced_panels = set(llm_refs)
-            detection_method = "LLM"
+    # Build shared all-panels index file (used by all detection agents for variableName resolution)
+    all_panels_index = build_all_panels_index(input_data)
+    all_panels_index_file = temp_dir / "all_panels_index.json"
+    with open(all_panels_index_file, 'w') as f:
+        json.dump(all_panels_index, f, indent=2)
+    log(f"  All-panels index written: {all_panels_index_file}")
+
+    all_refs: List[Dict] = []       # All detected references (flat list)
+    simple_refs: List[Dict] = []    # Simple (copy_to) references
+    complex_refs: List[Dict] = []   # Complex references
+
+    with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
+        futures = {}
+        for panel_name, panel_fields in input_data.items():
+            future = executor.submit(
+                detect_cross_panel_refs,
+                panel_name, panel_fields, all_panel_names,
+                all_panels_index_file,
+                temp_dir, args.detect_model,
+            )
+            futures[future] = panel_name
+
+        for future in as_completed(futures):
+            panel_name = futures[future]
+            try:
+                result = future.result()
+                if result and result.get('cross_panel_references'):
+                    refs = result['cross_panel_references']
+                    all_refs.extend(refs)
+                    for ref in refs:
+                        if ref.get('type') == 'simple' and ref.get('classification') == 'copy_to':
+                            simple_refs.append(ref)
+                        else:
+                            complex_refs.append(ref)
+            except Exception as e:
+                log(f"  Phase 1: Exception for '{panel_name}': {e}")
+
+    log(f"Phase 1 COMPLETE — {len(all_refs)} total refs detected "
+        f"({len(simple_refs)} simple, {len(complex_refs)} complex) in {elapsed_str(t0)}")
+
+    if all_refs:
+        # Log breakdown by classification
+        classification_counts: Dict[str, int] = {}
+        for ref in all_refs:
+            cls = ref.get('classification', 'unknown')
+            classification_counts[cls] = classification_counts.get(cls, 0) + 1
+        breakdown = ', '.join(f"{cls}: {cnt}" for cls, cnt in sorted(classification_counts.items()))
+        log(f"  Breakdown: {breakdown}")
+
+    if args.context_usage:
+        print(f"\n--- Context Usage (Phase 1) ---")
+        usage = query_context_usage("Phase 1")
+        if usage:
+            print(usage)
         else:
-            # Fallback to regex detection
-            referenced_panels = detect_referenced_panels(panel_fields, all_panel_names, panel_name)
-            detection_method = "regex (fallback)"
+            print("(Could not retrieve context usage)")
+        print("---")
 
-        if not referenced_panels:
-            print(f"  No cross-panel references detected ({detection_method}), passing through")
-            skipped_panels += 1
-            all_results[panel_name] = panel_fields
-            # Apply any deferred rules from earlier panels
-            apply_deferred_rules(deferred_rules, panel_name, all_results[panel_name])
-            total_fields_processed += len(panel_fields)
-            continue
-
-        print(f"  Cross-panel references detected ({detection_method}): "
-              f"{', '.join(sorted(referenced_panels))}")
-
-        # Get referenced panel data
-        referenced_data = get_referenced_panel_fields(referenced_panels, input_data, all_results)
-
-        # Call inter-panel mini agent
-        result, inter_rules, delegations = call_inter_panel_mini_agent(
-            panel_fields, panel_name, referenced_data, temp_dir
-        )
-
-        if result:
-            successful_panels += 1
-            total_fields_processed += len(result)
-            all_results[panel_name] = result
-        else:
-            failed_panels += 1
-            all_results[panel_name] = panel_fields
-            total_fields_processed += len(panel_fields)
-            print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
-
-        # Apply deferred rules from earlier panels
-        apply_deferred_rules(deferred_rules, panel_name, all_results[panel_name])
-
-        # Merge inter-panel rules (immediate or deferred)
-        if inter_rules:
-            merge_inter_panel_rules_immediate(inter_rules, all_results, deferred_rules)
-
-        # Collect delegations
-        if delegations:
-            all_delegations.extend(delegations)
-
-    # Apply any remaining deferred rules
-    for panel_name in list(deferred_rules.keys()):
-        if panel_name in all_results:
-            apply_deferred_rules(deferred_rules, panel_name, all_results[panel_name])
-
-    if deferred_rules:
-        print(f"\nWarning: {len(deferred_rules)} panels have unresolved deferred rules: "
-              f"{', '.join(deferred_rules.keys())}", file=sys.stderr)
+    # ── Filter garbage refs (empty field_variableName = useless to the agent) ──
+    pre_filter = len(all_refs)
+    simple_refs = [r for r in simple_refs if r.get('field_variableName')]
+    complex_refs = [r for r in complex_refs if r.get('field_variableName')]
+    all_refs = [r for r in all_refs if r.get('field_variableName')]
+    filtered_out = pre_filter - len(all_refs)
+    if filtered_out:
+        log(f"  Filtered out {filtered_out} refs with empty field_variableName "
+            f"(kept {len(all_refs)})")
 
     # ══════════════════════════════════════════════════════════════════════
-    # PHASE 2: Handle complex delegations
+    # PHASE 2: All Rules via Expression Agent (copy_to uses ctfd)
     # ══════════════════════════════════════════════════════════════════════
-    delegation_count = len(all_delegations)
-    delegation_success = 0
-    delegation_fail = 0
+    copy_to_rules: Dict[str, List[Dict]] = {}
+    copy_to_count = 0
+    complex_rules: Dict[str, List[Dict]] = {}
+    complex_rule_count = 0
 
-    if all_delegations:
-        print("\n" + "="*70)
-        print(f"PHASE 2: PROCESSING {delegation_count} COMPLEX DELEGATIONS")
-        print("="*70)
+    # Merge simple refs into complex refs — expression agent handles all via ctfd
+    if simple_refs:
+        log(f"PHASE 2: Merging {len(simple_refs)} copy_to refs into complex refs (agent will use ctfd)")
+        complex_refs.extend(simple_refs)
 
-        for i, delegation in enumerate(all_delegations, 1):
-            print(f"\n  Delegation {i}/{delegation_count}: "
-                  f"{delegation.get('type', '?')} — "
-                  f"{delegation.get('source_panel', '?')} -> {delegation.get('target_panel', '?')}")
+    if complex_refs:
+        log(f"PHASE 2: EXPRESSION RULES — {len(complex_refs)} references (including copy_to → ctfd)")
+        t0 = time.time()
 
-            result = call_specialized_agent(delegation, all_results, input_data, temp_dir)
+        # Group complex refs by source panel
+        groups = group_complex_refs_by_source_panel(complex_refs)
+        log(f"  Grouped into {len(groups)} source panel groups: "
+            f"{', '.join(f'{k} ({len(v)} refs)' for k, v in groups.items())}")
 
-            if result:
-                target_panel, inter_panel_entries = result
-                # Merge into all_results
-                if target_panel in all_results:
-                    count = _merge_rules_into_panel(
-                        all_results[target_panel], inter_panel_entries, target_panel
-                    )
-                    if count > 0:
-                        print(f"  Merged {count} delegated rules into panel '{target_panel}'")
-                    delegation_success += 1
+        for source_panel, refs_group in groups.items():
+            # Collect all involved panels for this group
+            involved_panel_names = set()
+            involved_panel_names.add(source_panel)
+            for ref in refs_group:
+                # The panel that has the field with the logic
+                field_var = ref.get('field_variableName', '')
+                if field_var:
+                    norm = _norm_var(field_var)
+                    if norm in var_index:
+                        involved_panel_names.add(var_index[norm])
+
+            # Extract involved panels from input data
+            involved_panels: Dict[str, List[Dict]] = {}
+            for pname in involved_panel_names:
+                if pname in input_data:
+                    involved_panels[pname] = input_data[pname]
                 else:
-                    print(f"  Target panel '{target_panel}' not found in results", file=sys.stderr)
-                    delegation_fail += 1
+                    # Case-insensitive fallback
+                    for actual_name in input_data:
+                        if actual_name.lower() == pname.lower():
+                            involved_panels[actual_name] = input_data[actual_name]
+                            break
+
+            if not involved_panels:
+                log(f"  Phase 2: No involved panels found for group '{source_panel}', skipping")
+                continue
+
+            group_rules = call_complex_rules_agent(
+                refs_group, involved_panels, temp_dir,
+                group_label=source_panel, model=args.model,
+            )
+
+            # Merge group rules into overall complex_rules
+            for panel_name, entries in group_rules.items():
+                if panel_name not in complex_rules:
+                    complex_rules[panel_name] = []
+                complex_rules[panel_name].extend(entries)
+
+        complex_rule_count = sum(
+            sum(len(e.get('rules_to_add', [])) for e in entries)
+            for entries in complex_rules.values()
+        )
+        log(f"Phase 2b COMPLETE — {complex_rule_count} complex rules in {elapsed_str(t0)}")
+
+        if args.context_usage:
+            print(f"\n--- Context Usage (Phase 2b) ---")
+            usage = query_context_usage("Phase 2b")
+            if usage:
+                print(usage)
             else:
-                delegation_fail += 1
+                print("(Could not retrieve context usage)")
+            print("---")
     else:
-        print("\nNo complex delegations to process (Phase 2 skipped)")
+        log("Phase 2b skipped — no complex references")
 
     # ══════════════════════════════════════════════════════════════════════
-    # Write output
+    # PHASE 3: Validate + Merge (deterministic Python)
     # ══════════════════════════════════════════════════════════════════════
-    print(f"\nWriting all results to: {output_file}")
-    with open(output_file, 'w') as f:
-        json.dump(all_results, f, indent=2)
+    log("PHASE 3: VALIDATE + MERGE — Starting")
+    t0 = time.time()
+
+    # Validate rules before merging
+    if complex_rules:
+        complex_rules, stripped = validate_inter_panel_rules(complex_rules, var_index)
+        if stripped > 0:
+            log(f"  Validation: stripped {stripped} invalid rules/entries")
+        else:
+            log(f"  Validation: all rules valid")
+
+    # Merge all rules into output
+    log("Merging rules into output...")
+    all_results = merge_all_rules_into_output(input_data, {}, complex_rules)
 
     # Verify field counts
-    input_field_count = sum(len(fields) for fields in input_data.values())
     output_field_count = sum(len(fields) for fields in all_results.values())
+
+    # Rule count audit
+    output_rule_count = sum(
+        len(f.get('rules', []))
+        for fields in all_results.values()
+        for f in fields
+    )
 
     # Count new cross-panel rules
     cross_panel_rule_count = 0
@@ -748,32 +973,55 @@ def main():
                 if isinstance(rule, dict) and rule.get('_inter_panel_source') == 'cross-panel':
                     cross_panel_rule_count += 1
 
-    # Summary
-    print("\n" + "="*70)
-    print("INTER-PANEL DISPATCHER COMPLETE")
-    print("="*70)
-    print(f"Total Panels: {len(input_data)}")
-    print(f"Phase 1 — Panel Processing:")
-    print(f"  Successfully Processed: {successful_panels}")
-    print(f"  Failed: {failed_panels}")
-    print(f"  Skipped (no cross-panel refs): {skipped_panels}")
-    if delegation_count > 0:
-        print(f"Phase 2 — Delegations:")
-        print(f"  Total Delegations: {delegation_count}")
-        print(f"  Successful: {delegation_success}")
-        print(f"  Failed: {delegation_fail}")
-    print(f"Field Counts:")
-    print(f"  Input: {input_field_count}")
-    print(f"  Output: {output_field_count}")
-    if input_field_count != output_field_count:
-        print(f"  WARNING: Field count mismatch!")
+    # Rule loss check
+    if output_rule_count < input_rule_count:
+        log(f"  WARNING: Rule loss detected! input={input_rule_count}, output={output_rule_count}")
     else:
-        print(f"  OK: Field counts match")
-    print(f"Cross-Panel Rules Added: {cross_panel_rule_count}")
-    print(f"Output File: {output_file}")
-    print("="*70)
+        log(f"  Rule audit: input={input_rule_count}, output={output_rule_count}, "
+            f"added={output_rule_count - input_rule_count}")
 
-    sys.exit(0 if failed_panels == 0 else 1)
+    log(f"Phase 3 COMPLETE — took {elapsed_str(t0)}")
+
+    # ══════════════════════════════════════════════════════════════════════
+    # Write output
+    # ══════════════════════════════════════════════════════════════════════
+    log(f"Writing output to: {output_file}")
+    with open(output_file, 'w') as f:
+        json.dump(all_results, f, indent=2)
+
+    total_time = elapsed_str(pipeline_start)
+
+    # Summary
+    summary = f"""
+{'='*60}
+INTER-PANEL DISPATCHER (v3) COMPLETE — Total: {total_time}
+{'='*60}
+Total Panels: {len(input_data)}
+Phase 1 — Per-Panel Detection (model={args.detect_model}, workers={args.max_workers}):
+  Total refs detected: {len(all_refs)}
+  Simple (copy_to): {len(simple_refs)}
+  Complex: {len(complex_refs)}
+Phase 2 — Expression Rules via Agent (model={args.model}):
+  Total refs processed: {len(complex_refs)} (including {len(simple_refs)} copy_to → ctfd)
+  Rules created: {complex_rule_count}
+Phase 3 — Validate + Merge:
+  Cross-panel rules added: {cross_panel_rule_count}
+Rule Audit:
+  Input rules: {input_rule_count}
+  Output rules: {output_rule_count}
+  Added: {output_rule_count - input_rule_count}
+  {'WARNING: Rule loss detected!' if output_rule_count < input_rule_count else 'OK: No rule loss'}
+Field Counts:
+  Input: {input_field_count}
+  Output: {output_field_count}
+  {'WARNING: Field count mismatch!' if input_field_count != output_field_count else 'OK: Field counts match'}
+Output File: {output_file}
+Master Log: {_master_log}
+{'='*60}"""
+
+    log(summary)
+
+    sys.exit(0)
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ Same schema as input with visibility/state rules correctly placed, consolidated,
 
 ---
 
-## Available Rules (from Rule-Schemas.json)
+## Available Rules
 Use ONLY these exact rule names.
 
 ### Client-Side Rules (use by default)

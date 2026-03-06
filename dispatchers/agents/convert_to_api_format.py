@@ -240,7 +240,7 @@ def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_
         # Find the field_name in EDV data that has this variable_name
         target_field_name = None
         for field in edv_data[current_panel]:
-            field_var = field.get('variableName', sanitize_variable_name(field.get('field_name', '')))
+            field_var = field.get('variableName', '')
             if field_var == variable_name:
                 target_field_name = field.get('field_name', '')
                 break
@@ -254,10 +254,8 @@ def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_
     if current_panel in panel_field_map:
         for field_name, meta_idx in panel_field_map[current_panel].items():
             meta = metadatas[meta_idx]
-            # Check both schema variableName and EDV-style variableName
             meta_var_name = meta.get('variableName', '')
-            edv_var_name = sanitize_variable_name(field_name)
-            if meta_var_name == variable_name or edv_var_name == variable_name:
+            if meta_var_name == variable_name:
                 return meta['id']
 
     # Second, check global ID map (cross-panel lookup)
@@ -417,18 +415,31 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
                 }
 
                 # Convert variableNames in criterias to field IDs
-                for criteria in cond.get('criterias', []):
-                    criteria_clean = {}
-                    for key, value in criteria.items():
-                        if isinstance(value, str) and value.startswith('__') and value.endswith('__'):
-                            if value in id_map:
-                                criteria_clean[key] = id_map[value]
-                            else:
-                                print(f"  Warning: Variable '{value}' in criteria not found in ID map")
-                                criteria_clean[key] = value
+                raw_criterias = cond.get('criterias', [])
+                if isinstance(raw_criterias, str):
+                    # Agent wrote criterias as a raw string (e.g. "TABLE$$col$$__var__")
+                    # Pass through as-is; replace any variableName tokens with IDs
+                    parts = raw_criterias.split('$$')
+                    resolved = []
+                    for part in parts:
+                        if part.startswith('__') and part.endswith('__') and part in id_map:
+                            resolved.append(str(id_map[part]))
                         else:
-                            criteria_clean[key] = value
-                    cond_clean['criterias'].append(criteria_clean)
+                            resolved.append(part)
+                    cond_clean['criterias'] = '$$'.join(resolved)
+                else:
+                    for criteria in raw_criterias:
+                        criteria_clean = {}
+                        for key, value in criteria.items():
+                            if isinstance(value, str) and value.startswith('__') and value.endswith('__'):
+                                if value in id_map:
+                                    criteria_clean[key] = id_map[value]
+                                else:
+                                    print(f"  Warning: Variable '{value}' in criteria not found in ID map")
+                                    criteria_clean[key] = value
+                            else:
+                                criteria_clean[key] = value
+                        cond_clean['criterias'].append(criteria_clean)
 
                 condition_list.append(cond_clean)
 
@@ -494,7 +505,7 @@ def build_id_map_from_schema(schema_data: Dict, edv_data: Dict) -> Dict[str, int
 
     id_map = {}
     for panel_name, fields in edv_data.items():
-        # Map panel variableName to its schema ID
+        # Map panel variableName to its schema ID (panels don't have variableName in input, derive it)
         panel_var_name = sanitize_variable_name(panel_name)
         if panel_name in panel_id_map:
             id_map[panel_var_name] = panel_id_map[panel_name]
@@ -504,7 +515,7 @@ def build_id_map_from_schema(schema_data: Dict, edv_data: Dict) -> Dict[str, int
 
         for field in fields:
             field_name = field.get('field_name', '')
-            variable_name = field.get('variableName', sanitize_variable_name(field_name))
+            variable_name = field.get('variableName', '')
 
             if field_name in schema_fields_in_panel:
                 meta_idx = schema_fields_in_panel[field_name]
@@ -566,7 +577,7 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
         for field in fields:
             field_name = field.get('field_name', '')
             rules = field.get('rules', [])
-            variable_name = field.get('variableName', sanitize_variable_name(field_name))
+            variable_name = field.get('variableName', '')
 
             if field_name not in schema_fields_in_panel:
                 # RuleCheck is a session-based control field added by the
@@ -641,6 +652,12 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
             fields_matched += 1
             meta_idx = schema_fields_in_panel[field_name]
             field_id = metadatas[meta_idx]['id']
+
+            # Always update variableName from input (overwrite whatever the schema had)
+            if variable_name:
+                metadatas[meta_idx]['variableName'] = variable_name
+                # Keep id_map in sync with updated variableName
+                id_map[variable_name] = field_id
 
             # Inject existing rules
             if rules:
@@ -767,14 +784,14 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
     # First pass: Create ID map for all fields
     temp_metadata_counter = metadata_counter
     for panel_name, fields in edv_data.items():
-        # Panel gets an ID
+        # Panel gets an ID (panels don't have variableName in input, derive it)
         panel_var_name = sanitize_variable_name(panel_name)
         id_map[panel_var_name] = temp_metadata_counter
         temp_metadata_counter += 1
 
-        # Each field gets an ID
+        # Each field gets an ID — always use variableName from input
         for field in fields:
-            variable_name = field.get('variableName', sanitize_variable_name(field.get('field_name', '')))
+            variable_name = field.get('variableName', '')
             id_map[variable_name] = temp_metadata_counter
             temp_metadata_counter += 1
 
@@ -843,7 +860,7 @@ def convert_edv_to_api_format(edv_data: Dict, bud_filename: str) -> Dict:
             field_name = field.get('field_name', 'Unknown Field')
             field_type = field.get('type', 'TEXT')
             mandatory = field.get('mandatory', False)
-            variable_name = field.get('variableName', sanitize_variable_name(field_name))
+            variable_name = field.get('variableName', '')
 
             # Map variable name to ID (use the actual metadata ID)
             id_map[variable_name] = field_metadata_id
