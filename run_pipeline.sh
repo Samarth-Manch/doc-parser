@@ -24,7 +24,7 @@ RULE_SCHEMAS="rules/Rule-Schemas.json"
 OUTPUT_DIR="output"
 FINAL_OUTPUT="documents/json_output/vendor_creation_generated.json"
 BUD_NAME="Vendor Creation"
-START_STAGE=1
+START_STAGE=0
 END_STAGE=8
 PRETTY_FLAG=""
 
@@ -45,12 +45,13 @@ ${BOLD}Options:${NC}
   --final-output <path>     Final API JSON output path
                             (default: documents/json_output/vendor_creation_generated.json)
   --bud-name <name>         BUD name for legacy mode (default: "Vendor Creation")
-  --start-stage <1-8>       Start from this stage (default: 1)
-  --end-stage <1-8>         Stop after this stage (default: 8)
+  --start-stage <0-8>       Start from this stage (default: 0)
+  --end-stage <0-8>         Stop after this stage (default: 8)
   --pretty                  Pretty print final API JSON
   -h, --help                Show this help
 
 ${BOLD}Stages:${NC}
+  0  Field Extraction      Extract fields from BUD to schema (needs: --bud, --schema)
   1  Rule Placement        Assign rule names to fields       (needs: --bud, --keyword-tree, --rule-schemas)
   2  Source/Destination     Determine source/dest fields      (needs: stage 1 output, --rule-schemas)
   3  EDV Rules             Populate EDV dropdown params       (needs: --bud, stage 2 output)
@@ -169,6 +170,23 @@ echo -e "${BOLD}═════════════════════�
 
 PIPELINE_START=$SECONDS
 
+# ── Stage 0: Field Extraction ──────────────────────────────────────────────
+if [[ -n "$API_SCHEMA" ]]; then
+    run_stage 0 "Field Extraction" \
+        python3 -c "
+import sys; sys.path.insert(0, '.')
+from field_extractor.extract_fields_complete import extract_fields_complete
+import json
+schema = extract_fields_complete('${BUD_DOC}')
+with open('${API_SCHEMA}', 'w') as f:
+    json.dump(schema, f, indent=2, ensure_ascii=False)
+n = len(schema['template']['documentTypes'][0]['formFillMetadatas'])
+print(f'  Extracted {n} fields -> ${API_SCHEMA}')
+"
+else
+    echo -e "${YELLOW}[Stage 0] Field Extraction — SKIPPED (no --schema provided)${NC}"
+fi
+
 # ── Stage 1: Rule Placement ────────────────────────────────────────────────
 run_stage 1 "Rule Placement" \
     python3 "${DISPATCHERS}/rule_placement_dispatcher.py" \
@@ -242,6 +260,7 @@ echo -e "  Skipped : ${YELLOW}${SKIP}${NC}"
 echo -e "  Time    : ${CYAN}${PIPELINE_ELAPSED}s${NC}"
 echo ""
 echo -e "  ${BOLD}Outputs:${NC}"
+[[ $START_STAGE -le 0 && $END_STAGE -ge 0 && -n "$API_SCHEMA" ]] && echo -e "    Stage 0: ${CYAN}${API_SCHEMA}${NC}"
 [[ $START_STAGE -le 1 && $END_STAGE -ge 1 ]] && echo -e "    Stage 1: ${CYAN}${STAGE1_OUT}${NC}"
 [[ $START_STAGE -le 2 && $END_STAGE -ge 2 ]] && echo -e "    Stage 2: ${CYAN}${STAGE2_OUT}${NC}"
 [[ $START_STAGE -le 3 && $END_STAGE -ge 3 ]] && echo -e "    Stage 3: ${CYAN}${STAGE3_OUT}${NC}"

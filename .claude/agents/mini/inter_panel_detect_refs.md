@@ -61,11 +61,21 @@ When a reference is found:
 ### Complex — `type: "complex"`
 
 - **visibility**: Logic says "Visible if/when [field] from X Panel is [value]", "Invisible if...", "Enable if...", "Disable if...", "Mandatory if...". Any conditional show/hide/enable/disable/mandatory based on another panel's field.
-- **derivation**: Logic describes value transformation, substring extraction, concatenation, or conditional value population from another panel's field, with NO mention of EDV, reference table, or validation. E.g., "First name = first word of Vendor Name (from X Panel)".
-- **edv**: Logic references an EDV table, reference table, or validation involving a field from another panel. This includes ANY of: dropdown values filtered by another panel's field, values derived/auto-populated through validation from a reference table using another panel's field, or attribute lookups from a reference table where the lookup key is in another panel. E.g., "Derive from VC_COMPANY_DETAILS reference table attribute 2, dependent on Vendor Number (from X Panel)", "Dropdown values from EDV table filtered by Country (from X Panel)", "derived automatically through Validation from reference table using field from X Panel".
+- **derivation**: Logic describes value transformation, substring extraction, concatenation, or conditional value population from another panel's field, with **NO mention of EDV, reference table, validation, or attribute lookup**. E.g., "First name = first word of Vendor Name (from X Panel)".
+- **edv**: The field is a **dropdown** (DROPDOWN, EXTERNAL_DROP_DOWN_VALUE, MULTI_DROPDOWN) whose dropdown options/values are populated or filtered from a reference table / EDV table using a field from another panel as a filter criteria. This is about configuring **what appears in the dropdown list**. E.g., "Dropdown values from EDV table VC_COMPANY_DETAILS filtered by Vendor Number (from X Panel)", "Company Code dropdown populated from reference table using Vendor Number (from X Panel) as criteria". The downstream agent for this classification is the **EDV Dropdown (Client)** rule agent — it configures `ddType`, `criterias`, `da` params for the dropdown.
+- **validate_edv**: A field's value is **auto-fetched / derived / validated from a reference table** using a field from another panel as the lookup key. The field itself is NOT necessarily a dropdown — it can be TEXT, NUMBER, or any type. The value is populated server-side via attribute lookup. E.g., "Company code derived from VC_COMPANY_DETAILS reference table attribute 2, dependent on Vendor Number (attribute 1) from X Panel", "Email fetched from VC_EMAIL_DETAILS attribute 9 using Address Number (from X Panel)", "derived automatically through Validation from reference table using field from X Panel". The downstream agent for this classification is the **Validate EDV (Server)** rule agent — it maps positional attribute columns to destination fields.
 - **clearing**: Logic says fields should be cleared when a field from another panel changes. E.g., "Clear when X (from Y Panel) changes".
 
-**IMPORTANT**: Do NOT use any other classification values. Only use: `copy_to`, `visibility`, `derivation`, `edv`, `clearing`. If a reference involves multiple types (e.g., visibility + derivation), use the primary one. If it's mainly about visibility/mandatory, use `visibility`. If the logic mentions ANY of: EDV, reference table, validation table, attribute lookup — ALWAYS classify as `edv`, never `derivation`.
+### How to distinguish `edv` vs `validate_edv` vs `derivation`
+
+| Signal in logic | Classification |
+|---|---|
+| Dropdown filtered/populated from reference table using cross-panel field as **criteria** | `edv` |
+| Value auto-fetched from reference table **attribute N** using cross-panel field as lookup key (NOT a dropdown filter) | `validate_edv` |
+| "derived through validation from reference table" using cross-panel field | `validate_edv` |
+| Value transformation (substring, concat, arithmetic) from cross-panel field, **no reference table mentioned** | `derivation` |
+
+**IMPORTANT**: Do NOT use any other classification values. Only use: `copy_to`, `visibility`, `derivation`, `edv`, `validate_edv`, `clearing`. If a reference involves multiple types (e.g., visibility + derivation), use the primary one. If it's mainly about visibility/mandatory, use `visibility`. If the logic mentions ANY of: EDV, reference table, validation table, attribute lookup — ALWAYS classify as `edv` or `validate_edv` (never `derivation`).
 
 ---
 
@@ -131,7 +141,7 @@ The output MUST be a JSON object (NOT an array) with exactly these two keys:
 - `referenced_field_variableName`: The variableName of the referenced field — look this up in ALL_PANELS_INDEX_FILE
 - `referenced_field_name`: Human-readable name of the referenced field
 - `type`: MUST be `"simple"` or `"complex"` — no other values
-- `classification`: MUST be one of: `"copy_to"`, `"visibility"`, `"derivation"`, `"edv"`, `"clearing"` — no other values
+- `classification`: MUST be one of: `"copy_to"`, `"visibility"`, `"derivation"`, `"edv"`, `"validate_edv"`, `"clearing"` — no other values
 - `logic_snippet`: The relevant portion of the logic text
 - `description`: Brief description
 
@@ -149,4 +159,4 @@ The output MUST be a JSON object (NOT an array) with exactly these two keys:
 - Do NOT use key names like `references`, `detected_references`, `refs`, etc.
 - The key MUST be `cross_panel_references`
 - `referenced_panel` MUST be a valid panel name from ALL_PANELS_INDEX_FILE, never `"unknown"`
-- `classification` MUST be one of the 5 allowed values listed above
+- `classification` MUST be one of the 6 allowed values listed above

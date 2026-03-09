@@ -15,6 +15,7 @@ Determine which dropdown fields need a Validate EDV rule, place the rule, and po
 FIELDS_JSON: $FIELDS_JSON
 REFERENCE_TABLES: $REFERENCE_TABLES
 LOG_FILE: $LOG_FILE
+ALL_PANELS_INDEX: $ALL_PANELS_INDEX (optional — provided only in cross-panel mode)
 
 ## Output
 The same schema as input, but with Validate EDV rules **added** to dropdown fields that need them, fully populated with `params`, `source_fields`, and `destination_fields`. Pre-existing rules are passed through unchanged.
@@ -25,9 +26,9 @@ The same schema as input, but with Validate EDV rules **added** to dropdown fiel
 1) Do **NOT** modify any pre-existing rules. All existing rules must be passed through **UNCHANGED**. This agent only **adds** new Validate EDV rules.
 2) The Validate EDV (Server) rule is **almost always placed on the source field** — the field whose value triggers the EDV lookup. Identify which field is the source (the field that "affects" or "drives" the lookup) and place the rule **on that field**. The source field can be any type (DROPDOWN, TEXT, etc.), not just dropdowns.
 3) **Multiple fields can be derived from a single Validate EDV rule**, but the derivation logic is often **spread across the destination fields' logic sections**, not on the source field itself. You must scan ALL fields' logic to find derivation mentions (e.g., "derived from X field through validation", "auto-populated based on X from EDV table") and **consolidate** them into a single Validate EDV rule placed on the source field.
-4) The `source_fields` is the field whose value is looked up in the EDV table. Usually the field the rule is placed on, but filtered lookups can have additional source fields. If a parent-child dropdown relationship exists, the rule is placed on the **child dropdown** (the child is the source field for the lookup).
+4) The `source_fields` contains ALL fields involved in the EDV lookup trigger. Usually the field the rule is placed on, but filtered lookups and parent-child relationships can have additional source fields. If a parent-child dropdown relationship exists, the rule is placed on the **child dropdown**, and `source_fields` must include BOTH the parent field (lookup key / a1) AND the child field itself (the field the rule is placed on). In cross-panel mode, if the parent is from another panel, include its variableName from ALL_PANELS_INDEX.
 5) The first column (a1) of the EDV table is **always the lookup key** and must be **skipped** in `destination_fields` — do NOT include a mapping for it. The `destination_fields` array starts from the **2nd column (a2)** onward. So if the EDV table has N columns, `destination_fields` must have exactly **N-1** entries. Use `"-1"` for unmapped columns, `variableName` for mapped columns.
-6) **ALL** source and destination fields must exist in $FIELDS_JSON. Do **NOT** invent fields.
+6) **ALL** source and destination fields must exist in $FIELDS_JSON — unless ALL_PANELS_INDEX is provided (cross-panel mode), in which case source fields may also come from ALL_PANELS_INDEX. **If the true source field (lookup key / a1) does NOT exist in $FIELDS_JSON and ALL_PANELS_INDEX is NOT provided, SKIP that Validate EDV rule entirely** — do not place it, do not substitute a different field as source. A later pipeline stage (inter-panel) will handle cross-panel Validate EDV rules with the correct context. Do **NOT** invent fields.
 7) Table names in `params` should be **UPPERCASE** with underscores (e.g., `"COMPANY_CODE"`, `"PIN-CODE"`).
 8) For **simple lookups** (single source, no filter), `params` = table name string.
 9) For **filtered lookups** (multiple sources, conditional), `params` = JSON object with `param` and `conditionList`.
@@ -91,7 +92,7 @@ When placing a Validate EDV rule, you MUST always use the following construct fr
 
 Key points from this construct:
 - **rule_name** must always be `"Validate EDV (Server)"` (not "Validate External Data Value (Client)" or any other variant)
-- **sourceFields**: 1 mandatory source field (the field whose value triggers the lookup). `unlimited: false` means exactly 1 source field.
+- **sourceFields**: At least 1 source field (the field(s) whose values trigger the lookup). For parent-child relationships, include both parent and child fields.
 - **destinationFields**: 1 base destination field with `unlimited: true`, meaning multiple destination fields are allowed.
 - **params**: Takes a string value (the EDV table name) or a JSON object with `param` and `conditionList` for filtered lookups.
 - **button**: `"Verify"` — this rule creates a verification/validation button on the form.
@@ -127,7 +128,7 @@ Key points from this construct:
 | `conditionNumber` | Which column number to filter on (1-based, usually starts at 2) |
 | `conditionType` | Type of comparison (e.g., `"IN"`) |
 | `conditionValueType` | Data type of the condition value |
-| `conditionAttributes` | EDV attributes holding filter values; format: `"attributeNvalue"` |
+| `conditionAttributes` | EDV attributes holding filter values; format: `"attributeNvalue"` where **N is the actual column position in the EDV table** (e.g., if the filter field is in column 2 of the table, use `"attribute2value"`; if column 9, use `"attribute9value"`). N is NOT a sequential index — it must match the real column position in the reference table. |
 | `continueOnFailure` | Whether to continue if validation fails |
 | `errorMessage` | Error message on failure |
 
@@ -141,7 +142,7 @@ Before processing individual fields, scan **ALL** fields in $FIELDS_JSON to buil
 
 1. **List all fields**: Note each field's `variableName`, `type`, `field_name`, and `logic`.
 2. **Scan every field's logic for derivation mentions**: Look for keywords in each field's logic: "derive", "fetch", "auto fetch", "auto-populate", "lookup", "validate against table", "on validation", "will be populated", "through Validation from", "derived automatically through Validation", "through Validation", "based on", "depends on", "filtered by", "from Reference Table", "from EDV table".
-3. **Identify source fields**: For each field that mentions being derived/auto-populated, determine **which field is the source** — the field whose value triggers the EDV lookup. The source is the field that "affects" this field, the field being validated against the EDV table. **IMPORTANT**: A field can be a source field for Validate EDV even if it already has an EDV Dropdown rule. The EDV Dropdown rule populates dropdown options; the Validate EDV rule performs a lookup and auto-fills related fields on selection. These are separate purposes — do NOT skip a source field just because it already has an EDV Dropdown rule with destination_fields.
+3. **Identify source fields**: For each field that mentions being derived/auto-populated, determine **which field is the source** — the field whose value triggers the EDV lookup. The source is the field that "affects" this field, the field being validated against the EDV table. **IMPORTANT**: A field can be a source field for Validate EDV even if it already has an EDV Dropdown rule. The EDV Dropdown rule populates dropdown options; the Validate EDV rule performs a lookup and auto-fills related fields on selection. These are separate purposes — do NOT skip a source field just because it already has an EDV Dropdown rule with destination_fields. **CROSS-PANEL**: If the logic says the source field is from another panel (e.g., "dependent on Vendor Number from Vendor Details panel"), the true source is that cross-panel field. Read ALL_PANELS_INDEX to resolve its variableName. The lookup key (a1) of the reference table corresponds to this cross-panel field, NOT a field in the current panel.
 4. **Group by source field**: Multiple destination fields may each mention being derived from the **same source field** via the **same EDV table**. Consolidate these into a single Validate EDV rule to be placed on that source field.
 5. **Check derivability**: For each identified source field, verify that the derivation can actually be done via an EDV rule. If $REFERENCE_TABLES has a matching table, use it to confirm column mappings. If $REFERENCE_TABLES is empty or has no matching table, but the logic explicitly names an EDV table (e.g., "Reference Table- TABLE_NAME attribute N"), still proceed — use the table name and attribute numbers from the logic text to build the rule.
 
@@ -173,6 +174,8 @@ Based on Steps 1-3 and the pre-scan, confirm whether a Validate EDV rule should 
 - Destination fields' logic mentions "auto fetch", "derived from", "fetched from", "through validation", or references a specific table attribute (e.g., "attribute N") for auto-population
 - A Validate EDV rule is needed **even if the field already has an EDV Dropdown rule**. The two rules serve different purposes — EDV Dropdown populates the dropdown options, while Validate EDV performs the lookup and auto-fills related fields on selection. Do NOT skip a field just because EDV Dropdown already has destination_fields.
 
+**SKIP if the true source field is cross-panel**: If the lookup key (a1) is a field from another panel (e.g., "dependent on Vendor Number from Vendor Details panel") and ALL_PANELS_INDEX is NOT provided, do NOT place the rule. Log it as skipped (cross-panel, will be handled by inter-panel stage) and move to the next field.
+
 If NOT needed, skip to the next field — leave existing rules unchanged.
 Log: Append "Step 4: Field <field_name> needs Validate EDV: yes/no. Reason: <reason>" to $LOG_FILE
 
@@ -185,9 +188,12 @@ From logic and $REFERENCE_TABLES:
 Log: Append "Step 5: EDV table for <field_name>: <table_name>" to $LOG_FILE
 
 ### 6. Determine source fields
-- Primary source field = the field the rule is placed on (its `variableName`)
+- Primary source field = the field whose value is the lookup key (a1) for the EDV table
+- In standard (intra-panel) mode: this is usually the field the rule is placed on
+- **In cross-panel mode**: if the lookup key (a1) is a field from another panel (identified in pre-scan step 3), use that cross-panel field's variableName from ALL_PANELS_INDEX as the source field. The rule is still placed on the field in THIS panel that triggers or benefits from the lookup, but source_fields references the actual lookup key field.
+- **IMPORTANT — child dropdown source fields**: When the rule is placed on a child dropdown field and the parent/lookup key is a different field (whether cross-panel or intra-panel), `source_fields` MUST include BOTH: (1) the parent/lookup key field (a1), AND (2) the child field itself (the field the rule is placed on). The child field is needed because its selection triggers the validation lookup. Example: if Vendor Number (a1) is the parent and Company Code (a2) is the child, source_fields = [vendor_number_var, company_code_var].
 - If logic mentions filtering by additional fields, add those as additional source fields
-- All source fields must exist in the field list
+- Source fields must exist in $FIELDS_JSON or ALL_PANELS_INDEX (cross-panel)
 Log: Append "Step 6: Source fields for <field_name>: <source_field_list>" to $LOG_FILE
 
 ### 7. Determine destination fields with positional column mapping
@@ -212,6 +218,7 @@ Log: Append "Step 7: Destination fields for <field_name>: <destination_array> (s
 ### 8. Build the params
 - **Simple lookup** (1 source field, no conditions): `params` = table name string
 - **Filtered lookup** (multiple source fields, conditional): `params` = JSON with `param` and `conditionList`
+- **CRITICAL for conditionAttributes**: The `"attributeNvalue"` format uses N = the **actual column position in the EDV table**, NOT a sequential index. For example, if the filter field corresponds to column 2 (a2) in the reference table, use `"attribute2value"`. If column 5, use `"attribute5value"`. Always derive N from the field's actual attribute/column number in the reference table.
 Log: Append "Step 8: Params for <field_name>: <params_value>" to $LOG_FILE
 
 ### 9. Place the Validate EDV rule on the source field and fill in the details

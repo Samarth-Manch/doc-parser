@@ -223,7 +223,8 @@ def call_validate_edv_mini_agent(panel_fields: List[Dict], reference_tables: Lis
                                   panel_name: str, temp_dir: Path,
                                   context_usage: bool = False,
                                   verbose: bool = True,
-                                  model: str = "opus") -> Optional[List[Dict]]:
+                                  model: str = "opus",
+                                  all_panels_index_file: Optional[Path] = None) -> Optional[List[Dict]]:
     """
     Call the Validate EDV mini agent via claude -p
 
@@ -232,6 +233,8 @@ def call_validate_edv_mini_agent(panel_fields: List[Dict], reference_tables: Lis
         reference_tables: Filtered reference tables for this panel
         panel_name: Name of the panel
         temp_dir: Directory for temp files
+        all_panels_index_file: Optional path to JSON file with all panels' field index
+                               (for cross-panel source field resolution)
 
     Returns:
         List of fields with Validate EDV params/source/dest populated, or None if failed
@@ -259,13 +262,24 @@ def call_validate_edv_mini_agent(panel_fields: List[Dict], reference_tables: Lis
     with open(tables_input_file, 'w') as f:
         json.dump(reference_tables, f, indent=2)
 
+    # Build prompt with optional cross-panel context
+    cross_panel_section = ""
+    if all_panels_index_file:
+        cross_panel_section = f"""- ALL_PANELS_INDEX: {all_panels_index_file}
+
+**CROSS-PANEL MODE**: This panel has fields whose logic references fields from OTHER panels.
+When a field's logic says a value depends on a field from another panel (e.g., "dependent on Vendor Number from Vendor Details panel"),
+use ALL_PANELS_INDEX to resolve that field's variableName and use it as the source_field in the Validate EDV rule.
+Source fields from other panels ARE allowed in cross-panel mode — they do NOT need to exist in FIELDS_JSON.
+"""
+
     prompt = f"""Process fields for panel "{panel_name}".
 
 ## Input
 - FIELDS_JSON: {fields_input_file}
 - REFERENCE_TABLES: {tables_input_file}
 - LOG_FILE: {log_file}
-
+{cross_panel_section}
 ## Output
 Write JSON array to: {output_file}
 

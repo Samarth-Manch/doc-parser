@@ -413,7 +413,7 @@ ft(340)
 | `>=` | Greater than or equal | `+vo("_age_") >= 18` |
 | `and` | Logical AND | `vo("_a_") == "X" and vo("_b_") == "Y"` |
 | `or` | Logical OR | `vo("_a_") == "X" or vo("_a_") == "Z"` |
-| `not` | Logical NOT | `not (vo("_a_") == "X")` |
+| `not()` | Logical NOT (function) | `not(vo("_a_") == "X")` |
 | `true` | Always true (unconditional) | `cf(true, "_field_")` |
 | `""` | Empty string check | `vo("_field_") == ""` |
 
@@ -493,7 +493,7 @@ mm(vo("_accGrp_") == "INDS" or vo("_accGrp_") == "FIVN" or vo("_accGrp_") == "CA
 mnm(vo("_accGrp_") != "INDS" and vo("_accGrp_") != "FIVN" and vo("_accGrp_") != "CAVN",
     "_clerk_", "_clerkTel_", "_clerkEmail_")
 ```
-> **Note**: The negation of `(A or B or C)` is `(not A and not B and not C)` — use `!=` with `and` for the opposite branch.
+> **Note**: The negation of `(A or B or C)` is `(not(A) and not(B) and not(C))` — use `!=` with `and` for the opposite branch.
 
 ### Pattern 4: Three-Way Condition (Yes / No / Blank)
 **When**: Different behavior for "Yes", "No", and empty (unselected).
@@ -617,7 +617,7 @@ sbminvi(vo("_trigger_") != "Yes", "SECOND_PARTY", "_conditionalVendorField_")
 ### Pattern 14: Regex Validation
 **When**: Validate a field's format and show error for invalid input.
 ```
-adderr(vo("_pan_") != "" and not rgxtst(vo("_pan_"), '/^[A-Z]{5}[0-9]{4}[A-Z]$/'),
+adderr(vo("_pan_") != "" and not(rgxtst(vo("_pan_"), '/^[A-Z]{5}[0-9]{4}[A-Z]$/')),
        "Invalid PAN format", "_pan_");
 remerr(vo("_pan_") == "" or rgxtst(vo("_pan_"), '/^[A-Z]{5}[0-9]{4}[A-Z]$/'),
        "_pan_")
@@ -638,16 +638,16 @@ asdff(vo("_panNumber_") != "", "_panCategory_")
 
 // Visibility based on field starting with a prefix
 mvi(rgxtst(vo("_accType_"), '/^IND/'), "_domesticFields_");
-minvi(not rgxtst(vo("_accType_"), '/^IND/'), "_domesticFields_")
+minvi(not(rgxtst(vo("_accType_"), '/^IND/')), "_domesticFields_")
 
 // Mandatory based on exact length
 mm(rgxtst(vo("_gstin_"), '/^.{15}$/'), "_gstVerifyButton_");
-mnm(not rgxtst(vo("_gstin_"), '/^.{15}$/'), "_gstVerifyButton_")
+mnm(not(rgxtst(vo("_gstin_"), '/^.{15}$/')), "_gstVerifyButton_")
 
 // Error when field contains only digits (invalid name)
 adderr(vo("_name_") != "" and rgxtst(vo("_name_"), '/^\\d+$/'),
        "Name cannot be all digits", "_name_");
-remerr(vo("_name_") == "" or not rgxtst(vo("_name_"), '/^\\d+$/'), "_name_")
+remerr(vo("_name_") == "" or not(rgxtst(vo("_name_"), '/^\\d+$/')), "_name_")
 ```
 
 ### Pattern 15: Second Party Load with Transaction Status
@@ -748,7 +748,7 @@ remerr(vo("_areyouaGroupowner_") != "Yes" or vo("_areyouoneofLicensees_") != "No
        "_areyouaGroupowner_", "_areyouoneofLicensees_")
 ```
 
-**Key points**: `adderr` condition is the error condition. `remerr` condition is the **negation** of the error condition. Note DeMorgan's law: `not (A and B)` = `(not A or not B)`.
+**Key points**: `adderr` condition is the error condition. `remerr` condition is the **negation** of the error condition. Note DeMorgan's law: `not(A and B)` = `(not(A) or not(B))`.
 
 ---
 
@@ -971,7 +971,7 @@ This internal tag identifies the purpose of the expression:
 
 5. **After `cf` always add `asdff` + `rffdd`/`rffd`**: Cleared values must be saved and the field refreshed. Use `rffdd` for dropdowns, `rffd` for non-dropdown fields.
 
-6. **`adderr`/`remerr` pairing**: The `remerr` condition must be the **logical negation** of the `adderr` condition. Use DeMorgan's law: `not (A and B)` = `(not A or not B)`.
+6. **`adderr`/`remerr` pairing**: The `remerr` condition must be the **logical negation** of the `adderr` condition. Use DeMorgan's law: `not(A and B)` = `(not(A) or not(B))`.
 
 7. **`on("change")` wrapping**: Use for actions triggered by field value changes (clearing children, cascading). The entire set of chained actions goes inside `and (...)`.
 

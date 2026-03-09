@@ -104,7 +104,7 @@ A single logic sentence may contain BOTH intra-panel and cross-panel references.
    - The BUD often describes logic on the AFFECTED field, but the rule MUST be placed on the CAUSING field.
    - Read ALL field logic first, then determine which field is the actual trigger.
    - For `on("load")` rules, place on the field that changes state at load.
-5) **PAIR opposites**: `adderr` → `remerr`, `mvi` → `minvi`, `mm` → `mnm`, `en` → `dis`. Always use DeMorgan's law for negation.
+5) **PAIR opposites**: `adderr` → `remerr`, `mvi` → `minvi`, `mm` → `mnm`, `en` → `dis`. Always use DeMorgan's law for negation. **Always use `not()` as a function wrapping the condition** — e.g., `not(vo("_a_") == "X")`, `not(rgxtst(...))`. Never use `not` as a standalone operator like `not condition`.
 6) **Numeric comparisons**: Always prefix `vo()` with `+` when comparing numbers.
 7) **Event wrapping**: Use `on("change") and (...)` for change-triggered logic. Use `on("load") and (...)` for load-time logic.
 8) After `ctfd`, always add `asdff` to persist the value.
@@ -265,7 +265,17 @@ Log: Append "Step 4: Built and placed <N> expression rules" to $LOG_FILE
 This phase replicates the logic of the Clear Child Fields Agent. It scans ALL rules (original + newly placed in Phase A) to identify parent→child relationships and adds `cf`/`asdff`/`rffdd` clearing rules for parents that do not already have one.
 
 #### Step 5: Build parent→children map
-Scan ALL fields' rules (both original rules and rules placed in Phase A). For each rule, if it has `source_fields` pointing to field X and `destination_fields` pointing to other fields, record X as a parent. Only include **clearing-eligible** rule types:
+Scan ALL fields' rules (both original rules and rules placed in Phase A). For each rule, identify parent→child relationships using **both** metadata and expression strings:
+
+**Method 1 — Metadata scan:** If a rule has `source_fields` pointing to field X and `destination_fields` pointing to other fields, record X as a parent.
+
+**Method 2 — Expression string scan (CRITICAL for Expression (Client) rules):** Expression (Client) rules have `destination_fields: []` — the actual destinations are inside `conditionalValues`. For each Expression (Client) rule, parse the `conditionalValues` string to find all variable names referenced by `ctfd()`, `cf()`, `mvi()`, `minvi()`, `mm()`, `mnm()`, `asdff()`, `rffdd()`. Any `"_variablename_"` that is NOT the source/trigger field is a child. This applies to ALL Expression (Client) rules — including cross-panel derivations placed by the inter-panel dispatcher.
+
+Example: if Company Code has a rule with
+  `ctfd(vo("_companycodebasicdetails_")=="1000", "CIT01", "_housebankpaymentdetails_")`
+then `_companycodebasicdetails_` is the parent and `_housebankpaymentdetails_` is the child, even though `destination_fields` is `[]`.
+
+Only include **clearing-eligible** rule types:
 - EDV Dropdown (Client) / cascading dropdowns — condition: `true`
 - Expression (Client) with `ctfd` derivation — condition: `vo("_parent_")==""`
 - Validate EDV — condition: `vo("_parent_")==""`
@@ -364,7 +374,7 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
     "rule_name": "Expression (Client)",
     "source_fields": ["__pan__"],
     "destination_fields": [],
-    "conditionalValues": ["adderr(vo(\"_pan_\")!=\"\" and not rgxtst(vo(\"_pan_\"),\"/^[A-Z]{5}[0-9]{4}[A-Z]$/\"),\"Invalid PAN format\",\"_pan_\");remerr(vo(\"_pan_\")==\"\" or rgxtst(vo(\"_pan_\"),\"/^[A-Z]{5}[0-9]{4}[A-Z]$/\"),\"_pan_\")"],
+    "conditionalValues": ["adderr(vo(\"_pan_\")!=\"\" and not(rgxtst(vo(\"_pan_\"),\"/^[A-Z]{5}[0-9]{4}[A-Z]$/\")),\"Invalid PAN format\",\"_pan_\");remerr(vo(\"_pan_\")==\"\" or rgxtst(vo(\"_pan_\"),\"/^[A-Z]{5}[0-9]{4}[A-Z]$/\"),\"_pan_\")"],
     "condition": "IN",
     "conditionValueType": "EXPR",
     "_expressionRuleType": "error",

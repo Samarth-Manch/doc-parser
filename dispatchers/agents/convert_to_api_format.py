@@ -401,7 +401,18 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
     if 'params' in rule and rule['params']:
         params = rule['params']
 
-        if isinstance(params, dict) and 'conditionList' in params:
+        if isinstance(params, dict) and 'param' in params and 'conditionList' in params:
+            # Validate EDV (Server) params format:
+            # {"param": "TABLE_NAME", "conditionList": [{"conditionNumber": 2, "conditionType": "IN", ...}]}
+            # Pass through as-is (already in correct structure), just JSON-stringify
+            params_clean = {
+                'param': params['param'],
+                'conditionList': params['conditionList']
+            }
+            form_fill_rule['params'] = json.dumps(params_clean)
+        elif isinstance(params, dict) and 'conditionList' in params:
+            # EDV Dropdown (Client) params format:
+            # {"conditionList": [{"ddType": [...], "criterias": [...], "da": [...], ...}]}
             condition_list = []
             for cond in params['conditionList']:
                 cond_clean = {

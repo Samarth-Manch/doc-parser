@@ -3,7 +3,7 @@ set -euo pipefail
 
 OUT_DIR="${1:?Usage: $0 <output-root-directory> [max-workers] [start-stage]}"
 MAX_WORKERS="${2:-4}"
-START_STAGE="${3:-1}"
+START_STAGE="${3:-0}"
 
 echo "Using output dir: ${OUT_DIR}"
 echo "Using max workers: ${MAX_WORKERS}"
@@ -24,6 +24,18 @@ run_stage() {
     "$@"
     echo "========== Stage ${stage_num} Complete =========="
 }
+
+run_stage 0 "Field Extraction" \
+    python3 -c "
+import sys; sys.path.insert(0, '.')
+from field_extractor.extract_fields_complete import extract_fields_complete
+import json
+schema = extract_fields_complete('documents/Vendor Creation Sample BUD 3.docx')
+with open('archive/output/complete_format/6421-schema.json', 'w') as f:
+    json.dump(schema, f, indent=2, ensure_ascii=False)
+n = len(schema['template']['documentTypes'][0]['formFillMetadatas'])
+print(f'  Extracted {n} fields -> archive/output/complete_format/6421-schema.json')
+"
 
 run_stage 1 "Rule Placement" \
     python3 dispatchers/agents/rule_placement_dispatcher.py --bud "documents/Vendor Creation Sample BUD 3.docx" --keyword-tree "rule_extractor/static/keyword_tree.json" --rule-schemas "rules/Rule-Schemas.json" --output "${OUT_DIR}/rule_placement/all_panels_rules.json" --max-workers "${MAX_WORKERS}"

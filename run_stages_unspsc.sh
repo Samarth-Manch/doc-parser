@@ -5,6 +5,19 @@ BUD="documents/UNSPSC Material Creation Process POC(1).docx"
 SCHEMA="archive/output/complete_format/4553-schema.json"
 OUT_DIR="${1:?Usage: $0 <output-root-directory>}"
 
+echo "========== Stage 0: Field Extraction =========="
+python3 -c "
+import sys; sys.path.insert(0, '.')
+from field_extractor.extract_fields_complete import extract_fields_complete
+import json
+schema = extract_fields_complete('$BUD')
+with open('$SCHEMA', 'w') as f:
+    json.dump(schema, f, indent=2, ensure_ascii=False)
+n = len(schema['template']['documentTypes'][0]['formFillMetadatas'])
+print(f'  Extracted {n} fields -> $SCHEMA')
+"
+echo "========== Stage 0 Complete =========="
+
 echo "========== Stage 1: Rule Placement =========="
 python3 dispatchers/agents/rule_placement_dispatcher.py --bud "$BUD" --keyword-tree "rule_extractor/static/keyword_tree.json" --rule-schemas "rules/Rule-Schemas.json" --output "${OUT_DIR}/rule_placement/all_panels_rules.json"
 echo "========== Stage 1 Complete =========="
