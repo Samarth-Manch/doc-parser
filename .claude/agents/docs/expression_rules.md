@@ -329,11 +329,12 @@ Transforms value to uppercase.
 touc(vo("_code_"))
 ```
 
-#### `contains(sequenceToSearch, value)` — alias: `cntns`
-Returns `true` if the sequence contains the value.
+#### `contains(value, sequenceToSearch)` — alias: `cntns`
+Returns `true` if the sequence contains the value. **First argument is the value to search for, second is the sequence to search in.**
 ```
-cntns('+', 'start')   // false
-cntns(vo("_phone_"), '+')  // true if phone contains '+'
+cntns("Yes", vo("_multiSelectField_"))  // true if multiselect contains "Yes"
+cntns("+", vo("_phone_"))              // true if phone contains "+"
+cntns("PAN", vo("_typeOfUpdate_"))     // true if multiselect contains "PAN"
 ```
 
 #### `replaceRange(string, start, end, substitute, replaceEachChar?)` — alias: `rplrng`
@@ -1026,7 +1027,7 @@ This internal tag identifies the purpose of the expression:
 | `sessionBasedMakeInvisible` | `sbminvi` | `sbminvi(condition, param, ...destVars)` |
 | `toLowerCase` | `tolc` | `tolc(value)` |
 | `toUpperCase` | `touc` | `touc(value)` |
-| `contains` | `cntns` | `cntns(sequence, value)` |
+| `contains` | `cntns` | `cntns(value, sequence)` |
 | `replaceRange` | `rplrng` | `rplrng(str, start, end, subst, replaceEachChar?)` |
 | `regexTest` | `rgxtst` | `rgxtst(value, regex)` |
 | `validationStatusOf` | `vso` | `vso(id)` |

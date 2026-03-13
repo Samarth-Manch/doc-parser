@@ -18,6 +18,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
+sys.path.insert(0, str(Path(__file__).parent))
+from stream_utils import stream_and_print
+
 from context_optimization import strip_all_rules, merge_expression_rules, log_strip_savings
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
@@ -167,8 +170,10 @@ def _run_agent(prompt, output_file, label, verbose, model, multi):
             print(f"PROCESSING: {label}")
             print('='*70)
 
+        stream_log = output_file.parent / f"{output_file.stem}_stream.log"
         process = subprocess.Popen(
             ["claude", "--model", model, "-p", prompt,
+             "--output-format", "stream-json", "--verbose",
              "--agent", "mini/expression_rule_agent",
              "--allowedTools", "Read,Write"],
             stdout=subprocess.PIPE,
@@ -178,9 +183,7 @@ def _run_agent(prompt, output_file, label, verbose, model, multi):
             cwd=PROJECT_ROOT,
         )
 
-        for line in process.stdout:
-            if verbose:
-                print(line, end='', flush=True)
+        stream_and_print(process, verbose=verbose, log_file_path=stream_log)
 
         process.wait()
 

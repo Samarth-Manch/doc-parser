@@ -160,3 +160,11 @@ The output MUST be a JSON object (NOT an array) with exactly these two keys:
 - The key MUST be `cross_panel_references`
 - `referenced_panel` MUST be a valid panel name from ALL_PANELS_INDEX_FILE, never `"unknown"`
 - `classification` MUST be one of the 6 allowed values listed above
+
+### DEDUPLICATION RULES (Fix E — Avoid Duplicate Refs):
+- **PANEL fields echoing logic from a controlling field**: If a PANEL-type field's logic says "this panel is visible when [dropdown field] from [other panel] has value X", this is a **redundant echo** of the dropdown's own logic. The controlling field (dropdown) is the canonical source. In this case:
+  - Set `referenced_field_variableName` to the **controlling field** (the dropdown), NOT the PANEL field itself
+  - Set `referenced_panel` to the panel containing the controlling field
+  - This ensures all refs for the same logical relationship group together downstream
+- **Do NOT emit refs from both directions**: If Field A in Panel 1 controls the visibility of Panel 2, emit ONE ref (on Field A or on a field in Panel 2 pointing to Field A). Do NOT emit a second ref where Panel 2's PANEL field points back to Field A — this creates duplicates.
+- **When a PANEL field's logic restates another field's controlling logic verbatim**: Skip it. The controlling field's own logic (or the affected fields within the panel) already captures this relationship.

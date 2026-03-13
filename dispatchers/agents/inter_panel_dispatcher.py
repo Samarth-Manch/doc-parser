@@ -24,6 +24,9 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from stream_utils import stream_and_print
 from typing import Dict, List, Optional, Tuple
 
 from context_optimization import strip_all_rules_multi_panel
@@ -32,6 +35,11 @@ from inter_panel_utils import (
     build_compact_single_panel_text,
     build_compact_panels_text,
     build_variablename_index,
+    collapse_children_to_panel_in_visibility,
+    deduplicate_complex_refs,
+    deduplicate_expression_rules,
+    ensure_full_panel_in_clearing,
+    expand_panel_variables_in_expressions,
     group_complex_refs_by_source_field,
     group_complex_refs_by_source_panel,
     quick_cross_panel_scan,
@@ -489,26 +497,30 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
 
         t0 = time.time()
 
-        process = subprocess.run(
+        safe_name = re.sub(r'[^\w\-]', '_', panel_name)
+        stream_log = temp_dir / f"detect_{safe_name}_stream.log"
+        process = subprocess.Popen(
             [
                 "claude",
                 "--model", model,
                 "-p", prompt,
+                "--output-format", "stream-json", "--verbose",
                 "--agent", "mini/inter_panel_detect_refs",
                 "--allowedTools", "Read,Write"
             ],
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
+            bufsize=1,
             cwd=PROJECT_ROOT
         )
+
+        stream_and_print(process, verbose=True, log_file_path=stream_log)
+        process.wait()
 
         if process.returncode != 0:
             log(f"  Phase 1: Detection FAILED for '{panel_name}' "
                 f"(exit code {process.returncode}) after {elapsed_str(t0)}")
-            if process.stdout:
-                log(f"    stdout: {process.stdout[:500]}")
-            if process.stderr:
-                log(f"    stderr: {process.stderr[:500]}")
             # Fall through to check if output file was still written
 
         # Read output (check file even on non-zero exit — partial output recovery)
@@ -700,11 +712,13 @@ If no rules could be created, write empty dict {{}} to {output_file}.
 
         t0 = time.time()
 
+        stream_log = log_file.parent / f"{log_file.stem}_stream.log"
         process = subprocess.Popen(
             [
                 "claude",
                 "--model", model,
                 "-p", prompt,
+                "--output-format", "stream-json", "--verbose",
                 "--agent", "mini/expression_rule_agent",
                 "--allowedTools", "Read,Write"
             ],
@@ -715,10 +729,7 @@ If no rules could be created, write empty dict {{}} to {output_file}.
             cwd=PROJECT_ROOT
         )
 
-        with open(log_file, 'a') as lf:
-            for line in process.stdout:
-                print(line, end='', flush=True)
-                lf.write(line)
+        stream_and_print(process, verbose=True, log_file_path=stream_log)
 
         process.wait()
 
@@ -1019,6 +1030,13 @@ def main():
         log(f"PHASE 2: EXPRESSION RULES — {len(complex_refs)} references (including {len(simple_refs)} copy_to)")
         t0 = time.time()
 
+        # Fix B: Deduplicate refs before grouping — re-key PANEL-targeted refs
+        # to the controlling field so they merge into the same group
+        pre_dedup = len(complex_refs)
+        complex_refs = deduplicate_complex_refs(complex_refs, input_data)
+        if len(complex_refs) < pre_dedup:
+            log(f"  Dedup: {pre_dedup} -> {len(complex_refs)} refs")
+
         # Group complex refs by source field (not panel) to consolidate
         # rules when multiple panels reference the same source field
         groups = group_complex_refs_by_source_field(complex_refs)
@@ -1149,9 +1167,36 @@ def main():
         else:
             log(f"  Validation: all rules valid")
 
+    # Deduplicate subset Expression (Client) rules across agent groups
+    if complex_rules:
+        complex_rules, dedup_count = deduplicate_expression_rules(complex_rules)
+        if dedup_count:
+            log(f"  Dedup: dropped {dedup_count} subset expression rules")
+
     # Merge all rules into output
     log("Merging rules into output...")
     all_results = merge_all_rules_into_output(input_data, {}, complex_rules)
+
+    # Fix D: Expand PANEL variableNames in expression function arguments
+    # to their child fields (e.g., mm(cond, "_panelVar_") -> mm(cond, "_child1_", "_child2_"))
+    # NOTE: Does NOT expand mvi/minvi — platform cascades visibility automatically
+    panel_expansions = expand_panel_variables_in_expressions(all_results, input_data)
+    if panel_expansions:
+        log(f"  Fix D: Expanded {panel_expansions} PANEL variables to child fields in expressions")
+
+    # Fix E: When clearing expressions reference fields from a cross-panel,
+    # ensure ALL non-structural fields from that panel are included
+    # (fixes missing ARRAY_HDR and other fields the LLM didn't list)
+    clearing_expansions = ensure_full_panel_in_clearing(all_results, input_data)
+    if clearing_expansions:
+        log(f"  Fix E: Added missing panel fields to {clearing_expansions} clearing expressions")
+
+    # Collapse child field lists back to PANEL vars in mvi/minvi
+    # When agents list all children instead of using the PANEL var,
+    # the form shows empty panels. PANEL vars cascade visibility automatically.
+    panel_collapses = collapse_children_to_panel_in_visibility(all_results, input_data)
+    if panel_collapses:
+        log(f"  Collapsed {panel_collapses} child field lists to PANEL variables in mvi/minvi")
 
     # Verify field counts
     output_field_count = sum(len(fields) for fields in all_results.values())

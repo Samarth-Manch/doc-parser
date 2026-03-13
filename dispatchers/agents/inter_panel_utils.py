@@ -287,6 +287,90 @@ def validate_inter_panel_rules(rules_by_panel: Dict[str, List[Dict]],
     return validated, stripped_count
 
 
+# ── Deterministic dedup of subset Expression (Client) rules ────────────────
+
+_TARGET_VAR_RE = re.compile(r'"(_[a-z0-9_]+_)"')
+
+
+def _extract_expression_targets(conditional_value: str) -> Set[str]:
+    """Extract all target variableNames from an expression string."""
+    return set(_TARGET_VAR_RE.findall(conditional_value))
+
+
+def deduplicate_expression_rules(
+    rules_by_panel: Dict[str, List[Dict]],
+) -> Tuple[Dict[str, List[Dict]], int]:
+    """
+    Remove Expression (Client) rules whose targets are a strict subset of
+    another rule on the same field with the same _expressionRuleType.
+
+    When multiple agent groups produce overlapping rules for the same source
+    field (e.g., one group handles all 6 panels, another handles just 1),
+    this drops the smaller redundant rule.
+
+    Only drops strict subsets (A ⊂ B). Rules with identical targets or
+    non-overlapping targets are kept. Non-Expression rules are never touched.
+
+    Returns:
+        Tuple of (deduped rules_by_panel, count of dropped rules)
+    """
+    dropped_total = 0
+
+    for panel_name, entries in rules_by_panel.items():
+        for entry in entries:
+            rules = entry.get('rules_to_add', [])
+            if len(rules) < 2:
+                continue
+
+            # Only consider Expression (Client) rules
+            expr_rules = [
+                (i, r) for i, r in enumerate(rules)
+                if r.get('rule_name') == 'Expression (Client)'
+                and r.get('conditionalValues')
+            ]
+            if len(expr_rules) < 2:
+                continue
+
+            # Group by _expressionRuleType
+            type_groups: Dict[str, List[Tuple[int, Dict, Set[str]]]] = {}
+            for idx, rule in expr_rules:
+                rtype = rule.get('_expressionRuleType', 'unknown')
+                targets = _extract_expression_targets(rule['conditionalValues'][0])
+                # Remove source field(s) from targets — they appear in vo() calls
+                # but aren't actual targets
+                for src in rule.get('source_fields', []):
+                    targets.discard(_norm_var(src))
+                if rtype not in type_groups:
+                    type_groups[rtype] = []
+                type_groups[rtype].append((idx, rule, targets))
+
+            # Find strict subsets within each type group
+            drop_indices: Set[int] = set()
+            for rtype, group in type_groups.items():
+                if len(group) < 2:
+                    continue
+                for i, (idx_a, rule_a, targets_a) in enumerate(group):
+                    if idx_a in drop_indices:
+                        continue
+                    for j, (idx_b, rule_b, targets_b) in enumerate(group):
+                        if i == j or idx_b in drop_indices:
+                            continue
+                        # Drop B if its targets are a strict subset of A's
+                        if targets_b and targets_a and targets_b < targets_a:
+                            drop_indices.add(idx_b)
+                            print(f"  Dedup: dropping subset {rtype} rule "
+                                  f"({len(targets_b)} targets ⊂ {len(targets_a)} targets) "
+                                  f"on field in '{panel_name}'")
+
+            if drop_indices:
+                entry['rules_to_add'] = [
+                    r for i, r in enumerate(rules) if i not in drop_indices
+                ]
+                dropped_total += len(drop_indices)
+
+    return rules_by_panel, dropped_total
+
+
 def _merge_rules_into_panel(panel_fields: List[Dict],
                              field_rules_list: List[Dict],
                              target_panel: str) -> int:
@@ -406,6 +490,26 @@ def merge_all_rules_into_output(input_data: Dict[str, List[Dict]],
     return output
 
 
+def _normalize_varname(v: str) -> str:
+    """Normalize a variableName to canonical _varname_ format (single underscores)."""
+    if not v:
+        return v
+    s = v.strip('_')
+    return f'_{s}_' if s else v
+
+
+def _normalize_rule_varnames(rule: Dict) -> Dict:
+    """
+    Normalize variableNames in a rule's source_fields and destination_fields
+    from __varname__ (double underscore) to _varname_ (single underscore).
+    """
+    for key in ('source_fields', 'destination_fields'):
+        fields = rule.get(key, [])
+        if fields:
+            rule[key] = [_normalize_varname(f) for f in fields]
+    return rule
+
+
 def translate_expression_agent_output(data: Dict[str, List[Dict]]) -> Dict[str, List[Dict]]:
     """
     Translate expression_rule_agent output format into the inter-panel merge format.
@@ -418,6 +522,9 @@ def translate_expression_agent_output(data: Dict[str, List[Dict]]) -> Dict[str, 
 
     Detects which format the data is in by checking the first entry's keys.
     If already in inter-panel format, returns as-is.
+
+    Also normalizes variableNames in source_fields/destination_fields to
+    canonical _varname_ format (Fix G: double underscore bug).
     """
     if not data:
         return data
@@ -430,6 +537,14 @@ def translate_expression_agent_output(data: Dict[str, List[Dict]]) -> Dict[str, 
     first = first_entries[0]
     # Already in inter-panel format
     if 'target_field_variableName' in first or 'rules_to_add' in first:
+        # Still normalize variableNames in rules (Fix G)
+        for panel_name, entries in data.items():
+            for entry in entries:
+                entry['target_field_variableName'] = _normalize_varname(
+                    entry.get('target_field_variableName', ''))
+                for rule in entry.get('rules_to_add', []):
+                    if isinstance(rule, dict):
+                        _normalize_rule_varnames(rule)
         return data
 
     # Translate from expression_rule_agent format
@@ -437,10 +552,14 @@ def translate_expression_agent_output(data: Dict[str, List[Dict]]) -> Dict[str, 
     for panel_name, fields in data.items():
         entries = []
         for field in fields:
-            var_name = field.get('variableName', '')
+            var_name = _normalize_varname(field.get('variableName', ''))
             rules = field.get('rules', [])
             if not var_name or not rules:
                 continue
+            # Normalize variableNames in each rule (Fix G)
+            for rule in rules:
+                if isinstance(rule, dict):
+                    _normalize_rule_varnames(rule)
             entries.append({
                 'target_field_variableName': var_name,
                 'rules_to_add': rules,
@@ -530,3 +649,476 @@ def get_involved_panels(complex_refs: List[Dict],
                     break
 
     return result
+
+
+# ── Fix B: Deduplicate refs before Phase 2 grouping ──────────────────────────
+
+def _build_panel_varnames(all_panels_data: Dict[str, List[Dict]]) -> Set[str]:
+    """Return the set of variableNames belonging to PANEL-type fields."""
+    panel_vars: Set[str] = set()
+    for panel_fields in all_panels_data.values():
+        for field in panel_fields:
+            if field.get('type', '').upper() == 'PANEL':
+                var = field.get('variableName', '')
+                if var:
+                    panel_vars.add(_norm_var(var))
+    return panel_vars
+
+
+def deduplicate_complex_refs(
+    complex_refs: List[Dict],
+    all_panels_data: Dict[str, List[Dict]],
+) -> List[Dict]:
+    """
+    Deduplicate complex refs before grouping (Fix B).
+
+    When the BUD states visibility logic in multiple places (e.g., on the
+    controlling dropdown AND on each target PANEL field), Phase 1 detects
+    refs from both directions. This creates duplicate groups in
+    group_complex_refs_by_source_field() because:
+    - Refs from target panels use the dropdown as referenced_field_variableName
+    - Refs from source panels use PANEL fields as referenced_field_variableName
+
+    This function re-keys refs where:
+    - referenced_field_variableName is a PANEL-type field
+    - field_variableName is NOT a PANEL-type field (it's the actual controller)
+    So that all refs group under the controller field, preventing duplicates.
+
+    Returns:
+        Deduplicated list of refs (may be shorter if true duplicates removed).
+    """
+    panel_vars = _build_panel_varnames(all_panels_data)
+    if not panel_vars:
+        return complex_refs
+
+    rekey_count = 0
+    for ref in complex_refs:
+        ref_var = _norm_var(ref.get('referenced_field_variableName', ''))
+        field_var = _norm_var(ref.get('field_variableName', ''))
+
+        # If the referenced field is a PANEL and the field is not a PANEL,
+        # re-key so grouping uses the controlling (non-PANEL) field
+        if ref_var in panel_vars and field_var not in panel_vars and field_var:
+            ref['referenced_field_variableName'] = ref.get('field_variableName', '')
+            rekey_count += 1
+
+    if rekey_count:
+        print(f"  Fix B: Re-keyed {rekey_count} refs from PANEL targets to controller field")
+
+    # Now remove true duplicates (same field_variableName + referenced_field_variableName
+    # + classification after re-keying)
+    seen: Set[tuple] = set()
+    deduped: List[Dict] = []
+    removed = 0
+    for ref in complex_refs:
+        key = (
+            _norm_var(ref.get('field_variableName', '')),
+            _norm_var(ref.get('referenced_field_variableName', '')),
+            ref.get('classification', ''),
+            ref.get('referenced_panel', ''),
+        )
+        if key in seen:
+            removed += 1
+            continue
+        seen.add(key)
+        deduped.append(ref)
+
+    if removed:
+        print(f"  Fix B: Removed {removed} duplicate refs after re-keying")
+
+    return deduped
+
+
+# ── Fix D: PANEL variable expansion in expressions ───────────────────────────
+
+# Structural field types that should NOT be expanded
+_STRUCTURAL_TYPES = {
+    'ARRAY_END', 'GRP_HDR', 'GRP_END',
+    'ROW_HDR', 'ROW_END', 'PANEL',
+}
+
+
+def _build_panel_children_map(
+    all_panels_data: Dict[str, List[Dict]],
+) -> Dict[str, List[str]]:
+    """
+    Build a map from PANEL variableName -> list of child field variableNames.
+
+    A child field is any non-structural field that appears within a panel's
+    field list. We detect PANEL boundaries: fields between a PANEL field
+    and the next PANEL field (or end of list) are its children.
+
+    Since each panel in all_panels_data IS a panel already, and PANEL-type
+    fields within it represent sub-panels or the panel header, we map each
+    PANEL-type field's variableName to all non-structural fields in that
+    same panel list.
+    """
+    panel_children: Dict[str, List[str]] = {}
+
+    for panel_name, fields in all_panels_data.items():
+        # Find PANEL-type fields and their children
+        panel_field_vars = []
+        for field in fields:
+            if field.get('type', '').upper() == 'PANEL':
+                var = field.get('variableName', '')
+                if var:
+                    panel_field_vars.append(var)
+
+        if not panel_field_vars:
+            continue
+
+        # Collect non-structural child fields for each PANEL variable
+        child_vars = []
+        for field in fields:
+            ftype = field.get('type', '').upper()
+            var = field.get('variableName', '')
+            if not var or ftype in _STRUCTURAL_TYPES:
+                continue
+            child_vars.append(var)
+
+        # Map each PANEL variableName to the child fields
+        for pvar in panel_field_vars:
+            panel_children[_norm_var(pvar)] = child_vars
+
+    return panel_children
+
+
+def expand_panel_variables_in_expressions(
+    all_results: Dict[str, List[Dict]],
+    all_panels_data: Dict[str, List[Dict]],
+) -> int:
+    """
+    Post-processing step (Fix D): Expand PANEL variableNames in expression
+    function arguments to their child fields.
+
+    When agents generate expressions like mm(condition, "_panelVar_"),
+    the PANEL variable has no effect. This function replaces it with
+    all child fields of that panel.
+
+    Scans all conditionalValues in Expression (Client) rules and expands
+    PANEL variables found as arguments to mm, mnm, cf, mvi, minvi, dis, en,
+    asdff, rffdd, rffd.
+
+    Args:
+        all_results: The output data (panel name -> field list), mutated in place
+        all_panels_data: Original panel data for building child maps
+
+    Returns:
+        Number of expansions performed
+    """
+    panel_children = _build_panel_children_map(all_panels_data)
+    if not panel_children:
+        return 0
+
+    # Functions whose variableName arguments should be expanded.
+    # NOTE: mvi/minvi are EXCLUDED — the platform cascades visibility to
+    # children automatically when a PANEL is made visible/invisible.
+    # PANEL vars are the CORRECT target for visibility functions.
+    expandable_functions = {'mm', 'mnm', 'cf', 'dis', 'en',
+                            'asdff', 'rffdd', 'rffd'}
+
+    expansion_count = 0
+
+    for panel_fields in all_results.values():
+        for field in panel_fields:
+            for rule in field.get('rules', []):
+                if not isinstance(rule, dict):
+                    continue
+                if rule.get('rule_name') != 'Expression (Client)':
+                    continue
+
+                cond_vals = rule.get('conditionalValues', [])
+                if not cond_vals:
+                    continue
+
+                expr = cond_vals[0]
+                new_expr = expr
+
+                # Find all quoted variable references like "_varname_"
+                # that match a PANEL variableName
+                for panel_var, children in panel_children.items():
+                    if not children:
+                        continue
+
+                    # The expression uses single-underscore format: "_varname_"
+                    # Check if this panel var appears in the expression
+                    expr_var = f'"{panel_var}"'
+                    if expr_var not in new_expr:
+                        continue
+
+                    # Build replacement: expand to all child vars
+                    child_args = ', '.join(f'"{c}"' for c in children)
+
+                    # Replace in each function call context
+                    # Match patterns like: func(..., "_panelVar_")
+                    # or func(..., "_panelVar_", ...)
+                    # We need to replace just the "_panelVar_" with all children
+                    for func_name in expandable_functions:
+                        # Pattern: function call containing the panel var
+                        # We do a simple string replacement of the panel var
+                        # within function call contexts
+                        if func_name + '(' in new_expr and expr_var in new_expr:
+                            old = new_expr
+                            new_expr = new_expr.replace(expr_var, child_args)
+                            if new_expr != old:
+                                expansion_count += 1
+                            break  # Only replace once per panel_var per expr
+
+                if new_expr != expr:
+                    rule['conditionalValues'] = [new_expr]
+
+    return expansion_count
+
+
+def _find_matching_paren(expr: str, open_pos: int) -> int:
+    """Find the closing paren that matches the opening paren at open_pos."""
+    depth = 0
+    for i in range(open_pos, len(expr)):
+        if expr[i] == '(':
+            depth += 1
+        elif expr[i] == ')':
+            depth -= 1
+            if depth == 0:
+                return i
+    return -1
+
+
+def _find_func_calls(expr: str, func_name: str) -> List[Tuple[int, int, str]]:
+    """
+    Find all calls to func_name in expr, handling nested parentheses.
+    Returns list of (start, end, full_match) for each call.
+    """
+    results = []
+    search_start = 0
+    while True:
+        # Find 'func(' but not 'otherfunc(' — check for word boundary
+        idx = expr.find(func_name + '(', search_start)
+        if idx == -1:
+            break
+        # Check it's not part of a longer function name (e.g., 'minvi' vs 'mvi')
+        if idx > 0 and expr[idx - 1].isalpha():
+            search_start = idx + 1
+            continue
+        paren_open = idx + len(func_name)
+        paren_close = _find_matching_paren(expr, paren_open)
+        if paren_close == -1:
+            break
+        full = expr[idx:paren_close + 1]
+        results.append((idx, paren_close + 1, full))
+        search_start = paren_close + 1
+    return results
+
+
+def collapse_children_to_panel_in_visibility(
+    all_results: Dict[str, List[Dict]],
+    all_panels_data: Dict[str, List[Dict]],
+) -> int:
+    """
+    Post-processing: Collapse child field lists back to PANEL variables
+    in mvi/minvi function calls.
+
+    When agents list all children of a panel in mvi/minvi instead of using
+    the PANEL variable, the platform can't cascade visibility properly.
+    This function detects when ALL children of a PANEL are listed as
+    arguments to mvi/minvi and replaces them with the single PANEL variable.
+
+    The platform automatically cascades visibility to children when a PANEL
+    is made visible/invisible, so using the PANEL variable is both more
+    correct and more concise.
+
+    Args:
+        all_results: The output data (panel name -> field list), mutated in place
+        all_panels_data: Original panel data for building child maps
+
+    Returns:
+        Number of collapses performed
+    """
+    panel_children = _build_panel_children_map(all_panels_data)
+    if not panel_children:
+        return 0
+
+    collapse_count = 0
+
+    for panel_fields in all_results.values():
+        for field in panel_fields:
+            for rule in field.get('rules', []):
+                if not isinstance(rule, dict):
+                    continue
+                if rule.get('rule_name') != 'Expression (Client)':
+                    continue
+
+                cond_vals = rule.get('conditionalValues', [])
+                if not cond_vals:
+                    continue
+
+                expr = cond_vals[0]
+                if 'mvi(' not in expr and 'minvi(' not in expr:
+                    continue
+
+                new_expr = expr
+
+                for panel_var, children in panel_children.items():
+                    if not children:
+                        continue
+
+                    # Check if all children appear in the expression
+                    all_present = all(f'"{c}"' in new_expr for c in children)
+                    if not all_present:
+                        continue
+
+                    # Process minvi first (longer name), then mvi
+                    for func in ('minvi', 'mvi'):
+                        calls = _find_func_calls(new_expr, func)
+                        if not calls:
+                            continue
+
+                        # Process in reverse order to preserve positions
+                        for start, end, full_call in reversed(calls):
+                            # Extract the inner args (between outermost parens)
+                            inner = full_call[len(func) + 1:-1]
+
+                            # Check if this call contains all children
+                            call_vars = re.findall(r'"(_[a-z0-9_]+_)"', inner)
+                            call_var_set = set(call_vars)
+                            children_set = set(children)
+
+                            if not children_set.issubset(call_var_set):
+                                continue
+
+                            # Remove all child var args, replace with PANEL var
+                            new_inner = inner
+                            for child in children:
+                                child_q = f'"{child}"'
+                                new_inner = new_inner.replace(f', {child_q}', '', 1)
+                                if child_q in new_inner:
+                                    new_inner = new_inner.replace(f'{child_q}, ', '', 1)
+                                if child_q in new_inner:
+                                    new_inner = new_inner.replace(child_q, '', 1)
+
+                            # Clean up any trailing commas/spaces
+                            new_inner = new_inner.rstrip(', ')
+                            new_inner = f'{new_inner}, "{panel_var}"'
+
+                            new_call = f'{func}({new_inner})'
+                            new_expr = new_expr[:start] + new_call + new_expr[end:]
+                            collapse_count += 1
+
+                if new_expr != expr:
+                    rule['conditionalValues'] = [new_expr]
+
+    return collapse_count
+
+
+# ── Fix E: Ensure full panel coverage in clearing expressions ─────────────
+
+def ensure_full_panel_in_clearing(
+    all_results: Dict[str, List[Dict]],
+    all_panels_data: Dict[str, List[Dict]],
+) -> int:
+    """
+    Post-processing (Fix E): When a clearing expression references any field
+    from a cross-panel, ensure ALL non-structural fields from that panel are
+    included in cf/asdff/rffdd/rffd calls.
+
+    Fixes the case where LLM-generated clearing rules list individual child
+    fields but miss ARRAY_HDR or other fields in the same panel.
+
+    Args:
+        all_results: Output data (panel name -> field list), mutated in place
+        all_panels_data: Original panel data for building field maps
+
+    Returns:
+        Number of expressions modified
+    """
+    # Build maps: variableName -> panel, panel -> all non-structural vars
+    var_to_panel: Dict[str, str] = {}
+    panel_all_vars: Dict[str, List[str]] = {}
+
+    for panel_name, fields in all_panels_data.items():
+        non_structural = []
+        for field in fields:
+            ftype = (field.get('type', '') or '').upper()
+            var = field.get('variableName', '')
+            if var and ftype not in _STRUCTURAL_TYPES:
+                var_to_panel[var] = panel_name
+                non_structural.append(var)
+        panel_all_vars[panel_name] = non_structural
+
+    expansion_count = 0
+
+    for result_panel_name, panel_fields in all_results.items():
+        for field in panel_fields:
+            for rule in field.get('rules', []):
+                if not isinstance(rule, dict):
+                    continue
+                if rule.get('rule_name') != 'Expression (Client)':
+                    continue
+                if rule.get('_expressionRuleType') != 'clear_field':
+                    continue
+
+                cond_vals = rule.get('conditionalValues', [])
+                if not cond_vals:
+                    continue
+
+                expr = cond_vals[0]
+
+                # Extract all variable refs in the expression
+                all_vars_in_expr = set(re.findall(r'"(_[a-z0-9_]+_)"', expr))
+
+                # Determine which cross-panels are referenced (exclude own panel)
+                target_panels: Set[str] = set()
+                for v in all_vars_in_expr:
+                    p = var_to_panel.get(v)
+                    if p and p != result_panel_name:
+                        target_panels.add(p)
+
+                if not target_panels:
+                    continue
+
+                # Collect missing vars from each target panel
+                missing: List[str] = []
+                for pname in target_panels:
+                    for pvar in panel_all_vars.get(pname, []):
+                        if pvar not in all_vars_in_expr:
+                            missing.append(pvar)
+
+                if not missing:
+                    continue
+
+                # Inject missing vars into cf, asdff, rffdd, rffd calls
+                new_expr = _inject_missing_vars_into_clearing(expr, missing)
+                if new_expr != expr:
+                    rule['conditionalValues'] = [new_expr]
+                    expansion_count += 1
+
+    return expansion_count
+
+
+def _inject_missing_vars_into_clearing(expr: str, missing_vars: List[str]) -> str:
+    """
+    Add missing variableNames to cf, asdff, rffdd, rffd function calls
+    in a clearing expression.
+    """
+    additional = ', '.join(f'"{v}"' for v in missing_vars)
+
+    # Collect all replacements: (start, end, new_call)
+    replacements: List[Tuple[int, int, str]] = []
+
+    for func_name in ('cf', 'asdff', 'rffdd', 'rffd'):
+        calls = _find_func_calls(expr, func_name)
+        for start, end, call_str in calls:
+            # Insert missing vars before the closing paren
+            close_idx = call_str.rfind(')')
+            new_call = call_str[:close_idx] + ', ' + additional + ')'
+            replacements.append((start, end, new_call))
+
+    if not replacements:
+        return expr
+
+    # Apply in reverse position order to keep offsets valid
+    replacements.sort(key=lambda x: x[0], reverse=True)
+    new_expr = expr
+    for start, end, new_call in replacements:
+        new_expr = new_expr[:start] + new_call + new_expr[end:]
+
+    return new_expr

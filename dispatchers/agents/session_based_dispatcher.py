@@ -23,6 +23,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
+sys.path.insert(0, str(Path(__file__).parent))
+from stream_utils import stream_and_print
+
 # Add project root so we can import doc_parser
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 sys.path.insert(0, PROJECT_ROOT)
@@ -276,10 +279,13 @@ Write a JSON array to: {output_file}
         print('='*70)
 
         # Call claude -p with the Session Based mini agent
+        safe_name = re.sub(r'[^\w\-]', '_', panel_name)
+        stream_log = temp_dir / f"{safe_name}_stream.log"
         process = subprocess.Popen(
             [
                 "claude",
                 "-p", prompt,
+                "--output-format", "stream-json", "--verbose",
                 "--agent", "mini/08_session_based_agent",
                 "--allowedTools", "Read,Write"
             ],
@@ -290,11 +296,8 @@ Write a JSON array to: {output_file}
             cwd=PROJECT_ROOT
         )
 
-        # Collect output
-        output_lines = []
-        for line in process.stdout:
-            print(line, end='', flush=True)
-            output_lines.append(line)
+        # Stream and print real-time output
+        output_lines = stream_and_print(process, verbose=True, log_file_path=stream_log)
 
         process.wait()
 
@@ -515,24 +518,15 @@ def main():
         "variableName": RULE_CHECK_VARIABLE
     }
 
-    # Insert RuleCheck into the second panel
+    # Insert RuleCheck into the first panel
     panel_names = list(input_data.keys())
     rulecheck_panel = None
 
-    for idx, pname in enumerate(panel_names):
-        if idx == 1 and len(panel_names) > 1:
-            input_data[pname] = [rule_check_field] + input_data[pname]
-            rulecheck_panel = pname
-            print(f"\n  Inserted 'RuleCheck' field at start of panel '{pname}' "
-                  f"with {len(session_rules)} session rules")
-            break
-    else:
-        # Only one panel — insert at start of first panel
-        if panel_names:
-            input_data[panel_names[0]] = [rule_check_field] + input_data[panel_names[0]]
-            rulecheck_panel = panel_names[0]
-            print(f"\n  Inserted 'RuleCheck' field at start of panel '{panel_names[0]}' "
-                  f"with {len(session_rules)} session rules")
+    if panel_names:
+        input_data[panel_names[0]] = [rule_check_field] + input_data[panel_names[0]]
+        rulecheck_panel = panel_names[0]
+        print(f"\n  Inserted 'RuleCheck' field at start of panel '{panel_names[0]}' "
+              f"with {len(session_rules)} session rules")
 
     # ── Step 4: Process each panel with Session Based agent ───────────────────
     print("\n" + "=" * 70)

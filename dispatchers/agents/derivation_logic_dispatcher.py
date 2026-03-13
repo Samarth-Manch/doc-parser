@@ -17,6 +17,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Dict, List, Optional
 
+sys.path.insert(0, str(Path(__file__).parent))
+from stream_utils import stream_and_print
+
 
 from context_optimization import strip_all_rules, restore_all_rules, log_strip_savings
 
@@ -139,11 +142,14 @@ Follow the agent prompt instructions (06_derivation_agent).
             print('='*70)
 
         # Call claude -p with the Derivation Logic mini agent
+        safe_name = re.sub(r'[^\w\-]', '_', panel_name)
+        stream_log = temp_dir / f"{safe_name}_stream.log"
         process = subprocess.Popen(
             [
                 "claude",
                 "--model", model,
                 "-p", prompt,
+                "--output-format", "stream-json", "--verbose",
                 "--agent", "mini/06_derivation_agent",
                 "--allowedTools", "Read,Write"
             ],
@@ -154,12 +160,8 @@ Follow the agent prompt instructions (06_derivation_agent).
             cwd=PROJECT_ROOT
         )
 
-        # Collect output
-        output_lines = []
-        for line in process.stdout:
-            if verbose:
-                print(line, end='', flush=True)
-            output_lines.append(line)
+        # Stream and print real-time output
+        output_lines = stream_and_print(process, verbose=verbose, log_file_path=stream_log)
 
         process.wait()
 

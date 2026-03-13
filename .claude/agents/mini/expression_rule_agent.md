@@ -65,6 +65,44 @@ A field's logic **does NOT qualify** if:
 
 ---
 
+## Default Visibility/Invisibility on Load (Fix F)
+
+When the BUD says a field or panel should be **"by default invisible"**, **"hidden by default"**, **"by default not visible"**, or **"initially hidden"**, this means the field/panel must be invisible when the form first loads, BEFORE any user interaction.
+
+Similarly, **"by default visible"**, **"visible by default"**, or **"initially visible"** means visible on load.
+
+### How to implement:
+Use `on("load")` wrapping with `mvi`/`minvi`:
+
+```
+on("load") and (minvi(true, "_field1_", "_field2_", ...))
+```
+
+- `_expressionRuleType`: `"load_event"`
+- Place on the **first field** in the list of affected fields (or the controlling dropdown if one exists)
+- The `on("load")` ensures this runs once when the form loads, setting initial state
+
+### Example — "By default these panels are invisible":
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["_controllingField_"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"load\") and (minvi(true, \"_panel1_\", \"_panel2_\", \"_panel3_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "load_event",
+    "_reasoning": "By default, panels are invisible on form load."
+}
+```
+
+### Keywords to detect:
+- "by default invisible" / "by default not visible" / "hidden by default" / "initially hidden" → `on("load") and (minvi(true, ...))`
+- "by default visible" / "visible by default" / "initially visible" → `on("load") and (mvi(true, ...))`
+- "by default other panels will be invisible" → `on("load") and (minvi(true, ...all panel vars...))`
+
+---
+
 ## Cross-Panel Field Detection (CRITICAL)
 
 Logic sometimes references fields from **other panels**. Do NOT blindly skip such logic. Instead, follow this decision process for every logic statement:
