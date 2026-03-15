@@ -785,6 +785,169 @@ If no rules could be created, write empty dict {{}} to {output_file}.
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# Phase 4c: Patch cross-panel Validate EDV destinations
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _parse_edv_table_from_logic(logic: str) -> Optional[str]:
+    """Extract EDV table name from field logic text (e.g., 'VC_BASIC_DETAILS')."""
+    # Match patterns like "Staging Data (VC_BASIC_DETAILS)" or "staging data : VC_COMPANY_DETAILS"
+    m = re.search(r'(?:Staging\s*Data\s*[:(]\s*|staging\s*data\s*:\s*)([A-Z_][A-Z0-9_]+)', logic, re.IGNORECASE)
+    if m:
+        return m.group(1).upper()
+    # Match "EDV : TABLE_NAME" or "EDV: TABLE_NAME"
+    m = re.search(r'EDV\s*:\s*([A-Z_][A-Z0-9_]+)', logic, re.IGNORECASE)
+    if m:
+        return m.group(1).upper()
+    return None
+
+
+def _parse_column_from_logic(logic: str) -> Optional[int]:
+    """Extract column number from field logic text (e.g., '7th column' -> 7)."""
+    m = re.search(r'(\d+)(?:st|nd|rd|th)\s+column', logic, re.IGNORECASE)
+    if m:
+        return int(m.group(1))
+    return None
+
+
+def patch_cross_panel_vedv_destinations(
+    all_results: Dict[str, List[Dict]],
+    vedv_refs: List[Dict],
+    var_index: Dict[str, str],
+) -> int:
+    """
+    After Phase 4b, patch Validate EDV rules to include cross-panel destination fields.
+
+    For each validate_edv ref where destination field is in panel B but the source field
+    is in panel A:
+      1. Get the destination field's logic to determine EDV table and column number
+      2. Find the Validate EDV rule on the source field in panel A for that table
+      3. Replace -1 at the correct column position with the destination variableName
+      4. If no Validate EDV rule exists for that table, create one
+
+    Returns the number of cross-panel destinations patched.
+    """
+    patched = 0
+    created = 0
+
+    # Build a lookup: variableName -> (panel_name, field_dict)
+    field_lookup: Dict[str, Tuple[str, Dict]] = {}
+    # Also build name+panel -> variableName for resolving missing variableNames
+    name_panel_lookup: Dict[Tuple[str, str], str] = {}
+    for panel_name, fields in all_results.items():
+        for field in fields:
+            var = field.get('variableName', '')
+            fname = field.get('field_name', '')
+            if var:
+                field_lookup[var] = (panel_name, field)
+                if fname:
+                    name_panel_lookup[(fname.lower().strip(), panel_name)] = var
+
+    # Group refs by source field variableName
+    source_groups: Dict[str, List[Dict]] = {}
+    for ref in vedv_refs:
+        src_var = ref.get('referenced_field_variableName', '')
+        # Resolve missing/unknown variableNames from field name + panel
+        if not src_var or src_var == 'unknown':
+            ref_name = ref.get('referenced_field_name', '').lower().strip()
+            ref_panel = ref.get('referenced_panel', '')
+            if ref_name and ref_panel:
+                src_var = name_panel_lookup.get((ref_name, ref_panel), '')
+        if src_var and src_var != 'unknown':
+            source_groups.setdefault(src_var, []).append(ref)
+
+    for source_var, refs in source_groups.items():
+        if source_var not in field_lookup:
+            continue
+        source_panel, source_field = field_lookup[source_var]
+
+        # Group cross-panel destinations by EDV table
+        # table_name -> [(col_num, dest_variableName)]
+        table_dests: Dict[str, List[Tuple[int, str]]] = {}
+
+        for ref in refs:
+            dest_var = ref.get('field_variableName', '')
+            if not dest_var or dest_var not in field_lookup:
+                continue
+            dest_panel, dest_field = field_lookup[dest_var]
+
+            # Skip if destination is in the same panel as source (already handled)
+            if dest_panel == source_panel:
+                continue
+
+            logic = dest_field.get('logic', '')
+            table_name = _parse_edv_table_from_logic(logic)
+            col_num = _parse_column_from_logic(logic)
+
+            if not table_name or not col_num:
+                # Try from the ref description as fallback
+                desc = ref.get('description', '')
+                if not table_name:
+                    table_name = _parse_edv_table_from_logic(desc)
+                if not col_num:
+                    col_num = _parse_column_from_logic(desc)
+
+            if table_name and col_num:
+                table_dests.setdefault(table_name, []).append((col_num, dest_var))
+
+        # Now patch or create Validate EDV rules for each table
+        for table_name, dests in table_dests.items():
+            # Find existing Validate EDV rule on source field for this table
+            vedv_rule = None
+            for rule in source_field.get('rules', []):
+                if rule.get('rule_name') != 'Validate EDV (Server)':
+                    continue
+                params = rule.get('params', '')
+                if isinstance(params, str) and params.upper() == table_name:
+                    vedv_rule = rule
+                    break
+                elif isinstance(params, dict) and str(params.get('param', '')).upper() == table_name:
+                    vedv_rule = rule
+                    break
+
+            if vedv_rule:
+                # Patch existing rule's destination_fields
+                dest_fields = vedv_rule.get('destination_fields', [])
+                for col_num, dest_var in dests:
+                    dest_idx = col_num - 2  # a1 is skipped, so a2->idx 0, a3->idx 1, etc.
+                    if dest_idx < 0:
+                        continue
+                    # Extend array if needed
+                    while len(dest_fields) <= dest_idx:
+                        dest_fields.append('-1')
+                    # Only patch if currently unmapped
+                    if dest_fields[dest_idx] == '-1':
+                        dest_fields[dest_idx] = dest_var
+                        patched += 1
+                vedv_rule['destination_fields'] = dest_fields
+            else:
+                # Create a new Validate EDV rule for this table
+                max_col = max(col for col, _ in dests)
+                dest_fields = ['-1'] * (max_col - 1)  # a2 to a(max_col)
+                for col_num, dest_var in dests:
+                    dest_idx = col_num - 2
+                    if 0 <= dest_idx < len(dest_fields):
+                        dest_fields[dest_idx] = dest_var
+                        patched += 1
+
+                new_rule = {
+                    'rule_name': 'Validate EDV (Server)',
+                    'source_fields': [source_var],
+                    'destination_fields': dest_fields,
+                    'params': table_name,
+                    '_reasoning': (
+                        f'Cross-panel Validate EDV: source {source_field.get("field_name", "")} '
+                        f'in {source_panel} looks up {table_name}. '
+                        f'Destinations: {", ".join(f"a{c}->{v}" for c, v in dests)}.'
+                    ),
+                    '_inter_panel_source': 'cross-panel',
+                }
+                source_field.setdefault('rules', []).append(new_rule)
+                created += 1
+
+    return patched, created
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # Main
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -1007,6 +1170,13 @@ def main():
         log(f"  EDV-classified panels (for Phase 4a): {', '.join(sorted(edv_panels))}")
     if vedv_panels:
         log(f"  Validate-EDV-classified panels (for Phase 4b): {', '.join(sorted(vedv_panels))}")
+
+    # ── Save all refs for Phase 4c cross-panel Validate EDV destination patching ──
+    # Include all classifications (not just validate_edv) because some derivation-classified
+    # refs also need Validate EDV rules — the detection agent may output empty descriptions,
+    # preventing reclassification to validate_edv. The patching function is safe: it only
+    # patches when it can parse a valid table name and column number from the field logic.
+    all_refs_for_vedv_patch = list(all_refs)
 
     # ── Filter edv/validate_edv-classified refs from Phase 2 (handled by Phase 4) ──
     pre_edv_filter = len(complex_refs)
@@ -1330,6 +1500,16 @@ def main():
                     log(f"    Validate EDV: '{panel_name}' — FAILED (keeping existing data)")
         else:
             log("  Phase 4b skipped — no validate_edv-classified panels")
+
+        # Phase 4c: Deterministic patching of cross-panel Validate EDV destinations
+        if all_refs_for_vedv_patch:
+            log(f"  Phase 4c: Patching cross-panel Validate EDV destinations "
+                f"({len(all_refs_for_vedv_patch)} refs)...")
+            patched_count, created_count = patch_cross_panel_vedv_destinations(
+                all_results, all_refs_for_vedv_patch, var_index,
+            )
+            log(f"  Phase 4c: Patched {patched_count} cross-panel destinations, "
+                f"created {created_count} new Validate EDV rules")
 
         # Recount rules after Phase 4
         output_rule_count = sum(

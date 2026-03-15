@@ -5,7 +5,7 @@ OUT_DIR="${1:?Usage: $0 <output-root-directory> [max-workers] [start-stage]}"
 MAX_WORKERS="${2:-4}"
 START_STAGE="${3:-0}"
 
-BUD="documents/Pidilite Vendor block-unblock BUD_modified 1.2.docx"
+BUD="documents/short-Vendor Extension BUD- 11th Mar.docx"
 
 echo "Using output dir: ${OUT_DIR}"
 echo "Using max workers: ${MAX_WORKERS}"
@@ -33,10 +33,10 @@ import sys; sys.path.insert(0, '.')
 from field_extractor.extract_fields_complete import extract_fields_complete
 import json
 schema = extract_fields_complete('${BUD}')
-with open('archive/output/complete_format/1803-schema.json', 'w') as f:
+with open('archive/output/complete_format/vendor_extension-schema.json', 'w') as f:
     json.dump(schema, f, indent=2, ensure_ascii=False)
 n = len(schema['template']['documentTypes'][0]['formFillMetadatas'])
-print(f'  Extracted {n} fields -> archive/output/complete_format/1803-schema.json')
+print(f'  Extracted {n} fields -> archive/output/complete_format/vendor_extension-schema.json')
 "
 
 run_stage 1 "Rule Placement" \
@@ -60,13 +60,13 @@ run_stage 6 "Inter-Panel Rules" \
 # Stage 7 (Session Based) is skipped for this BUD
 
 run_stage 8 "Convert to API Format" \
-    python3 dispatchers/agents/convert_to_api_format.py --schema archive/output/complete_format/1803-schema.json --rules "${OUT_DIR}/inter_panel/all_panels_inter_panel.json" --output /tmp/test_merged_pidilite.json --pretty
+    python3 dispatchers/agents/convert_to_api_format.py --schema archive/output/complete_format/vendor_extension-schema.json --rules "${OUT_DIR}/inter_panel/all_panels_inter_panel.json" --output /tmp/test_merged_vendor_extension.json --pretty
 
 run_stage 9 "Fix Mandatory / Editable Fields" \
-    python3 dispatchers/agents/fix_mandatory_fields.py --bud "${BUD}" --json /tmp/test_merged_pidilite.json
+    python3 dispatchers/agents/fix_mandatory_fields.py --bud "${BUD}" --json /tmp/test_merged_vendor_extension.json
 
 run_stage 10 "Resolve EDV Variable Names" \
-    python3 dispatchers/agents/resolve_edv_varnames.py --json /tmp/test_merged_pidilite.json
+    python3 dispatchers/agents/resolve_edv_varnames.py --json /tmp/test_merged_vendor_extension.json
 
 run_stage 11 "Post Trigger Rule IDs" \
-    python3 dispatchers/agents/post_trigger_linker.py --json /tmp/test_merged_pidilite.json
+    python3 dispatchers/agents/post_trigger_linker.py --json /tmp/test_merged_vendor_extension.json
