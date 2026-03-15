@@ -70,22 +70,28 @@ def group_complex_refs_by_source_field(
     all_complex_refs: List[Dict],
 ) -> Dict[str, List[Dict]]:
     """
-    Group complex cross-panel references by their source (referenced) field.
+    Group complex cross-panel references by the ACTION SOURCE field — the field
+    where the rule will be placed (field_variableName), NOT the destination
+    field being affected (referenced_field_variableName).
 
-    When multiple refs from different target panels all point to the same
-    source field, they end up in one group. One agent call sees all target
-    panels at once and produces consolidated rules (e.g., one visibility rule
-    and one clearing rule instead of duplicates per panel).
+    This ensures that when a single field (e.g., "Vendor Name and Code") triggers
+    clearing of 22 fields across 2 target panels, all 22 refs are sent in ONE
+    agent call. The agent then produces consolidated rules (e.g., one clearing
+    rule per target panel) instead of 22 near-identical rules.
 
     Args:
         all_complex_refs: Flat list of complex reference records from Phase 1
 
     Returns:
-        Dict mapping referenced_field_variableName -> list of complex ref records
+        Dict mapping field_variableName (action source) -> list of complex ref records
     """
     groups: Dict[str, List[Dict]] = {}
     for ref in all_complex_refs:
-        source_field = ref.get('referenced_field_variableName', 'unknown')
+        # field_variableName = the field with the logic (where the rule is placed)
+        source_field = ref.get('field_variableName', '')
+        if not source_field:
+            # Fallback to referenced_field_variableName if field_variableName missing
+            source_field = ref.get('referenced_field_variableName', 'unknown')
         if source_field not in groups:
             groups[source_field] = []
         groups[source_field].append(ref)
@@ -674,15 +680,11 @@ def deduplicate_complex_refs(
 
     When the BUD states visibility logic in multiple places (e.g., on the
     controlling dropdown AND on each target PANEL field), Phase 1 detects
-    refs from both directions. This creates duplicate groups in
-    group_complex_refs_by_source_field() because:
-    - Refs from target panels use the dropdown as referenced_field_variableName
-    - Refs from source panels use PANEL fields as referenced_field_variableName
-
-    This function re-keys refs where:
-    - referenced_field_variableName is a PANEL-type field
-    - field_variableName is NOT a PANEL-type field (it's the actual controller)
-    So that all refs group under the controller field, preventing duplicates.
+    refs from both directions. This function:
+    1. Re-keys refs where referenced_field_variableName is a PANEL-type field
+       to use the controlling (non-PANEL) field instead
+    2. Removes true duplicates (same field_variableName + referenced_field_variableName
+       + classification + referenced_panel)
 
     Returns:
         Deduplicated list of refs (may be shorter if true duplicates removed).

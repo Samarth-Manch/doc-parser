@@ -1262,8 +1262,8 @@ def main():
                 batches = [refs_group]
 
             for batch_idx, batch in enumerate(batches):
-                # Use the source field's name for a readable label
-                source_field_name = batch[0].get('referenced_field_name', source_field_var)
+                # Use the action source field's name for a readable label
+                source_field_name = batch[0].get('field_name', source_field_var)
                 if len(batches) > 1:
                     group_label = f"{source_field_name} ({source_field_var}) batch {batch_idx+1}/{len(batches)}"
                 else:
