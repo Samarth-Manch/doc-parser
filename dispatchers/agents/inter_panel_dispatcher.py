@@ -842,16 +842,19 @@ def patch_cross_panel_vedv_destinations(
                 if fname:
                     name_panel_lookup[(fname.lower().strip(), panel_name)] = var
 
-    # Group refs by source field variableName
+    # Group refs by source field variableName (the field where the Validate EDV rule lives)
+    # field_variableName = the field with the logic = the lookup key = the source
+    # referenced_field_variableName = the cross-panel field being populated = the destination
     source_groups: Dict[str, List[Dict]] = {}
     for ref in vedv_refs:
-        src_var = ref.get('referenced_field_variableName', '')
-        # Resolve missing/unknown variableNames from field name + panel
+        src_var = ref.get('field_variableName', '')
         if not src_var or src_var == 'unknown':
-            ref_name = ref.get('referenced_field_name', '').lower().strip()
-            ref_panel = ref.get('referenced_panel', '')
-            if ref_name and ref_panel:
-                src_var = name_panel_lookup.get((ref_name, ref_panel), '')
+            ref_name = ref.get('field_name', '').lower().strip()
+            # Look up in all panels since field_variableName is in the source panel
+            for (name_key, panel_key), var in name_panel_lookup.items():
+                if name_key == ref_name:
+                    src_var = var
+                    break
         if src_var and src_var != 'unknown':
             source_groups.setdefault(src_var, []).append(ref)
 
@@ -865,8 +868,9 @@ def patch_cross_panel_vedv_destinations(
         table_dests: Dict[str, List[Tuple[int, str]]] = {}
 
         for ref in refs:
-            dest_var = ref.get('field_variableName', '')
-            if not dest_var or dest_var not in field_lookup:
+            # referenced_field_variableName = the cross-panel field being populated
+            dest_var = ref.get('referenced_field_variableName', '')
+            if not dest_var or dest_var == 'unknown' or dest_var not in field_lookup:
                 continue
             dest_panel, dest_field = field_lookup[dest_var]
 
