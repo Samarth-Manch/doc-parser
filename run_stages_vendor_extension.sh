@@ -5,7 +5,7 @@ OUT_DIR="${1:?Usage: $0 <output-root-directory> [max-workers] [start-stage]}"
 MAX_WORKERS="${2:-4}"
 START_STAGE="${3:-0}"
 
-BUD="documents/short-Vendor Extension BUD- 11th Mar.docx"
+BUD="documents/Vendor Extension BUD-cross-panel.docx"
 
 echo "Using output dir: ${OUT_DIR}"
 echo "Using max workers: ${MAX_WORKERS}"
