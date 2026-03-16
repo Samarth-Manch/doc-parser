@@ -843,14 +843,15 @@ def patch_cross_panel_vedv_destinations(
                     name_panel_lookup[(fname.lower().strip(), panel_name)] = var
 
     # Group refs by source field variableName (the field where the Validate EDV rule lives)
-    # field_variableName = the field with the logic = the lookup key = the source
-    # referenced_field_variableName = the cross-panel field being populated = the destination
+    # In detection output:
+    #   field_variableName = destination (the field in the analyzed panel, being populated)
+    #   referenced_field_variableName = source (the cross-panel trigger field)
+    # So we group by referenced_field_variableName (source/trigger).
     source_groups: Dict[str, List[Dict]] = {}
     for ref in vedv_refs:
-        src_var = ref.get('field_variableName', '')
+        src_var = ref.get('referenced_field_variableName', '')
         if not src_var or src_var == 'unknown':
-            ref_name = ref.get('field_name', '').lower().strip()
-            # Look up in all panels since field_variableName is in the source panel
+            ref_name = ref.get('referenced_field_name', '').lower().strip()
             for (name_key, panel_key), var in name_panel_lookup.items():
                 if name_key == ref_name:
                     src_var = var
@@ -868,8 +869,8 @@ def patch_cross_panel_vedv_destinations(
         table_dests: Dict[str, List[Tuple[int, str]]] = {}
 
         for ref in refs:
-            # referenced_field_variableName = the cross-panel field being populated
-            dest_var = ref.get('referenced_field_variableName', '')
+            # field_variableName = the destination field being populated
+            dest_var = ref.get('field_variableName', '')
             if not dest_var or dest_var == 'unknown' or dest_var not in field_lookup:
                 continue
             dest_panel, dest_field = field_lookup[dest_var]
@@ -1151,21 +1152,25 @@ def main():
     for ref in all_refs:
         cls = ref.get('classification', '')
         if cls in ('edv', 'validate_edv'):
-            # Include the panel containing the field
             field_var = ref.get('field_variableName', '')
             norm = _norm_var(field_var)
-            if norm in var_index:
-                panel = var_index[norm]
-                if cls == 'edv':
-                    edv_panels.add(panel)
-                else:
-                    vedv_panels.add(panel)
-            # Include the referenced panel (cross-panel source)
+            field_panel = var_index.get(norm, '') if norm else ''
             ref_panel = ref.get('referenced_panel', '')
-            if ref_panel and ref_panel in input_data:
-                if cls == 'edv':
+
+            if cls == 'edv':
+                # EDV: include both destination and source panels
+                if field_panel:
+                    edv_panels.add(field_panel)
+                if ref_panel and ref_panel in input_data:
                     edv_panels.add(ref_panel)
-                else:
+            else:
+                # validate_edv: only add the SOURCE panel (referenced_panel).
+                # The destination panel (field_variableName's panel) must NOT
+                # get Phase 4b — the mini-agent can only place rules on fields
+                # it receives, so it would place them on the destination field
+                # instead of the source field. Phase 4c handles cross-panel
+                # destinations by patching/creating rules on the source field.
+                if ref_panel and ref_panel in input_data:
                     vedv_panels.add(ref_panel)
     # EDV panels also need Validate EDV — EDV sets up dropdown options,
     # Validate EDV sets up lookup/auto-population. They're complementary.
