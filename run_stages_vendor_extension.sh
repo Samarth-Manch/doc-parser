@@ -5,7 +5,7 @@ OUT_DIR="${1:?Usage: $0 <output-root-directory> [max-workers] [start-stage]}"
 MAX_WORKERS="${2:-4}"
 START_STAGE="${3:-0}"
 
-BUD="documents/Vendor Extension BUD-cross-panel.docx"
+BUD="documents/Pidilite Extension BUD- 2.0.docx"
 
 echo "Using output dir: ${OUT_DIR}"
 echo "Using max workers: ${MAX_WORKERS}"

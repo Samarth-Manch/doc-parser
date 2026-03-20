@@ -206,7 +206,7 @@ def _has_yes_no_params(rules: List[Dict]) -> bool:
     return False
 
 
-def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_map: Dict[str, Dict[str, int]],
+def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_map: Dict[str, Dict[str, List[int]]],
                            metadatas: List[Dict], global_id_map: Dict[str, int], field_id: int,
                            edv_data: Dict = None) -> int:
     """
@@ -247,16 +247,20 @@ def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_
 
         # If found, look up this field_name in the schema panel
         if target_field_name and target_field_name in panel_field_map[current_panel]:
-            meta_idx = panel_field_map[current_panel][target_field_name]
-            return metadatas[meta_idx]['id']
+            idx_list = panel_field_map[current_panel][target_field_name]
+            # Use the first occurrence; for duplicates the variableName-based
+            # fallback below will match the correct one after injection has
+            # already written the input variableNames onto the metadatas.
+            return metadatas[idx_list[0]]['id']
 
     # Fallback: Check all fields in current panel by variableName matching
     if current_panel in panel_field_map:
-        for field_name, meta_idx in panel_field_map[current_panel].items():
-            meta = metadatas[meta_idx]
-            meta_var_name = meta.get('variableName', '')
-            if meta_var_name == variable_name:
-                return meta['id']
+        for field_name, idx_list in panel_field_map[current_panel].items():
+            for meta_idx in idx_list:
+                meta = metadatas[meta_idx]
+                meta_var_name = meta.get('variableName', '')
+                if meta_var_name == variable_name:
+                    return meta['id']
 
     # Second, check global ID map (cross-panel lookup)
     if variable_name in global_id_map:
@@ -467,15 +471,15 @@ def create_form_fill_rule(rule: Dict, field_id: int, id_map: Dict[str, int], rul
     return form_fill_rule
 
 
-def _build_schema_panel_map(metadatas: List[Dict]) -> Dict[str, Dict[str, int]]:
+def _build_schema_panel_map(metadatas: List[Dict]) -> Dict[str, Dict[str, List[int]]]:
     """
-    Build (panel_name, field_name) -> metadata index from schema.
+    Build (panel_name, field_name) -> list of metadata indices from schema.
 
     Schema fields are ordered: PANEL, then its children, then next PANEL, etc.
-    Returns nested dict: panel_name -> {field_name -> metadata_index}
-    Also returns a flat dict for unique field names (no duplicates).
+    Returns nested dict: panel_name -> {field_name -> [index, ...]}
+    Duplicate field names within a panel produce multiple indices in order.
     """
-    panel_field_map = {}   # panel_name -> {field_name -> index}
+    panel_field_map = {}   # panel_name -> {field_name -> [indices]}
     current_panel = None
 
     for idx, meta in enumerate(metadatas):
@@ -488,7 +492,7 @@ def _build_schema_panel_map(metadatas: List[Dict]) -> Dict[str, Dict[str, int]]:
             if current_panel not in panel_field_map:
                 panel_field_map[current_panel] = {}
         elif current_panel and name:
-            panel_field_map[current_panel][name] = idx
+            panel_field_map[current_panel].setdefault(name, []).append(idx)
 
     return panel_field_map
 
@@ -524,13 +528,20 @@ def build_id_map_from_schema(schema_data: Dict, edv_data: Dict) -> Dict[str, int
         # Get this panel's field map from schema
         schema_fields_in_panel = panel_field_map.get(panel_name, {})
 
+        # Track how many times we've seen each field_name to match Nth input
+        # occurrence to Nth schema occurrence
+        seen_counts = {}
         for field in fields:
             field_name = field.get('field_name', '')
             variable_name = field.get('variableName', '')
 
             if field_name in schema_fields_in_panel:
-                meta_idx = schema_fields_in_panel[field_name]
-                id_map[variable_name] = metadatas[meta_idx]['id']
+                idx_list = schema_fields_in_panel[field_name]
+                occurrence = seen_counts.get(field_name, 0)
+                if occurrence < len(idx_list):
+                    meta_idx = idx_list[occurrence]
+                    id_map[variable_name] = metadatas[meta_idx]['id']
+                seen_counts[field_name] = occurrence + 1
 
     return id_map
 
@@ -585,6 +596,9 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     for panel_name, fields in edv_data.items():
         schema_fields_in_panel = panel_field_map.get(panel_name, {})
 
+        # Track how many times we've seen each field_name to match Nth input
+        # occurrence to Nth schema occurrence (handles duplicate field names)
+        seen_counts = {}
         for field in fields:
             field_name = field.get('field_name', '')
             rules = field.get('rules', [])
@@ -661,7 +675,14 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                 continue
 
             fields_matched += 1
-            meta_idx = schema_fields_in_panel[field_name]
+            idx_list = schema_fields_in_panel[field_name]
+            occurrence = seen_counts.get(field_name, 0)
+            seen_counts[field_name] = occurrence + 1
+            if occurrence < len(idx_list):
+                meta_idx = idx_list[occurrence]
+            else:
+                # More input occurrences than schema — fall back to last
+                meta_idx = idx_list[-1]
             field_id = metadatas[meta_idx]['id']
 
             # Always update variableName from input (overwrite whatever the schema had)
@@ -692,6 +713,22 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     array_fields_updated = set_header_metadata_ids(metadatas)
     if array_fields_updated:
         print(f"  Set headerMetadataId on {array_fields_updated} fields inside ARRAY sections")
+
+    # Sync ARRAY_END variableNames from their paired ARRAY_HDR (ARRAY_END
+    # entries don't exist in the input, so they keep stale schema values)
+    array_hdr_var = None
+    array_ends_synced = 0
+    for meta in metadatas:
+        ftype = meta.get('formTag', {}).get('type', '')
+        if ftype == 'ARRAY_HDR':
+            array_hdr_var = meta.get('variableName', '')
+        elif ftype == 'ARRAY_END':
+            if array_hdr_var and meta.get('variableName', '') != array_hdr_var:
+                meta['variableName'] = array_hdr_var
+                array_ends_synced += 1
+            array_hdr_var = None
+    if array_ends_synced:
+        print(f"  Synced variableName on {array_ends_synced} ARRAY_END fields from their ARRAY_HDR")
 
     stats = {
         'fields_matched': fields_matched,

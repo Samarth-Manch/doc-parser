@@ -442,6 +442,27 @@ def main():
 
     print(f"Found {len(edv_data)} panels in input")
 
+    # Build ALL_PANELS_INDEX so agent can resolve cross-panel source fields
+    all_panels_index = {}
+    for pname, pfields in edv_data.items():
+        for field in pfields:
+            if not isinstance(field, dict):
+                continue
+            var = field.get('variableName', '')
+            fname = field.get('field_name', '')
+            ftype = field.get('type', '')
+            if var:
+                all_panels_index[var] = {
+                    "field_name": fname,
+                    "panel": pname,
+                    "type": ftype
+                }
+
+    all_panels_index_file = temp_dir / "all_panels_index.json"
+    with open(all_panels_index_file, 'w') as f:
+        json.dump(all_panels_index, f, indent=2)
+    print(f"Built ALL_PANELS_INDEX: {len(all_panels_index)} fields across {len(edv_data)} panels")
+
     # Step 4: Process each panel
     print("\n" + "="*70)
     print("PROCESSING PANELS WITH VALIDATE EDV AGENT")
@@ -481,7 +502,8 @@ def main():
         for panel_name, panel_fields, referenced_tables in jobs:
             result = call_validate_edv_mini_agent(
                 panel_fields, referenced_tables, panel_name, temp_dir,
-                context_usage=args.context_usage, verbose=True, model=args.model
+                context_usage=args.context_usage, verbose=True, model=args.model,
+                all_panels_index_file=all_panels_index_file
             )
             if result:
                 successful_panels += 1
@@ -501,7 +523,8 @@ def main():
                 future = executor.submit(
                     call_validate_edv_mini_agent,
                     panel_fields, referenced_tables, panel_name, temp_dir,
-                    context_usage=args.context_usage, verbose=False, model=args.model
+                    context_usage=args.context_usage, verbose=False, model=args.model,
+                    all_panels_index_file=all_panels_index_file
                 )
                 future_to_panel[future] = (panel_name, panel_fields)
 
