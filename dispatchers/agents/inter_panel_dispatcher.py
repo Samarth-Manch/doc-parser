@@ -35,7 +35,6 @@ from inter_panel_utils import (
     build_compact_single_panel_text,
     build_compact_panels_text,
     build_variablename_index,
-    collapse_children_to_panel_in_visibility,
     deduplicate_complex_refs,
     deduplicate_expression_rules,
     ensure_full_panel_in_clearing,
@@ -1490,12 +1489,12 @@ def main():
     if clearing_expansions:
         log(f"  Fix E: Added missing panel fields to {clearing_expansions} clearing expressions")
 
-    # Collapse child field lists back to PANEL vars in mvi/minvi
-    # When agents list all children instead of using the PANEL var,
-    # the form shows empty panels. PANEL vars cascade visibility automatically.
-    panel_collapses = collapse_children_to_panel_in_visibility(all_results, input_data)
-    if panel_collapses:
-        log(f"  Collapsed {panel_collapses} child field lists to PANEL variables in mvi/minvi")
+    # NOTE: collapse_children_to_panel_in_visibility is DISABLED.
+    # It was incorrectly collapsing intra-panel visibility rules (e.g., Company Code
+    # Type toggling ARRAY sub-sections) by replacing child field lists with the PANEL
+    # variable. The regex matched variables inside vo() conditions as field arguments,
+    # causing the entire panel to be hidden instead of just the target fields.
+    # Inter-panel agents already emit PANEL variables directly, so this is not needed.
 
     # Verify field counts
     output_field_count = sum(len(fields) for fields in all_results.values())
