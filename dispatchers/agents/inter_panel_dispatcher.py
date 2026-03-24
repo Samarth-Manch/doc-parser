@@ -37,6 +37,7 @@ from inter_panel_utils import (
     build_variablename_index,
     deduplicate_complex_refs,
     deduplicate_expression_rules,
+    deduplicate_merged_expression_rules,
     ensure_full_panel_in_clearing,
     expand_panel_variables_in_expressions,
     group_complex_refs_by_source_field,
@@ -1419,11 +1420,29 @@ def main():
                             'error': 'empty output',
                         })
 
-                    # Merge group rules into overall complex_rules
+                    # Merge group rules into overall complex_rules,
+                    # consolidating entries that target the same field so that
+                    # deduplicate_expression_rules() can compare all rules for
+                    # one field together (it only operates within a single entry).
                     for panel_name, entries in group_rules.items():
                         if panel_name not in complex_rules:
                             complex_rules[panel_name] = []
-                        complex_rules[panel_name].extend(entries)
+                        for entry in entries:
+                            tvar = entry.get('target_field_variableName', '')
+                            if not tvar:
+                                complex_rules[panel_name].append(entry)
+                                continue
+                            # Find existing entry for same target field
+                            existing_entry = None
+                            for e in complex_rules[panel_name]:
+                                if e.get('target_field_variableName') == tvar:
+                                    existing_entry = e
+                                    break
+                            if existing_entry is not None:
+                                existing_entry['rules_to_add'].extend(
+                                    entry.get('rules_to_add', []))
+                            else:
+                                complex_rules[panel_name].append(entry)
                 except Exception as e:
                     log(f"  Phase 2: Exception for '{group_label}': {e}")
                     failed_panels.append({
@@ -1512,6 +1531,13 @@ def main():
     # variable. The regex matched variables inside vo() conditions as field arguments,
     # causing the entire panel to be hidden instead of just the target fields.
     # Inter-panel agents already emit PANEL variables directly, so this is not needed.
+
+    # Fix F: Post-merge dedup — remove Expression (Client) rules whose targets
+    # are a subset/equal of another rule with the same _expressionRuleType on
+    # the same field. Runs after Fix D/E so it sees fully expanded expressions.
+    merged_dedup = deduplicate_merged_expression_rules(all_results)
+    if merged_dedup:
+        log(f"  Fix F: Dropped {merged_dedup} subset/duplicate expression rules after merge")
 
     # Verify field counts
     output_field_count = sum(len(fields) for fields in all_results.values())

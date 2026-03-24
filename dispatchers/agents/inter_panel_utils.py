@@ -1127,3 +1127,80 @@ def _inject_missing_vars_into_clearing(expr: str, missing_vars: List[str]) -> st
         new_expr = new_expr[:start] + new_call + new_expr[end:]
 
     return new_expr
+
+
+# ── Fix F: Post-merge subset deduplication of Expression (Client) rules ───
+
+def deduplicate_merged_expression_rules(
+    all_results: Dict[str, List[Dict]],
+) -> int:
+    """
+    Post-merge deduplication: remove Expression (Client) rules whose targets
+    are a subset (or equal) of another rule on the SAME field with the same
+    _expressionRuleType.
+
+    This runs AFTER merge + Fix D + Fix E, so it operates on the final
+    expanded rules (panel vars already expanded to children, missing fields
+    already injected). It catches duplicates regardless of origin (Stage 5
+    vs inter-panel Phase 2, same agent group vs different groups).
+
+    Rules with different _expressionRuleType values are never compared.
+    Non-Expression rules are never touched.
+
+    Returns:
+        Number of rules dropped.
+    """
+    dropped_total = 0
+
+    for panel_fields in all_results.values():
+        for field in panel_fields:
+            rules = field.get('rules', [])
+            if len(rules) < 2:
+                continue
+
+            # Collect Expression (Client) rules with their indices
+            expr_rules: List[Tuple[int, Dict, Set[str]]] = []
+            for i, rule in enumerate(rules):
+                if (isinstance(rule, dict)
+                        and rule.get('rule_name') == 'Expression (Client)'
+                        and rule.get('conditionalValues')):
+                    targets = _extract_expression_targets(
+                        rule['conditionalValues'][0])
+                    # Remove source fields — they appear in vo() but aren't targets
+                    for src in rule.get('source_fields', []):
+                        targets.discard(_norm_var(src))
+                    expr_rules.append((i, rule, targets))
+
+            if len(expr_rules) < 2:
+                continue
+
+            # Group by _expressionRuleType
+            type_groups: Dict[str, List[Tuple[int, Dict, Set[str]]]] = {}
+            for idx, rule, targets in expr_rules:
+                rtype = rule.get('_expressionRuleType', 'unknown')
+                type_groups.setdefault(rtype, []).append((idx, rule, targets))
+
+            # Within each type group, find subset or equal rules to drop
+            drop_indices: Set[int] = set()
+            for rtype, group in type_groups.items():
+                if len(group) < 2:
+                    continue
+                for i, (idx_a, rule_a, targets_a) in enumerate(group):
+                    if idx_a in drop_indices:
+                        continue
+                    for j, (idx_b, rule_b, targets_b) in enumerate(group):
+                        if i == j or idx_b in drop_indices:
+                            continue
+                        if not targets_b or not targets_a:
+                            continue
+                        # Drop B if its targets are a subset or equal to A's
+                        if targets_b <= targets_a:
+                            drop_indices.add(idx_b)
+
+            if drop_indices:
+                field['rules'] = [
+                    r for i, r in enumerate(rules) if i not in drop_indices
+                ]
+                dropped_total += len(drop_indices)
+
+    return dropped_total
