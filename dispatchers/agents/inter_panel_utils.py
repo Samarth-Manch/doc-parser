@@ -713,11 +713,14 @@ def deduplicate_complex_refs(
     deduped: List[Dict] = []
     removed = 0
     for ref in complex_refs:
+        rp = ref.get('referenced_panel', '')
+        if isinstance(rp, dict):
+            rp = rp.get('panel_name', '') or rp.get('name', '')
         key = (
             _norm_var(ref.get('field_variableName', '')),
             _norm_var(ref.get('referenced_field_variableName', '')),
             ref.get('classification', ''),
-            ref.get('referenced_panel', ''),
+            str(rp),
         )
         if key in seen:
             removed += 1

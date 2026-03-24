@@ -232,21 +232,35 @@ def normalize_detection_output(raw: any, panel_name: str, all_panel_names: List[
         # Detection agents may output a single ref with arrays of targets — expand into
         # individual refs (one per target panel) so downstream processing works correctly.
         elif isinstance(ref.get('target_panels'), list) and len(ref.get('target_panels', [])) > 0:
-            source_var = ref.get('source_field', '')
-            source_name = ref.get('source_field_name', '')
+            source_var = ref.get('source_variableName', '') or ref.get('source_field', '')
+            source_name = ref.get('source_field_name', '') or ref.get('source_field', '')
             target_panels = ref.get('target_panels', [])
             target_fields = ref.get('target_fields', [])
             for i, tpanel in enumerate(target_panels):
+                # Handle dict elements: detection agents may output target_panels as
+                # [{"panel_name": "...", "panel_variableName": "...", "condition": "..."}, ...]
+                tpanel_name = tpanel
+                tpanel_var = ''
+                tpanel_condition = ''
+                if isinstance(tpanel, dict):
+                    tpanel_name = tpanel.get('panel_name', '') or tpanel.get('name', '')
+                    tpanel_var = tpanel.get('panel_variableName', '') or tpanel.get('variableName', '')
+                    tpanel_condition = tpanel.get('condition', '')
                 tfield = target_fields[i] if i < len(target_fields) else ''
+                # For panel_visibility refs without target_fields, use the panel variableName
+                if not tfield and tpanel_var:
+                    tfield = tpanel_var
                 expanded = dict(ref)
                 # Remove array keys, set single-target keys
                 expanded.pop('target_panels', None)
                 expanded.pop('target_fields', None)
                 expanded.pop('source_panel', None)  # avoid mis-mapping as referenced_panel
-                expanded['referenced_panel'] = tpanel
+                expanded['referenced_panel'] = tpanel_name
                 expanded['referenced_field_variableName'] = tfield
                 expanded['field_variableName'] = source_var
                 expanded['field_name'] = source_name
+                if tpanel_condition:
+                    expanded['condition_text'] = tpanel_condition
                 # Map 'type' key to 'classification' if it holds a classification value
                 if expanded.get('type') in ('visibility', 'clearing', 'derivation',
                                              'copy_to', 'edv', 'validate_edv'):
@@ -294,6 +308,9 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
         ref.get('source_panel') or
         ''
     )
+    # Defensive: if referenced_panel is a dict (from detection agent), extract panel_name
+    if isinstance(referenced_panel, dict):
+        referenced_panel = referenced_panel.get('panel_name', '') or referenced_panel.get('name', '')
     if not referenced_panel or referenced_panel not in valid_panel_set:
         return None
 
