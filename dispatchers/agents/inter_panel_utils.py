@@ -207,8 +207,13 @@ def quick_cross_panel_scan(input_data: Dict[str, List[Dict]]) -> bool:
     return False
 
 
-def _norm_var(v: str) -> str:
+def _norm_var(v) -> str:
     """Normalize __varname__ or _varname_ to _varname_ for index lookups."""
+    if not isinstance(v, str):
+        if isinstance(v, dict):
+            v = v.get('variableName', '') or v.get('name', '') or ''
+        else:
+            v = str(v) if v else ''
     s = v.strip('_')
     return f'_{s}_' if s else v
 
