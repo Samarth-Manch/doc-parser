@@ -201,7 +201,7 @@ def create_form_fill_metadata(field, field_index: int, variable_name: str) -> Di
         "scaleX": 1.0,
         "scaleY": 1.0,
         "mandatory": field.is_mandatory,
-        "editable": True,  # Default to editable
+        "editable": False,  # Default to not editable; fix_mandatory_fields.py sets True per BUD 4.5.2
         "formTag": {
             "id": field_index,  # FormTag ID matches field index
             "name": field.name,

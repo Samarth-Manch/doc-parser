@@ -221,3 +221,6 @@ archive/
 extraction/
 output/
 document_skills/
+
+# LibreOffice lock files
+.~lock.*

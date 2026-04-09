@@ -559,6 +559,13 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     result = copy.deepcopy(schema_data)
     metadatas = result['template']['documentTypes'][0]['formFillMetadatas']
 
+    # Force editable=False on every field; ignore whatever stage 0 set.
+    # fix_mandatory_fields.py (stage 9) may later flip this to True based on
+    # the BUD's 4.5.2 SPOC table.
+    for m in metadatas:
+        if m.get('formTag', {}).get('type') != 'PANEL':
+            m['editable'] = False
+
     # Build panel-scoped lookup from schema
     panel_field_map = _build_schema_panel_map(metadatas)
 
