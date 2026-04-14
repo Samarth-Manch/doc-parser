@@ -222,5 +222,13 @@ extraction/
 output/
 document_skills/
 
+# Shell scripts (not committed)
+*.sh
+bash_scripts/
+documentations/
+self-learning/
+bud_issues/
+issues/
+
 # LibreOffice lock files
 .~lock.*
