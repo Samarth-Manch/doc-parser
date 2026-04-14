@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Overfitting Risk Report · BUD Rule Extraction Pipeline</title>
+<style>
+  :root {
+    --bg: #0b0d12;
+    --bg-2: #11141b;
+    --card: #161a23;
+    --card-2: #1c2130;
+    --border: #262c3a;
+    --text: #e6e9ef;
+    --text-dim: #9aa3b2;
+    --text-dimmer: #6b7383;
+    --accent: #7c9cff;
+    --accent-2: #a18aff;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --orange: #f97316;
+    --red: #ef4444;
+    --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--sans); margin: 0; padding: 0; }
+  body { padding: 48px 24px 96px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* Header */
+  header { margin-bottom: 36px; }
+  .eyebrow { color: var(--text-dimmer); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 8px; background: linear-gradient(90deg, #fff 0%, #b8c3da 60%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--text-dim); font-size: 15px; max-width: 760px; line-height: 1.55; }
+  .meta-row { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 18px; font-size: 12px; color: var(--text-dimmer); }
+  .meta-row span { display: inline-flex; align-items: center; gap: 6px; }
+  .meta-row code { font-family: var(--mono); color: var(--text-dim); background: var(--card); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+
+  /* Verdict panel */
+  .verdict { background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 100%); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 36px; display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: center; }
+  .gauge { display: flex; flex-direction: column; align-items: center; }
+  .gauge-ring { position: relative; width: 180px; height: 180px; }
+  .gauge-ring svg { transform: rotate(-90deg); }
+  .gauge-bg { stroke: #222836; }
+  .gauge-fg { stroke: url(#risk-grad); stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .gauge-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .gauge-num .n { font-size: 46px; font-weight: 700; font-family: var(--mono); letter-spacing: -0.02em; }
+  .gauge-num .l { font-size: 11px; color: var(--text-dimmer); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 2px; }
+  .verdict h2 { margin: 0 0 8px; font-size: 22px; }
+  .verdict p { margin: 0 0 14px; color: var(--text-dim); font-size: 14px; line-height: 1.6; }
+  .verdict .tag-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag { font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text-dim); font-family: var(--mono); }
+  .tag.warn { border-color: #5b3a12; background: #1f1608; color: #fbbf24; }
+  .tag.danger { border-color: #5b1818; background: #1f0a0a; color: #fca5a5; }
+  .tag.ok { border-color: #1a4a2a; background: #071812; color: #86efac; }
+
+  /* Sections */
+  section { margin-bottom: 44px; }
+  h2.section { font-size: 20px; margin: 0 0 6px; display: flex; align-items: center; gap: 10px; }
+  h2.section::before { content: ""; width: 4px; height: 20px; background: linear-gradient(180deg, var(--accent), var(--accent-2)); border-radius: 2px; }
+  .section-desc { color: var(--text-dim); font-size: 14px; margin: 0 0 18px; max-width: 820px; line-height: 1.55; }
+
+  /* Scenario cards */
+  .scenarios { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .scenario { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .scenario h3 { margin: 0 0 4px; font-size: 14px; color: var(--text); }
+  .scenario .domain { font-size: 11px; color: var(--text-dimmer); font-family: var(--mono); margin-bottom: 12px; }
+  .scenario .bar { height: 6px; background: #222836; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+  .scenario .bar > div { height: 100%; border-radius: 3px; }
+  .scenario .num { font-size: 22px; font-weight: 700; font-family: var(--mono); letter-spacing: -0.02em; }
+  .scenario .num small { font-size: 12px; color: var(--text-dimmer); margin-left: 4px; }
+  .scenario p { margin: 8px 0 0; font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Stage timeline */
+  .timeline { position: relative; padding-left: 24px; border-left: 2px dashed var(--border); }
+  .stage { position: relative; padding-bottom: 18px; }
+  .stage:last-child { padding-bottom: 0; }
+  .stage::before { content: ""; position: absolute; left: -31px; top: 14px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 2px solid var(--border); }
+  .stage.r-ok::before { border-color: var(--green); }
+  .stage.r-low::before { border-color: #5da4ff; }
+  .stage.r-med::before { border-color: var(--yellow); }
+  .stage.r-high::before { border-color: var(--orange); }
+  .stage.r-crit::before { border-color: var(--red); box-shadow: 0 0 0 4px rgba(239,68,68,0.15); }
+  .stage-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .stage-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .stage-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .stage-num { font-family: var(--mono); font-size: 11px; color: var(--text-dimmer); background: var(--bg-2); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); }
+  .stage-risk { font-family: var(--mono); font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 600; }
+  .stage-risk.r-ok { background: #07180e; color: #86efac; border: 1px solid #1a4a2a; }
+  .stage-risk.r-low { background: #0a1320; color: #93c5fd; border: 1px solid #1e3a5f; }
+  .stage-risk.r-med { background: #1f1608; color: #fbbf24; border: 1px solid #5b3a12; }
+  .stage-risk.r-high { background: #1f0f06; color: #fdba74; border: 1px solid #5b2a0a; }
+  .stage-risk.r-crit { background: #1f0a0a; color: #fca5a5; border: 1px solid #5b1818; }
+  .stage p.why { margin: 10px 0 0; font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+  .stage ul.offenders { list-style: none; padding: 0; margin: 10px 0 0; }
+  .stage ul.offenders li { font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); padding: 6px 10px; background: var(--bg-2); border-radius: 6px; border: 1px solid var(--border); margin-bottom: 6px; }
+  .stage ul.offenders li .loc { color: var(--accent); }
+  .stage ul.offenders li .what { color: var(--text); }
+
+  /* Evidence grid */
+  .ev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+  .ev { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .ev h3 { margin: 0 0 4px; font-size: 14px; }
+  .ev .path { font-family: var(--mono); font-size: 11px; color: var(--text-dimmer); margin-bottom: 12px; word-break: break-all; }
+  .ev .risk-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .ev .risk-bar .bar { flex: 1; height: 6px; background: #222836; border-radius: 3px; overflow: hidden; }
+  .ev .risk-bar .bar > div { height: 100%; border-radius: 3px; }
+  .ev .risk-bar .num { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+  .ev ul { margin: 0; padding: 0; list-style: none; }
+  .ev li { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; padding: 4px 0; }
+  .ev li::before { content: "→ "; color: var(--accent); margin-right: 4px; }
+  .ev code { font-family: var(--mono); font-size: 11px; color: #fbbf24; background: var(--bg-2); padding: 1px 6px; border-radius: 3px; border: 1px solid var(--border); }
+
+  /* Prompt bias */
+  .bias-list { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 4px 0; }
+  .bias-row { display: grid; grid-template-columns: 260px 1fr 80px; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border); align-items: center; font-size: 13px; }
+  .bias-row:last-child { border-bottom: none; }
+  .bias-row .name { font-weight: 600; }
+  .bias-row .name small { display: block; color: var(--text-dimmer); font-weight: normal; font-family: var(--mono); font-size: 10px; margin-top: 2px; }
+  .bias-row .ex { color: var(--text-dim); font-family: var(--mono); font-size: 11px; }
+  .bias-row .score { text-align: right; font-family: var(--mono); font-weight: 700; }
+
+  /* Recommendations */
+  .recs { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; }
+  .rec { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 18px; }
+  .rec h3 { margin: 0 0 8px; font-size: 14px; }
+  .rec p { margin: 0 0 10px; font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+  .rec .effort { display: inline-block; font-size: 10px; font-family: var(--mono); padding: 2px 8px; border-radius: 999px; background: var(--bg-2); border: 1px solid var(--border); color: var(--text-dimmer); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* Footer */
+  footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text-dimmer); font-size: 12px; text-align: center; }
+
+  /* Utility */
+  .risk-ok   { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .risk-low  { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .risk-med  { background: linear-gradient(90deg, #eab308, #facc15); }
+  .risk-high { background: linear-gradient(90deg, #f97316, #fb923c); }
+  .risk-crit { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  @media (max-width: 768px) {
+    .verdict { grid-template-columns: 1fr; text-align: center; }
+    .gauge { margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Pipeline Audit · Rule Extraction Workflow</div>
+  <h1>Overfitting Risk Report</h1>
+  <p class="sub">Assessment of how well the <code>doc-parser</code> BUD-to-API pipeline would generalize to net-new Business Understanding Documents outside the 4 BUDs it was built against (PH Creation, Pidilite Extension, Pidilite Block-Unblock, Vendor Creation Sample).</p>
+  <div class="meta-row">
+    <span>Scope: <code>.claude/agents/mini/</code>, <code>dispatchers/agents/</code>, static resources</span>
+    <span>Tested BUDs: <code>4</code></span>
+    <span>Mini agents: <code>12</code></span>
+    <span>Pipeline stages: <code>0–11</code></span>
+  </div>
+</header>
+
+<!-- VERDICT -->
+<div class="verdict">
+  <div class="gauge">
+    <div class="gauge-ring">
+      <svg width="180" height="180" viewBox="0 0 180 180">
+        <defs>
+          <linearGradient id="risk-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"  stop-color="#f97316" />
+            <stop offset="100%" stop-color="#ef4444" />
+          </linearGradient>
+        </defs>
+        <circle class="gauge-bg" cx="90" cy="90" r="78" fill="none" stroke-width="14" />
+        <!-- 62% of circumference: 2*pi*78 = 490; dashoffset = 490*(1-0.62) = 186 -->
+        <circle class="gauge-fg" cx="90" cy="90" r="78" fill="none" stroke-width="14" stroke-dasharray="490" stroke-dashoffset="186" />
+      </svg>
+      <div class="gauge-num">
+        <div class="n">62%</div>
+        <div class="l">Overfit · High</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h2>Pipeline is production-ready for India/SAP vendor &amp; material onboarding — but leaks that domain in ~8 places.</h2>
+    <p>The mini-agent <strong>prompts</strong> are structurally generic: they consume <code>$FIELDS_JSON</code>, <code>$REFERENCE_TABLES</code>, and rule schemas at runtime, and contain no hardcoded field names. Overfitting lives almost entirely in <strong>two other places</strong>: (1) the dispatchers that glue the pipeline together, and (2) the static keyword tree and reference schemas used as grounding data. A net-new BUD in the same domain (Indian vendor/material procurement) will work; anything further away will degrade sharply.</p>
+    <div class="tag-row">
+      <span class="tag ok">prompts — mostly generic</span>
+      <span class="tag warn">dispatchers — hardcoded sections 4.5.1/4.5.2</span>
+      <span class="tag danger">keyword tree — built from 1 BUD</span>
+      <span class="tag danger">reference schemas — 1 per BUD</span>
+      <span class="tag warn">prompt examples — India/SAP jargon</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCOPE SPLIT -->
+<section>
+  <h2 class="section">Overfit Scope — BUD-level vs Group-level</h2>
+  <p class="section-desc">The headline 62% is a blended score. For planning "what happens when my next BUD lands", it's more useful to split the overfit into two scopes: risk that's tied to <em>one specific BUD</em> vs risk that's tied to a <em>family of BUDs</em> (Indian Manch procurement). They behave very differently.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+
+    <div style="background:linear-gradient(135deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:12px;padding:24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px;">
+        <div style="font-size:44px;font-weight:700;font-family:var(--mono);color:#93c5fd;letter-spacing:-0.02em;">22%</div>
+        <div style="font-size:13px;color:var(--text-dim);">BUD-level risk</div>
+      </div>
+      <div class="bar" style="height:6px;background:#222836;border-radius:3px;overflow:hidden;margin-bottom:14px;"><div class="risk-low" style="width:22%;height:100%;border-radius:3px;"></div></div>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-dim);line-height:1.55;">Assumptions tied to one specific BUD file — things you have to redo mechanically each time. <strong>Low correctness risk, purely operational friction.</strong></p>
+      <div style="font-size:11px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Offenders at this scope</div>
+      <ul style="list-style:none;padding:0;margin:0 0 12px;">
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#93c5fd;">archive/output/complete_format/</span> — one schema file per BUD, 4 named after existing BUDs</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#93c5fd;">run_stages_*.sh</span> — per-BUD script, hardcoded <code>BUD=</code> path</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#93c5fd;">convert_to_api_format.py:~1020</span> — default <code>bud_name = "Vendor Creation"</code></li>
+      </ul>
+      <div style="font-size:11px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Failure mode</div>
+      <p style="margin:0;font-size:12px;color:var(--text-dim);line-height:1.5;">Missing schema file → Stage 8 crashes immediately. Missing script → you can't invoke the pipeline. Both are noisy, easy to notice, quick to fix (copy an existing one, edit the path). The pipeline itself is LLM-driven and structurally agnostic to field names / panel names.</p>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:12px;padding:24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px;">
+        <div style="font-size:44px;font-weight:700;font-family:var(--mono);color:#fdba74;letter-spacing:-0.02em;">52%</div>
+        <div style="font-size:13px;color:var(--text-dim);">Group-level risk</div>
+      </div>
+      <div class="bar" style="height:6px;background:#222836;border-radius:3px;overflow:hidden;margin-bottom:14px;"><div class="risk-high" style="width:52%;height:100%;border-radius:3px;"></div></div>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--text-dim);line-height:1.55;">Assumptions tied to the <em>family</em> of BUDs — Indian procurement on the Manch platform, written in a specific document template. <strong>These fail silently on any in-family BUD whose template or vocabulary drifts.</strong></p>
+      <div style="font-size:11px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Offenders at this scope</div>
+      <ul style="list-style:none;padding:0;margin:0 0 12px;">
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">session_based_dispatcher.py:62-115</span> — literal <code>"4.5.1"</code> / <code>"4.5.2"</code></li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">fix_mandatory_fields.py:143-146</span> — same section lock-in</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">keyword_tree.json</span> — India KYC branches only (PAN/GSTIN/MSME/CIN/TAN/FSSAI)</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">Rule-Schemas.json</span> — 27 India-KYC rules, no geography tag</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">parser.py:47-55</span> — <code>tse</code>, <code>asm</code>, <code>spoc</code>, <code>vendor</code> role vocab</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">edv / validate_edv dispatchers</span> — <code>"Sheet1"</code>, <code>"Table X.Y"</code> regex</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">FIRST_PARTY / SECOND_PARTY</span> — only session params recognized</li>
+        <li style="font-family:var(--mono);font-size:11.5px;color:var(--text-dim);padding:5px 10px;background:var(--bg-2);border-radius:5px;border:1px solid var(--border);margin-bottom:5px;"><span style="color:#fdba74;">expression_rule_agent.md + siblings</span> — worked examples saturated with SAP/India vocab</li>
+      </ul>
+      <div style="font-size:11px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Failure mode</div>
+      <p style="margin:0;font-size:12px;color:var(--text-dim);line-height:1.5;"><strong>Silent.</strong> Stage 7 produces zero session rules. Stage 9 skips rows. EDV stages drop reference tables in non-<code>Sheet1</code> sheets. No crash, no warning — you only notice when someone reviews the output and says "half the rules are missing".</p>
+    </div>
+
+  </div>
+
+  <div style="margin-top:20px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px;">
+    <div style="font-size:12px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Read this scope split as</div>
+    <p style="margin:0;font-size:13px;color:var(--text-dim);line-height:1.6;">Even within the existing 4 BUDs, the group-level assumptions already <em>don't hold uniformly</em> — <code>run_stages_vendor_extension.sh:60</code> and <code>run_stages_sunpharma_material.sh:60</code> both contain the comment <code># Stage 7 (Session Based) is skipped for this BUD</code>. That's evidence the 4.5.x template lock-in has already broken on 3 of 4 BUDs in-family; the pipeline just worked around it by skipping a whole stage. Any new BUD inherits the same fragility.</p>
+  </div>
+</section>
+
+<!-- SCENARIO PROGNOSIS -->
+<section>
+  <h2 class="section">New-BUD Prognosis</h2>
+  <p class="section-desc">How accurately the pipeline will handle a new BUD depends on how closely its domain, structure, and terminology match the 4 training BUDs. Scores are estimated correctness of the final <code>formFillMetadatas + formFillRules</code> output before any manual correction.</p>
+  <div class="scenarios">
+
+    <div class="scenario">
+      <h3>Same-domain new BUD</h3>
+      <div class="domain">e.g. "Indian Vendor Onboarding v2"</div>
+      <div class="bar"><div class="risk-ok" style="width:82%"></div></div>
+      <div class="num">80<small>% ±5</small></div>
+      <p>PAN/GSTIN/MSME rules reused, keyword tree hits, section 4.5.1/4.5.2 pattern intact. Minor corrections only.</p>
+    </div>
+
+    <div class="scenario">
+      <h3>Adjacent-domain BUD</h3>
+      <div class="domain">Indian HR / finance / legal process</div>
+      <div class="bar"><div class="risk-med" style="width:58%"></div></div>
+      <div class="num">55<small>% ±10</small></div>
+      <p>Some India rules still fire (PAN, Aadhaar). But vendor/SPOC language in parser keywords misfires; section 4.5.x likely absent.</p>
+    </div>
+
+    <div class="scenario">
+      <h3>Non-India procurement BUD</h3>
+      <div class="domain">EU/US vendor onboarding</div>
+      <div class="bar"><div class="risk-high" style="width:35%"></div></div>
+      <div class="num">32<small>% ±10</small></div>
+      <p>Keyword tree has zero matches for SSN/VAT/EIN. Rule schemas for India KYC unused. Reference schema <code>complete_format/*.json</code> missing. Large rewrite.</p>
+    </div>
+
+    <div class="scenario">
+      <h3>Net-new domain BUD</h3>
+      <div class="domain">Healthcare / education / retail</div>
+      <div class="bar"><div class="risk-crit" style="width:22%"></div></div>
+      <div class="num">20<small>% ±10</small></div>
+      <p>Parser role keywords (<code>TSE</code>, <code>ASM</code>, <code>SPOC</code>) don't match. Nothing in the keyword tree triggers. Manual templates needed.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- STAGE TIMELINE -->
+<section>
+  <h2 class="section">Per-Stage Risk Map</h2>
+  <p class="section-desc">Walk-through of each of the 12 pipeline stages with an overfit score, what causes it, and the exact file:line offenders. Stages 0 and 9–11 are deterministic post-processing; stages 1–6 are LLM dispatchers; 7 is optional.</p>
+
+  <div class="timeline">
+
+    <div class="stage r-high">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 0</span>Field Extraction</div>
+          <span class="stage-risk r-high">45% · High</span>
+        </div>
+        <p class="why">Invoked inline in every <code>run_stages_*.sh</code> and writes directly to <code>archive/output/complete_format/&lt;name&gt;-schema.json</code>. Parser classifies tables via <code>FIELD_HEADER_PATTERNS</code>, <code>INITIATOR_KEYWORDS</code>, <code>SPOC_KEYWORDS</code>, <code>APPROVAL_KEYWORDS</code> — the last three lean on vendor-procurement vocabulary.</p>
+        <ul class="offenders">
+          <li><span class="loc">doc_parser/parser.py:47-55</span> <span class="what">— keyword lists include <code>tse</code>, <code>asm</code>, <code>spoc</code>, <code>vendor</code>, <code>second party</code> (Pidilite-specific sales roles + procurement jargon)</span></li>
+          <li><span class="loc">run_stages_ph_creation.sh:31-40</span> <span class="what">— each BUD needs its own bespoke script; output path hardcoded per BUD</span></li>
+          <li><span class="loc">archive/output/complete_format/</span> <span class="what">— exactly 4 BUD-named schemas (<code>ph_creation</code>, <code>sunpharma_material</code>, <code>vendor_extension</code>, <code>raw_material_creation</code>) + 7 numeric-ID fallbacks</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-med">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 1</span>Rule Placement</div>
+          <span class="stage-risk r-med">55% · Moderate</span>
+        </div>
+        <p class="why">The dispatcher itself is clean (dynamic panel loop, no hardcoded fields). But it seeds the LLM with <code>rule_extractor/static/keyword_tree.json</code> — a 491-line tree whose <code>_meta.source_bud</code> literally declares it was built from <em>Vendor Creation Sample BUD.docx</em>. The entire <code>VERIFY</code> L1 subtree lists only India identifiers (PAN, GSTIN, MSME, CIN, TAN, FSSAI, Aadhaar, Driving Licence).</p>
+        <ul class="offenders">
+          <li><span class="loc">rule_extractor/static/keyword_tree.json:5</span> <span class="what">— <code>"source_bud": "Vendor Creation Sample BUD.docx"</code> is hardcoded</span></li>
+          <li><span class="loc">keyword_tree.json:23-95</span> <span class="what">— 9 of 19 L1/VERIFY children are India-specific validations with no equivalent branch for SSN/VAT/EIN</span></li>
+          <li><span class="loc">keyword_tree.json:29-34</span> <span class="what">— ordinal maps (e.g. <code>{"Panholder title": 1, "Firstname": 2, ...}</code>) are frozen to the Vendor Creation schema</span></li>
+          <li><span class="loc">01_rule_type_placement_agent_v2.md:44-48</span> <span class="what">— variableName format examples ("Company Code", "Vendor Name", "IFSC Code", "Process Type") all leak SAP/India procurement</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-low">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 2</span>Source / Destination</div>
+          <span class="stage-risk r-low">20% · Low</span>
+        </div>
+        <p class="why">Structurally clean. Dispatcher loads <code>Rule-Schemas.json</code> dynamically, loops panels agnostically. The prompt tells the agent to ignore fields it can't resolve. Main residual risk is that the prompt's abstract JSON examples never show non-English/non-procurement field names — a mild framing bias.</p>
+        <ul class="offenders">
+          <li><span class="loc">source_destination_dispatcher.py</span> <span class="what">— no hardcoded fields or panels detected</span></li>
+          <li><span class="loc">02_source_destination_agent_v2.md:60-194</span> <span class="what">— examples abstract (<code>FIELD_NAME_1</code>, <code>__fieldname1__</code>) — low bias</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-med">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 3</span>EDV Rules</div>
+          <span class="stage-risk r-med">40% · Moderate</span>
+        </div>
+        <p class="why">The dispatcher feeds embedded Excel tables to the agent, but reads them from a hardcoded <code>sheet_name = "Sheet1"</code> and matches table references with a regex that only accepts "Reference Table X.Y" / "Table X.Y" wording. Prompt examples name Pidilite and SAP tables.</p>
+        <ul class="offenders">
+          <li><span class="loc">edv_rule_dispatcher.py:~115</span> <span class="what">— <code>sheet_name = "Sheet1"</code> hardcoded; ignores additional sheets</span></li>
+          <li><span class="loc">edv_rule_dispatcher.py:~140</span> <span class="what">— regex <code>r'(?:reference\s+)?table\s+(\d+\.?\d*)'</code> — fails if BUD calls a lookup "Countries lookup" or "Appendix A"</span></li>
+          <li><span class="loc">03_edv_rule_agent_v2.md:33</span> <span class="what">— example ddType <code>["VC_VENDOR_TYPES"]</code> (Pidilite)</span></li>
+          <li><span class="loc">03_edv_rule_agent_v2.md:272-287</span> <span class="what">— sample reference tables use <code>Language Key</code>, <code>Country/Region Key</code>, <code>Purchase Organization</code>, "India Domestic", "International"</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-med">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 4</span>Validate EDV</div>
+          <span class="stage-risk r-med">42% · Moderate</span>
+        </div>
+        <p class="why">Inherits the same <code>Sheet1</code> + regex constraints as Stage 3. <code>DROPDOWN_TYPES</code> is a fixed set; custom types in a new BUD are dropped silently. The prompt's worked example is a <code>PIN-CODE</code> / <code>COMPANY_CODE_PURCHASE_ORGANIZATION</code> walkthrough — strong SAP-India anchor.</p>
+        <ul class="offenders">
+          <li><span class="loc">validate_edv_dispatcher.py:~96</span> <span class="what">— <code>sheet_name = "Sheet1"</code></span></li>
+          <li><span class="loc">validate_edv_dispatcher.py:~191-194</span> <span class="what">— <code>DROPDOWN_TYPES</code> frozen at <code>{DROPDOWN, EXTERNAL_DROP_DOWN_VALUE, MULTI_DROPDOWN}</code></span></li>
+          <li><span class="loc">04_validate_edv_agent_v2.md:286-302</span> <span class="what">— sample uses <code>Pin Code → City → District → State → Country</code></span></li>
+          <li><span class="loc">04_validate_edv_agent_v2.md:370-400</span> <span class="what">— worked example <code>COMPANY_CODE_PURCHASE_ORGANIZATION</code> (SAP schema)</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-high">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 5</span>Expression Rules</div>
+          <span class="stage-risk r-high">60% · High</span>
+        </div>
+        <p class="why">Structurally the dispatcher is <em>excellent</em> — fully dynamic, panel-agnostic, uses <code>context_optimization</code> to slim payloads. The risk lives almost entirely in <code>expression_rule_agent.md</code>: its EXECUTE Rule Placement section teaches the LLM by showing ~20 worked examples, and every single example uses India/SAP vocabulary. This biases the model's judgment on ambiguous non-procurement logic.</p>
+        <ul class="offenders">
+          <li><span class="loc">expression_rule_agent.md:184-196</span> <span class="what">— placement table uses <code>Region</code>/<code>Country</code>, <code>GST Present</code>, <code>PAN Type</code>, <code>Cheque Image</code>/<code>IFSC</code>, <code>Account Group = INDS/FIVN</code> (SAP vendor account groups)</span></li>
+          <li><span class="loc">expression_rule_agent.md:220-248</span> <span class="what">— Copy To example uses <code>_companycodebasicdetails_</code>, <code>_buildingnumberpanandgstdetails_</code> (BUD-specific variableNames)</span></li>
+          <li><span class="loc">expression_rule_agent.md:253</span> <span class="what">— derivation example literally says "If X = India then value is 'DOM IN', else 'INT'"</span></li>
+          <li><span class="loc">expression_rule_agent.md:414-418</span> <span class="what">— validation example regex is the Indian PAN pattern <code>/^[A-Z]{5}[0-9]{4}[A-Z]$/</code></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-med">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 6</span>Inter-Panel Rules</div>
+          <span class="stage-risk r-med">45% · Moderate</span>
+        </div>
+        <p class="why">Two-pass design (detect → classify → resolve) is architecturally sound. Dispatcher is mostly dynamic, but brittle in how it normalizes the detection agent's output — if field names drift, normalization silently drops refs. Prompt examples are saturated with "Basic Details / Bank Details / Vendor Basic Details / Process Type = India-Domestic".</p>
+        <ul class="offenders">
+          <li><span class="loc">inter_panel_dispatcher.py:~152-167</span> <span class="what">— <code>VALID_CLASSIFICATIONS</code> is a hardcoded set; unknown types silently dropped</span></li>
+          <li><span class="loc">inter_panel_dispatcher.py:~425-490</span> <span class="what">— 60+ lines of defensive normalization suggest the detection output format is known-fragile</span></li>
+          <li><span class="loc">09_inter_panel_analysis_agent.md:239-318</span> <span class="what">— all 4 worked examples use "Basic Details → Address Details / Bank Details" with "Process Type = India-Domestic"</span></li>
+          <li><span class="loc">09_inter_panel_complex_agent.md:256-371</span> <span class="what">— derivation example: <code>vendorname → firstname</code>; derivation example: <code>India-Domestic → Local / International</code></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-crit">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 7</span>Session Based</div>
+          <span class="stage-risk r-crit">75% · Critical</span>
+        </div>
+        <p class="why"><strong>The single worst offender in the pipeline.</strong> Entire dispatcher is structured around two specific BUD section numbers: <code>4.5.1 Initiator Behaviour</code> and <code>4.5.2 Vendor Behaviour</code>. If a new BUD re-numbers or renames these sections (or omits them), the dispatcher silently produces no session-based rules. Also hardcodes <code>FIRST_PARTY</code>/<code>SECOND_PARTY</code> as the only session types. Every BUD so far happens to skip Stage 7 except PH Creation — <em>because</em> the others don't have 4.5.x. That's overfitting visibly in action.</p>
+        <ul class="offenders">
+          <li><span class="loc">session_based_dispatcher.py:7-8</span> <span class="what">— docstring asserts "Section 4.5.1 → FIRST_PARTY, 4.5.2 → SECOND_PARTY" as the contract</span></li>
+          <li><span class="loc">session_based_dispatcher.py:62-64</span> <span class="what">— filter: <code>"4.5.2" in table.context</code></span></li>
+          <li><span class="loc">session_based_dispatcher.py:113-115</span> <span class="what">— filter: <code>"4.5.1" in table.context</code></span></li>
+          <li><span class="loc">session_based_dispatcher.py:38</span> <span class="what">— magic synthetic field <code>RULE_CHECK_VARIABLE = "__rulecheck__"</code></span></li>
+          <li><span class="loc">session_based_dispatcher.py:409-416</span> <span class="what">— hardcoded rule names <code>"Make Visible - Session Based (Client)"</code> etc. — will miss any BUD that spells them differently</span></li>
+          <li><span class="loc">run_stages_vendor_extension.sh:60</span> <span class="what">— comment literally says "Stage 7 (Session Based) is skipped for this BUD"</span></li>
+          <li><span class="loc">08_session_based_agent.md:155-204</span> <span class="what">— all prompt examples use Vendor Type / PAN Number / Organization Name</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-high">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 8</span>Convert to API Format</div>
+          <span class="stage-risk r-high">55% · High</span>
+        </div>
+        <p class="why">Deterministic but structurally coupled. Runs in "injection mode" — <code>--schema archive/output/complete_format/&lt;bud&gt;-schema.json</code> — which means every BUD needs a pre-built schema file. It also assumes a fixed API envelope <code>['template']['documentTypes'][0]['formFillMetadatas']</code> and matches fields by panel + name; duplicate field names within a panel collide silently.</p>
+        <ul class="offenders">
+          <li><span class="loc">convert_to_api_format.py:~511</span> <span class="what">— <code>schema['template']['documentTypes'][0]['formFillMetadatas']</code> — KeyError if schema shape differs</span></li>
+          <li><span class="loc">convert_to_api_format.py:~524-544</span> <span class="what">— panel-scoped name match; 2 identically-named fields in one panel → wrong ID assignment</span></li>
+          <li><span class="loc">convert_to_api_format.py:564</span> <span class="what">— comment: "the BUD's 4.5.2 SPOC table"</span></li>
+          <li><span class="loc">convert_to_api_format.py:~1020</span> <span class="what">— default <code>bud_name = "Vendor Creation"</code></span></li>
+          <li><span class="loc">archive/output/complete_format/*.json</span> <span class="what">— 11 schemas; new BUD requires a 12th to exist before pipeline runs</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-crit">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 9</span>Fix Mandatory / Editable</div>
+          <span class="stage-risk r-crit">70% · Critical</span>
+        </div>
+        <p class="why">Same 4.5.1/4.5.2 section lock-in as Stage 7. Reads the BUD directly and walks tables, but only writes back mandatory/editable for rows it finds inside sections named <code>4.5.1</code> or <code>4.5.2</code>. Header detection is also brittle — expects literal header strings like "field name" / "field type".</p>
+        <ul class="offenders">
+          <li><span class="loc">fix_mandatory_fields.py:135</span> <span class="what">— state machine: <code># States: None, '4.5.1', '4.5.2'</code></span></li>
+          <li><span class="loc">fix_mandatory_fields.py:143-146</span> <span class="what">— literal <code>if '4.5.1' in text</code> / <code>elif '4.5.2' in text</code></span></li>
+          <li><span class="loc">fix_mandatory_fields.py:~88-92</span> <span class="what">— header-string match for column detection</span></li>
+          <li><span class="loc">fix_mandatory_fields.py:297</span> <span class="what">— warning: "Skipped N fields not in 4.5.1 or 4.5.2 (kept as-is)"</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-low">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 10</span>Resolve EDV Variable Names</div>
+          <span class="stage-risk r-low">22% · Low</span>
+        </div>
+        <p class="why">Deterministic JSON rewrite. Only assumption is that EDV-related actions match a fixed set <code>{ext_value, external_drop_down, validate_edv}</code> and that variableNames use the <code>__…__</code> wrapper convention. Survives new BUDs as long as the action set doesn't grow.</p>
+        <ul class="offenders">
+          <li><span class="loc">resolve_edv_varnames.py:28</span> <span class="what">— <code>TARGET_ACTIONS</code> hardcoded; new EDV rule types would be silently ignored</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage r-ok">
+      <div class="stage-card">
+        <div class="stage-head">
+          <div class="stage-title"><span class="stage-num">STAGE 11</span>Post Trigger Linker</div>
+          <span class="stage-risk r-ok">15% · Low</span>
+        </div>
+        <p class="why">Purely structural — scans <code>formFillRules</code> for <code>SERVER</code>-processing rules and links their IDs. No BUD-specific assumptions.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMPT BIAS -->
+<section>
+  <h2 class="section">Prompt-Level Domain Bias</h2>
+  <p class="section-desc">The mini-agent prompts themselves are well-parameterized — inputs and instructions are abstract, and they run on any panel JSON. The bias enters through the <em>worked examples</em>. LLMs anchor heavily on example vocabulary: when every illustrative field is <code>PAN Number</code>, <code>Vendor Type</code>, or <code>Process Type = India-Domestic</code>, the model learns to "see" that shape of logic and may miss unfamiliar ones. These are the per-prompt scores:</p>
+  <div class="bias-list">
+
+    <div class="bias-row">
+      <div class="name">Rule Type Placement<small>01_rule_type_placement_agent_v2.md</small></div>
+      <div class="ex">Example vars: <code>_companycodebasicdetails_</code>, <code>_vendornamevendorbasicdetails_</code>, <code>_ifsccodebankdetails_</code></div>
+      <div class="score" style="color:#fdba74;">45%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Source / Destination<small>02_source_destination_agent_v2.md</small></div>
+      <div class="ex">Abstract <code>FIELD_NAME_1/2</code> — no domain leak</div>
+      <div class="score" style="color:#86efac;">15%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">EDV Rules<small>03_edv_rule_agent_v2.md</small></div>
+      <div class="ex"><code>VC_VENDOR_TYPES</code>, <code>Country/Region Key</code>, <code>India Domestic / International / SEZ</code></div>
+      <div class="score" style="color:#fdba74;">55%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Validate EDV<small>04_validate_edv_agent_v2.md</small></div>
+      <div class="ex"><code>PIN-CODE</code>, <code>COMPANY_CODE_PURCHASE_ORGANIZATION</code>, <code>Pin Code → City → District → State → Country</code></div>
+      <div class="score" style="color:#fdba74;">60%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Conditional Logic<small>05_condition_agent_v2.md</small></div>
+      <div class="ex">Abstract examples. Clean.</div>
+      <div class="score" style="color:#86efac;">20%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Derivation<small>06_derivation_agent.md</small></div>
+      <div class="ex">Abstract (<code>_controller_</code>, <code>_dest_</code>). Clean.</div>
+      <div class="score" style="color:#86efac;">18%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Clear Child Fields<small>07_clear_child_fields_agent.md</small></div>
+      <div class="ex">Uses <code>category → subcategory</code>, <code>employeeid → employeename/department/designation</code>. Mostly generic.</div>
+      <div class="score" style="color:#93c5fd;">25%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Session Based<small>08_session_based_agent.md</small></div>
+      <div class="ex"><code>Vendor Type</code>, <code>PAN Number</code>, <code>Organization Name</code>, <code>FIRST_PARTY/SECOND_PARTY</code> as the <em>only</em> session params</div>
+      <div class="score" style="color:#fca5a5;">65%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Inter-Panel Pass 1<small>09_inter_panel_analysis_agent.md</small></div>
+      <div class="ex"><code>Basic Details → Address Details / Bank Details</code>, <code>Process Type = India-Domestic</code>, <code>VC_COMPANY_DETAILS</code></div>
+      <div class="score" style="color:#fca5a5;">65%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Inter-Panel Pass 2<small>09_inter_panel_complex_agent.md</small></div>
+      <div class="ex"><code>vendorname → firstname</code>, <code>India-Domestic → Local/International</code></div>
+      <div class="score" style="color:#fdba74;">55%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Inter-Panel Detect<small>inter_panel_detect_refs.md</small></div>
+      <div class="ex"><code>VC_COMPANY_DETAILS</code>, <code>VC_EMAIL_DETAILS</code>, "attribute 2/9" mentions</div>
+      <div class="score" style="color:#fdba74;">45%</div>
+    </div>
+
+    <div class="bias-row">
+      <div class="name">Expression Rule Agent<small>expression_rule_agent.md</small></div>
+      <div class="ex">Placement table shows <code>GST Present</code>, <code>PAN Type</code>, <code>Cheque Image → IFSC</code>, <code>Account Group = INDS/FIVN</code>; regex example is Indian PAN pattern</div>
+      <div class="score" style="color:#fca5a5;">70%</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATIC RESOURCES -->
+<section>
+  <h2 class="section">Static Resource Deep-Dive</h2>
+  <p class="section-desc">Grounding data the pipeline reads at runtime. Changes to BUD domain require retuning these files — the pipeline does not discover them automatically.</p>
+  <div class="ev-grid">
+
+    <div class="ev">
+      <h3>keyword_tree.json</h3>
+      <div class="path">rule_extractor/static/keyword_tree.json · 491 lines</div>
+      <div class="risk-bar"><div class="bar"><div class="risk-crit" style="width:78%"></div></div><div class="num" style="color:#fca5a5;">78%</div></div>
+      <ul>
+        <li><code>_meta.source_bud</code> is literally <code>"Vendor Creation Sample BUD.docx"</code></li>
+        <li>9 of 19 VERIFY children are India-only: PAN, GSTIN, MSME, CIN, TAN, FSSAI, Driving Licence, Aadhaar</li>
+        <li>Ordinal maps (<code>Panholder title: 1, Firstname: 2, …</code>) match the Vendor Creation schema exactly</li>
+        <li>EDV subtree references <code>PIDILITE_YES_NO</code> table</li>
+        <li>Zero branches for SSN / VAT / EIN / IBAN / EU-VIES</li>
+      </ul>
+    </div>
+
+    <div class="ev">
+      <h3>Rule-Schemas.json</h3>
+      <div class="path">rules/Rule-Schemas.json · 12,418 lines · ~1,009 rules</div>
+      <div class="risk-bar"><div class="bar"><div class="risk-high" style="width:55%"></div></div><div class="num" style="color:#fdba74;">55%</div></div>
+      <ul>
+        <li>~27 rules are India-KYC specific (6× Aadhaar, 3× PAN, 3× GSTIN, 3× MSME, 2× CIN, 2× TAN, 2× FSSAI, IFSC, Pincode)</li>
+        <li>Hardcoded message <code>"GSTIN and PAN doesn't match."</code> in one rule param</li>
+        <li>Remaining ~982 rules are generic (comparisons, file handling, expressions) — these port fine</li>
+        <li>Impact: high usage concentration — generic vendor flows will still use the India rules ~40% of the time</li>
+      </ul>
+    </div>
+
+    <div class="ev">
+      <h3>complete_format/ schemas</h3>
+      <div class="path">archive/output/complete_format/ · 11 files</div>
+      <div class="risk-bar"><div class="bar"><div class="risk-crit" style="width:85%"></div></div><div class="num" style="color:#fca5a5;">85%</div></div>
+      <ul>
+        <li>BUD-named: <code>ph_creation</code>, <code>sunpharma_material</code>, <code>vendor_extension</code>, <code>raw_material_creation</code></li>
+        <li>Plus <code>UNSPSC_Material_Process_BUD_3245.json</code></li>
+        <li>Plus 6 numeric-ID schemas: 1803, 2581, 4553, 6421, 7336, 9699</li>
+        <li>Stage 8 injection requires <em>exactly one</em> to be picked via <code>--schema</code></li>
+        <li>New BUD = new schema file must be produced first; no auto-fallback</li>
+      </ul>
+    </div>
+
+    <div class="ev">
+      <h3>parser.py keyword constants</h3>
+      <div class="path">doc_parser/parser.py:47-55</div>
+      <div class="risk-bar"><div class="bar"><div class="risk-med" style="width:40%"></div></div><div class="num" style="color:#facc15;">40%</div></div>
+      <ul>
+        <li><code>APPROVAL_KEYWORDS</code> includes <code>tse</code>, <code>asm</code> — Pidilite sales-role abbreviations</li>
+        <li><code>SPOC_KEYWORDS</code> = <code>spoc</code>, <code>vendor</code>, <code>second party</code> — procurement-flavored</li>
+        <li><code>INITIATOR_KEYWORDS</code> = <code>initiator</code>, <code>requestor</code>, <code>requester</code>, <code>first party</code> — generic enough</li>
+        <li><code>FIELD_HEADER_PATTERNS</code> expects English literal headers (<code>"field name"</code>, <code>"field type"</code>)</li>
+      </ul>
+    </div>
+
+    <div class="ev">
+      <h3>run_stages_*.sh scripts</h3>
+      <div class="path">run_stages_ph_creation.sh · run_stages_sunpharma_material.sh · run_stages_vendor_extension.sh</div>
+      <div class="risk-bar"><div class="bar"><div class="risk-high" style="width:50%"></div></div><div class="num" style="color:#fdba74;">50%</div></div>
+      <ul>
+        <li>Each hardcodes <code>BUD=</code> and destination schema path — must be copied and edited per new BUD</li>
+        <li>Stage 7 comment "skipped for this BUD" documents the 4.5.x lock-in</li>
+        <li>No generic <code>run_stages.sh --bud &lt;path&gt; --name &lt;slug&gt;</code> entry point</li>
+      </ul>
+    </div>
+
+    <div class="ev">
+      <h3>Rule schema ID references</h3>
+      <div class="path">05_condition_agent_v2.md, others</div>
+      <div class="risk-bar"><div class="bar"><div class="risk-low" style="width:25%"></div></div><div class="num" style="color:#93c5fd;">25%</div></div>
+      <ul>
+        <li>Prompts name rules by ID: Make Visible = <code>343</code>, Make Invisible = <code>336</code>, Expression (Client) = <code>328</code></li>
+        <li>IDs match <code>Rule-Schemas.json</code>; if IDs renumber upstream, every prompt breaks</li>
+        <li>Not overfit to BUD, but overfit to the current rule-schema file version</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section>
+  <h2 class="section">Remediation — Prioritized</h2>
+  <p class="section-desc">Ordered by impact per effort. Fixing items 1–3 would drop the overall risk score from ~62% to ~35% and make the pipeline usable on any Indian BUD without per-BUD scripts.</p>
+  <div class="recs">
+
+    <div class="rec">
+      <h3>1 · Unlock sections 4.5.1 / 4.5.2</h3>
+      <p>Replace literal "4.5.1" / "4.5.2" matching in <code>session_based_dispatcher.py</code> and <code>fix_mandatory_fields.py</code> with a discovery step: scan the BUD for any table whose header/context mentions "Initiator" / "Vendor" / "SPOC" / "Second Party" regardless of section number. Expose <code>--initiator-section</code> / <code>--vendor-section</code> as fallbacks.</p>
+      <span class="effort">Effort · 2-3 days · Impact: very high</span>
+    </div>
+
+    <div class="rec">
+      <h3>2 · Generic run_stages.sh entry point</h3>
+      <p>Collapse the three <code>run_stages_*.sh</code> files into one <code>run_stages.sh</code> that takes <code>--bud</code> and derives a slug from the filename. Stage 0 should auto-generate the <code>complete_format/&lt;slug&gt;-schema.json</code> if absent; stages 7, 9 should warn (not skip silently) when 4.5.x is missing.</p>
+      <span class="effort">Effort · 1 day · Impact: high</span>
+    </div>
+
+    <div class="rec">
+      <h3>3 · Domain-tag the keyword tree &amp; rule schemas</h3>
+      <p>Add a <code>geographies: ["IN"]</code> tag to the 27 India-KYC rules in <code>Rule-Schemas.json</code> and the 9 India-only VERIFY children in <code>keyword_tree.json</code>. Stage 1 dispatcher should filter by an <code>--geographies</code> flag. Ship empty stub branches for US/EU so contributors know where to extend.</p>
+      <span class="effort">Effort · 3 days · Impact: high</span>
+    </div>
+
+    <div class="rec">
+      <h3>4 · De-bias prompt examples</h3>
+      <p>Rewrite worked examples in <code>expression_rule_agent.md</code>, <code>03_edv_rule_agent_v2.md</code>, <code>04_validate_edv_agent_v2.md</code>, <code>08_session_based_agent.md</code>, <code>09_inter_panel_*</code> to use at least 2 domain-neutral scenarios alongside the SAP-vendor one. The Indian PAN regex in <code>expression_rule_agent.md:414</code> should become a generic regex pattern illustration.</p>
+      <span class="effort">Effort · 1 day · Impact: moderate</span>
+    </div>
+
+    <div class="rec">
+      <h3>5 · Discover sheets, don't assume "Sheet1"</h3>
+      <p><code>edv_rule_dispatcher.py:~115</code> and <code>validate_edv_dispatcher.py:~96</code> both hardcode the first sheet. Loop over all sheets in each embedded xlsx; emit each as a candidate reference table. Also soften the <code>"Table X.Y"</code> regex — accept any heading/caption near a table.</p>
+      <span class="effort">Effort · 1 day · Impact: moderate</span>
+    </div>
+
+    <div class="rec">
+      <h3>6 · Harden convert_to_api_format field matching</h3>
+      <p><code>convert_to_api_format.py</code> matches fields by panel-name + field-name and crashes on unfamiliar schema shapes. Add (a) ordinal-position fallback, (b) explicit duplicate-name detection with loud warnings, (c) try/except around the template envelope walk with actionable error messages.</p>
+      <span class="effort">Effort · 2 days · Impact: moderate</span>
+    </div>
+
+    <div class="rec">
+      <h3>7 · Parser keyword generalization</h3>
+      <p><code>parser.py</code> APPROVAL_KEYWORDS should drop <code>tse</code>/<code>asm</code> or move them to a client-overrides file. Add <code>supplier</code>, <code>counterparty</code>, <code>business partner</code> as SPOC synonyms. Add <code>signatory</code>, <code>authorizer</code> as initiator synonyms.</p>
+      <span class="effort">Effort · 0.5 days · Impact: low</span>
+    </div>
+
+    <div class="rec">
+      <h3>8 · Add an eval harness for "unseen" BUDs</h3>
+      <p>The <code>eval/</code> framework already compares generated output to reference. Add a dedicated "holdout" mode: pick one BUD, re-run the full pipeline, score it against human reference. Track this metric over time — any new prompt/dispatcher change that lowers holdout accuracy is a regression signal for overfitting.</p>
+      <span class="effort">Effort · 3 days · Impact: long-term high</span>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  Generated <code>2026-04-13</code> · based on static audit of <code>.claude/agents/mini/</code>, <code>dispatchers/agents/</code>, and static resources at branch <code>feat/approval-workflow-graph</code>.
+</footer>
+
+</div>
+</body>
+</html>
