@@ -85,8 +85,8 @@ doc-parser/
 ### 2.2 Pipeline execution model (what actually happens on a run)
 
 1. `bash_scripts/run_pipeline.sh` orchestrates Stages 0–8 in sequence, passing each stage's output to the next.
-2. Stages 0 and 8 are deterministic Python — no LLM. Stage 0 = field extraction. Stage 8 = API-format conversion.
-3. Stage 7 (session-based RuleCheck) is described in CLAUDE.md as "deterministic" but also has a mini-agent file (`08_session_based_agent.md`) in the mini-agents table. This is an inconsistency in the existing documentation (see §7 open items). For this restructure, Stage 7 is treated as "whatever it does today, it still does" — the agent file gets promoted to a plugin agent, and if the dispatcher reads it today, the dispatcher still reads it after.
+2. Stages 0 and 8 are pure-deterministic Python — no LLM. Stage 0 = field extraction. Stage 8 = API-format conversion.
+3. Stage 7 (session-based RuleCheck) is **hybrid — deterministic Python + agent invocation**. Some of its logic is deterministic field insertion; other parts delegate to the session-based mini-agent (`08_session_based_agent.md`). CLAUDE.md's "deterministic" label is a simplification.
 4. Stages 1–6 are dispatched by Python (`dispatchers/agents/*.py`). Each dispatcher:
    - Loads the previous stage's `all_panels_*.json`.
    - Iterates over panels (sometimes in parallel).
@@ -320,7 +320,7 @@ Works whether the plugin lives inside the repo or is installed to `~/.claude/plu
 | `/doc-parser:validate-edv` | Stage 4 dispatcher | Validate EDV rules. |
 | `/doc-parser:expression` | Stage 5 dispatcher | Expression rules. |
 | `/doc-parser:inter-panel` | Stage 6 dispatcher | Cross-panel rules. |
-| `/doc-parser:session-based` | Stage 7 | Session-based RuleCheck (deterministic). |
+| `/doc-parser:session-based` | Stage 7 dispatcher | Session-based RuleCheck (hybrid deterministic + agent). |
 | `/doc-parser:convert-api` | Stage 8 | API-format conversion (deterministic). |
 
 **Tool commands (8)** — the existing `.claude/commands/*.md` folded in:
@@ -372,7 +372,7 @@ All 7 prompt files under `.claude/agents/mini/` move to `plugins/doc-parser/agen
 | `.claude/agents/mini/inter_panel_detect_refs.md` | `plugins/doc-parser/agents/inter-panel-detect-refs.md` |
 | `.claude/agents/mini/08_session_based_agent.md` | `plugins/doc-parser/agents/session-based.md` |
 
-(Note: the session-based agent is referenced here because the existing file is under `mini/`, even though Stage 7 is deterministic. It will be promoted to keep the mini-agent set complete; whether Stage 7's dispatcher actually invokes it is unchanged from current behavior.)
+(Stage 7 is a hybrid deterministic-plus-agent stage — see §2.2 — so the session-based agent is a live pipeline agent, not a standalone.)
 
 Version suffixes (`_v2`) and numeric prefixes (`01_`, `02_`) dropped — versioning lives in git, ordering lives in `pipeline/stages.py`.
 
@@ -425,7 +425,8 @@ STAGE_AGENTS = {
     4: "validate-edv",
     5: "expression-rule",
     6: "inter-panel-detect-refs",  # Stage 6 also re-invokes expression-rule for pass 2
-    # Stage 0, 7, 8 are deterministic — no agent
+    7: "session-based",            # Stage 7 is hybrid: deterministic Python + agent invocation
+    # Stage 0 and 8 are pure-deterministic — no agent
 }
 ```
 
@@ -602,9 +603,9 @@ If this spec is done right, every phase 2+ item is a drop-in, not a migration.
 
 ---
 
-## 7. Open Items
+## 7. Resolved Items (decisions captured during review)
 
-- Final name for the marketplace: currently `manch-tooling`. Alternatives: `doc-parser-marketplace`, `manch-plugins`.
-- Whether the presets file lives at `plugins/doc-parser/resources/presets.json` (shipped with plugin, version-controlled) or `resources/presets.user.json` (user-owned, gitignored). Current design: ship the 8 known presets in the plugin, leave room for user overrides later.
-- **Stage 7 (session-based) execution model** — CLAUDE.md describes it as "deterministic RuleCheck field insertion" but also lists `08_session_based_agent.md` in the mini-agents table. This plan treats Stage 7 as "unchanged from current behavior" and promotes the agent file regardless. Prashant should clarify whether Stage 7 actually invokes the mini-agent today so Phase 2's eval work has accurate ground truth.
+- **Marketplace name:** `manch-tooling`. Confirmed.
+- **Presets file location:** ship with the plugin at `plugins/doc-parser/resources/presets.json` (version-controlled alongside plugin code). No user-overridable variant in scope A.
+- **Stage 7 execution model:** hybrid — deterministic Python + session-based mini-agent invocation. The existing CLAUDE.md "deterministic" label understates what Stage 7 actually does. This spec now reflects the correct model throughout (see §2.2, §3.5, §3.6). Phase 2's eval work can trust the STAGE_AGENTS mapping in §3.6.
 - Whether to keep a top-level `requirements.txt` at repo root (for discovery) or delete it once plugin's own `requirements.txt` is authoritative. Current design: keep repo-root `requirements.txt` as a one-liner pointing to the plugin.
