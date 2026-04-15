@@ -404,7 +404,8 @@ Ref: docs/superpowers/specs/2026-04-15-plugin-architecture-design.md"
 - Move: `rules/RULES_CLASSIFICATION.md` → `plugins/doc-parser/resources/rules-classification.md`
 - Move: `rule_extractor/static/keyword_tree.json` → `plugins/doc-parser/resources/keyword-tree.json`
 - Move: `.claude/agents/docs/expression_rules.md` → `plugins/doc-parser/resources/expression-rules.md`
-- Move: `.claude/agents/helpers/expression_pattern_analyzer.md` → `plugins/doc-parser/resources/expression-pattern-analyzer.md`
+
+Not moved (dropped in Task 13): `.claude/agents/helpers/expression_pattern_analyzer.md` — not needed per user direction.
 
 - [ ] **Step 1: Move each resource file via `git mv`**
 
@@ -415,13 +416,6 @@ git mv rules/rules_buckets.json plugins/doc-parser/resources/rules-buckets.json
 git mv rules/RULES_CLASSIFICATION.md plugins/doc-parser/resources/rules-classification.md
 git mv rule_extractor/static/keyword_tree.json plugins/doc-parser/resources/keyword-tree.json
 git mv .claude/agents/docs/expression_rules.md plugins/doc-parser/resources/expression-rules.md
-git mv .claude/agents/helpers/expression_pattern_analyzer.md plugins/doc-parser/resources/expression-pattern-analyzer.md
-```
-
-If `.claude/agents/helpers/` contains additional files beyond `expression_pattern_analyzer.md`, move each one to `plugins/doc-parser/resources/` following the same kebab-case naming pattern. List first:
-
-```bash
-ls .claude/agents/helpers/
 ```
 
 Note: `rules/Expression Eval Custom Functions-2.pdf`, `rules/RULES_CLASSIFICATION.html`, and `rules/expression_rules_example/` are not moved — they are reference PDFs/examples, not pipeline data. They will be deleted in Task 13.
@@ -1955,10 +1949,12 @@ git rm -r rules/ 2>/dev/null || rm -rf rules/
 # rule_extractor/ — delete if any files remain that weren't moved
 git rm -r rule_extractor/ 2>/dev/null || rm -rf rule_extractor/
 
-# .claude/agents/ — remove empty subdirs (mini/, docs/, helpers/)
+# .claude/agents/ — remove empty subdirs (mini/, docs/) and the
+# no-longer-needed helpers/ dir (expression_pattern_analyzer.md is
+# deliberately dropped per user direction, not migrated to the plugin).
+git rm -rf .claude/agents/helpers 2>/dev/null || rm -rf .claude/agents/helpers
 rmdir .claude/agents/mini 2>/dev/null || true
 rmdir .claude/agents/docs 2>/dev/null || true
-rmdir .claude/agents/helpers 2>/dev/null || true
 rmdir .claude/agents 2>/dev/null || true
 
 # _gen_rules.py at repo root if it still exists
