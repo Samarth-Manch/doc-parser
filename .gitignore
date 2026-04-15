@@ -232,3 +232,4 @@ issues/
 
 # LibreOffice lock files
 .~lock.*
+validation_output

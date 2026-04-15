@@ -2,21 +2,27 @@
 document_reader.py
 Responsible for all document I/O and structured field extraction.
 
-Uses the docs_parser package (DocumentParser) for parsing, then converts
+Uses the doc_parser package (DocumentParser) for parsing, then converts
 its ParsedDocument output into the dict format expected by downstream
 validators.
 
 parse_document() is the single point of entry for loading a BUD .docx.
-It opens the file via docs_parser and returns:
+It opens the file via doc_parser and returns:
     - master_fields : fields extracted from section 4.4
     - sub_tables    : fields extracted from sections 4.5.1 and 4.5.2
     - doc           : the open Document object, so callers can pass it to
                       other validators without a second file open.
 """
 
+import os
+import sys
+
+# Ensure the project root (parent of pre_validator/) is on sys.path so doc_parser is importable
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from docx import Document
 from docx.document import Document as DocxDocument
-from docs_parser import DocumentParser
+from doc_parser import DocumentParser
 
 
 def _fields_to_dict(field_definitions: list) -> dict:
@@ -34,7 +40,7 @@ def _fields_to_dict(field_definitions: list) -> dict:
 
 def parse_document(file_path: str) -> tuple[dict, dict, dict, DocxDocument]:
     """
-    Open the .docx file, parse it via docs_parser, and extract all
+    Open the .docx file, parse it via doc_parser, and extract all
     structured field data in the format expected by downstream validators.
 
     Args:
@@ -48,7 +54,7 @@ def parse_document(file_path: str) -> tuple[dict, dict, dict, DocxDocument]:
         raw_fields    : {"all": [...], "initiator": [...], "spoc": [...]} — raw FieldDefinition lists
         doc           : open Document object for downstream validators
     """
-    # Use docs_parser to get the rich ParsedDocument
+    # Use doc_parser to get the rich ParsedDocument
     parser = DocumentParser()
     parsed_doc = parser.parse(file_path)
 
