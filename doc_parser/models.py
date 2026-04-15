@@ -173,6 +173,22 @@ class FieldType(Enum):
             "BANK_ACCOUNT": cls.MASKED_FIELD,
             "BANK_ACCOUNT_NUMBER": cls.MASKED_FIELD,
             "ACCOUNT_NUMBER": cls.MASKED_FIELD,
+
+            # Array variations
+            "ARRAY_HEADER": cls.ARRAY_HDR,
+            "ARRAY_END": cls.ARRAY_END,
+
+            # Group variations
+            "GROUP_HEADER": cls.GRP_HDR,
+            "GROUP_END": cls.GRP_END,
+
+            # Row variations
+            "ROW_HEADER": cls.ROW_HDR,
+            "ROW_END": cls.ROW_END,
+
+            # Card variations
+            "CARD_HEADER": cls.CARD_HDR,
+            "CARD_END": cls.CARD_END,
         }
 
         if normalized in mappings:
