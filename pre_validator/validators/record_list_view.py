@@ -133,6 +133,14 @@ def validate_record_list_view(doc: Document) -> list[RecordListViewResult]:
         ))
         return results
 
+    # A field literally named "Type" is not allowed in Section 4.7.
+    if any(f.strip().lower() == "type" for f in fields):
+        results.append(RecordListViewResult(
+            message='A field named "Type" is not allowed in Section 4.7 Record List View.',
+            status="FAIL",
+            suggestion='Please remove or rename the field named "Type" in Section 4.7.',
+        ))
+
     # Match each field against the sample list
     matched_samples: set[str] = set()
     extra_fields: list[str] = []

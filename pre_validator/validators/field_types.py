@@ -24,7 +24,7 @@ VALID_FIELD_TYPES = {
     "ACTION", "OTP", "VIDEO_NATIVE", "AUDIO", "AUDIO_OTP", "AUDIO_FORM_FILL",
     "STATIC_CHECK_BOX", "STATIC_LOCATION", "DYNAMIC_LOCATION",
     "EXTERNAL_DROP_DOWN_VALUE", "EXTERNAL_DROP_DOWN_MULTISELECT",
-    "MULTISELECT_EXTERNAL_DROPDOWN", "TIME", "NUMBER", "QR_SCANNER",
+    "MULTISELECT_EXTERNAL_DROPDOWN", "TIME", "QR_SCANNER",
     "MASKED_FIELD", "FOUR_DIGITS", "IFRAME", "VIDEO", "FILE", "MULTIPLE_FILE",
     "VIDEO_KYC", "VIDEO_KYC_RECORD", "VIDEO_AGENT_KYC", "CONTENT_VALUE_INFO",
     "COMPASS_DIRECTION", "DYNAMIC_BUTTON", "PREVIEW", "HTML_PREVIEW",
@@ -38,8 +38,12 @@ VALID_FIELD_TYPES = {
 
 VALID_FIELD_TYPES_LIST = sorted(VALID_FIELD_TYPES)
 
+# Types that look valid but are not supported by the backend — the
+# validator should suggest the listed replacement instead.
+UNSUPPORTED_TYPE_REPLACEMENTS = {"NUMBER": "TEXT"}
+
 # Fuzzy similarity threshold (0–1). 0.95 = 95% match required for WARNING vs FAIL.
-FUZZY_THRESHOLD = 0.95
+FUZZY_THRESHOLD = 0.90
 
 # Pattern to detect multiple types in a single cell
 _MULTI_TYPE_SEP = re.compile(r"[,/|;\n]+")
@@ -135,6 +139,21 @@ def check_field_types(doc: Document) -> list[FieldTypeResult]:
                         invalid_type="(blank)",
                         status="FAIL",
                         suggestion="Field type is missing, please add a valid field type.",
+                    ))
+                    continue
+
+                # Explicitly unsupported types (e.g. NUMBER → TEXT)
+                replacement = UNSUPPORTED_TYPE_REPLACEMENTS.get(raw_type.upper())
+                if replacement is not None:
+                    results.append(FieldTypeResult(
+                        section=section_key,
+                        field_name=field_name,
+                        invalid_type=raw_type,
+                        status="FAIL",
+                        suggestion=(
+                            f'"{raw_type.upper()}" is not supported, please replace with "{replacement}" '
+                            "(a regex is applied on this field in the backend)."
+                        ),
                     ))
                     continue
 

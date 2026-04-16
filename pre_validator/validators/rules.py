@@ -3,7 +3,7 @@ Compare rules (Logic column) for each field in the master table (4.4)
 against its matching field in 4.5.1 and/or 4.5.2.
 
 Detection is tiered and deterministic-first:
-  Tier 1 — Equality  : exact match after whitespace normalisation     -> FAIL
+  Tier 1 — Equality  : exact match after whitespace normalisation     -> WARNING
   Tier 2 — Fuzzy     : rapidfuzz similarity >= FUZZY_THRESHOLD        -> WARNING
   Tier 3 — LLM       : Claude Code CLI for remaining unmatched pairs   -> WARNING
 """
@@ -262,7 +262,7 @@ def check_rule_uniqueness(
         if check_equality(rule_a.logic, rule_b.logic):
             already_flagged.add(key)
             results.append(RuleDuplicateResult(
-                status="FAIL", location=loc, detection_tier="EXACT",
+                status="WARNING", location=loc, detection_tier="EXACT",
                 field_a=rule_a.field_name, section_a=rule_a.section,
                 rule_a=rule_a.logic[:150],
                 field_b=rule_b.field_name, section_b=rule_b.section,

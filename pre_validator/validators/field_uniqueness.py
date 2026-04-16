@@ -3,15 +3,48 @@ Every field name must be unique within each panel of each table.
 A panel is defined by a row whose type column is PANEL.
 """
 
-from collections import Counter
+from collections import Counter, defaultdict
 from models import FieldUniquenessResult, FieldDuplicateRow, PanelUniquenessRow
 from .doc_utils import group_fields_by_panel
 
 
+# Field types that denote ARRAY boundary markers. Duplicates across these
+# pairs are expected (e.g. one ARRAY_HDR + one ARRAY_END with the same name)
+# and should not be flagged.
+_ARRAY_BOUNDARY_TYPES = {"ARRAY_HDR", "ARRAY_END", "ARRAY HEADER", "ARRAY END"}
+
+
+def _is_array_type(field) -> bool:
+    """Return True if the field's raw type is an ARRAY boundary marker."""
+    raw = getattr(field, "field_type_raw", None)
+    if not raw:
+        return False
+    return raw.strip().upper() in _ARRAY_BOUNDARY_TYPES
+
+
 def _find_duplicates(fields: list) -> list[str]:
-    """Return field names that appear more than once."""
-    names = [(f.name or "").strip().lower() for f in fields if (f.name or "").strip()]
-    return sorted(name for name, count in Counter(names).items() if count > 1)
+    """Return field names that appear more than once.
+
+    Duplicates where every occurrence is an ARRAY boundary marker
+    (ARRAY_HDR / ARRAY_END / ARRAY HEADER / ARRAY END) are excluded,
+    since those are expected pairs. If even one occurrence is a
+    non-array type, the duplicate is still flagged.
+    """
+    grouped: dict[str, list] = defaultdict(list)
+    for f in fields:
+        name = (f.name or "").strip().lower()
+        if not name:
+            continue
+        grouped[name].append(f)
+
+    duplicates = []
+    for name, occurrences in grouped.items():
+        if len(occurrences) <= 1:
+            continue
+        if all(_is_array_type(f) for f in occurrences):
+            continue
+        duplicates.append(name)
+    return sorted(duplicates)
 
 
 def _find_duplicate_panels(fields: list) -> set[str]:
