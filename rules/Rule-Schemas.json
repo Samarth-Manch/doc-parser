@@ -4848,60 +4848,6 @@
       "conditionsRequired": false
     },
     {
-      "id": 192,
-      "updateUser": "FIRST_PARTY",
-      "name": "FFD Dropdown (Client)",
-      "source": "FORM_FILL_DROP_DOWN",
-      "action": "EXT_DROP_DOWN",
-      "processingType": "CLIENT",
-      "applicableTypes": [],
-      "sourceFields": {
-        "numberOfItems": 2,
-        "fields": [
-          {
-            "name": "Form Field 1",
-            "ordinal": 1,
-            "mandatory": false,
-            "unlimited": false
-          },
-          {
-            "name": "Form Field 2",
-            "ordinal": 2,
-            "mandatory": false,
-            "unlimited": false
-          }
-        ]
-      },
-      "destinationFields": {
-        "numberOfItems": 1,
-        "fields": [
-          {
-            "name": "Form Field",
-            "ordinal": 1,
-            "mandatory": false,
-            "unlimited": true
-          }
-        ]
-      },
-      "params": {
-        "paramType": "string",
-        "jsonSchema": {
-          "type": "object",
-          "uiSchema": {},
-          "properties": {
-            "value": {
-              "title": "FFD Type",
-              "remoteEnum": "v2/company/{{companyId}}/form-fill-dropdown/types?templateId={{templateId}}&docTypeId={{docTypeId}}"
-            }
-          }
-        }
-      },
-      "deleted": false,
-      "validatable": false,
-      "skipValidations": false,
-      "conditionsRequired": false
-    },
-    {
       "id": 327,
       "name": "FSSAI OCR",
       "source": "FSSAI",

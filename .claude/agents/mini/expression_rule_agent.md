@@ -56,6 +56,7 @@ A field's logic **qualifies** if it can be mapped to one or more functions docum
 - Regex validation → `rgxtst`
 - Session/party-based visibility → `sbmvi`, `sbminvi`, `pt()`, `mt()`
 - Load-time rules → `on("load")` with `po()`, `tso()`
+- **Default value / Default date / Pre-fill on load** → `on("load")` + `ctfd` + `asdff` (see Fix G below)
 
 A field's logic **does NOT qualify** if:
 - It describes external API calls or server-side validation
@@ -63,13 +64,17 @@ A field's logic **does NOT qualify** if:
 - The logic is too vague to map to any concrete expression function
 - It refers to workflows, approvals, or backend processes
 
+> **Do NOT** dismiss "Default Value should be X", "Default Date should be X", or "pre-fill with value X" as field configuration. These ARE expressible as `on("load")` + `ctfd` rules — see Fix G.
+
 ---
 
 ## Default Visibility/Invisibility on Load (Fix F)
 
-When the BUD says a field or panel should be **"by default invisible"**, **"hidden by default"**, **"by default not visible"**, or **"initially hidden"**, this means the field/panel must be invisible when the form first loads, BEFORE any user interaction.
+When the BUD says a field or panel should be **"by default invisible"**, **"hidden by default"**, **"by default not visible"**, **"initially hidden"**, or — **critically** — when the logic is just a bare **"Invisible"** / **"Hidden"** / **"Not visible"** / **"The field needs to be created, but invisible"** (or any phrasing that asserts invisibility with NO condition attached), this means the field/panel must be invisible when the form first loads, BEFORE any user interaction.
 
-Similarly, **"by default visible"**, **"visible by default"**, or **"initially visible"** means visible on load.
+> **Bare-word rule**: If the logic contains an invisibility keyword and NO condition (no "if", "when", "based on", "depends on", no field reference as a trigger), treat it as default invisible and emit the `on("load") and (minvi(true, ...))` pattern. Only treat invisibility as conditional when the logic explicitly names a triggering field or value.
+
+Similarly, a bare **"Visible"** / **"visible by default"** / **"by default visible"** / **"initially visible"** means visible on load.
 
 ### How to implement:
 Use `on("load")` wrapping with `mvi`/`minvi`:
@@ -86,7 +91,7 @@ on("load") and (minvi(true, "_field1_", "_field2_", ...))
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["_controllingField_"],
+    "source_fields": ["_controllingfield_"],
     "destination_fields": [],
     "conditionalValues": ["on(\"load\") and (minvi(true, \"_panel1_\", \"_panel2_\", \"_panel3_\"))"],
     "condition": "IN",
@@ -98,8 +103,103 @@ on("load") and (minvi(true, "_field1_", "_field2_", ...))
 
 ### Keywords to detect:
 - "by default invisible" / "by default not visible" / "hidden by default" / "initially hidden" → `on("load") and (minvi(true, ...))`
+- **Bare "Invisible" / "Hidden" / "Not visible"** (no condition attached) → `on("load") and (minvi(true, ...))`
+- **"The field needs to be created, but invisible"** / "field must exist but invisible" / "field should be hidden" (no condition) → `on("load") and (minvi(true, ...))`
 - "by default visible" / "visible by default" / "initially visible" → `on("load") and (mvi(true, ...))`
+- **Bare "Visible"** (no condition attached) → `on("load") and (mvi(true, ...))`
 - "by default other panels will be invisible" → `on("load") and (minvi(true, ...all panel vars...))`
+
+### How to distinguish bare vs. conditional:
+| BUD logic | Classification | Pattern |
+|-----------|---------------|---------|
+| "Invisible" | Bare → default invisible | `on("load") and (minvi(true, "_f_"))` |
+| "Hidden" | Bare → default invisible | `on("load") and (minvi(true, "_f_"))` |
+| "The field needs to be created, but invisible" | Bare → default invisible | `on("load") and (minvi(true, "_f_"))` |
+| "Invisible when X = 'No'" | Conditional → place on trigger X | `mvi(vo("_x_")=="Yes","_f_");minvi(vo("_x_")!="Yes","_f_")` |
+| "Visible if Y is selected" | Conditional → place on trigger Y | `mvi(vo("_y_")!="","_f_");minvi(vo("_y_")=="","_f_")` |
+
+---
+
+## Default Value / Default Date / Pre-fill on Load (Fix G)
+
+When the BUD says a field should be **pre-filled with a literal value** on form load — phrased as **"Default Value should be X"**, **"Default Date should be X"**, **"Value X has to be default"**, **"pre-fill with value X"**, **"pre-filled with X"**, or **"initial value should be X"** — this means the field must carry value X when the form first loads, BEFORE any user interaction.
+
+This is a **load_event**, NOT field configuration. Always emit an expression rule for it — do NOT classify it as "field config" and skip.
+
+### Strict keyword gate (CRITICAL — prevents false positives)
+
+Only emit a pre-fill `ctfd` rule if the logic contains BOTH:
+1. An explicit **default/pre-fill keyword**: `default value`, `default date`, `has to be default`, `pre-fill`, `pre-filled`, `pre-populated`, `prefill`, `initial value`, `initially set to`.
+2. An explicit **literal value** named in the logic.
+
+If EITHER is missing, do NOT emit a pre-fill rule. In particular, the following phrasings are **field configuration, not pre-fill** — skip them:
+- "configured with the check-box option and to select it"
+- "selectable checkbox" / "can be selected" / "user can select"
+- "mark as selected" / "option to tick"
+- "this field should be configured as X" (describes field type, not a default value)
+
+> **Rule of thumb**: "to select it" means the user can select it. "Has to be default X" means pre-fill X. Do NOT conflate the two. The SAP convention that a checked checkbox carries value "X" is NOT license to synthesize a pre-fill — the BUD must explicitly state the default value.
+
+### Generic examples
+
+| BUD phrasing | Has default keyword? | Has literal value? | Emit pre-fill? |
+|---|---|---|---|
+| "Field should be configured as a check-box and to select it" | no | no | **No** — field config only |
+| "This is a selectable checkbox option" | no | no | **No** — field config only |
+| "The value `<literal>` has to be default" | yes | yes | **Yes** — emit `ctfd` load_event |
+| "Default value should be `<literal>`" | yes | yes | **Yes** — emit `ctfd` load_event |
+| "Pre-filled with `<literal>` on load" | yes | yes | **Yes** — emit `ctfd` load_event |
+| "Field has a default value" (no literal named) | yes | no | **No** — literal missing, skip |
+| "Initially set to a standard value" (vague) | yes | no | **No** — literal missing, skip |
+| "Default value should be `<literal>`; non-editable" | yes | yes | **Yes** — emit TWO rules: `ctfd` load_event + `dis` enable_disable |
+
+### How to implement:
+Use `on("load")` wrapping with `ctfd` + `asdff`:
+
+```
+on("load") and (ctfd(vo("_field_")=="", "<value>", "_field_");asdff(true, "_field_"))
+```
+
+- `_expressionRuleType`: `"load_event"`
+- Place on the field itself (the field being pre-filled)
+- The `vo("_field_")==""` guard prevents reloads from overwriting an existing user/server value
+- Emit as a **separate rule** — if the same field is also "Non-editable", add a second rule with `dis(true, ...)`. Never merge them.
+
+### Example — "Default Value should be 1000":
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["_controllingareaheaderdata_"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"load\") and (ctfd(vo(\"_controllingareaheaderdata_\")==\"\", \"1000\", \"_controllingareaheaderdata_\");asdff(true, \"_controllingareaheaderdata_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "load_event",
+    "_reasoning": "Controlling Area pre-filled with default value 1000 on form load."
+}
+```
+
+### Example — "pre-fill with value 'X'":
+```json
+{
+    "rule_name": "Expression (Client)",
+    "source_fields": ["_actualrevenuescontroldata_"],
+    "destination_fields": [],
+    "conditionalValues": ["on(\"load\") and (ctfd(vo(\"_actualrevenuescontroldata_\")==\"\", \"X\", \"_actualrevenuescontroldata_\");asdff(true, \"_actualrevenuescontroldata_\"))"],
+    "condition": "IN",
+    "conditionValueType": "EXPR",
+    "_expressionRuleType": "load_event",
+    "_reasoning": "Actual Revenues pre-filled with 'X' on form load."
+}
+```
+
+### Keywords to detect:
+- "default value should be X" / "default value is X" / "default value = X" → `on("load") and (ctfd(vo("_f_")=="", "X", "_f_");asdff(true, "_f_"))`
+- "default date should be X" / "default date is X" → `on("load") and (ctfd(vo("_f_")=="", "X", "_f_");asdff(true, "_f_"))`
+- "value X has to be default" / "X has to be default" → same pattern with literal X
+- "pre-fill with value X" / "pre-filled with X" / "prefill X" / "pre-populated with X" → same pattern with literal X
+- "initial value should be X" / "initial value is X" → same pattern with literal X
+- "default value X … Non-editable" → emit TWO rules: one `load_event` (ctfd) and one `enable_disable` (dis)
 
 ---
 
@@ -148,6 +248,7 @@ A single logic sentence may contain BOTH intra-panel and cross-panel references.
 8) After `ctfd`, always add `asdff` to persist the value.
 9) After `cf`, always add `asdff` + `rffdd` (for dropdowns) or `rffd` (for non-dropdowns).
 10) **Field existence check**: Before placing any rule, verify the **trigger field** (source) exists in `$FIELDS_JSON`. If the trigger is in another panel, skip that specific rule — but check if other parts of the same logic ARE implementable with fields that do exist. Never invent variableNames.
+10a) **variableName format is FIXED**: Every variableName you emit — in `source_fields`, `destination_fields`, inside `conditionalValues` strings (`vo("_x_")`, `mvi(...,"_x_")`, `ctfd(...,"_x_")`, etc.), or anywhere else — MUST be copied **verbatim** from the input field's `variableName` in `$FIELDS_JSON`. Format is ALWAYS a single underscore on each side: `_variablename_`. **NEVER** emit double underscores (`__variablename__`), NEVER wrap an already-wrapped name, NEVER add internal underscores or camelCase. If a field's input variableName is `_pantypenamegstinandpanupdate_`, every reference to it must look exactly like `_pantypenamegstinandpanupdate_`.
 11) Do NOT touch existing rules. Pass them through unchanged.
 12) If unsure whether logic qualifies, skip it. But do NOT skip logic simply because the affected field's logic mentions a cross-panel field — check whether the trigger is local first.
 13) **Character checks always use `rgxtst`**: Any logic involving a specific character at a position, string prefix/suffix, length check, or character type check MUST use `rgxtst`. Never use `==` or manual string comparisons for character-level logic. See Pattern 17 in the reference doc for common patterns.
@@ -157,13 +258,18 @@ A single logic sentence may contain BOTH intra-panel and cross-panel references.
     - **Mandatory**: use `mm(pt() == "FP", ...)` for first-party mandatory, `mm(pt() == "SP", ...)` for second-party mandatory. Pair with `mnm(pt() == "SP/FP", ...)` for the opposite party.
     - **Keywords**: "mandatory in first party", "mandatory in second party", "applicable in first party", "mandatory for vendor", "initiator fills", "second party only", etc.
     - See Critical Rules 17 and 18, and Patterns 13 and 18 in the reference doc.
-16) **Panel visibility — PANEL only, no children**: When creating `mvi`/`minvi` rules that target a field with `type: "PANEL"`, use ONLY the PANEL field's variableName. Do NOT list child fields — the platform automatically cascades visibility to all children when a PANEL is made visible/invisible.
-    - Example: If the panel field is `_vendordetails_` (type: PANEL):
+16) **Panel visibility — PANEL plus children as needed**: When creating `mvi`/`minvi` rules that target a field with `type: "PANEL"`, the PANEL's variableName alone is sufficient because the platform auto-cascades visibility to children. You MAY also list child fields alongside the PANEL in the same `mvi`/`minvi` call. In particular, when individual children ALSO carry their own visibility logic in the BUD (e.g., the PANEL is "Invisible" AND each child says "invisible"), include those children explicitly so the rule faithfully represents the BUD.
+    - Example — PANEL only (cascade-based, sufficient for simple cases):
       ```
       mvi(condition, "_vendordetails_")
       minvi(!condition, "_vendordetails_")
       ```
-    - WRONG: `mvi(condition, "_vendordetails_", "_vendorname_", "_vendorcode_")` — never list children
+    - Example — PANEL + children (use when children have their own visibility logic in the BUD):
+      ```
+      mvi(condition, "_vendordetails_", "_vendorname_", "_vendorcode_")
+      minvi(!condition, "_vendordetails_", "_vendorname_", "_vendorcode_")
+      ```
+    - Consolidate into a SINGLE rule on the PANEL (or on the trigger field, if the condition depends on another field). Do NOT emit one rule per child; list them all in the same `mvi`/`minvi` call.
 
 ---
 
@@ -203,13 +309,13 @@ Simple copies must fire every time the source field changes. Without `on("change
 
 ### Pattern:
 ```
-on("change") and (ctfd(true, vo("_sourceField_"), "_destField1_", "_destField2_");asdff(true, "_destField1_", "_destField2_"))
+on("change") and (ctfd(true, vo("_sourcefield_"), "_destfield1_", "_destfield2_");asdff(true, "_destfield1_", "_destfield2_"))
 ```
 
 ### Key rules for Copy To:
 1. **Always wrap with `on("change") and (...)`** — copies must fire on every source change
 2. **Condition is always `true`** — unconditional copy, no `vo("_x_")==""` checks
-3. **Use `vo("_sourceField_")` as the value** — copy the source field's current value
+3. **Use `vo("_sourcefield_")` as the value** — copy the source field's current value
 4. **Place on the SOURCE field** — the field being copied FROM, not the destination
 5. **Keep as a SEPARATE rule** — do NOT combine with derivation, visibility, or clearing rules on the same field. Copy To is its own rule.
 6. **Consolidate multiple destinations** — if the same source copies to multiple destinations, combine into ONE rule with all destinations listed
@@ -368,7 +474,7 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__triggerField__"],
+    "source_fields": ["_triggerfield_"],
     "destination_fields": [],
     "conditionalValues": ["<full expression string>"],
     "condition": "IN",
@@ -396,9 +502,9 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__gstPresent__"],
+    "source_fields": ["_gstpresent_"],
     "destination_fields": [],
-    "conditionalValues": ["mvi(vo(\"_gstPresent_\")==\"Yes\",\"_gstNumber_\");minvi(vo(\"_gstPresent_\")!=\"Yes\",\"_gstNumber_\")"],
+    "conditionalValues": ["mvi(vo(\"_gstpresent_\")==\"Yes\",\"_gstNumber_\");minvi(vo(\"_gstpresent_\")!=\"Yes\",\"_gstNumber_\")"],
     "condition": "IN",
     "conditionValueType": "EXPR",
     "_expressionRuleType": "visibility",
@@ -410,7 +516,7 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__pan__"],
+    "source_fields": ["_pan_"],
     "destination_fields": [],
     "conditionalValues": ["adderr(vo(\"_pan_\")!=\"\" and not(rgxtst(vo(\"_pan_\"),\"/^[A-Z]{5}[0-9]{4}[A-Z]$/\")),\"Invalid PAN format\",\"_pan_\");remerr(vo(\"_pan_\")==\"\" or rgxtst(vo(\"_pan_\"),\"/^[A-Z]{5}[0-9]{4}[A-Z]$/\"),\"_pan_\")"],
     "condition": "IN",
@@ -424,9 +530,9 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__dateOfBirth__"],
+    "source_fields": ["_dateofbirth_"],
     "destination_fields": [],
-    "conditionalValues": ["setAgeFromDate(\"_dateOfBirth_\",\"_age_\");asdff(vo(\"_age_\")!=\"\",\"_age_\");adderr(vo(\"_age_\")!=\"\" and +vo(\"_age_\")<18,\"Age must be 18 or above\",\"_age_\",\"_dateOfBirth_\");remerr(vo(\"_age_\")!=\"\" and +vo(\"_age_\")>=18,\"_age_\",\"_dateOfBirth_\")"],
+    "conditionalValues": ["setAgeFromDate(\"_dateofbirth_\",\"_age_\");asdff(vo(\"_age_\")!=\"\",\"_age_\");adderr(vo(\"_age_\")!=\"\" and +vo(\"_age_\")<18,\"Age must be 18 or above\",\"_age_\",\"_dateofbirth_\");remerr(vo(\"_age_\")!=\"\" and +vo(\"_age_\")>=18,\"_age_\",\"_dateofbirth_\")"],
     "condition": "IN",
     "conditionValueType": "EXPR",
     "_expressionRuleType": "age",
@@ -438,7 +544,7 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__category__"],
+    "source_fields": ["_category_"],
     "destination_fields": [],
     "conditionalValues": ["on(\"change\") and (cf(true,\"_subcategory_\",\"_item_\");asdff(true,\"_subcategory_\",\"_item_\");rffdd(true,\"_subcategory_\",\"_item_\"))"],
     "condition": "IN",
@@ -452,7 +558,7 @@ Log: Append "Step 9 complete: total <N> rules placed" to $LOG_FILE
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__employeeid__"],
+    "source_fields": ["_employeeid_"],
     "destination_fields": [],
     "conditionalValues": ["on(\"change\") and (cf(vo(\"_employeeid_\")==\"\",\"_employeename_\",\"_department_\");asdff(true,\"_employeename_\",\"_department_\");rffdd(vo(\"_employeeid_\")==\"\",\"_employeename_\",\"_department_\"))"],
     "condition": "IN",
@@ -467,7 +573,7 @@ Parent A has rule `mvi(vo("_A_")=="Yes","_B_");minvi(vo("_A_")!="Yes","_B_")` �
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__A__"],
+    "source_fields": ["_A_"],
     "destination_fields": [],
     "conditionalValues": ["on(\"change\") and (cf(vo(\"_A_\")!=\"Yes\",\"_B_\");asdff(true,\"_B_\");rffdd(vo(\"_A_\")!=\"Yes\",\"_B_\"))"],
     "condition": "IN",
@@ -481,7 +587,7 @@ Parent A has rule `mvi(vo("_A_")=="Yes","_B_");minvi(vo("_A_")!="Yes","_B_")` �
 ```json
 {
     "rule_name": "Expression (Client)",
-    "source_fields": ["__region__"],
+    "source_fields": ["_region_"],
     "destination_fields": [],
     "conditionalValues": ["on(\"change\") and (cf(true,\"_branch_\");rffdd(true,\"_branch_\");cf(vo(\"_region_\")==\"\",\"_branchmanager_\",\"_branchcode_\");asdff(true,\"_branch_\",\"_branchmanager_\",\"_branchcode_\");rffdd(vo(\"_region_\")==\"\",\"_branchmanager_\",\"_branchcode_\"))"],
     "condition": "IN",

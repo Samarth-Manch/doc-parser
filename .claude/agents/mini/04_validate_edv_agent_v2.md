@@ -254,12 +254,12 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
             {
                 "id": 1,
                 "rule_name": "EDV Dropdown (Client)",
-                "source_fields": ["__fieldname1__"],
+                "source_fields": ["_fieldname1_"],
                 "destination_fields": [],
                 "_reasoning": "Populated by previous agents."
             }
         ],
-        "variableName": "__fieldname1__"
+        "variableName": "_fieldname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -270,12 +270,12 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
             {
                 "id": 1,
                 "rule_name": "Some Other Rule",
-                "source_fields": ["__fieldname2__"],
-                "destination_fields": ["__fieldname3__"],
+                "source_fields": ["_fieldname2_"],
+                "destination_fields": ["_fieldname3_"],
                 "_reasoning": "Populated by previous agents."
             }
         ],
-        "variableName": "__fieldname2__"
+        "variableName": "_fieldname2_"
     }
 ]
 ```
@@ -318,19 +318,19 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
                 "id": 1,
                 "rule_name": "Validate EDV (Server)",
                 "source_fields": [
-                    "__pin_code__"
+                    "_pincode_"
                 ],
                 "destination_fields": [
-                    "__city__",
-                    "__district__",
-                    "__state__",
-                    "__country__"
+                    "_city_",
+                    "_district_",
+                    "_state_",
+                    "_country_"
                 ],
                 "params": "PIN-CODE",
                 "_reasoning": "PIN-CODE EDV table has 5 columns. Source is pin code field. Destinations map to a2-a5. Column a1 is the lookup key, not a destination."
             }
         ],
-        "variableName": "__pin_code__"
+        "variableName": "_pincode_"
     },
     {
         "field_name": "Vendor Type",
@@ -342,13 +342,13 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
                 "id": 1,
                 "rule_name": "Validate EDV (Server)",
                 "source_fields": [
-                    "__vendor_type__"
+                    "_vendortype_"
                 ],
                 "destination_fields": [
-                    "__vendor_name__",
+                    "_vendorname_",
                     "-1",
-                    "__category__",
-                    "__subcategory__"
+                    "_category_",
+                    "_subcategory_"
                 ],
                 "params": "VC_VENDOR_TYPES",
                 "_reasoning": "VC_VENDOR_TYPES has 5 columns. Column a1 is the lookup key (skipped). Destinations start from a2: a2→vendor_name, a3→not needed (-1), a4→category, a5→subcategory. Total 4 destination fields."
@@ -356,13 +356,13 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
             {
                 "id": 2,
                 "rule_name": "EDV Dropdown (Client)",
-                "source_fields": ["__vendor_type__"],
+                "source_fields": ["_vendortype_"],
                 "destination_fields": [],
                 "params": {},
                 "_reasoning": "Dropdown rule passed through unchanged by this agent."
             }
         ],
-        "variableName": "__vendor_type__"
+        "variableName": "_vendortype_"
     },
     {
         "field_name": "Purchase Organization",
@@ -374,13 +374,13 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
                 "id": 1,
                 "rule_name": "Validate EDV (Server)",
                 "source_fields": [
-                    "__company_code__",
-                    "__vendor_type__",
-                    "__purchase_organization__"
+                    "_companycode_",
+                    "_vendortype_",
+                    "_purchaseorganization_"
                 ],
                 "destination_fields": [
                     "-1", "-1", "-1", "-1", "-1", "-1", "-1",
-                    "__purchase_org_desc__"
+                    "_purchaseorgdesc_"
                 ],
                 "params": {
                     "param": "COMPANY_CODE_PURCHASE_ORGANIZATION",
@@ -398,7 +398,7 @@ Log: Append "Step 10 complete: Created output JSON" to $LOG_FILE
                 "_reasoning": "Filtered lookup with 3 source fields. Table has 9 columns. Column a1 is lookup key (skipped). Destinations start from a2: columns a2-a8 not needed (-1), a9→purchase_org_desc. Total 8 destination fields."
             }
         ],
-        "variableName": "__purchase_organization__"
+        "variableName": "_purchaseorganization_"
     }
 ]
 ```

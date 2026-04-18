@@ -174,39 +174,6 @@
         }
       }
     },
-    "EXT_DROP_DOWN": {
-      "keywords": ["dropdown", "yes/no", "yes / no"],
-      "bud_phrases": [
-        "dropdown values are yes / no",
-        "dropdown values are yes/no",
-        "yes/no dropdown",
-        "dropdown values refer table",
-        "dropdown values are india, international"
-      ],
-      "note": "Simple dropdown from EDV table. params is TABLE_NAME string.",
-      "children": {
-        "FORM_FILL_DROP_DOWN": {
-          "schema_id": 192,
-          "keywords": ["dropdown", "yes/no", "yes no"],
-          "bud_phrases": [
-            "dropdown values are yes / no",
-            "dropdown values are yes/no",
-            "yes/no dropdown",
-            "dropdown values refer table"
-          ],
-          "processing_type": "CLIENT",
-          "requires_params": true,
-          "params_type": "string",
-          "common_params": {
-            "yes_no": ["PIDILITE_YES_NO", "YES_NO", "CB_YES_NO"],
-            "country": ["COUNTRY"],
-            "company": ["COMPANY_CODE"],
-            "currency": ["CURRENCY_COUNTRY"],
-            "title": ["TITLE"]
-          }
-        }
-      }
-    },
     "EXT_VALUE": {
       "keywords": ["based on", "selection", "cascading", "dependent", "parent"],
       "bud_phrases": [
@@ -471,7 +438,6 @@
       "yes / no": "Look for YES_NO variant in reference"
     },
     "table_type_detection": {
-      "dropdown": "Simple EXT_DROP_DOWN - extract table name from BUD 'dropdown values refer table X'",
       "cascading": "EXT_VALUE - extract from 'based on X selection' with parent-child relationship",
       "validation": "VALIDATION/EXTERNAL_DATA_VALUE - extract from 'validate against' or 'fetch from table'"
     }

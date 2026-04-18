@@ -51,7 +51,7 @@ Use ONLY these exact rule names.
 14) **STATIC RULES ARE ALWAYS SEPARATE**: "Disable", "Invisible", etc. must be individual rules placed on EACH affected field independently. **NEVER** combine static state rules across multiple fields into one rule. Each field gets its OWN static rule. Only CONDITIONAL rules (controlled by another field) can be consolidated with multiple `destination_fields`.
 15) **MIXED LOGIC**: When a field has BOTH a static default state AND a conditional override (e.g., "By default disabled, enable if Field A is Yes"), create TWO separate rules:
     - One static rule on the field itself (e.g., Make Disable - Session Based with `source_fields: []`)
-    - One conditional rule on the controller field (e.g., Enable Field - Session Based with `source_fields: ["__field_a__"]`)
+    - One conditional rule on the controller field (e.g., Enable Field - Session Based with `source_fields: ["_fielda_"]`)
 16) **DERIVATION LOGIC IS NOT VISIBILITY**: Do NOT interpret derivation/value-population logic as visibility rules. Only handle logic that explicitly controls visibility (visible/invisible), enabled/disabled state, or mandatory/non-mandatory state.
 17) **EMPTY LOGIC = NO RULES**: If a field's logic is empty or has no explicit visibility/state instruction, do NOT place any session-based rules on it. Skip it entirely.
 18) **AUTO NON-MANDATORY ON INVISIBLE/DISABLE**: Whenever a field becomes **Invisible** or **Disabled** (whether static or conditional), automatically add a corresponding **Make NonMandatory - Session Based (Client)** rule with the **exact same configuration** (same source_fields, destination_fields, params, conditionalValues, condition, conditionValueType). This is because a field that is invisible or disabled cannot be filled in, so it must not be mandatory. This applies to BOTH static and conditional rules:
@@ -72,7 +72,7 @@ Use ONLY these exact rule names.
 | Enable | Enable Field - Session Based (Client) | `["Enable"]` | `NOT_IN` | No |
 | Visible | Make Visible - Session Based (Client) | `["Visible"]` | `NOT_IN` | No |
 
-All static state rules have `source_fields: []`, `destination_fields: ["__self__"]`, and `params: $SESSION_PARAMS`.
+All static state rules have `source_fields: []`, `destination_fields: ["_self_"]`, and `params: $SESSION_PARAMS`.
 
 **Auto Non-Mandatory**: When "Disable" or "Invisible" is placed, also place a `Make NonMandatory - Session Based (Client)` rule with the exact same configuration (same source_fields, destination_fields, params, conditionalValues, condition). See Rule 18.
 
@@ -116,8 +116,8 @@ For each controller field, add consolidated session-based rules:
 ```json
 {
     "rule_name": "Make Visible - Session Based (Client)",
-    "source_fields": ["_controller_field_"],
-    "destination_fields": ["_field_a_", "_field_b_"],
+    "source_fields": ["_controllerfield_"],
+    "destination_fields": ["_fielda_", "_fieldb_"],
     "params": "SECOND_PARTY",
     "conditionalValues": ["Yes"],
     "condition": "IN",
@@ -133,7 +133,7 @@ For fields with static states ("Disable", "Non-Editable", "Invisible", etc.), ad
 {
     "rule_name": "Make Disable - Session Based (Client)",
     "source_fields": [],
-    "destination_fields": ["_field_x_"],
+    "destination_fields": ["_fieldx_"],
     "params": "SECOND_PARTY",
     "conditionalValues": ["Disable"],
     "condition": "NOT_IN",

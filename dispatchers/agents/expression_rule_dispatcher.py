@@ -21,7 +21,7 @@ from typing import Dict, List, Optional
 sys.path.insert(0, str(Path(__file__).parent))
 from stream_utils import stream_and_print
 
-from context_optimization import strip_all_rules, merge_expression_rules, log_strip_savings
+from context_optimization import strip_all_rules, merge_expression_rules, log_strip_savings, normalize_variable_names
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
@@ -93,6 +93,8 @@ Follow the agent prompt instructions (expression_rule_agent).
 
     agent_output = _run_agent(prompt, output_file, panel_name, verbose, model, multi=False)
     if agent_output is not None:
+        # Defensive: collapse any '__name__' drift back to '_name_' canonical form
+        agent_output = normalize_variable_names(agent_output)
         # Merge: start from original fields (all existing rules intact),
         # replace only expression/visibility/session rules with agent's output
         result = merge_expression_rules(panel_fields, agent_output)
@@ -150,6 +152,8 @@ Panels share this context — use that awareness when building expressions.
         # Merge: start from original fields, replace only expression rules
         result = {}
         for pname, agent_fields in agent_output.items():
+            # Defensive: collapse any '__name__' drift back to '_name_'
+            agent_fields = normalize_variable_names(agent_fields)
             if pname in panels:
                 result[pname] = merge_expression_rules(panels[pname], agent_fields)
             else:
@@ -172,7 +176,7 @@ def _run_agent(prompt, output_file, label, verbose, model, multi):
 
         stream_log = output_file.parent / f"{output_file.stem}_stream.log"
         process = subprocess.Popen(
-            ["claude", "--model", model, "-p", prompt,
+            ["claude", "--model", model, "--effort", "max", "-p", prompt,
              "--output-format", "stream-json", "--verbose",
              "--agent", "mini/expression_rule_agent",
              "--allowedTools", "Read,Write"],

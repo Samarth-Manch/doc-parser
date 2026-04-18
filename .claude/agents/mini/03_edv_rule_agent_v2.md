@@ -71,7 +71,7 @@ Since "Dropdown Type" holds the EDV name, use its variableName as ddType:
   "params": {
     "conditionList": [
       {
-        "ddType": ["__dropdowntype__"],
+        "ddType": ["_dropdowntype_"],
         "criterias": [],
         "da": ["a1"],
         "criteriaSearchAttr": [],
@@ -89,7 +89,7 @@ Since "Dropdown Type" holds the EDV name, use its variableName as ddType:
 | Pattern | Logic says | ddType value |
 |---|---|---|
 | **Static** | "values from NOUN_MODIFIER reference table" | `["NOUN_MODIFIER"]` |
-| **Dynamic (field-based)** | "values populate based on Dropdown Type" | `["__dropdowntype__"]` |
+| **Dynamic (field-based)** | "values populate based on Dropdown Type" | `["_dropdowntype_"]` |
 
 When the logic mentions a specific table name → use that name directly. When the logic says values come from/based on another **field** → use that field's variableName.
 
@@ -191,10 +191,10 @@ Based on what you have generated and gathered, not create the final output JSON.
                 "id": 1,
                 "rule_name": "Rule Name 1",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             },
@@ -202,15 +202,15 @@ Based on what you have generated and gathered, not create the final output JSON.
                 "id": "2",
                 "rule_name": "Rule Name 2",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             }
         ],
-        "variableName": "__fieldname1__"
+        "variableName": "_fieldname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -222,10 +222,10 @@ Based on what you have generated and gathered, not create the final output JSON.
                 "id": 1,
                 "rule_name": "Rule Name 1",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             },
@@ -233,15 +233,15 @@ Based on what you have generated and gathered, not create the final output JSON.
                 "id": "2",
                 "rule_name": "Rule Name 2",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             }
         ],
-        "variableName": "__fieldname2__"
+        "variableName": "_fieldname2_"
     },
 ]
 ```
@@ -301,10 +301,10 @@ If the rule is EDV Dropdown, then field called `_dropdown_type` should be added.
                 "id": 1,
                 "rule_name": "EDV Dropdown",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],     
                 "params": {
                     "conditionList": [
@@ -327,15 +327,15 @@ If the rule is EDV Dropdown, then field called `_dropdown_type` should be added.
                 "id": "2",
                 "rule_name": "Rule Name 2",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             }
         ],
-        "variableName": "__fieldname1__"
+        "variableName": "_fieldname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -347,10 +347,10 @@ If the rule is EDV Dropdown, then field called `_dropdown_type` should be added.
                 "id": 1,
                 "rule_name": "EDV Dropdown",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_dropdown_type": "Child",
                 "params": {
@@ -359,7 +359,7 @@ If the rule is EDV Dropdown, then field called `_dropdown_type` should be added.
                         "ddType": ["reference_table_x"],           
                         "criterias": [
                         {
-                            "a1": "__fieldname1__"
+                            "a1": "_fieldname1_"
                         }
                         ],
                         "da": ["a3", "a4"],
@@ -377,15 +377,15 @@ If the rule is EDV Dropdown, then field called `_dropdown_type` should be added.
                 "id": "2",
                 "rule_name": "Rule Name 2",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             }
         ],
-        "variableName": "__fieldname2__"
+        "variableName": "_fieldname2_"
     }
 ]
 ```

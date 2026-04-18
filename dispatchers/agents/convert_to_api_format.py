@@ -206,6 +206,18 @@ def _has_yes_no_params(rules: List[Dict]) -> bool:
     return False
 
 
+_DOUBLE_UNDERSCORE_TOKEN = re.compile(r'^_{2,}([a-z0-9]+)_{2,}$')
+
+
+def _canonicalize_variable_name(name: str) -> str:
+    """Collapse '__name__' → '_name_' to canonical single-underscore form.
+    No-op for already-canonical names or '-1'."""
+    if not isinstance(name, str):
+        return name
+    m = _DOUBLE_UNDERSCORE_TOKEN.match(name)
+    return f"_{m.group(1)}_" if m else name
+
+
 def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_map: Dict[str, Dict[str, List[int]]],
                            metadatas: List[Dict], global_id_map: Dict[str, int], field_id: int,
                            edv_data: Dict = None) -> int:
@@ -232,6 +244,9 @@ def _resolve_variable_to_id(variable_name: str, current_panel: str, panel_field_
     # Special case: -1 passes through
     if variable_name == "-1":
         return -1
+
+    # Canonicalize '__name__' drift to '_name_' before any lookup
+    variable_name = _canonicalize_variable_name(variable_name)
 
     # First, try to find in current panel
     # Strategy: Look up the field_name from EDV data that corresponds to this variable_name,
@@ -535,6 +550,18 @@ def build_id_map_from_schema(schema_data: Dict, edv_data: Dict) -> Dict[str, int
             field_name = field.get('field_name', '')
             variable_name = field.get('variableName', '')
 
+            # Panel-level entry (field_name == panel_name, type == PANEL):
+            # register its input variableName so references in expressions
+            # resolve to the PANEL metadata id.
+            if (
+                field_name == panel_name
+                and field.get('type') == 'PANEL'
+                and variable_name
+                and panel_name in panel_id_map
+            ):
+                id_map[variable_name] = panel_id_map[panel_name]
+                continue
+
             if field_name in schema_fields_in_panel:
                 idx_list = schema_fields_in_panel[field_name]
                 occurrence = seen_counts.get(field_name, 0)
@@ -569,6 +596,13 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     # Build panel-scoped lookup from schema
     panel_field_map = _build_schema_panel_map(metadatas)
 
+    # Build panel_name -> metadata index map (used for panel-level rule injection).
+    panel_meta_idx_map = {
+        m.get('formTag', {}).get('name'): idx
+        for idx, m in enumerate(metadatas)
+        if m.get('formTag', {}).get('type') == 'PANEL'
+    }
+
     # Build ID map for variable name -> schema ID resolution (panel-aware)
     id_map = build_id_map_from_schema(schema_data, edv_data)
     print(f"Built ID map: {len(id_map)} variable names mapped to schema IDs")
@@ -584,20 +618,32 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
     max_metadata_id = max((m['id'] for m in metadatas), default=0)
     max_form_tag_id = max((m.get('formTag', {}).get('id', 0) for m in metadatas), default=0)
     max_prefill_id = 0
+    max_validation_tag_id = 0
+    max_validation_inner_id = 0
     for m in metadatas:
         pf = m.get('preFillData', {})
         if isinstance(pf, dict) and pf.get('id', 0) > max_prefill_id:
             max_prefill_id = pf['id']
+        for v in m.get('formTagValidations', []) or []:
+            if isinstance(v, dict):
+                if v.get('id', 0) > max_validation_tag_id:
+                    max_validation_tag_id = v['id']
+                inner = v.get('formValidation', {})
+                if isinstance(inner, dict) and inner.get('id', 0) > max_validation_inner_id:
+                    max_validation_inner_id = inner['id']
 
     new_metadata_counter = max_metadata_id + 1
     new_form_tag_counter = max_form_tag_id + 1
     new_prefill_counter = max_prefill_id + 1
+    validation_tag_counter = max_validation_tag_id + 1
+    validation_inner_counter = max_validation_inner_id + 1
 
     # Stats tracking
     fields_matched = 0
     fields_with_rules = 0
     fields_unmatched = []
     total_rules_injected = 0
+    total_validations_injected = 0
 
     # Inject rules into matching fields (panel-scoped)
     for panel_name, fields in edv_data.items():
@@ -610,6 +656,40 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
             field_name = field.get('field_name', '')
             rules = field.get('rules', [])
             variable_name = field.get('variableName', '')
+
+            # Panel-level entry → inject rules onto the PANEL metadata itself.
+            # Stage 12 (consolidate_rules_to_hidden_field) later moves these to
+            # a hidden field under the first panel.
+            if field_name == panel_name and field.get('type') == 'PANEL':
+                panel_idx = panel_meta_idx_map.get(panel_name)
+                if panel_idx is None:
+                    if rules:
+                        fields_unmatched.append(f"{field_name} (panel: {panel_name})")
+                    continue
+
+                fields_matched += 1
+                panel_meta = metadatas[panel_idx]
+                panel_field_id = panel_meta['id']
+
+                if variable_name:
+                    panel_meta['variableName'] = variable_name
+                    id_map[variable_name] = panel_field_id
+
+                if rules:
+                    fields_with_rules += 1
+                    for rule in rules:
+                        form_fill_rule = create_form_fill_rule(
+                            rule, panel_field_id, id_map, rule_id_counter,
+                            current_panel=panel_name,
+                            panel_field_map=panel_field_map,
+                            metadatas=metadatas,
+                            edv_data=edv_data,
+                        )
+                        if form_fill_rule is not None:
+                            panel_meta['formFillRules'].append(form_fill_rule)
+                            rule_id_counter += 1
+                            total_rules_injected += 1
+                continue
 
             if field_name not in schema_fields_in_panel:
                 # RuleCheck is a session-based control field added by the
@@ -716,6 +796,26 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
                         metadatas[meta_idx]['preFillData']['value'] = 'No'
                         print(f"  Set prefill value to 'No' for field '{field_name}' (has YES_NO params)")
 
+            # Inject form validations detected from field logic (stage 7)
+            validations = field.get('formValidations') or []
+            if validations:
+                target_list = metadatas[meta_idx].setdefault('formTagValidations', [])
+                for v in validations:
+                    if not isinstance(v, dict):
+                        continue
+                    inner = {k: v[k] for k in ('name', 'minLength', 'maxLength',
+                                               'standardValidation', 'regex',
+                                               'formDataType', 'description')
+                             if k in v}
+                    inner['id'] = validation_inner_counter
+                    validation_inner_counter += 1
+                    target_list.append({
+                        'id': validation_tag_counter,
+                        'formValidation': inner,
+                    })
+                    validation_tag_counter += 1
+                    total_validations_injected += 1
+
     # Set headerMetadataId on fields between ARRAY_HDR and ARRAY_END
     array_fields_updated = set_header_metadata_ids(metadatas)
     if array_fields_updated:
@@ -742,6 +842,7 @@ def inject_rules_into_schema(schema_data: Dict, edv_data: Dict) -> Tuple[Dict, D
         'fields_with_rules': fields_with_rules,
         'fields_unmatched': fields_unmatched,
         'total_rules_injected': total_rules_injected,
+        'total_validations_injected': total_validations_injected,
         'total_schema_fields': len(metadatas),
         'fields_with_empty_rules': sum(
             1 for m in metadatas if not m.get('formFillRules')
@@ -1077,6 +1178,7 @@ def main():
         print(f"  EDV fields matched:     {stats['fields_matched']}")
         print(f"  Fields with rules:      {stats['fields_with_rules']}")
         print(f"  Rules injected:         {stats['total_rules_injected']}")
+        print(f"  Validations injected:   {stats.get('total_validations_injected', 0)}")
         print(f"  Fields still empty:     {stats['fields_with_empty_rules']}")
         if stats['fields_unmatched']:
             print(f"  Unmatched EDV fields:   {len(stats['fields_unmatched'])}")

@@ -19,8 +19,45 @@ Usage pattern in dispatchers:
 
 import copy
 import json
+import re
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
+
+
+# ── variableName normalization ─────────────────────────────────────────────
+# Canonical form: "_name_" (single underscore each side, lowercase alphanumeric
+# inside). LLMs occasionally drift to "__name__" (double) in source_fields /
+# destination_fields / conditionalValues. This utility collapses the wrappers
+# back to the canonical single-underscore form without touching the interior.
+
+_DOUBLE_UNDERSCORE_TOKEN = re.compile(r'_{2,}([a-z0-9]+)_{2,}')
+
+
+def _normalize_var_string(s: str) -> str:
+    """Collapse '__name__' → '_name_' in any string. Leaves '_name_' and non-
+    variable strings untouched. Handles bare tokens and embedded references
+    inside expression strings like vo("__name__") → vo("_name_")."""
+    if not isinstance(s, str):
+        return s
+    return _DOUBLE_UNDERSCORE_TOKEN.sub(lambda m: f"_{m.group(1)}_", s)
+
+
+def _normalize_tree(obj: Any) -> Any:
+    """Walk an arbitrary JSON-like object and normalize every string leaf."""
+    if isinstance(obj, str):
+        return _normalize_var_string(obj)
+    if isinstance(obj, list):
+        return [_normalize_tree(x) for x in obj]
+    if isinstance(obj, dict):
+        return {k: _normalize_tree(v) for k, v in obj.items()}
+    return obj
+
+
+def normalize_variable_names(fields: List[Dict]) -> List[Dict]:
+    """Normalize variableName occurrences across every string in a panel's
+    fields list. Defense-in-depth against LLM drift to '__name__' form.
+    Returns a new list; does not mutate input."""
+    return _normalize_tree(fields)
 
 
 # ── Rule name classification ──────────────────────────────────────────────

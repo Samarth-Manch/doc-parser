@@ -68,7 +68,7 @@ Extract the source and destination fields that exist in the field list for this 
             "Rule Name 1",
             "Rule Name 2"
         ],
-        "variableName": "__fieldname1__"
+        "variableName": "_fieldname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -79,7 +79,7 @@ Extract the source and destination fields that exist in the field list for this 
             "Rule Name 1",
             "Rule Name 2"
         ],
-        "variableName": "__fieldname2__"
+        "variableName": "_fieldname2_"
     },
 ]
 ```
@@ -139,10 +139,10 @@ Extract the source and destination fields that exist in the field list for this 
                 "id": 1,
                 "rule_name": "Rule Name 1",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             },
@@ -150,15 +150,15 @@ Extract the source and destination fields that exist in the field list for this 
                 "id": "2",
                 "rule_name": "Rule Name 2",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             }
         ],
-        "variableName": "__fieldname1__"
+        "variableName": "_fieldname1_"
     },
     {
         "field_name": "FIELD_NAME_2",
@@ -170,10 +170,10 @@ Extract the source and destination fields that exist in the field list for this 
                 "id": 1,
                 "rule_name": "Rule Name 1",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             },
@@ -181,15 +181,15 @@ Extract the source and destination fields that exist in the field list for this 
                 "id": "2",
                 "rule_name": "Rule Name 2",
                 "source_fields": [
-                    "__fieldname1__"
+                    "_fieldname1_"
                 ],
                 "destination_fields": [
-                    "__fieldname2__"
+                    "_fieldname2_"
                 ],
                 "_reasoning": "Reasoning for chosen source fields and destination fields."
             }
         ],
-        "variableName": "__fieldname2__"
+        "variableName": "_fieldname2_"
     },
 ]
 ```

@@ -31,6 +31,7 @@ from typing import Dict, List, Optional, Tuple
 
 from context_optimization import strip_all_rules_multi_panel
 from context_optimization import print_context_report
+from context_optimization import normalize_variable_names
 from inter_panel_utils import (
     build_compact_single_panel_text,
     build_compact_panels_text,
@@ -768,6 +769,7 @@ If no rules could be created, write empty dict {{}} to {output_file}.
             [
                 "claude",
                 "--model", model,
+                "--effort", "max",
                 "-p", prompt,
                 "--output-format", "stream-json", "--verbose",
                 "--agent", "mini/expression_rule_agent",
@@ -1716,6 +1718,8 @@ def main():
     # ══════════════════════════════════════════════════════════════════════
     # Write output
     # ══════════════════════════════════════════════════════════════════════
+    # Defensive: collapse any '__name__' drift from any upstream/agent output
+    all_results = {pname: normalize_variable_names(fields) for pname, fields in all_results.items()}
     log(f"Writing output to: {output_file}")
     with open(output_file, 'w') as f:
         json.dump(all_results, f, indent=2)
