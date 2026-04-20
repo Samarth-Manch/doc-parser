@@ -59,6 +59,16 @@ from validate_edv_dispatcher import call_validate_edv_mini_agent
 from doc_parser import DocumentParser
 
 
+# Patterns that deterministically reclassify a 'derivation' or 'visibility' ref
+# as 'validate_edv'. Applied at three sites: _normalize_single_ref,
+# _build_normalized_ref, and the post-Phase-1 field-logic reclassifier.
+# Keep as a single constant — duplicated lists silently drift (see issue_6/fix_issue_2.md
+# Recommendation #8 for the three-site drift that shipped to production).
+EDV_PATTERNS = (
+    'edv', 'reference table', 'ref table', 'attribute ', 'vc_', 'validation',
+)
+
+
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
 _DETECT_REFS_SCHEMA_PATH = Path(PROJECT_ROOT) / "dispatchers" / "agents" / "schemas" / "detect_refs.schema.json"
@@ -384,8 +394,7 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
             ref.get('description', ref.get('notes', '')),
             original_classification,
         ]).lower()
-        edv_patterns = ['edv', 'reference table', 'ref table', 'attribute ', 'vc_', 'validation']
-        if any(p in text_to_check for p in edv_patterns):
+        if any(p in text_to_check for p in EDV_PATTERNS):
             classification = 'validate_edv'
 
     # Determine type
@@ -490,8 +499,7 @@ def _build_normalized_ref(det: Dict, field_var: str, field_name: str,
             det.get('description', ''),
             classification,
         ]).lower()
-        edv_patterns = ['edv', 'reference table', 'ref table', 'attribute ', 'vc_', 'validation']
-        if any(p in text_to_check for p in edv_patterns):
+        if any(p in text_to_check for p in EDV_PATTERNS):
             classification = 'validate_edv'
 
     ref_type = 'simple' if classification == 'copy_to' else 'complex'
@@ -1281,7 +1289,6 @@ def main():
     # Identical logic patterns get different labels across panels. This pass checks
     # the actual field logic text to force-reclassify derivation → validate_edv
     # when EDV-related keywords are present, making classification deterministic.
-    edv_keywords = ['edv', 'vc_', 'reference table', 'ref table', 'attribute ']
     reclass_count = 0
     for ref in all_refs:
         if ref.get('classification') not in ('derivation',):
@@ -1294,7 +1301,7 @@ def main():
         for f in input_data[field_panel]:
             if _norm_var(f.get('variableName', '')) == field_var:
                 logic = f.get('logic', '').lower()
-                if any(kw in logic for kw in edv_keywords):
+                if any(kw in logic for kw in EDV_PATTERNS):
                     ref['_original_classification'] = ref.get('classification')
                     ref['classification'] = 'validate_edv'
                     reclass_count += 1
