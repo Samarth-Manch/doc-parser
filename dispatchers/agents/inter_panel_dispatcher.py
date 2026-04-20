@@ -609,8 +609,26 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
             log(f"  Phase 1: Missing structured_output in envelope for '{panel_name}'")
             return None
 
+        # Shape validity at the CLI boundary — before the normalizer's tracking
+        # keys are added. Captures what the LLM actually returned.
+        canonical_keys = {
+            'field_variableName', 'field_name', 'referenced_panel',
+            'referenced_field_variableName', 'referenced_field_name',
+            'type', 'classification', 'logic_snippet', 'description',
+        }
+        raw_refs = raw_result.get('cross_panel_references') or []
+        cli_shape_valid = all(set(r.keys()) == canonical_keys for r in raw_refs)
+
         # Normalize the output to handle format variations
         result = normalize_detection_output(raw_result, panel_name, all_panel_names)
+
+        # Normalizer returns None for 0-ref results. Preserve the shape-valid signal
+        # for aggregate logging in that case by materializing an empty result dict.
+        if result is None and cli_shape_valid and isinstance(raw_refs, list):
+            result = {'panel_name': panel_name, 'cross_panel_references': []}
+
+        if result is not None:
+            result['_cli_shape_valid'] = cli_shape_valid
 
         if result:
             ref_count = len(result.get('cross_panel_references', []))
@@ -1182,11 +1200,6 @@ def main():
 
     shape_valid_panels = 0
     total_panels_attempted = 0
-    canonical_keys = {
-        'field_variableName', 'field_name', 'referenced_panel',
-        'referenced_field_variableName', 'referenced_field_name',
-        'type', 'classification', 'logic_snippet', 'description',
-    }
 
     with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
         futures = {}
@@ -1204,10 +1217,10 @@ def main():
             try:
                 result = future.result()
                 total_panels_attempted += 1
+                if result and result.pop('_cli_shape_valid', False):
+                    shape_valid_panels += 1
                 if result and result.get('cross_panel_references') is not None:
                     refs = result['cross_panel_references']
-                    if all(set(ref.keys()) == canonical_keys for ref in refs):
-                        shape_valid_panels += 1
                     all_refs.extend(refs)
                     for ref in refs:
                         if ref.get('type') == 'simple' and ref.get('classification') == 'copy_to':
