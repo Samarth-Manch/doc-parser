@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["panel_name", "cross_panel_references"],
+  "properties": {
+    "panel_name": { "type": "string" },
+    "cross_panel_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field_variableName", "field_name", "referenced_panel",
+          "referenced_field_variableName", "referenced_field_name",
+          "type", "classification", "logic_snippet", "description"
+        ],
+        "properties": {
+          "field_variableName": { "type": "string", "minLength": 1 },
+          "field_name": { "type": "string" },
+          "referenced_panel": { "type": "string", "minLength": 1 },
+          "referenced_field_variableName": { "type": "string", "minLength": 1 },
+          "referenced_field_name": { "type": "string" },
+          "type": { "enum": ["simple", "complex"] },
+          "classification": {
+            "enum": ["copy_to", "visibility", "derivation", "edv", "validate_edv", "clearing"]
+          },
+          "logic_snippet": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}
