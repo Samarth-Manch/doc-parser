@@ -9,32 +9,9 @@ description: Lightweight per-panel agent that detects cross-panel references in 
 ## Objective
 Analyze a SINGLE panel's fields to detect any cross-panel references in their logic text. Classify each reference as simple (Copy To) or complex (visibility, derivation, EDV, clearing). Do NOT create rules — only detect and classify.
 
-## Output Schema (STRICT — read this before anything else)
+## Output Schema
 
-Each entry in `cross_panel_references` MUST have EXACTLY these 9 keys. No more, no fewer, no aliases, no renames:
-
-```
-field_variableName, field_name, referenced_panel,
-referenced_field_variableName, referenced_field_name,
-type, classification, logic_snippet, description
-```
-
-FORBIDDEN top-level keys per ref — never emit these. If the natural phrasing in your head produces one, rename it to the canonical key above BEFORE writing:
-
-```
-source_field, source_field_name, source_variable_name, source_variableName,
-source_panel, source_field_type, target_field, target_variableName,
-target_field_name, referenced_variable_name, referenced_variableName,
-reference_type, reference_details, references, detected_references, refs
-```
-
-Common renames:
-- `source_variable_name` → `field_variableName`
-- `source_field_name` → `field_name`
-- `referenced_variable_name` → `referenced_field_variableName`
-- `reference_type` → `classification`
-
-The per-ref schema has NO `source`/`target` split. The "source" of a cross-panel reference is always the field in THIS panel (→ `field_variableName`). The "target" is always the field in the OTHER panel (→ `referenced_field_variableName`). Full example and required-field details are in the `Output Structure — MANDATORY FORMAT` section below.
+Each entry in `cross_panel_references` has exactly these 9 keys: `field_variableName`, `field_name`, `referenced_panel`, `referenced_field_variableName`, `referenced_field_name`, `type`, `classification`, `logic_snippet`, `description`. The CLI enforces this contract via JSON schema. A filled-in example is in the `Output Structure` section below.
 
 ## Input
 - PANEL_FIELDS_FILE: $PANEL_FIELDS_FILE — JSON array of fields for one panel (compact format, rules stripped)
@@ -114,21 +91,6 @@ For every field in the panel:
 - If a reference is found, look up the referenced field's variableName in ALL_PANELS_INDEX_FILE
 - Classify and record the reference
 
-### Step 4: Self-validate before writing
-Walk the in-memory `cross_panel_references` array. For each entry:
-
-1. Check that it has all 9 required keys from the Output Schema and NO other top-level keys.
-2. If any forbidden key is present, rename it to the canonical key:
-   - `source_variable_name` / `source_variableName` → `field_variableName`
-   - `source_field_name` → `field_name`
-   - `referenced_variable_name` / `referenced_variableName` / `target_variableName` → `referenced_field_variableName`
-   - `reference_type` → `classification`
-   - Drop: `source_field`, `source_panel`, `source_field_type`, `target_field`, `target_field_name`, `reference_details`
-3. If `field_variableName` or `referenced_field_variableName` is empty or `"unknown"` after rename, drop the entry and append a short note to `errors[]`.
-4. Verify `type` ∈ `{"simple","complex"}` and `classification` ∈ `{"copy_to","visibility","derivation","edv","validate_edv","clearing"}`. Fix or drop on mismatch.
-
-Only after this pass, proceed to Step 5.
-
 ### Step 5: Output
 Output the JSON object as your final response. Emit nothing before or after it.
 
@@ -179,49 +141,6 @@ The output MUST be a JSON object (NOT an array) with exactly these two keys:
 - `logic_snippet`: The relevant portion of the logic text
 - `description`: Brief description
 
-### WRONG — DO NOT EMIT THIS SHAPE
-
-Real drift observed in a prior run. Every key below is forbidden:
-
-```json
-{
-  "panel_name": "Email ID Update",
-  "cross_panel_references": [
-    {
-      "source_field_name": "Email ID Update",
-      "source_variable_name": "_emailidupdate_",
-      "source_field_type": "PANEL",
-      "referenced_field_name": "Type of Update",
-      "referenced_variable_name": "_typeofupdatebasicdetails_",
-      "referenced_panel": "Basic Details",
-      "reference_type": "visibility",
-      "classification": "simple"
-    }
-  ]
-}
-```
-
-The CORRECT shape for the same reference:
-
-```json
-{
-  "panel_name": "Email ID Update",
-  "cross_panel_references": [
-    {
-      "field_variableName": "_emailidupdate_",
-      "field_name": "Email ID Update",
-      "referenced_panel": "Basic Details",
-      "referenced_field_variableName": "_typeofupdatebasicdetails_",
-      "referenced_field_name": "Type of Update",
-      "type": "complex",
-      "classification": "visibility",
-      "logic_snippet": "If the Type of update field (from Basic Details panel) value in \"Vendor Onboarding\" then this Panel is visible to Initiator and Vendor.",
-      "description": "Panel visibility is controlled by Type of Update from Basic Details."
-    }
-  ]
-}
-```
-
 ### If no cross-panel references are found:
 ```json
 {
@@ -230,19 +149,8 @@ The CORRECT shape for the same reference:
 }
 ```
 
-### CRITICAL FORMAT RULES:
-- The output MUST be a JSON **object** with keys `panel_name` and `cross_panel_references`
-- Do NOT output a JSON array at the top level
-- Do NOT use top-level wrapper keys like `references`, `detected_references`, `refs`, etc.
-- The key MUST be `cross_panel_references`
-- Per-ref keys MUST be EXACTLY the 9 listed in the Output Schema at the top of this file — no others
-- Do NOT emit any `source_*` key (`source_field`, `source_field_name`, `source_variable_name`, `source_variableName`, `source_panel`, `source_field_type`) — use `field_variableName` and `field_name` instead
-- Do NOT emit `target_field`, `target_variableName`, `target_field_name` — use `referenced_field_variableName` and `referenced_field_name`
-- Do NOT emit `referenced_variable_name` or `referenced_variableName` — the canonical key is `referenced_field_variableName`
-- Do NOT emit `reference_type` or `reference_details` — the classification key is `classification`
-- `referenced_panel` MUST be a valid panel name from ALL_PANELS_INDEX_FILE, never `"unknown"`
-- `classification` MUST be one of the 6 allowed values listed above
-- `type` MUST be `"simple"` or `"complex"` — nothing else
+### Format
+The output must match the JSON schema supplied to the CLI.
 
 ### DEDUPLICATION RULES (Fix E — Avoid Duplicate Refs):
 - **PANEL fields echoing logic from a controlling field**: If a PANEL-type field's logic says "this panel is visible when [dropdown field] from [other panel] has value X", this is a **redundant echo** of the dropdown's own logic. The controlling field (dropdown) is the canonical source. In this case:
