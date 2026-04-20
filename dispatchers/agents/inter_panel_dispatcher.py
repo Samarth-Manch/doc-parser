@@ -286,22 +286,41 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
     """Normalize a single reference record to the expected schema."""
     VALID_CLASSIFICATIONS = {'copy_to', 'visibility', 'derivation', 'edv', 'validate_edv', 'clearing'}
 
+    # Flatten nested reference_details wrapper (detection agents sometimes emit
+    # {source_field, target_field, reference_details: {relationship_type, matched_text, ...}}).
+    # Promote inner keys so downstream classification/snippet extraction sees them.
+    if isinstance(ref.get('reference_details'), dict):
+        rd = ref['reference_details']
+        rel_type = rd.get('relationship_type') or rd.get('reference_type')
+        if rel_type:
+            ref.setdefault('classification', rel_type)
+        if rd.get('matched_text'):
+            ref.setdefault('logic_snippet', rd['matched_text'])
+        if rd.get('raw_expression'):
+            ref.setdefault('description', rd['raw_expression'])
+
     # Handle nested object format: {source_field: {...}, referenced_field: {...}, target_field: {...}}
+    # Accept both camelCase (variableName) and snake_case (variable_name) keys — detection
+    # agents are non-deterministic about which style they emit.
     if isinstance(ref.get('referenced_field'), dict):
         rf = ref['referenced_field']
         ref.setdefault('referenced_panel', rf.get('panel', ''))
-        ref.setdefault('referenced_field_variableName', rf.get('variableName', ''))
+        ref.setdefault('referenced_field_variableName',
+                       rf.get('variableName') or rf.get('variable_name') or '')
         ref.setdefault('referenced_field_name', rf.get('field_name', ''))
     if isinstance(ref.get('target_field'), dict):
         tf = ref['target_field']
-        ref.setdefault('referenced_field_variableName', tf.get('variableName', ''))
+        ref.setdefault('referenced_panel', tf.get('panel', ''))
+        ref.setdefault('referenced_field_variableName',
+                       tf.get('variableName') or tf.get('variable_name') or '')
         ref.setdefault('referenced_field_name', tf.get('field_name', ''))
     if isinstance(ref.get('source_field'), dict):
         sf = ref['source_field']
-        ref.setdefault('field_variableName', sf.get('variableName', ''))
+        sf_var = sf.get('variableName') or sf.get('variable_name') or ''
+        ref.setdefault('field_variableName', sf_var)
         ref.setdefault('field_name', sf.get('field_name', ''))
         # Replace dict with string so downstream code doesn't see a dict
-        ref['source_field'] = sf.get('variableName', '')
+        ref['source_field'] = sf_var
 
     # Get referenced panel from various possible keys
     referenced_panel = (
@@ -381,6 +400,7 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
         ref.get('variableName') or
         ref.get('target_panel_variableName') or
         ref.get('source_variableName') or
+        ref.get('source_variable_name') or  # snake_case drift from detection agent
         ref.get('source_field') or  # multi-target format from detection agent
         ''
     )
@@ -388,7 +408,9 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
     referenced_field_var = (
         ref.get('referenced_field_variableName') or
         ref.get('referenced_variableName') or
+        ref.get('referenced_variable_name') or  # snake_case drift from detection agent
         ref.get('target_variableName') or
+        ref.get('target_variable_name') or
         ref.get('source_variableName') or
         ref.get('target_field') or
         ref.get('source_field') or
@@ -398,6 +420,7 @@ def _normalize_single_ref(ref: Dict, valid_panel_set: set) -> Optional[Dict]:
     # Get field name (human-readable)
     field_name = (
         ref.get('field_name') or
+        ref.get('source_field_name') or  # snake_case drift from detection agent
         ref.get('destination_field') or
         ''
     )
@@ -1212,14 +1235,22 @@ def main():
         print("---")
 
     # ── Filter garbage refs (empty field_variableName = useless to the agent) ──
-    pre_filter = len(all_refs)
+    # Log each dropped ref's raw keys + panel so schema drift is visible instead
+    # of silently filtered. If these log lines fire, extend the lookup chain in
+    # _normalize_single_ref() or tighten the detection prompt.
+    dropped = [r for r in all_refs if not r.get('field_variableName')]
+    if dropped:
+        log(f"  Filtered out {len(dropped)} refs with empty field_variableName "
+            f"(kept {len(all_refs) - len(dropped)})")
+        for r in dropped:
+            panel = r.get('_source_panel') or r.get('panel') or '?'
+            snippet = (r.get('logic_snippet') or r.get('description') or '')[:120]
+            log(f"    DROPPED ref: panel='{panel}' "
+                f"keys={sorted(r.keys())} snippet={snippet!r}")
+
     simple_refs = [r for r in simple_refs if r.get('field_variableName')]
     complex_refs = [r for r in complex_refs if r.get('field_variableName')]
     all_refs = [r for r in all_refs if r.get('field_variableName')]
-    filtered_out = pre_filter - len(all_refs)
-    if filtered_out:
-        log(f"  Filtered out {filtered_out} refs with empty field_variableName "
-            f"(kept {len(all_refs)})")
 
     # ── Deterministic reclassification: check field's own logic for EDV patterns ──
     # The LLM is non-deterministic with edv/validate_edv/derivation classifications.
