@@ -1,6 +1,6 @@
 ---
 name: Inter-Panel Reference Detection Agent
-allowed-tools: Read, Write
+allowed-tools: Read
 description: Lightweight per-panel agent that detects cross-panel references in field logic. Receives ONE panel's fields plus a compact index of ALL panels' fields, outputs structured JSON of detected references with classification.
 ---
 
@@ -40,17 +40,9 @@ The per-ref schema has NO `source`/`target` split. The "source" of a cross-panel
 - PANEL_FIELDS_FILE: $PANEL_FIELDS_FILE — JSON array of fields for one panel (compact format, rules stripped)
 - PANEL_NAME: $PANEL_NAME — Name of the current panel being analyzed
 - ALL_PANELS_INDEX_FILE: $ALL_PANELS_INDEX_FILE — JSON object mapping every panel name to its array of `{field_name, variableName}` pairs. Use this to resolve referenced field variableNames.
-- OUTPUT_FILE: $OUTPUT_FILE — Where to write the detection results
 
 ## Output
-Write a JSON object to OUTPUT_FILE. The output MUST use EXACTLY this structure — no extra keys, no different key names, no array wrapper:
-
-```json
-{
-  "panel_name": "<panel name>",
-  "cross_panel_references": [...]
-}
-```
+Output a JSON object as your final response. Emit nothing before or after it. The CLI enforces the shape via JSON Schema. The top-level object has exactly two keys — `panel_name` and `cross_panel_references`.
 
 ---
 
@@ -137,8 +129,8 @@ Walk the in-memory `cross_panel_references` array. For each entry:
 
 Only after this pass, proceed to Step 5.
 
-### Step 5: Write output
-Write the structured JSON to OUTPUT_FILE using EXACTLY the format specified below.
+### Step 5: Output
+Output the JSON object as your final response. Emit nothing before or after it.
 
 ---
 
