@@ -635,6 +635,25 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
         if result is None and cli_shape_valid and isinstance(raw_refs, list):
             result = {'panel_name': panel_name, 'cross_panel_references': []}
 
+        # Deterministic post-filter: drop refs where source == destination.
+        # Phase 1 detection sometimes emits self-refs when a field's own logic
+        # mentions the field's own panel name (e.g., "Type of update (from
+        # Basic Details panel)" on a field *in* Basic Details). Phase 2 cannot
+        # build a meaningful cross-panel rule when both ends are the same field.
+        # See issue_6/fix_issue_2.md Root Cause 3.
+        if result is not None:
+            refs = result.get('cross_panel_references', [])
+            self_ref_count = sum(
+                1 for r in refs
+                if r.get('field_variableName') == r.get('referenced_field_variableName')
+            )
+            if self_ref_count:
+                result['cross_panel_references'] = [
+                    r for r in refs
+                    if r.get('field_variableName') != r.get('referenced_field_variableName')
+                ]
+                log(f"  Phase 1: dropped {self_ref_count} self-referential refs in '{panel_name}'")
+
         if result is not None:
             result['_cli_shape_valid'] = cli_shape_valid
 
