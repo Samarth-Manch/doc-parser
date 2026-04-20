@@ -691,7 +691,14 @@ def extract_rule_coverage(
 ) -> set:
     """
     Extract (source_field, destination_field) pairs from all generated rules.
+
     Handles Expression (Client), Copy To, and Make Mandatory rule formats.
+    Registers every source × destination pair — not just source_fields[0]. Phase 2
+    emits multi-source rules for combined-condition visibility / derivation
+    (e.g., "show if A == 'X' AND B == 'Y'"). Old behavior took source_fields[0]
+    only, causing reconciliation to flag the non-[0] source's ref as unmatched
+    even though the rule covered it correctly. See issue_6/fix_issue_2.md
+    Root Cause 1.
     """
     covered = set()
 
@@ -700,21 +707,26 @@ def extract_rule_coverage(
             placement_field = _norm_var(entry.get('target_field_variableName', ''))
 
             for rule in entry.get('rules_to_add', []):
-                source = placement_field
-                if rule.get('source_fields'):
-                    source = _norm_var(rule['source_fields'][0])
+                # All sources the rule declares — not just [0].
+                source_list = [_norm_var(s) for s in (rule.get('source_fields') or [])]
+                if not source_list:
+                    source_list = [placement_field]
 
-                # Method 1: destination_fields is populated (Copy To, Make Mandatory)
-                for dest in rule.get('destination_fields', []):
-                    norm_dest = _norm_var(dest)
-                    if norm_dest and norm_dest != source:
-                        covered.add((source, norm_dest))
+                # Copy To / Make Mandatory (destination_fields populated):
+                # every source covers every explicit destination.
+                dests_explicit = [_norm_var(d) for d in (rule.get('destination_fields') or [])]
+                for source in source_list:
+                    for dest in dests_explicit:
+                        if dest and dest != source:
+                            covered.add((source, dest))
 
-                # Method 2: parse conditionalValues for Expression (Client)
+                # Expression (Client): parse all _variablename_ tokens from the
+                # expression string. Every declared source covers every token.
                 if rule.get('conditionValueType') == 'EXPR':
-                    for expr in rule.get('conditionalValues', []):
-                        # Extract ALL _variablename_ patterns from expression string
-                        all_vars = set(re.findall(r'"(_[a-zA-Z0-9_]+_)"', expr))
+                    all_vars: set = set()
+                    for expr in rule.get('conditionalValues', []) or []:
+                        all_vars.update(re.findall(r'"(_[a-zA-Z0-9_]+_)"', expr))
+                    for source in source_list:
                         for var in all_vars:
                             norm = _norm_var(var)
                             if norm and norm != source:
