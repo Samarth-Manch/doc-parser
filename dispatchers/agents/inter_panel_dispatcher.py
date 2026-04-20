@@ -65,7 +65,16 @@ from doc_parser import DocumentParser
 # Keep as a single constant — duplicated lists silently drift (see issue_6/fix_issue_2.md
 # Recommendation #8 for the three-site drift that shipped to production).
 EDV_PATTERNS = (
+    # Original patterns (pre-fix)
     'edv', 'reference table', 'ref table', 'attribute ', 'vc_', 'validation',
+    # Server-fetch vocabulary (MANCH/Pidilite idioms for server-side lookup tables).
+    # Phrasings like "fetched from staging" and "auto-derived from Vendor Master Data"
+    # signal validate_edv work, not client-side expression. See fix_issue_2.md Part 3.
+    'staging',
+    'master data',
+    'auto-derived',
+    'auto-fetched',
+    'auto-populated',
 )
 
 
