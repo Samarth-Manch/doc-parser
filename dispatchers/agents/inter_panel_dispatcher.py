@@ -754,6 +754,47 @@ def reconcile_refs_to_rules(
     """
     covered_pairs = extract_rule_coverage(complex_rules)
 
+    # Narrow coverage: only source_fields[0] per rule. Kept for diagnostic delta
+    # logging so multi-source coverage is visible in aggregate — regression signal
+    # if delta narrows unexpectedly. See fix_issue_2.md Recommendation #6.
+    narrow = set()
+    for panel_name, entries in complex_rules.items():
+        for entry in entries:
+            placement_field = _norm_var(entry.get('target_field_variableName', ''))
+            for rule in entry.get('rules_to_add', []):
+                source = placement_field
+                if rule.get('source_fields'):
+                    source = _norm_var(rule['source_fields'][0])
+                for dest in rule.get('destination_fields', []):
+                    nd = _norm_var(dest)
+                    if nd and nd != source:
+                        narrow.add((source, nd))
+                if rule.get('conditionValueType') == 'EXPR':
+                    for expr in rule.get('conditionalValues', []) or []:
+                        for var in set(re.findall(r'"(_[a-zA-Z0-9_]+_)"', expr)):
+                            nv = _norm_var(var)
+                            if nv and nv != source:
+                                narrow.add((source, nv))
+    delta = len(covered_pairs) - len(narrow)
+    log(f"  Coverage: {len(narrow)} → {len(covered_pairs)} pairs "
+        f"(+{delta} multi-source pairs from Part 1)")
+
+    # Pre-compute: for each destination, all Phase 2 source_fields that covered it.
+    # Used to distinguish "Phase 2 built nothing for this dest" from
+    # "Phase 2 built rules for this dest but with different sources".
+    dest_to_sources: Dict[str, set] = {}
+    for panel_name, entries in complex_rules.items():
+        for entry in entries:
+            placement_field = _norm_var(entry.get('target_field_variableName', ''))
+            for rule in entry.get('rules_to_add', []):
+                sources = [_norm_var(s) for s in (rule.get('source_fields') or [])] or [placement_field]
+                for d in (rule.get('destination_fields') or []):
+                    dest_to_sources.setdefault(_norm_var(d), set()).update(sources)
+                if rule.get('conditionValueType') == 'EXPR':
+                    for expr in rule.get('conditionalValues', []) or []:
+                        for var in set(re.findall(r'"(_[a-zA-Z0-9_]+_)"', expr)):
+                            dest_to_sources.setdefault(_norm_var(var), set()).update(sources)
+
     unmatched = []
     edv_skipped = 0
     for ref in all_refs:
@@ -766,11 +807,23 @@ def reconcile_refs_to_rules(
         dest = _norm_var(ref.get('field_variableName', ''))
 
         if not source or not dest:
-            unmatched.append({**ref, 'reason': 'Missing source or destination variableName'})
+            sources_for_dest = sorted(dest_to_sources.get(dest, set())) if dest else []
+            unmatched.append({
+                **ref,
+                'reason': 'Missing source or destination variableName',
+                'rule_exists_for_dest': bool(sources_for_dest),
+                'dest_sources_in_phase2': sources_for_dest,
+            })
             continue
 
         if (source, dest) not in covered_pairs:
-            unmatched.append({**ref, 'reason': 'No matching rule found in Phase 2 output'})
+            sources_for_dest = sorted(dest_to_sources.get(dest, set()))
+            unmatched.append({
+                **ref,
+                'reason': 'No matching rule found in Phase 2 output',
+                'rule_exists_for_dest': bool(sources_for_dest),
+                'dest_sources_in_phase2': sources_for_dest,
+            })
 
     return unmatched, edv_skipped
 
@@ -1576,20 +1629,25 @@ def main():
     # -- Ref-to-Rule Reconciliation ----------------------------------------
     unmatched_refs, edv_skipped = reconcile_refs_to_rules(all_refs, complex_rules)
     phase2_scope = len(all_refs) - edv_skipped
+    covered_count = phase2_scope - len(unmatched_refs)
+
+    # Always persist — an empty file is a positive signal (reconciliation clean)
+    # and load-bearing for golden-file diffs downstream.
+    unmatched_file = temp_dir / "unmatched_refs.json"
+    with open(unmatched_file, 'w') as f:
+        json.dump(unmatched_refs, f, indent=2)
+
+    # Aggregate reconcile summary — matches the "Phase 1 SCHEMA: N/N" pattern
+    # from the Issue A fix. Makes per-run drift inspectable without log-spelunking.
+    log(f"  Phase 2 RECONCILE: {covered_count}/{phase2_scope} refs covered by rules "
+        f"({len(unmatched_refs)} unmatched, + {edv_skipped} EDV refs handled by Phase 4)")
+
     if unmatched_refs:
-        log(f"  Reconciliation WARNING: {len(unmatched_refs)}/{phase2_scope} Phase 2 refs "
-            f"did not produce rules (+ {edv_skipped} EDV refs handled by Phase 4):")
+        log(f"  Unmatched detail → {unmatched_file}:")
         for ref in unmatched_refs:
             log(f"    - {ref.get('referenced_field_variableName')} -> "
                 f"{ref.get('field_variableName')} ({ref.get('classification')}) "
                 f"-- {ref.get('reason')}")
-        unmatched_file = temp_dir / "unmatched_refs.json"
-        with open(unmatched_file, 'w') as f:
-            json.dump(unmatched_refs, f, indent=2)
-        log(f"  Written to: {unmatched_file}")
-    else:
-        log(f"  Reconciliation: all {phase2_scope} Phase 2 refs covered by generated rules "
-            f"(+ {edv_skipped} EDV refs handled by Phase 4)")
 
     # ══════════════════════════════════════════════════════════════════════
     # PHASE 3: Validate + Merge (deterministic Python)
