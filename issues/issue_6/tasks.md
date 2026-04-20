@@ -1,6 +1,6 @@
 # Remaining Tasks — Issue 6 Phase 1 Schema Drift Fix
 
-Plan: `issues/issue_6/plan.md`
+Plan: `issues/issue_6/plan_issue_1.md`
 
 ## Status so far
 
@@ -89,7 +89,7 @@ If all 4 runs clean, write a short note under `issues/issue_6/` documenting the 
 
 1. **Dispatcher no longer writes per-panel detect files.** The plan's acceptance script (Task 8 Step 2) globs for `detect_*_output.json`, which won't exist anymore. Use the aggregate dispatcher output instead — see note above.
 2. **Schema coercion, not rejection.** Per `fix_issue_1.md`, forced tool calls coerce content to satisfy the schema. A hallucinated-but-shape-valid ref will pass through; drift surfaces only at downstream variableName resolution. The existing normalizer is retained as a semantic safety net.
-3. **Fallback plan is unused.** Task 1 passed, so no fallback needed. The fallback block in `plan.md` is dead weight for this PR.
+3. **Fallback plan is unused.** Task 1 passed, so no fallback needed. The fallback block in `plan_issue_1.md` is dead weight for this PR.
 
 ## Files touched (committed)
 

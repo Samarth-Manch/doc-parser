@@ -2,7 +2,7 @@
 
 ## Status
 
-- **Issue A (detection schema drift): FIXED (2026-04-20).** Shape enforcement moved from probabilistic prompt guidance to the CLI boundary via `--json-schema`. Agent prompt slimmed from 262 → 139 lines with all forbidden-key prose removed. Four consecutive Pidilite runs produced 15/15 shape-valid panels each (60/60 total), zero drift. Phase 1 now emits `Phase 1 SCHEMA: N/N panels returned shape-valid output` for observability. See `plan.md`, `fix_issue_1.md`, and `acceptance.md`.
+- **Issue A (detection schema drift): FIXED (2026-04-20).** Shape enforcement moved from probabilistic prompt guidance to the CLI boundary via `--json-schema`. Agent prompt slimmed from 262 → 139 lines with all forbidden-key prose removed. Four consecutive Pidilite runs produced 15/15 shape-valid panels each (60/60 total), zero drift. Phase 1 now emits `Phase 1 SCHEMA: N/N panels returned shape-valid output` for observability. See `plan_issue_1.md`, `fix_issue_1.md`, and `acceptance.md`.
 - **Issue B (Phase 2 non-determinism): OPEN.**
 - **Issue C (classification drift): OPEN.**
 
