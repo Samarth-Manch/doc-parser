@@ -61,6 +61,10 @@ from doc_parser import DocumentParser
 
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
+_DETECT_REFS_SCHEMA_PATH = Path(PROJECT_ROOT) / "dispatchers" / "agents" / "schemas" / "detect_refs.schema.json"
+with open(_DETECT_REFS_SCHEMA_PATH, "r") as _f:
+    _DETECT_REFS_SCHEMA_JSON = _f.read()
+
 # Master log file — set in main(), used by log() globally
 _master_log: Optional[Path] = None
 
@@ -549,21 +553,17 @@ def detect_cross_panel_refs(
     with open(panel_fields_file, 'w') as f:
         json.dump(compact_fields, f, indent=2)
 
-    # Output file
-    output_file = temp_dir / f"detect_{safe_name}_output.json"
-
     prompt = f"""Detect cross-panel references in this panel's fields.
 
 ## Input
 - PANEL_FIELDS_FILE: {panel_fields_file}
 - PANEL_NAME: {panel_name}
 - ALL_PANELS_INDEX_FILE: {all_panels_index_file}
-- OUTPUT_FILE: {output_file}
 
 Read the panel fields and the all-panels index.
 Check each field's logic for references to other panels.
 Use the all-panels index to resolve referenced field variableNames.
-Classify each reference and write the structured output to OUTPUT_FILE.
+Classify each reference and output the structured JSON as your final response.
 The output MUST be a JSON object with keys "panel_name" and "cross_panel_references".
 """
 
@@ -572,43 +572,42 @@ The output MUST be a JSON object with keys "panel_name" and "cross_panel_referen
 
         t0 = time.time()
 
-        safe_name = re.sub(r'[^\w\-]', '_', panel_name)
-        stream_log = temp_dir / f"detect_{safe_name}_stream.log"
         process = subprocess.Popen(
             [
                 "claude",
                 "--model", model,
                 "-p", prompt,
-                "--output-format", "stream-json", "--verbose",
+                "--output-format", "json",
                 "--agent", "mini/inter_panel_detect_refs",
-                "--allowedTools", "Read,Write"
+                "--allowedTools", "Read",
+                "--json-schema", _DETECT_REFS_SCHEMA_JSON,
             ],
             stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
+            stderr=subprocess.PIPE,
             text=True,
-            bufsize=1,
-            cwd=PROJECT_ROOT
+            cwd=PROJECT_ROOT,
         )
 
-        stream_and_print(process, verbose=True, log_file_path=stream_log)
-        process.wait()
+        stdout, stderr = process.communicate()
 
         if process.returncode != 0:
             log(f"  Phase 1: Detection FAILED for '{panel_name}' "
                 f"(exit code {process.returncode}) after {elapsed_str(t0)}")
-            # Fall through to check if output file was still written
-
-        # Read output (check file even on non-zero exit — partial output recovery)
-        if not output_file.exists():
-            log(f"  Phase 1: No output file for '{panel_name}' after {elapsed_str(t0)}")
+            if stderr:
+                log(f"  Phase 1: stderr for '{panel_name}': {stderr.strip()[:500]}")
             return None
 
-        if process.returncode != 0:
-            log(f"  Phase 1: '{panel_name}' CLI failed (exit code {process.returncode}) "
-                f"but output file found — recovering")
+        try:
+            envelope = json.loads(stdout)
+        except json.JSONDecodeError as e:
+            log(f"  Phase 1: Failed to parse CLI envelope for '{panel_name}': {e}")
+            log(f"  Phase 1: stdout head: {stdout[:500]}")
+            return None
 
-        with open(output_file, 'r') as f:
-            raw_result = json.load(f)
+        raw_result = envelope.get("structured_output")
+        if raw_result is None:
+            log(f"  Phase 1: Missing structured_output in envelope for '{panel_name}'")
+            return None
 
         # Normalize the output to handle format variations
         result = normalize_detection_output(raw_result, panel_name, all_panel_names)
@@ -1181,6 +1180,14 @@ def main():
     complex_refs: List[Dict] = []   # Complex references
     failed_panels: List[Dict] = []  # {panel_name, phase, field_count, error}
 
+    shape_valid_panels = 0
+    total_panels_attempted = 0
+    canonical_keys = {
+        'field_variableName', 'field_name', 'referenced_panel',
+        'referenced_field_variableName', 'referenced_field_name',
+        'type', 'classification', 'logic_snippet', 'description',
+    }
+
     with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
         futures = {}
         for panel_name, panel_fields in input_data.items():
@@ -1196,8 +1203,11 @@ def main():
             panel_name = futures[future]
             try:
                 result = future.result()
-                if result and result.get('cross_panel_references'):
+                total_panels_attempted += 1
+                if result and result.get('cross_panel_references') is not None:
                     refs = result['cross_panel_references']
+                    if all(set(ref.keys()) == canonical_keys for ref in refs):
+                        shape_valid_panels += 1
                     all_refs.extend(refs)
                     for ref in refs:
                         if ref.get('type') == 'simple' and ref.get('classification') == 'copy_to':
@@ -1215,6 +1225,7 @@ def main():
 
     log(f"Phase 1 COMPLETE — {len(all_refs)} total refs detected "
         f"({len(simple_refs)} simple, {len(complex_refs)} complex) in {elapsed_str(t0)}")
+    log(f"Phase 1 SCHEMA: {shape_valid_panels}/{total_panels_attempted} panels returned shape-valid output")
 
     if all_refs:
         # Log breakdown by classification
