@@ -233,3 +233,5 @@ issues/
 # LibreOffice lock files
 .~lock.*
 validation_output
+pre_validator/eval
+.claude/settings.local.json

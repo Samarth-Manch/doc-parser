@@ -13,16 +13,8 @@ import logging
 import re
 import subprocess
 from dataclasses import dataclass
-from docx import Document
 from rapidfuzz import fuzz
 from models import RuleDuplicateResult
-from .doc_utils import (
-    REQUIRED_SECTIONS,
-    find_section_heading_index,
-    find_heading_by_number,
-    tables_in_section,
-    is_field_table,
-)
 
 
 # ── Configuration ─────────────────────────────────────────────────────────
@@ -50,78 +42,29 @@ def _normalize_field_name(name: str) -> str:
     return " ".join(name.lower().split()).strip("/ ")
 
 
-# Patterns that identify reference tokens in rule logic:
-#   - Uppercase identifiers with underscores (table names): ZMM_VENDOR_M, T001W
-#   - Double-quoted strings (field/column references): "Company Code"
-#   - Single-quoted strings (value references): 'Active'
-_REF_PATTERNS = re.compile(
-    r'"[^"]+?"'            # double-quoted strings
-    r"|'[^']+?'"           # single-quoted strings
-    r"|[A-Z][A-Z0-9_]{2,}" # uppercase identifiers (3+ chars)
-)
-
-# Uppercase tokens that are logic keywords, not references — never neutralize these
-_LOGIC_KEYWORDS = frozenset({
-    "AND", "OR", "NOT", "IF", "THEN", "ELSE", "TRUE", "FALSE",
-    "NULL", "YES", "NO", "SET", "FOR", "ALL", "THE",
-    "WHEN", "CASE", "END", "ARRAY", "TEXT", "VISIBLE", "INVISIBLE",
-    "ENABLE", "DISABLE", "DISABLED", "MANDATORY", "OPTIONAL",
-    "EDITABLE", "DEFAULT", "DISPLAY", "HIDE", "SHOW",
-})
-
-
-def _neutralize_references(text: str) -> str:
-    """Replace reference tokens (table names, quoted field names) with <REF>."""
-    def _replace(match: re.Match) -> str:
-        token = match.group()
-        # Quoted strings are always references
-        if token.startswith('"') or token.startswith("'"):
-            return "<REF>"
-        # Uppercase tokens: skip if they are known logic keywords
-        if token in _LOGIC_KEYWORDS:
-            return token
-        return "<REF>"
-
-    return _REF_PATTERNS.sub(_replace, text)
-
-
-def extract_rules(doc: Document) -> dict[str, list[RuleEntry]]:
-    """Extract non-trivial rules from field tables in all required sections."""
+def extract_rules(parsed) -> dict[str, list[RuleEntry]]:
+    """Extract non-trivial rules from field rows in all field sections."""
     sections_map: dict[str, list[RuleEntry]] = {}
 
-    for section_num, section_heading in REQUIRED_SECTIONS:
-        heading_idx = find_section_heading_index(doc, section_heading)
-        if heading_idx is None:
-            heading_idx = find_heading_by_number(doc, section_num)
-        if heading_idx is None:
+    for section_key in ("4.4", "4.5.1", "4.5.2"):
+        section = parsed.sections.get(section_key)
+        if section is None or not section.heading_found:
             continue
 
         rules = []
-        for table in tables_in_section(doc, doc.paragraphs[heading_idx].text):
-            if not is_field_table(table):
+        for f in section.field_rows:
+            if f.field_type_upper == "PANEL":
                 continue
+            logic_text = f.logic.strip()
+            if logic_text and logic_text.lower() not in ("", "disable", "disabled"):
+                rules.append(RuleEntry(
+                    field_name=f.name,
+                    logic=logic_text,
+                    section=section_key,
+                    row_index=f.row_index,
+                ))
 
-            headers   = [cell.text.strip().lower() for cell in table.rows[0].cells]
-            logic_col = None
-            for candidate in ("logic", "logic and rules other than common logic"):
-                if candidate in headers:
-                    logic_col = headers.index(candidate)
-                    break
-            if logic_col is None:
-                continue
-
-            for r_idx, row in enumerate(table.rows[1:], start=2):
-                logic_text = row.cells[logic_col].text.strip()
-                field_name = row.cells[0].text.strip()
-                if logic_text and logic_text.lower() not in ("", "disable", "disabled"):
-                    rules.append(RuleEntry(
-                        field_name=field_name,
-                        logic=logic_text,
-                        section=section_num,
-                        row_index=r_idx,
-                    ))
-
-        sections_map[section_num] = rules
+        sections_map[section_key] = rules
 
     return sections_map
 
@@ -142,7 +85,6 @@ def check_fuzzy(rule_a: str, rule_b: str) -> tuple[bool, float]:
 # ── Tier 3: LLM (Claude Code CLI) ────────────────────────────────────────
 
 def _is_claude_cli_available() -> bool:
-    """Check if the `claude` CLI command is available on PATH."""
     try:
         result = subprocess.run(
             ["claude", "--version"],
@@ -156,7 +98,6 @@ def _is_claude_cli_available() -> bool:
 def check_llm_batch(
     pairs: list[tuple[RuleEntry, RuleEntry]],
 ) -> list[tuple[RuleEntry, RuleEntry, str]]:
-    """Send a batch of rule pairs to Claude Code CLI; return those flagged as duplicates."""
     if not pairs:
         return []
 
@@ -188,8 +129,6 @@ def check_llm_batch(
             return []
 
         text = result.stdout.strip()
-
-        # Extract JSON from potential markdown code fences
         if "```" in text:
             text = text.split("```")[1]
             if text.startswith("json"):
@@ -218,17 +157,9 @@ def check_llm_batch(
 
 # ── Validator ─────────────────────────────────────────────────────────────
 
-def check_rule_uniqueness(
-    doc: Document,
-    use_llm: bool = True,
-) -> list[RuleDuplicateResult]:
-    """
-    Check rule uniqueness: compare each field in 4.4 (master) against its
-    matching field in 4.5.1 and/or 4.5.2.
-
-    Detection tiers: EXACT -> FUZZY -> LLM
-    """
-    sections_map = extract_rules(doc)
+def check_rule_uniqueness(parsed, use_llm: bool = True) -> list[RuleDuplicateResult]:
+    """Check rule uniqueness across sections. Tiers: EXACT -> FUZZY -> LLM."""
+    sections_map = extract_rules(parsed)
     if not sections_map:
         return []
 
@@ -258,7 +189,6 @@ def check_rule_uniqueness(
 
         loc = f"Section {rule_a.section} vs Section {rule_b.section}"
 
-        # Tier 1: Equality
         if check_equality(rule_a.logic, rule_b.logic):
             already_flagged.add(key)
             results.append(RuleDuplicateResult(
@@ -272,7 +202,6 @@ def check_rule_uniqueness(
             ))
             return
 
-        # Tier 2: Fuzzy
         is_fuzzy, fuzzy_score = check_fuzzy(rule_a.logic, rule_b.logic)
         if is_fuzzy:
             already_flagged.add(key)
@@ -287,25 +216,20 @@ def check_rule_uniqueness(
             ))
             return
 
-        # Tier 3: Queue for LLM batch (only for rules with sufficient length)
         if use_llm and len(rule_a.logic) >= MIN_RULE_LENGTH and len(rule_b.logic) >= MIN_RULE_LENGTH:
             llm_candidates.append((rule_a, rule_b))
 
-    # Compare 4.4 fields against matching fields in 4.5.1 and 4.5.2
     for sub_sec in sub_sections:
         sub_rules = sections_map.get(sub_sec, [])
         if not sub_rules:
             continue
-        # Index sub-section rules by normalized field name
         index_sub: dict[str, list[RuleEntry]] = {}
         for rule in sub_rules:
             index_sub.setdefault(_normalize_field_name(rule.field_name), []).append(rule)
-        # Match master fields to sub-section fields
         for master_rule in master_rules:
             for sub_rule in index_sub.get(_normalize_field_name(master_rule.field_name), []):
                 _compare(master_rule, sub_rule)
 
-    # Tier 4: LLM batch processing via Claude Code CLI
     if use_llm and llm_candidates:
         logging.info("Sending %d pair(s) to Claude Code CLI for matching...", len(llm_candidates))
         for batch_start in range(0, len(llm_candidates), LLM_BATCH_SIZE):
@@ -344,7 +268,7 @@ class RuleUniquenessValidator(BaseValidator):
     description = "Detects duplicate rules across sections using exact, fuzzy, and LLM-based matching."
 
     def validate(self, ctx: ValidationContext) -> list[RuleDuplicateResult]:
-        return check_rule_uniqueness(ctx.doc, use_llm=True)
+        return check_rule_uniqueness(ctx.parsed, use_llm=True)
 
     def write_sheet(self, wb: Workbook, results: list[RuleDuplicateResult]) -> None:
         ws = wb.create_sheet(self.sheet_name)

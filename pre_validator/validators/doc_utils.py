@@ -5,9 +5,12 @@ Shared document-traversal helpers used by multiple validators.
 All functions operate on a python-docx Document object.
 """
 
+import re
+import zipfile
 from collections import defaultdict
 from typing import Iterator
 
+from lxml import etree
 from docx import Document
 
 
@@ -177,3 +180,73 @@ def iter_field_tables(doc: Document) -> Iterator[tuple[str, list]]:
         field_tbls = [t for t in tables if is_field_table_strict(t)]
         if field_tbls:
             yield section_key, field_tbls
+
+
+# ── OLE embedded Excel label mapping ──────────────────────────────────────
+
+def build_ole_label_map(docx_path: str) -> dict[str, str]:
+    """
+    Map embedded OLE filenames to their preceding bullet/paragraph text.
+
+    LibreOffice-embedded Excel files get generic names (oleObject1.xlsx, etc.)
+    unlike MS Word which preserves meaningful names. However the BUD document
+    has bulleted text above each embedded object with the proper table name
+    (e.g. "Table 1.1", "Vendor Master").
+
+    Walks the DOCX XML body in document order: for each paragraph that
+    references an OLE embedding (via r:id), records the last non-empty
+    paragraph text seen before it as the label.
+
+    Returns:
+        dict mapping embedded filename (e.g. "oleObject1.xlsx") to
+        the preceding paragraph text (e.g. "Table 1.1").
+        Empty dict if no mappings could be built.
+    """
+    label_map: dict[str, str] = {}
+
+    try:
+        with zipfile.ZipFile(docx_path, "r") as zf:
+            # Step 1: rId -> filename from relationships
+            rid_to_file: dict[str, str] = {}
+            try:
+                rels_xml = zf.read("word/_rels/document.xml.rels")
+                rels_tree = etree.fromstring(rels_xml)
+                for rel in rels_tree:
+                    target = rel.get("Target", "")
+                    if "embeddings/" in target.lower():
+                        rid_to_file[rel.get("Id")] = target.split("/")[-1]
+            except (KeyError, etree.XMLSyntaxError):
+                return label_map
+
+            if not rid_to_file:
+                return label_map
+
+            # Step 2: walk body paragraphs, track last text, detect OLE refs
+            doc_xml = zf.read("word/document.xml")
+            tree = etree.fromstring(doc_xml)
+
+            w_ns = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            body = tree.find(f"{{{w_ns}}}body")
+            if body is None:
+                return label_map
+
+            last_text = ""
+            for elem in body:
+                if etree.QName(elem).localname != "p":
+                    continue
+
+                text = "".join(elem.itertext()).strip()
+                if text:
+                    last_text = text
+
+                # Check for rId references pointing to embedded files
+                elem_str = etree.tostring(elem, encoding="unicode")
+                for rid, filename in rid_to_file.items():
+                    if f'r:id="{rid}"' in elem_str and last_text:
+                        if filename not in label_map:
+                            label_map[filename] = last_text
+
+    except (zipfile.BadZipFile, FileNotFoundError, Exception):
+        pass
+
+    return label_map

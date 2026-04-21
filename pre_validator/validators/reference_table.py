@@ -1,79 +1,67 @@
 """
 Validates that reference tables cited in field logic exist in section 4.6.
 
-Scans all field logic strings for table references and checks that the
-referenced table name appears as a listed entry (text label or embedded
-Excel file name) in section 4.6 Reference Tables.
-
-Section 4.6 entries come in three flavours across BUD documents:
-  1. Numbered:  "Table 1.1", "Table 1.2"
-  2. Named:     "VC_BASIC_DETAILS", "Noun-Modifier", "Table YES_NO"
-  3. OLE links: embedded Excel files whose paths appear in field codes
+Uses the pre-parsed section_46_table_names from BUDDocument (populated by
+section_parser) and regex-extracts table references from field logic.
 """
 
+import json
+import logging
 import os
 import re
-from lxml import etree
+import subprocess
 from models import ReferenceTableResult
+from section_parser import normalise_table_name, normalise_table_name_variants
 
+# ── Toggle LLM fallback ─────────────────────────────────────────────────────
+USE_LLM = True
 
 # ── Patterns for extracting table references FROM field logic ────────────────
 
-# Pattern 1 — numbered, optionally followed by parenthesized name:
-# e.g. "table 1.1", "reference table 1.3 (COUNTRY)"
 _PAT_NUMBERED = re.compile(
     r"(?:refer(?:ence)?\s+)?table\s+(\d+\.\d+)(?:\s*\(([A-Za-z_][A-Za-z0-9_]*)\))?",
     re.IGNORECASE,
 )
-
-# Pattern 2 — named after separator dash/colon
 _PAT_NAMED_AFTER_SEP = re.compile(
     r"(?:reference\s+)?table\s*(?:name)?\s*[-:]\s*([A-Za-z_][A-Za-z0-9_]*)",
     re.IGNORECASE,
 )
-
-# Pattern 3 — named after "Reference Table " with space, requires underscore
 _PAT_NAMED_AFTER_SPACE = re.compile(
-    r"reference\s+table\s+([A-Za-z_][A-Za-z0-9_]*(?:_[A-Za-z0-9_]+)+)",
+    r'reference\s+table\s+["\u201c\u201d\u201e]?([A-Za-z_][A-Za-z0-9_]*(?:_[A-Za-z0-9_]+)+)["\u201c\u201d\u201f]?',
     re.IGNORECASE,
 )
-
-# Pattern 4 — name BEFORE "reference table"
+_PAT_NAMED_QUOTED = re.compile(
+    r'(?:refer(?:ence)?\s+)?table\s+["\u201c\u201e]([A-Za-z_][A-Za-z0-9_ ]*?)["\u201d\u201f]',
+    re.IGNORECASE,
+)
 _PAT_NAME_BEFORE = re.compile(
     r"(\b[A-Za-z_][A-Za-z0-9_]*)\s+reference\s+table",
     re.IGNORECASE,
 )
-
-# Pattern 5+6 — EDV followed by ALL-CAPS name, handles straight/curly/missing quotes
-_PAT_EDV = re.compile(
-    r'\bEDV\s+["\u201c\u201d\u201e]?([A-Z][A-Z0-9_]+)["\u201c\u201d\u201f]?',
+_PAT_EDV_QUOTED = re.compile(
+    r'\bEDV[,;]?\s+(?:(?:refer(?:ence)?\s+)?table\s+)?["\u201c\u201e]([A-Z][A-Z0-9_ ]+?)["\u201d\u201f]',
 )
-
-# Pattern 7 — "column N of (the) (Table)? TABLE_NAME"
-_PAT_COLUMN_OF = re.compile(
+_PAT_EDV_UNQUOTED = re.compile(
+    r'\bEDV[,;]?\s+(?:(?:refer(?:ence)?\s+)?table\s+)?([A-Z][A-Z0-9_]+)(?=\s|$|[,;.])',
+)
+_PAT_QUOTED_IDENTIFIER = re.compile(
+    r'["\u201c\u201e]([A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+)["\u201d\u201f]',
+)
+_PAT_COLUMN_OF_QUOTED = re.compile(
     r'column\s+\d+\s+of\s+(?:the\s+)?(?:(?:refer(?:ence)?\s+)?table\s+)?'
-    r'["\u201c\u201e]?([A-Z][A-Z0-9_]*(?:_[A-Z0-9_]+)*)["\u201d\u201f]?',
+    r'["\u201c\u201e]([A-Za-z_][A-Za-z0-9_ ]*?)["\u201d\u201f]',
+    re.IGNORECASE,
+)
+_PAT_COLUMN_OF_UNQUOTED = re.compile(
+    r'column\s+\d+\s+of\s+(?:the\s+)?(?:(?:refer(?:ence)?\s+)?table\s+)?'
+    r'([A-Z][A-Z0-9]*(?:_[A-Z0-9_]+)+)(?=\s|$|[,;.])',
     re.IGNORECASE,
 )
 
-_W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-
-
-# ── Normalisation ─────────────────────────────────────────────────────────
-
-_NON_TABLE_KEYWORDS = frozenset({"edv", "staging", "data", "table"})
-
-
-def _normalise(name: str) -> str:
-    """Lower-case, strip leading 'table' prefix, unify separators."""
-    n = name.strip().lower()
-    n = re.sub(r"^table\s+", "", n)
-    n = re.sub(r"[-_\s]+", "_", n)
-    return n
+_NON_TABLE_KEYWORDS = frozenset({"edv", "staging", "data", "table", "of", "the", "reference", "refer"})
 
 
 def _is_table_identifier(name: str, raw_text: str) -> bool:
-    """Return True if name looks like a genuine table identifier."""
     if name.lower() in _NON_TABLE_KEYWORDS:
         return False
     if "_" in name:
@@ -83,142 +71,48 @@ def _is_table_identifier(name: str, raw_text: str) -> bool:
     return False
 
 
-# ── Section 4.6 extraction ──────────────────────────────────────────────────
-
-def _extract_table_identifiers(text: str) -> list[str]:
-    """Parse a single text entry from section 4.6 and extract table identifiers."""
-    ids = []
-    t = text.strip()
-    if not t:
-        return ids
-
-    # Extract table number (e.g. "1.9" from "Table 1.9 - PAYMENT_MODE")
-    num_match = re.search(r"(?:(?:refer(?:ence)?\s+)?table\s+)?(\d+\.\d+)", t, re.IGNORECASE)
-    if num_match:
-        ids.append(num_match.group(1))
-
-    # Extract UPPER_CASE identifiers with underscores
-    name_matches = re.findall(r"\b[A-Za-z_][A-Za-z0-9]*(?:_[A-Za-z0-9_]+)+\b", t)
-    for name in name_matches:
-        if name.lower() not in _NON_TABLE_KEYWORDS:
-            ids.append(name)
-
-    # Extract parenthesized names
-    paren_matches = re.findall(r"\(([A-Za-z_][A-Za-z0-9_]*)\)", t)
-    for name in paren_matches:
-        if name.lower() not in _NON_TABLE_KEYWORDS:
-            ids.append(name)
-
-    # If nothing was extracted but text looks like a single ALL-CAPS identifier, take it
-    if not ids and re.match(r"^[A-Z][A-Z0-9]+$", t) and t.lower() not in _NON_TABLE_KEYWORDS:
-        ids.append(t)
-
-    return ids
-
-
-def _extract_section_46_tables(doc) -> set[str]:
-    """
-    Parse section 4.6 and return a set of normalised reference-table identifiers.
-    """
-    names: set[str] = set()
-
-    # Locate section 4.6 heading
-    heading_idx = None
-    for i, para in enumerate(doc.paragraphs):
-        if "4.6" in para.text and para.style.name.startswith("Heading"):
-            heading_idx = i
-            break
-
-    if heading_idx is None:
-        return names
-
-    body = list(doc.element.body)
-    start = body.index(doc.paragraphs[heading_idx]._element)
-
-    # Find next heading body position
-    end = len(body)
-    for para in doc.paragraphs[heading_idx + 1:]:
-        if para.style.name.startswith("Heading"):
-            end = body.index(para._element)
-            break
-
-    # Walk body elements between headings
-    for idx, elem in enumerate(body):
-        if idx <= start or idx >= end:
-            continue
-
-        tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
-
-        if tag == "p":
-            # Collect visible text
-            visible_parts = []
-            for t_elem in elem.iter(f"{{{_W_NS}}}t"):
-                if t_elem.text:
-                    visible_parts.append(t_elem.text)
-            visible = "".join(visible_parts).strip()
-
-            if visible:
-                for ident in _extract_table_identifiers(visible):
-                    names.add(_normalise(ident))
-
-            # Extract file names from OLE LINK field codes
-            xml_str = etree.tostring(elem, encoding="unicode")
-            for m in re.finditer(r'"([^"]+\.xlsx?)"', xml_str, re.IGNORECASE):
-                fname = os.path.basename(m.group(1))
-                name_no_ext = os.path.splitext(fname)[0]
-                names.add(_normalise(name_no_ext))
-
-        elif tag == "tbl":
-            # Also scan table cells in section 4.6
-            for t_elem in elem.iter(f"{{{_W_NS}}}t"):
-                if t_elem.text:
-                    for ident in _extract_table_identifiers(t_elem.text.strip()):
-                        names.add(_normalise(ident))
-
-    return names
-
-
-# ── Logic reference extraction ───────────────────────────────────────────────
-
 def _extract_logic_refs(logic: str) -> dict[str, str]:
-    """Return a dict of {normalised_name: original_name} for table refs in a logic string."""
+    """Return {normalised_name: original_name} for table refs in a logic string."""
     refs: dict[str, str] = {}
 
     def add_ref(raw: str) -> None:
-        key = _normalise(raw)
+        key = normalise_table_name(raw)
         if key not in refs:
             refs[key] = raw.strip()
 
-    # Pattern 1: numbered tables — add both number and parenthesized name
     for m in _PAT_NUMBERED.finditer(logic):
-        add_ref(m.group(1))  # always add the table number
+        add_ref(m.group(1))
         if m.group(2):
-            add_ref(m.group(2))  # also add parenthesized name if present
-
-    # Pattern 2: named after separator
+            add_ref(m.group(2))
     for m in _PAT_NAMED_AFTER_SEP.finditer(logic):
-        raw = m.group(1)
-        if raw.lower() not in _NON_TABLE_KEYWORDS:
-            add_ref(raw)
-
-    # Pattern 3: named after "Reference Table" with space
+        if m.group(1).lower() not in _NON_TABLE_KEYWORDS:
+            add_ref(m.group(1))
     for m in _PAT_NAMED_AFTER_SPACE.finditer(logic):
         add_ref(m.group(1))
-
-    # Pattern 4: name before "reference table"
-    for m in _PAT_NAME_BEFORE.finditer(logic):
-        raw = m.group(1)
-        if _is_table_identifier(raw, raw):
-            add_ref(raw)
-
-    # Pattern 5+6: EDV with ALL-CAPS name
-    for m in _PAT_EDV.finditer(logic):
-        add_ref(m.group(1))
-
-    # Pattern 7: column N of TABLE_NAME
-    for m in _PAT_COLUMN_OF.finditer(logic):
-        raw = m.group(1)
+    for m in _PAT_NAMED_QUOTED.finditer(logic):
+        raw = m.group(1).strip()
         if raw.lower() not in _NON_TABLE_KEYWORDS:
+            add_ref(raw)
+    for m in _PAT_NAME_BEFORE.finditer(logic):
+        if _is_table_identifier(m.group(1), m.group(1)):
+            add_ref(m.group(1))
+    for m in _PAT_EDV_QUOTED.finditer(logic):
+        add_ref(m.group(1).strip())
+    for m in _PAT_EDV_UNQUOTED.finditer(logic):
+        raw = m.group(1).strip()
+        if normalise_table_name(raw) not in refs:
+            add_ref(raw)
+    for m in _PAT_COLUMN_OF_QUOTED.finditer(logic):
+        raw = m.group(1).strip()
+        if raw.lower() not in _NON_TABLE_KEYWORDS:
+            add_ref(raw)
+    for m in _PAT_COLUMN_OF_UNQUOTED.finditer(logic):
+        raw = m.group(1).strip()
+        if raw.lower() not in _NON_TABLE_KEYWORDS and normalise_table_name(raw) not in refs:
+            add_ref(raw)
+    for m in _PAT_QUOTED_IDENTIFIER.finditer(logic):
+        raw = m.group(1).strip()
+        if raw.lower() not in _NON_TABLE_KEYWORDS and normalise_table_name(raw) not in refs:
             add_ref(raw)
 
     return refs
@@ -227,9 +121,7 @@ def _extract_logic_refs(logic: str) -> dict[str, str]:
 # ── Field checker ────────────────────────────────────────────────────────────
 
 def _check_fields(
-    fields: dict,
-    section_label: str,
-    available_normalised: set[str],
+    fields: dict, section_label: str, available_normalised: set[str],
 ) -> list[ReferenceTableResult]:
     results: list[ReferenceTableResult] = []
     already_reported: set[tuple[str, str]] = set()
@@ -243,14 +135,10 @@ def _check_fields(
             if key in already_reported:
                 continue
             already_reported.add(key)
-
-            # Use "Table X.Y" display for numbered refs, otherwise original case
             display = f"Table {orig_ref}" if re.match(r"\d+\.\d+$", norm_ref) else orig_ref
             results.append(ReferenceTableResult(
-                section=section_label,
-                field_name=field_name,
-                referenced_table=display,
-                status="WARNING",
+                section=section_label, field_name=field_name,
+                referenced_table=display, status="WARNING",
                 message=f"'{display}' referenced in logic but not found in section 4.6 Reference Tables",
                 suggestion=f'Please make sure you have referenced the correct EDV table, or add "{display}" in section 4.6.',
             ))
@@ -258,30 +146,224 @@ def _check_fields(
     return results
 
 
+# ── LLM fallback ────────────────────────────────────────────────────────────
+
+_EDV_DROPDOWN_TYPES = frozenset({
+    "EXTERNAL_DROP_DOWN_VALUE", "DROPDOWN", "DROP-DOWN",
+    "EXTERNAL_DROPDOWN_VALUE", "EDV",
+})
+_CONDITIONAL_TYPES = frozenset({"TEXT"})
+LLM_BATCH_SIZE = 15
+
+
+def _is_claude_cli_available() -> bool:
+    try:
+        result = subprocess.run(
+            ["claude", "--version"], capture_output=True, text=True, timeout=10,
+        )
+        return result.returncode == 0
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return False
+
+
+def _collect_llm_candidates(
+    fields: dict, section_label: str, available_normalised: set[str],
+    deterministic_warned: set[tuple[str, str]],
+) -> list[dict]:
+    candidates = []
+    for field_name, data in fields.items():
+        logic = data.get("logic") or ""
+        if not logic.strip():
+            continue
+        field_type = (data.get("type") or "").upper()
+        is_edv_dropdown = field_type in _EDV_DROPDOWN_TYPES
+        is_conditional = field_type in _CONDITIONAL_TYPES
+        if not is_edv_dropdown and not is_conditional:
+            continue
+        refs = _extract_logic_refs(logic)
+        unmatched_refs = {n: o for n, o in refs.items() if n not in available_normalised}
+        if unmatched_refs:
+            candidates.append({
+                "section": section_label, "field_name": field_name,
+                "field_type": data.get("type", ""), "logic": logic[:500],
+                "category": "A", "unmatched_refs": list(unmatched_refs.values()),
+            })
+        elif not refs:
+            candidates.append({
+                "section": section_label, "field_name": field_name,
+                "field_type": data.get("type", ""), "logic": logic[:500],
+                "category": "B", "unmatched_refs": [],
+            })
+    return candidates
+
+
+def _llm_resolve_batch(candidates: list[dict], available_table_names: list[str]) -> dict[tuple[str, str], dict]:
+    if not candidates:
+        return {}
+
+    field_descriptions = []
+    for idx, c in enumerate(candidates):
+        desc = (
+            f"Field {idx + 1}:\n"
+            f"  Name: {c['field_name']}\n  Type: {c['field_type']}\n"
+            f"  Section: {c['section']}\n  Logic: \"{c['logic']}\"\n"
+        )
+        if c["unmatched_refs"]:
+            desc += f"  Regex-extracted refs (not found in 4.6): {c['unmatched_refs']}\n"
+        field_descriptions.append(desc)
+
+    table_list = "\n".join(f"  - {name}" for name in sorted(available_table_names))
+    prompt = (
+        "You are a BUD (Business Understanding Document) validator. "
+        "I will give you fields from a BUD document whose logic text may or may not "
+        "reference an external data source (EDV table, staging table, reference table, "
+        "lookup table, master data, etc.). Our deterministic regex could not detect "
+        "a table reference for these fields.\n\n"
+        "Your task has TWO steps for each field:\n"
+        "1. DETECT: Read the logic carefully and determine whether it references an "
+        "EDV / reference table / staging table that should exist in section 4.6.\n\n"
+        "IMPORTANT — The following are NOT EDV/reference table references:\n"
+        "  - External service / API validations (GSTIN, PAN, MSME, CIN, bank verification)\n"
+        "  - Field-to-field derivations from validation responses\n"
+        "  - Generic descriptors ('master data', 'system generated')\n\n"
+        "2. MATCH: If found, match to the 4.6 list below.\n\n"
+        f"Available tables in section 4.6:\n{table_list}\n\n"
+        "Respond ONLY with a JSON array:\n"
+        '  [{"field": N, "references_table": bool, "detected_name": str|null, '
+        '"matched_table": str|null, "reason": str}]\n\n'
+        "Fields:\n" + "\n".join(field_descriptions)
+    )
+
+    try:
+        result = subprocess.run(
+            ["claude", "-p", prompt, "--output-format", "text", "--model", "claude-haiku-4-5-20251001"],
+            capture_output=True, text=True, timeout=120,
+        )
+        if result.returncode != 0:
+            return {}
+        text = result.stdout.strip()
+        if "```" in text:
+            text = text.split("```")[1]
+            if text.startswith("json"):
+                text = text[4:]
+        results = json.loads(text)
+    except Exception:
+        return {}
+
+    resolved = {}
+    for item in results:
+        field_idx = item.get("field", 0) - 1
+        if 0 <= field_idx < len(candidates):
+            c = candidates[field_idx]
+            resolved[(c["section"], c["field_name"])] = {
+                "references_table": item.get("references_table", False),
+                "detected_name": item.get("detected_name"),
+                "matched_table": item.get("matched_table"),
+                "reason": item.get("reason", ""),
+            }
+    return resolved
+
+
+def _run_llm_fallback(
+    all_fields: dict[str, tuple[dict, str]],
+    available_normalised: set[str],
+    deterministic_results: list[ReferenceTableResult],
+) -> list[ReferenceTableResult]:
+    if not _is_claude_cli_available():
+        logging.warning("Claude CLI not available. Skipping LLM reference table fallback.")
+        return deterministic_results
+
+    det_warned = {(r.section, r.field_name) for r in deterministic_results if r.status == "WARNING"}
+
+    candidates = []
+    for section_label, (fields, _) in all_fields.items():
+        candidates.extend(_collect_llm_candidates(fields, section_label, available_normalised, det_warned))
+
+    if not candidates:
+        return deterministic_results
+
+    available_list = sorted(available_normalised)
+    logging.info("Sending %d field(s) to Claude CLI for reference table matching...", len(candidates))
+
+    all_resolved: dict[tuple[str, str], dict] = {}
+    for batch_start in range(0, len(candidates), LLM_BATCH_SIZE):
+        batch = candidates[batch_start:batch_start + LLM_BATCH_SIZE]
+        all_resolved.update(_llm_resolve_batch(batch, available_list))
+
+    logging.info("LLM reference table matching complete.")
+
+    final_results = []
+    for r in deterministic_results:
+        key = (r.section, r.field_name)
+        if r.status == "WARNING" and key in all_resolved:
+            if all_resolved[key]["matched_table"]:
+                continue
+        final_results.append(r)
+
+    for c in candidates:
+        if c["category"] != "B":
+            continue
+        key = (c["section"], c["field_name"])
+        llm_result = all_resolved.get(key, {})
+        if llm_result.get("matched_table"):
+            continue
+        references_table = llm_result.get("references_table", False)
+        detected_name = llm_result.get("detected_name")
+        reason = llm_result.get("reason", "")
+        if references_table:
+            display = detected_name or "(name unclear)"
+            final_results.append(ReferenceTableResult(
+                section=c["section"], field_name=c["field_name"],
+                referenced_table=display, status="WARNING",
+                message=f"Logic references '{display}' but it was not found in section 4.6 (detected by LLM)",
+                suggestion=f'Please add "{display}" in section 4.6.' + (f" LLM note: {reason}" if reason else ""),
+            ))
+        elif c["field_type"].upper() in _EDV_DROPDOWN_TYPES:
+            final_results.append(ReferenceTableResult(
+                section=c["section"], field_name=c["field_name"],
+                referenced_table="(not detected)", status="WARNING",
+                message=f"Field type is {c['field_type']} but no reference table could be identified in logic",
+                suggestion="Please specify the EDV/reference table name clearly in the logic text."
+                + (f" LLM note: {reason}" if reason else ""),
+            ))
+
+    return final_results
+
+
 # ── Public API ───────────────────────────────────────────────────────────────
 
-def validate_reference_tables(
-    master_fields: dict,
-    sub_tables: dict,
-    doc,
-) -> list[ReferenceTableResult]:
+def validate_reference_tables(parsed, use_llm: bool = True) -> list[ReferenceTableResult]:
     """Check that every reference table cited in field logic is listed in section 4.6."""
-    available = _extract_section_46_tables(doc)
+    available = parsed.section_46_table_names
 
     if not available:
         return [ReferenceTableResult(
-            section="4.6",
-            field_name="N/A",
-            referenced_table="N/A",
+            section="4.6", field_name="N/A", referenced_table="N/A",
             status="WARNING",
             message="Section 4.6 Reference Tables not found or contains no table entries",
             suggestion="Please add section 4.6 with the reference tables used in the document.",
         )]
 
-    results = _check_fields(master_fields, "4.4", available)
-    for section, fields in sub_tables.items():
-        results.extend(_check_fields(fields, section, available))
+    # Gather field dicts for each section
+    master = parsed.sections.get("4.4")
+    master_fields = master.fields_dict if master and master.has_fields else {}
 
+    results = _check_fields(master_fields, "4.4", available)
+    for key in ("4.5.1", "4.5.2"):
+        sec = parsed.sections.get(key)
+        if sec and sec.has_fields:
+            results.extend(_check_fields(sec.fields_dict, key, available))
+
+    if not use_llm:
+        return results
+
+    all_fields_map = {"4.4": (master_fields, "4.4")}
+    for key in ("4.5.1", "4.5.2"):
+        sec = parsed.sections.get(key)
+        if sec and sec.has_fields:
+            all_fields_map[key] = (sec.fields_dict, key)
+
+    results = _run_llm_fallback(all_fields_map, available, results)
     return results
 
 
@@ -299,7 +381,7 @@ class ReferenceTableValidator(BaseValidator):
     description = "Validates that reference tables cited in field logic exist as entries in section 4.6."
 
     def validate(self, ctx: ValidationContext) -> list[ReferenceTableResult]:
-        return validate_reference_tables(ctx.master_fields, ctx.sub_tables, ctx.doc)
+        return validate_reference_tables(ctx.parsed, use_llm=USE_LLM)
 
     def write_sheet(self, wb: Workbook, results: list[ReferenceTableResult]) -> None:
         ws = wb.create_sheet(self.sheet_name)
@@ -316,7 +398,6 @@ class ReferenceTableValidator(BaseValidator):
             ws.cell(row=i, column=6, value=r.suggestion)
 
         if not results:
-            write_pass_row(ws, 2, len(headers),
-                            "PASS - All referenced tables exist in section 4.6.")
+            write_pass_row(ws, 2, len(headers), "PASS - All referenced tables exist in section 4.6.")
 
         auto_width(ws)

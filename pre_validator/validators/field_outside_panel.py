@@ -6,45 +6,28 @@ PANEL row (or in a table with no PANEL rows at all) are flagged as errors.
 from models import FieldOutsidePanelResult
 
 
-def validate_fields_outside_panel(
-    all_fields: list,
-    initiator_fields: list,
-    spoc_fields: list,
-) -> list[FieldOutsidePanelResult]:
+def validate_fields_outside_panel(parsed) -> list[FieldOutsidePanelResult]:
     """Check that no field exists outside a panel in any section."""
     results: list[FieldOutsidePanelResult] = []
 
-    for section_label, fields in [
-        ("4.4", all_fields),
-        ("4.5.1", initiator_fields),
-        ("4.5.2", spoc_fields),
-    ]:
-        if not fields:
+    for section_label in ("4.4", "4.5.1", "4.5.2"):
+        section = parsed.sections.get(section_label)
+        if section is None or not section.heading_found or not section.field_rows:
             results.append(FieldOutsidePanelResult(
-                section=section_label,
-                field_name="",
+                section=section_label, field_name="",
                 message="Section not found or has no fields.",
-                status="N/A",
-                suggestion="No changes needed.",
+                status="N/A", suggestion="No changes needed.",
             ))
             continue
 
         found_error = False
-        for i, f in enumerate(fields, start=1):
-            # Skip PANEL rows themselves – they define panels, not fields
-            if (
-                hasattr(f, "field_type_raw")
-                and f.field_type_raw
-                and f.field_type_raw.strip().upper() == "PANEL"
-            ):
+        for f in section.field_rows:
+            if f.field_type_upper == "PANEL":
                 continue
-
-            panel_name = (f.section or "").strip()
-            if not panel_name:
+            if not f.panel:
                 found_error = True
                 results.append(FieldOutsidePanelResult(
-                    section=section_label,
-                    field_name=f.name,
+                    section=section_label, field_name=f.name,
                     message=f"Field '{f.name}' is not inside any panel.",
                     status="FAIL",
                     suggestion="Please add a PANEL field type before this field, or move this field inside an existing panel.",
@@ -52,11 +35,9 @@ def validate_fields_outside_panel(
 
         if not found_error:
             results.append(FieldOutsidePanelResult(
-                section=section_label,
-                field_name="",
+                section=section_label, field_name="",
                 message="All fields are inside a panel.",
-                status="PASS",
-                suggestion="No changes needed.",
+                status="PASS", suggestion="No changes needed.",
             ))
 
     return results
@@ -76,11 +57,7 @@ class FieldOutsidePanelValidator(BaseValidator):
     description = "Ensures every field belongs to a panel; flags fields outside any panel."
 
     def validate(self, ctx: ValidationContext) -> list[FieldOutsidePanelResult]:
-        return validate_fields_outside_panel(
-            ctx.raw_fields["all"],
-            ctx.raw_fields["initiator"],
-            ctx.raw_fields["spoc"],
-        )
+        return validate_fields_outside_panel(ctx.parsed)
 
     def write_sheet(self, wb: Workbook, results: list[FieldOutsidePanelResult]) -> None:
         ws = wb.create_sheet(self.sheet_name)
@@ -95,7 +72,7 @@ class FieldOutsidePanelValidator(BaseValidator):
             row = 2
             for r in results:
                 ws.cell(row=row, column=1, value=r.section)
-                ws.cell(row=row, column=2, value=r.field_name if r.field_name else "—")
+                ws.cell(row=row, column=2, value=r.field_name if r.field_name else "\u2014")
                 ws.cell(row=row, column=3, value=r.message)
                 ws.cell(row=row, column=4, value=r.status)
                 apply_severity_fill(ws.cell(row=row, column=4), r.status)

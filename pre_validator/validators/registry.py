@@ -2,27 +2,25 @@
 validators/registry.py
 Central validator registry and base class.
 
-Every validator is a class that inherits from BaseValidator and is
-registered via the @ValidatorRegistry.register decorator.  The main
-pipeline simply calls ValidatorRegistry.run_all() and write_all().
+Every validator inherits from BaseValidator and is registered via
+the @ValidatorRegistry.register decorator.  The main pipeline calls
+ValidatorRegistry.run_all() and write_all().
 """
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any
 
 from openpyxl import Workbook
+
+from section_parser import BUDDocument
 
 
 @dataclass
 class ValidationContext:
     """All data produced by document_reader.parse_document()."""
-    master_fields: dict
-    sub_tables: dict
-    raw_fields: dict
-    doc: Any  # python-docx Document
+    parsed: BUDDocument
 
 
 class BaseValidator(ABC):

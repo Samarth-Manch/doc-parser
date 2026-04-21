@@ -2,7 +2,18 @@
   "permissions": {
     "allow": [
       "Bash(cp:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(PYTHONIOENCODING=utf-8 python3:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(python:*)",
+      "Bash(PYTHONPATH=.. python:*)",
+      "Bash(git:*)",
+      "Bash(where:*)",
+      "Bash(PYTHONIOENCODING=utf-8 python:*)",
+      "Read(//d/Manch/BUD-pre-validator/docs//**)",
+      "Read(//d/Manch/BUD-pre-validator/docs/**)",
+      "Read(//d/Manch/**)"
     ]
   }
 }

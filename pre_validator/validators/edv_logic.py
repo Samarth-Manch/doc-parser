@@ -9,6 +9,7 @@ from models import EDVLogicResult
 STRICT_FIELD_TYPES: list[str] = [
     "EXTERNAL_DROP_DOWN_VALUE",
     "DROPDOWN",
+    "DROP-DOWN",
 ]
 
 # Conditional types: only check when EDV is explicitly referenced in the logic
@@ -35,8 +36,14 @@ def _check_dropdown_fields(fields: dict, label: str) -> list[EDVLogicResult]:
         )
         has_attr_col = bool(re.search(r"attribute|column", logic, re.IGNORECASE))
 
+        # Edge case: logic like "fetched from : TABLE_NAME" is self-contained
+        has_fetch_pattern = bool(
+            re.search(r"(?:fetched|populated|picked)\s+from\s*[:\-]?\s*\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b", logic, re.IGNORECASE)
+        )
+        if has_fetch_pattern and has_ref_table:
+            continue
+
         if is_conditional:
-            # TEXT fields: only validate when EDV is explicitly referenced in the logic.
             has_edv_ref = bool(re.search(r"\bEDV\b", logic, re.IGNORECASE))
             if has_edv_ref and not has_attr_col:
                 results.append(EDVLogicResult(
@@ -65,13 +72,20 @@ def _check_dropdown_fields(fields: dict, label: str) -> list[EDVLogicResult]:
     return results
 
 
-def validate_external_dropdown_logic(master_fields: dict, sub_tables: dict) -> list[EDVLogicResult]:
+def validate_external_dropdown_logic(parsed) -> list[EDVLogicResult]:
     """Fields in CHECKED_FIELD_TYPES must reference a table and column."""
-    results = _check_dropdown_fields(master_fields, "4.4")
-    for section, fields in sub_tables.items():
-        if not fields:
-            continue
-        results.extend(_check_dropdown_fields(fields, section))
+    master = parsed.sections.get("4.4")
+    if master is None:
+        return []
+
+    results = _check_dropdown_fields(master.fields_dict, "4.4")
+
+    skip_sections = {"4.5.1", "4.5.2"}
+    for key in ("4.5.1", "4.5.2"):
+        sec = parsed.sections.get(key)
+        if sec and sec.has_fields and key not in skip_sections:
+            results.extend(_check_dropdown_fields(sec.fields_dict, key))
+
     return results
 
 
@@ -89,7 +103,7 @@ class EDVLogicValidator(BaseValidator):
     description = "Validates that fields of checked types (EDV, DROPDOWN, TEXT, etc.) reference a table and attribute column."
 
     def validate(self, ctx: ValidationContext) -> list[EDVLogicResult]:
-        return validate_external_dropdown_logic(ctx.master_fields, ctx.sub_tables)
+        return validate_external_dropdown_logic(ctx.parsed)
 
     def write_sheet(self, wb: Workbook, results: list[EDVLogicResult]) -> None:
         ws = wb.create_sheet(self.sheet_name)

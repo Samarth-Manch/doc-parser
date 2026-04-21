@@ -1,14 +1,10 @@
 """
-Checks that fields marked as non-editable in the Logic column of sections
-4.4, 4.5.1, and 4.5.2 have their Field Type set to "TEXT".
+Checks that fields marked as non-editable in the Logic column have
+their Field Type set to "TEXT" or "DATE".
 """
 
-from docx import Document
 from models import NonEditableCheckResult
-from .doc_utils import (
-    get_column_index,
-    iter_field_tables,
-)
+from section_parser import FIELD_SECTIONS
 
 
 NON_EDITABLE_PHRASES = [
@@ -21,55 +17,36 @@ NON_EDITABLE_PHRASES = [
 ALLOWED_NON_EDITABLE_TYPES = {"TEXT", "DATE"}
 
 
-def _check_tables_for_section(
-    section: str, field_tables: list,
-) -> list[NonEditableCheckResult]:
-    """Check non-editable fields in the given tables for one section."""
+def validate_non_editable_fields(parsed) -> list[NonEditableCheckResult]:
+    """Check that non-editable fields have allowed types."""
     results: list[NonEditableCheckResult] = []
 
-    for table in field_tables:
-        headers = [cell.text.strip().lower() for cell in table.rows[0].cells]
-
-        logic_col = get_column_index(headers, "logic")
-        type_col = get_column_index(headers, "type", "field type")
-        name_col = get_column_index(headers, "field name", "filed name")
-
-        if logic_col is None or type_col is None:
+    for section_key in FIELD_SECTIONS:
+        section = parsed.sections.get(section_key)
+        if section is None or not section.heading_found:
             continue
 
-        for r_idx, row in enumerate(table.rows[1:], start=2):
-            logic_text = row.cells[logic_col].text.strip()
-            logic_lower = logic_text.lower()
-            field_type = row.cells[type_col].text.strip()
-            field_name = row.cells[name_col].text.strip() if name_col is not None else "Unknown"
-
-            if not logic_text or not field_type:
+        for f in section.field_rows:
+            if f.field_type_upper == "PANEL":
+                continue
+            if not f.logic or not f.field_type:
                 continue
 
+            logic_lower = f.logic.lower()
             matched_phrase = None
             for phrase in NON_EDITABLE_PHRASES:
                 if phrase in logic_lower:
                     matched_phrase = phrase
                     break
 
-            if matched_phrase and field_type.upper() not in ALLOWED_NON_EDITABLE_TYPES:
+            if matched_phrase and f.field_type_upper not in ALLOWED_NON_EDITABLE_TYPES:
                 results.append(NonEditableCheckResult(
-                    section=section,
-                    field_name=field_name[:50],
-                    field_type=field_type,
+                    section=section_key,
+                    field_name=f.name[:50],
+                    field_type=f.field_type,
                     status="FAIL",
-                    suggestion=f"{field_type} cannot be non-editable, make sure that field should not be non-editable.",
+                    suggestion=f"{f.field_type} cannot be non-editable, make sure that field should not be non-editable.",
                 ))
-
-    return results
-
-
-def validate_non_editable_fields(doc: Document) -> list[NonEditableCheckResult]:
-    """Check that non-editable fields in sections 4.4, 4.5.1, 4.5.2 have Field Type = TEXT."""
-    results: list[NonEditableCheckResult] = []
-
-    for section_key, field_tables in iter_field_tables(doc):
-        results.extend(_check_tables_for_section(section_key, field_tables))
 
     return results
 
@@ -88,7 +65,7 @@ class NonEditableValidator(BaseValidator):
     description = "Verifies that fields marked as non-editable have their Field Type set to TEXT."
 
     def validate(self, ctx: ValidationContext) -> list[NonEditableCheckResult]:
-        return validate_non_editable_fields(ctx.doc)
+        return validate_non_editable_fields(ctx.parsed)
 
     def write_sheet(self, wb: Workbook, results: list[NonEditableCheckResult]) -> None:
         ws = wb.create_sheet(self.sheet_name)

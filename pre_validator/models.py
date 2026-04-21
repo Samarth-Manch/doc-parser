@@ -128,7 +128,7 @@ class ClearFieldLogicResult:
     field_name: str         # the field whose logic was checked
     referenced_field: str   # the field referenced in the condition
     condition_text: str     # the conditional phrase found
-    message: str            # explanation
+    logic: str              # the full logic text of the field
     status: str             # FAIL | PASS
     suggestion: str = ""
 

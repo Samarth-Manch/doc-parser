@@ -3,33 +3,26 @@ Verify that sections 4.4, 4.5.1, and 4.5.2 each contain a
 properly structured field-level table.
 """
 
-from docx import Document
 from models import TableCheckResult
-from .doc_utils import (
-    REQUIRED_SECTIONS,
-    find_section_heading_index,
-    find_heading_by_number,
-    paragraph_position,
-    next_heading_position,
-    tables_in_section,
-    is_field_table,
-)
+from section_parser import FIELD_SECTIONS
+
+# Sections that MUST be present (4.4 = error, others = warning)
+_REQUIRED = [
+    ("4.4",   "4.4 Field-Level Information"),
+    ("4.5.1", "4.5.1 Initiator Behaviour"),
+    ("4.5.2", "4.5.2 Vendor Behaviour"),
+]
 
 
-def check_table_existence(doc: Document) -> list[TableCheckResult]:
-    """Verify sections 4.4, 4.5.1, and 4.5.2 each contain a proper field-level table."""
+def check_table_existence(parsed) -> list[TableCheckResult]:
+    """Verify required sections each contain a proper field-level table."""
     results = []
 
-    for section_num, section_heading in REQUIRED_SECTIONS:
-        heading_idx = find_section_heading_index(doc, section_heading)
-
-        if heading_idx is None:
-            heading_idx = find_heading_by_number(doc, section_num)
-
-        # Section 4.4 missing is an error; 4.5.1/4.5.2 missing is a warning
+    for section_num, section_heading in _REQUIRED:
+        section = parsed.sections.get(section_num)
         missing_status = "FAIL" if section_num == "4.4" else "WARNING"
 
-        if heading_idx is None:
+        if section is None or not section.heading_found:
             results.append(TableCheckResult(
                 status=missing_status,
                 section=section_num,
@@ -39,27 +32,16 @@ def check_table_existence(doc: Document) -> list[TableCheckResult]:
             ))
             continue
 
-        tables      = tables_in_section(doc, doc.paragraphs[heading_idx].text)
-        field_tables = [t for t in tables if is_field_table(t)]
+        all_tables = section.raw_tables
+        field_tables = [t for t in all_tables if t.is_field_table]
 
-        if not tables:
-            # Check whether the section is explicitly marked Not Applicable
-            start_pos    = paragraph_position(doc, heading_idx)
-            end_pos      = next_heading_position(doc, heading_idx)
-            section_text = ""
-            body         = list(doc.element.body)
-
-            for para in doc.paragraphs[heading_idx + 1:]:
-                if body.index(para._element) >= end_pos:
-                    break
-                section_text += para.text.strip() + " "
-
-            if "not applicable" in section_text.lower():
+        if not all_tables:
+            if section.is_not_applicable:
                 results.append(TableCheckResult(
                     status="INFO",
                     section=section_num,
                     message=f"Section '{section_num}' is marked 'Not Applicable' — no table expected.",
-                    details=f"Heading: '{doc.paragraphs[heading_idx].text.strip()}'",
+                    details=f"Heading: '{section.heading_text}'",
                     suggestion="No changes needed.",
                 ))
             else:
@@ -67,7 +49,7 @@ def check_table_existence(doc: Document) -> list[TableCheckResult]:
                     status=missing_status,
                     section=section_num,
                     message=f"Section '{section_num}' exists but contains no tables.",
-                    details=f"Heading: '{doc.paragraphs[heading_idx].text.strip()}'",
+                    details=f"Heading: '{section.heading_text}'",
                     suggestion='Please add a table to this section, or mark it as "Not Applicable" if it does not apply.',
                 ))
 
@@ -76,7 +58,7 @@ def check_table_existence(doc: Document) -> list[TableCheckResult]:
                 status="WARNING",
                 section=section_num,
                 message=(
-                    f"Section '{section_num}' has {len(tables)} table(s) "
+                    f"Section '{section_num}' has {len(all_tables)} table(s) "
                     f"but none match the expected field-table structure."
                 ),
                 details="Expected columns: 'Field Name', 'Field Type', 'Mandatory', 'Logic'",
@@ -85,7 +67,7 @@ def check_table_existence(doc: Document) -> list[TableCheckResult]:
 
         else:
             for ft in field_tables:
-                row_count = len(ft.rows) - 1
+                row_count = len(ft.rows)
                 if row_count < 1:
                     results.append(TableCheckResult(
                         status="WARNING",
@@ -120,7 +102,7 @@ class TableFormattingValidator(BaseValidator):
     description = "Verifies that sections 4.4, 4.5.1, and 4.5.2 each contain a properly structured field-level table."
 
     def validate(self, ctx: ValidationContext) -> list[TableCheckResult]:
-        return check_table_existence(ctx.doc)
+        return check_table_existence(ctx.parsed)
 
     def write_sheet(self, wb: Workbook, results: list[TableCheckResult]) -> None:
         ws = wb.active
