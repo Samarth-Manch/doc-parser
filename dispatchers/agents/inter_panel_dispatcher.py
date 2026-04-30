@@ -1430,16 +1430,17 @@ def main():
                 if ref_panel and ref_panel in input_data:
                     edv_panels.add(ref_panel)
             else:
-                # validate_edv: add BOTH source and destination panels.
-                # Source panel (referenced_panel) has the trigger field (e.g., Vendor Number).
-                # Destination panel (field_variableName's panel) has the field being populated
-                # and needs Phase 4b to place Validate EDV rules on its own fields
-                # (e.g., Company Code triggering lookup for "block old" sibling fields).
-                # Phase 4c still handles cross-panel destination patching afterwards.
+                # validate_edv: only add the SOURCE panel (referenced_panel).
+                # The destination panel (field_variableName's panel) must NOT get
+                # Phase 4b — the mini-agent can only place rules on fields it
+                # receives, so it would place them on a destination field instead
+                # of the source/trigger field. Phase 4c handles cross-panel
+                # destinations by patching/creating rules on the source field.
+                # (Originally added in bf353c2; silently reverted by e1018bf;
+                # restored here after run-3 misplacements on Name/GSTIN/PAN Update
+                # and Withholding Tax Details.)
                 if ref_panel and ref_panel in input_data:
                     vedv_panels.add(ref_panel)
-                if field_panel:
-                    vedv_panels.add(field_panel)
     # EDV panels also need Validate EDV — EDV sets up dropdown options,
     # Validate EDV sets up lookup/auto-population. They're complementary.
     vedv_panels |= edv_panels

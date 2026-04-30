@@ -43,25 +43,34 @@ def _normalize_field_name(name: str) -> str:
     return name.lower().replace("organisation", "organization").strip()
 
 
-def extract_session_table_data(bud_path: str) -> Dict[str, Dict[str, Dict]]:
+def extract_session_table_data(bud_path: str) -> Tuple[Dict[str, Dict[str, Dict]], Dict[str, Dict[str, Dict]]]:
     """
-    Parse the BUD document using DocumentParser and extract full field data
-    from section 4.5.2 (Vendor Behaviour).
+    Parse the BUD document using DocumentParser and extract full field data from:
+    - Section 4.5.1 (Initiator Behaviour) → FIRST_PARTY
+    - Section 4.5.2 (Vendor Behaviour)    → SECOND_PARTY
 
     Returns:
-        Dict mapping panel_name -> {normalized_field_name -> {logic, mandatory, field_type}}
+        Tuple (initiator_data, vendor_data). Each is a dict:
+            panel_name -> {normalized_field_name -> {logic, mandatory, field_type, original_name}}
     """
     parser = DocumentParser()
     parsed = parser.parse(bud_path)
 
+    initiator_data: Dict[str, Dict[str, Dict]] = {}
     vendor_data: Dict[str, Dict[str, Dict]] = {}
 
     for table in parsed.raw_tables:
         context_lower = table.context.lower()
 
-        # Only process 4.5.2 Vendor Behaviour tables
-        if not (table.table_type == "spoc_fields" and
-                ("4.5.2" in table.context or "vendor" in context_lower)):
+        if table.table_type == "initiator_fields" and (
+            "4.5.1" in table.context or "initiator" in context_lower
+        ):
+            target = initiator_data
+        elif table.table_type == "spoc_fields" and (
+            "4.5.2" in table.context or "vendor" in context_lower
+        ):
+            target = vendor_data
+        else:
             continue
 
         # Extract field data grouped by panel
@@ -77,18 +86,18 @@ def extract_session_table_data(bud_path: str) -> Dict[str, Dict[str, Dict]]:
 
             if field_type == "PANEL":
                 current_panel = field_name
-                if current_panel not in vendor_data:
-                    vendor_data[current_panel] = {}
+                if current_panel not in target:
+                    target[current_panel] = {}
             elif current_panel:
                 normalized = _normalize_field_name(field_name)
-                vendor_data[current_panel][normalized] = {
+                target[current_panel][normalized] = {
                     "logic": logic,
                     "mandatory": mandatory,
                     "field_type": field_type,
                     "original_name": field_name
                 }
 
-    return vendor_data
+    return initiator_data, vendor_data
 
 
 def extract_session_field_names(bud_path: str) -> Tuple[Dict[str, Set[str]], Dict[str, Set[str]]]:
@@ -219,13 +228,14 @@ def call_session_based_mini_agent(panel_fields: List[Dict],
         List of fields with session-based rules added, or None if failed
     """
 
-    # Sanitize panel name for filename
+    # Sanitize panel name for filename, and suffix with session to keep FP/SP artifacts separate
     safe_panel_name = re.sub(r'[^\w\-]', '_', panel_name)
+    session_suffix = session_params.lower()
 
     # Temp files for input/output
-    fields_input_file = temp_dir / f"{safe_panel_name}_fields_input.json"
-    output_file = temp_dir / f"{safe_panel_name}_session_output.json"
-    log_file = temp_dir / f"{safe_panel_name}_session_log.txt"
+    fields_input_file = temp_dir / f"{safe_panel_name}_{session_suffix}_fields_input.json"
+    output_file = temp_dir / f"{safe_panel_name}_{session_suffix}_session_output.json"
+    log_file = temp_dir / f"{safe_panel_name}_{session_suffix}_session_log.txt"
 
     # ── Context optimization: strip all rules before sending to agent ──
     stripped_fields, stored_rules = strip_all_rules(panel_fields)
@@ -247,26 +257,34 @@ Follow the step-by-step approach defined in the agent prompt (08_session_based_a
 - SESSION_PARAMS = {session_params}
 - LOG_FILE = {log_file}
 
-## CRITICAL: Only Handle Session-Based Rules
-Read each field's logic text and determine what session-based rules to place.
+## CRITICAL: Emit Expression (Client) Rules, Not Session-Based Normal Rules
+Read each field's logic text and emit session/party-scoped behavior as **Expression (Client)** rules
+(`rule_name = "Expression (Client)"`, `conditionValueType = "EXPR"`, `condition = "IN"`).
+Use the session-based expression functions from `.claude/agents/docs/expression_rules.md`:
+- Visibility: `sbmvi(cond, "{session_params}", ...)` / `sbminvi(cond, "{session_params}", ...)`
+- Enable/Disable: `dis(pt() == <SP|FP>, ...)` / `en(pt() == <SP|FP>, ...)`
+- Mandatory: `mm(pt() == <SP|FP>, ...)` / `mnm(pt() == <SP|FP>, ...)`
+
+Map `{session_params}` → `pt()` comparator: `SECOND_PARTY` → `"SP"`, `FIRST_PARTY` → `"FP"`.
+
 Existing rules have been stripped for context optimization — they will be restored automatically.
-Only add NEW session-based rules based on each field's logic text.
+Only add NEW Expression (Client) rules based on each field's logic text.
 
-All rules must use params = "{session_params}".
-
-## Rule Placement (mirrors condition agent pattern):
+## Rule Placement
 - **Conditional rules** (logic references another field): place ON the controller field
   - source_fields = [controller field's variableName]
-  - destination_fields = [affected field(s) variableName]
+  - destination_fields = []  (destinations are encoded inside the expression string)
 - **Static rules** (logic says "Disable", "Invisible", "Non-Editable", etc.):
   - place ON the affected field itself
   - source_fields = []
-  - destination_fields = [field's own variableName]
-- **Empty logic** = NO session-based rules needed (deterministic visibility handled by RuleCheck separately)
-- Consolidate: group fields affected by the same controller + condition into ONE rule
-- Opposite rules: use NOT_IN with the original value (never IN with opposite value)
+  - destination_fields = []  (the field's own variableName goes inside the expression)
+- **Empty logic** = NO rules needed (deterministic visibility handled by RuleCheck separately)
+- Consolidate: group fields affected by the same controller + same condition + same rule type into ONE expression call
+- Pair opposites via DeMorgan's law: every `sbmvi` needs `sbminvi`, every `en` needs `dis`, every `mm` needs `mnm`
+- Auto non-mandatory (Rule 15 of the agent spec): whenever a field becomes invisible or disabled, emit a paired `mnm(...)` / `mm(...)` rule as a SEPARATE Expression (Client) rule
 - Skip PANEL-type fields
-- If a session-based rule (same rule_name + params) already exists, skip it
+- Dedupe: if an Expression (Client) rule with the same `conditionalValues[0]` already exists on the field, skip it
+- Tag each new rule with `_expressionRuleType` set to one of `"session"`, `"enable_disable"`, `"mandatory"`
 
 ## Output
 Write a JSON array to: {output_file}
@@ -280,7 +298,7 @@ Write a JSON array to: {output_file}
 
         # Call claude -p with the Session Based mini agent
         safe_name = re.sub(r'[^\w\-]', '_', panel_name)
-        stream_log = temp_dir / f"{safe_name}_stream.log"
+        stream_log = temp_dir / f"{safe_name}_{session_suffix}_stream.log"
         process = subprocess.Popen(
             [
                 "claude",
@@ -351,6 +369,36 @@ Write a JSON array to: {output_file}
         import traceback
         traceback.print_exc()
         return None
+
+
+def process_panel_both_parties(panel_name: str,
+                                original_fields: List[Dict],
+                                initiator_panel_data: Dict[str, Dict],
+                                vendor_panel_data: Dict[str, Dict],
+                                temp_dir: Path) -> Optional[List[Dict]]:
+    """
+    Run the session-based mini agent twice for a single panel:
+      Pass 1 — FIRST_PARTY  using 4.5.1 Initiator Behaviour logic
+      Pass 2 — SECOND_PARTY using 4.5.2 Vendor  Behaviour logic
+
+    Pass 2 is fed Pass 1's output so previously placed FP expression rules are
+    preserved alongside the new SP rules.
+
+    Returns the final merged fields (or None if either pass fails).
+    """
+    fp_input = prepare_panel_fields_with_bud_logic(original_fields, initiator_panel_data)
+    result_fp = call_session_based_mini_agent(fp_input, panel_name, "FIRST_PARTY", temp_dir)
+    if result_fp is None:
+        print(f"  '{panel_name}' FIRST_PARTY pass failed", file=sys.stderr)
+        return None
+
+    sp_input = prepare_panel_fields_with_bud_logic(result_fp, vendor_panel_data)
+    result_sp = call_session_based_mini_agent(sp_input, panel_name, "SECOND_PARTY", temp_dir)
+    if result_sp is None:
+        print(f"  '{panel_name}' SECOND_PARTY pass failed", file=sys.stderr)
+        return None
+
+    return result_sp
 
 
 def build_rulecheck_session_rules(all_panels: Dict[str, List[Dict]],
@@ -479,7 +527,11 @@ def main():
 
     # ── Step 1: Parse BUD ─────────────────────────────────────────────────────
     print(f"Parsing BUD document: {args.bud}")
-    vendor_table_data = extract_session_table_data(args.bud)
+    initiator_table_data, vendor_table_data = extract_session_table_data(args.bud)
+
+    print(f"\n4.5.1 Initiator Behaviour (FIRST_PARTY) — full table data:")
+    for panel, fields in initiator_table_data.items():
+        print(f"  {panel}: {len(fields)} fields")
 
     print(f"\n4.5.2 Vendor Behaviour (SECOND_PARTY) — full table data:")
     for panel, fields in vendor_table_data.items():
@@ -539,7 +591,8 @@ def main():
     total_fields_processed = 0
     all_results = {}
 
-    # Build jobs: prepare modified fields for each panel
+    # Build jobs: one job per panel. Each job runs both FP (4.5.1) and SP (4.5.2) passes
+    # sequentially inside the worker.
     jobs = []
     for panel_name, panel_fields in input_data.items():
         if not panel_fields:
@@ -548,31 +601,32 @@ def main():
             all_results[panel_name] = panel_fields
             continue
 
-        # Get BUD 4.5.2 data for this panel
+        initiator_panel_data = initiator_table_data.get(panel_name, {})
         vendor_panel_data = vendor_table_data.get(panel_name, {})
 
-        # Replace field logic with BUD table logic
-        modified_fields = prepare_panel_fields_with_bud_logic(panel_fields, vendor_panel_data)
-
-        fields_in_bud = sum(1 for f in modified_fields
-                           if f.get("type") != "PANEL" and f.get("logic") != "Invisible"
-                           and f.get("variableName") != RULE_CHECK_VARIABLE)
-        fields_not_in_bud = sum(1 for f in modified_fields
-                               if f.get("type") != "PANEL" and f.get("logic") == "Invisible"
-                               and f.get("variableName") != RULE_CHECK_VARIABLE)
+        non_panel_fields = [
+            f for f in panel_fields
+            if f.get("type") != "PANEL" and f.get("variableName") != RULE_CHECK_VARIABLE
+        ]
+        fp_in = sum(1 for f in non_panel_fields
+                    if _normalize_field_name(f.get("field_name", "")) in initiator_panel_data)
+        sp_in = sum(1 for f in non_panel_fields
+                    if _normalize_field_name(f.get("field_name", "")) in vendor_panel_data)
 
         print(f"\nPanel '{panel_name}': {len(panel_fields)} fields "
-              f"({fields_in_bud} in BUD table, {fields_not_in_bud} not in BUD table)")
+              f"(FP/4.5.1: {fp_in} in-table / {len(non_panel_fields) - fp_in} hidden, "
+              f"SP/4.5.2: {sp_in} in-table / {len(non_panel_fields) - sp_in} hidden)")
 
-        jobs.append((panel_name, modified_fields, panel_fields))
+        jobs.append((panel_name, panel_fields, initiator_panel_data, vendor_panel_data))
 
     max_workers = args.max_workers
 
     if max_workers <= 1:
         # Sequential processing
-        for panel_name, modified_fields, original_fields in jobs:
-            result = call_session_based_mini_agent(
-                modified_fields, panel_name, "SECOND_PARTY", temp_dir
+        for panel_name, original_fields, initiator_panel_data, vendor_panel_data in jobs:
+            result = process_panel_both_parties(
+                panel_name, original_fields,
+                initiator_panel_data, vendor_panel_data, temp_dir,
             )
             if result:
                 successful_panels += 1
@@ -584,15 +638,16 @@ def main():
                 total_fields_processed += len(original_fields)
                 print(f"  Panel '{panel_name}' failed - using original data", file=sys.stderr)
     else:
-        # Parallel processing
+        # Parallel processing — each panel worker runs FP then SP sequentially
         print(f"\nProcessing {len(jobs)} panels in parallel (max_workers={max_workers})")
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_map = {
                 executor.submit(
-                    call_session_based_mini_agent,
-                    modified_fields, panel_name, "SECOND_PARTY", temp_dir
+                    process_panel_both_parties,
+                    panel_name, original_fields,
+                    initiator_panel_data, vendor_panel_data, temp_dir,
                 ): (panel_name, original_fields)
-                for panel_name, modified_fields, original_fields in jobs
+                for panel_name, original_fields, initiator_panel_data, vendor_panel_data in jobs
             }
             for future in as_completed(future_map):
                 panel_name, original_fields = future_map[future]
@@ -602,7 +657,7 @@ def main():
                         successful_panels += 1
                         total_fields_processed += len(result)
                         all_results[panel_name] = result
-                        print(f"  '{panel_name}' done — {len(result)} fields")
+                        print(f"  '{panel_name}' done — {len(result)} fields (FP + SP)")
                     else:
                         failed_panels += 1
                         all_results[panel_name] = original_fields

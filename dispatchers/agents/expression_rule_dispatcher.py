@@ -34,6 +34,7 @@ _CONTEXT_USAGE_PROMPT = (
 
 def _query_context_usage(label: str) -> None:
     """Ask the last claude session to self-report its context usage via --continue."""
+    return  # disabled
     print(f"\n{'─'*56}")
     print(f"  CONTEXT REPORT  [{label}]")
     print(f"  Prompt sent to Claude:")

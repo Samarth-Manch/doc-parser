@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["panel_name", "cross_panel_session_refs"],
+  "properties": {
+    "panel_name": { "type": "string" },
+    "cross_panel_session_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field_variableName",
+          "field_name",
+          "party",
+          "action",
+          "polarity",
+          "conditions",
+          "logic_snippet"
+        ],
+        "properties": {
+          "field_variableName": { "type": "string", "minLength": 1 },
+          "field_name": { "type": "string" },
+          "party": { "enum": ["FIRST_PARTY", "SECOND_PARTY"] },
+          "action": { "enum": ["visibility", "enable_disable", "mandatory"] },
+          "polarity": { "enum": ["positive", "negative"] },
+          "conditions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "controller_panel",
+                "controller_field_variableName",
+                "controller_field_name",
+                "operator",
+                "values"
+              ],
+              "properties": {
+                "controller_panel": { "type": "string", "minLength": 1 },
+                "controller_field_variableName": { "type": "string", "minLength": 1 },
+                "controller_field_name": { "type": "string" },
+                "operator": { "enum": ["==", "!=", "in", "not_in"] },
+                "values": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          },
+          "logic_snippet": { "type": "string" }
+        }
+      }
+    }
+  }
+}
